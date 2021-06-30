@@ -60,14 +60,18 @@ dsets = sp.sets_prepare(runData)
 flatten = Flatten()
 ## Dense layer - see EpyNN/nnlibs/dense/models.py ######################
 # Dense() layer takes X data of shape (a,d) - 2D
-dense = Dense(16,cm.relu) # Custom (num_neurons=16,activate=cm.relu)
+dense = Dense(64,cm.elu) # Custom (num_neurons=16,activate=cm.relu)
 out_dense = Dense(2,cm.softmax) # Custom (num_neurons=10,activate=cm.softmax)
+## Dense layer - see EpyNN/nnlibs/dense/models.py ######################
+# Dense() layer takes X data of shape (a,d) - 2D
+dropout_1 = Dropout() # Custom (num_neurons=16,activate=cm.relu)
+dropout_2 = Dropout() # Custom (num_neurons=16,activate=cm.relu)
 ## Recurrent layer - see EpyNN/nnlibs/rnn/models.py ####################
 # RNN() layer takes X data of shape (a,b,c) - 3D
 rnn = RNN(10,runData) # Custom (hidden_size=10,runData)
 ## Long Short Term Memory layer - see EpyNN/nnlibs/lstm/models.py ######
 # LSTM() layer takes X data of shape (a,b,c) - 3D
-lstm = LSTM(10,runData) # Custom (hidden_size=10,runData)
+lstm = LSTM(21,runData) # Custom (hidden_size=10,runData)
 ## Long Short Term Memory layer - see EpyNN/nnlibs/lstm/models.py ######
 # LSTM() layer takes X data of shape (a,b,c) - 3D
 gru = GRU(10,runData) # Custom (hidden_size=10,runData)
@@ -86,7 +90,8 @@ pooling = Pooling(3,3) # Custom (hidden_size=10,runData)
 #layers = [flatten,out_dense]
 ## Feed_Forward_Neural_Network #########################################
 name = 'Feed_Forward_Neural_Network'
-layers = [flatten,dense,out_dense]
+layers = [lstm,flatten,dense,out_dense]
+#layers = [flatten,dropout_2,dense,out_dense]
 ## Recurrent_Neural_Network ############################################
 #name = 'Recurrent_Neural_Network'
 #layers = [rnn,flatten,dense,out_dense]
@@ -101,7 +106,7 @@ layers = [flatten,dense,out_dense]
 
 ########################### NEURAL_NETWORK #############################
 # Initialize with EpyNN meta-model - see EpyNN/nnlibs/meta/models.py
-model = EpyNN(name=name,layers=layers)
+model = EpyNN(name=name,layers=layers,hPars=hPars)
 # Train your model - see EpyNN/nnlibs/meta/train.py
 model.train(dsets,hPars,runData)
 # Plot results

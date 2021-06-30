@@ -1,8 +1,10 @@
 #EpyNN/nnlibs/commons/logs.py
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import get_lexer_by_name
+from termcolor import cprint, colored
+from texttable import Texttable
 from pygments import highlight
-from termcolor import cprint
+from tabulate import tabulate
 import traceback
 import sys
 
@@ -14,11 +16,15 @@ def model_core_logs(model,dsets,hPars,runData):
 
     if runData.b['i'] == True:
 
-        init_core_logs(runData,colors)
+        init_core_logs(model,dsets,hPars,runData,colors)
 
-    cprint(hPars.e,'white',attrs=['bold'],end=' | ')
+        runData.print = runData.logs[0].copy()
 
-    cprint(hPars.l[hPars.e],'white',attrs=['bold'],end=' | ')
+    logs = []
+
+    logs.append(colored(hPars.e,'white',attrs=['bold']))
+
+    logs.append(colored("{:.2e}".format(hPars.l[hPars.e]),'white',attrs=['bold']))
 
     for i, s in enumerate(runData.s.keys()):
 
@@ -28,57 +34,198 @@ def model_core_logs(model,dsets,hPars,runData):
 
             log = round(runData.s[s][k][-1],3)
 
-            cprint('%.3f' % log,colors[i],attrs=['bold'],end=' | ')
+            logs.append(colored('%.3f' % log,colors[i],attrs=['bold']))
 
     if runData.b['s'] == True:
 
-        cprint('SAVED','red','on_white',attrs=['bold','blink'],end=' ')
+        logs.append(colored('SAVED','red','on_white',attrs=['bold','blink']))
 
         runData.b['s'] = False
 
     else:
 
-        for k in range(len(dsets)):
+        logs.append(colored(runData.m['nt'],'white',attrs=[]))
 
-            cprint(dsets[k].s,'white',attrs=[],end=' | ')
+    runData.print.extend([logs])
 
-        cprint(runData.m['nt'],'white',attrs=[],end=' ')
+    if len(runData.print) == runData.m['l'] + 1 or hPars.e == hPars.i - 1:
 
-    print (' ',flush=True)
+        print (tabulate(runData.print,headers="firstrow",numalign="center",stralign='center',tablefmt="pretty"),flush=True)
+
+        runData.print = runData.logs[0].copy()
 
     return None
 
 
-def init_core_logs(runData,colors):
+def init_core_logs(model,dsets,hPars,runData,colors):
 
-    cprint('epoch','white',attrs=['bold'],end=' | ')
+    print ('\n')
 
-    cprint('lr','white',attrs=['bold'],end=' | ')
+    init_1 = log_model_network(model)
 
-    for i, s in enumerate(runData.s.keys()):
+    init_2 = log_lr_schedule(hPars)
 
-        i = i % len(colors)
+    init_3 = log_datasets(dsets,hPars,runData)
 
-        cprint('%s' % s,colors[i],attrs=['bold'],end=' | ')
+    init_4 = log_others(dsets,hPars,runData)
 
-    cprint('Samples','white',attrs=[],end=' | ')
+    headers = headers_log(runData,colors)
 
-    cprint('Experiment','white',attrs=[],end=' ')
-
-    print (' ',flush=True)
+    runData.logs = [headers,init_1,init_2,init_3,init_4]
 
     runData.b['i'] = False
 
     return None
 
 
+def headers_log(runData,colors):
+
+    headers = [colored('epoch','white',attrs=['bold'])+'\n',colored('lr','white',attrs=['bold'])+'\n']
+
+    for i, s in enumerate(runData.s.keys()):
+
+        i = i % len(colors)
+
+        headers.append('\n'+colored('(0)',colors[i],attrs=['bold']))
+
+        headers.append(colored('%s' % s,colors[i],attrs=['bold'])+'\n'+colored('(1)',colors[i],attrs=['bold']))
+
+        headers.append('\n'+colored('(2)',colors[i],attrs=['bold']))
+
+    headers.append(colored('Experiment','white',attrs=[])+'\n')
+
+    return [headers]
+
+
+def log_model_network(model):
+
+    model.logs()
+
+    colors = {
+        'Flatten': 'grey',
+        'Dense': 'red',
+        'LSTM': 'cyan',
+        'RNN': 'blue',
+        'GRU': 'magenta',
+        'Convolution': 'green',
+        'Dropout': 'yellow',
+        'Pooling': 'green'
+        }
+
+    headers = ['ID','Layer','Dimensions','Activation','Shapes']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    for i, layer in enumerate(model.a):
+
+        log = [str(i),layer['Layer'],'\n'.join(layer['Dimensions']),'\n'.join(layer['Activation']),'\n'.join(layer['Shapes'])]
+
+        logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    cprint ('----------------------- Model Architecture -------------------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    return logs
+
+
 def log_lr_schedule(hPars):
 
-    lr_ori = hPars.l[0]
-    lr_end = round(hPars.l[-1],9)
-    logs = (str(lr_ori),str(lr_end),str(round((1-lr_end/lr_ori)*100,4)))
 
-    cprint ('\n===\nLearning rate - Start: %s - End: %s - Decay %s%%\n===' % logs,'red','on_white',attrs=['bold'],end='\n')
+    headers = ['training\nepochs\n(e)','schedule\nmode','cycling\n(n)','e/n','decay\n(k)','descent\n(d)','start','end','end\n(%)']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    pc_end = round(hPars.l[-1] / hPars.s['l'] * 100,3)
+
+    lr_ori = "{:.2e}".format(hPars.s['l'])
+    lr_end = "{:.2e}".format(hPars.l[-1])
+
+    log = [hPars.i,hPars.s['s'],hPars.s['n'],hPars.s['c'],hPars.s['k'],hPars.s['d'],lr_ori,lr_end,pc_end]
+
+    logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    cprint ('-------------------------------- Learning rate -----------------------------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    return logs
+
+
+def log_datasets(dsets,hPars,runData):
+
+    headers = ['N_SAMPLES','dtrain\n(0)','dtest\n(1)','dval\n(2)','batch\nnumber\n(b)','dtrain/b','dataset\ntarget','metrics\ntarget']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    log = [runData.m['s'],dsets[0].s,dsets[1].s,dsets[2].s,hPars.b,int(dsets[0].s)//int(hPars.b),runData.m['d'],runData.m['m']]
+
+    logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    return logs
+
+
+def log_others(dsets,hPars,runData):
+
+    headers = ['reg.\nl1','reg.\nl2','min.\nepsilon','LRELU\nalpha','ELU\nalpha','softmax\ntemperature']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    log = [hPars.c['l1'],hPars.c['l2'],hPars.c['E'],hPars.c['e'],hPars.c['l'],hPars.c['s']]
+
+    logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    cprint ('-------------------------- Others ---------------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    headers = ['model\nsave','dsets\nsave','hPars\nsave','runData\nsave','plot\nsave']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    log = [str(runData.b['ms']),str(runData.b['ds']),str(runData.b['hs']),str(runData.b['rs']),str(runData.b['ps'])]
+
+    logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    cprint ('-------------------- Save -----------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    return logs
 
 
 def set_highlighted_excepthook():

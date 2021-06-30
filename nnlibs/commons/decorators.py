@@ -2,6 +2,21 @@
 from termcolor import colored, cprint
 
 
+class log_method:
+    def __init__(self, func):
+        self.fn = func
+
+    def __set_name__(self,owner,name):
+        self.fn.class_name = owner.__name__
+
+        setattr(owner, name, self.fn)
+
+        if name == '__init__':
+            cprint(colored("sC: "+owner.__name__+'.'+name,'cyan',attrs=['bold']))
+        else:
+            cprint(colored("sM: "+owner.__name__+'.'+name,'blue',attrs=['bold']))
+
+
 def log_function(func):
     def decorated_function(*args, **kwargs):
         cprint(colored("sF: "+func.__name__,'green'))
@@ -9,21 +24,3 @@ def log_function(func):
         cprint(colored("eF: "+func.__name__,'green',attrs=['bold']))
         return r
     return decorated_function
-
-
-def log_class(func):
-    def decorated_instance(*args, **kwargs):
-        cprint(colored("sC: "+func.__name__,'blue'))
-        r = func(*args, **kwargs)
-        cprint(colored("eC: "+func.__name__,'blue',attrs=['bold']))
-        return r
-    return decorated_instance
-
-
-def log_method(func):
-    def decorated_method(*args, **kwargs):
-        cprint(colored("sM: "+func.__name__,'cyan'))
-        r = func(*args, **kwargs)
-        cprint(colored("eM: "+func.__name__,'cyan',attrs=['bold']))
-        return r
-    return decorated_method

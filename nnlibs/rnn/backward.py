@@ -16,7 +16,7 @@ def rnn_backward(layer,dA):
 
         d_o = layer.A[t] - dA[t]
 
-        layer.g['dW'] += 1./ m * np.dot(d_o,layer.h[:,t].T)
+        layer.g['dW'] += 1./ m * np.dot(d_o,layer.h[t].T)
 
         layer.g['dbo'] += 1./ m * np.sum(d_o,axis=1,keepdims=True)
 

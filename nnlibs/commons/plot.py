@@ -59,6 +59,7 @@ def gnuplot_accuracy(runData):
 
         fig.plot(x,y, label=dset+' '+s, width=50, height=15)
 
-    fig.show()
+    if runData.b['pd'] == True:
+        fig.show()
 
     return None

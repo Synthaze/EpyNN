@@ -1,17 +1,20 @@
 #EpyNN/nnlibs/dropout/forward.py
+import nnlibs.dropout.parameters as dp
+
 import numpy as np
 
-#@log_function
+
 def dropout_forward(layer,A):
-
-    D = np.random.rand(A.shape[0],A.shape[1])
-
-    layer.D = ( D < layer.k )
 
     layer.X = A
 
-    A = np.multiply(layer.X,layer.D)
+    layer.s['X'] = layer.X.shape
+    layer.s['D'] = layer.s['X']
 
-    layer.A = A / layer.k
+    dp.init_mask(layer)
+
+    layer.A = np.multiply(layer.X,layer.D)
+
+    layer.A /= layer.k
 
     return layer.A

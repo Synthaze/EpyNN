@@ -7,17 +7,12 @@ import nnlibs.flatten.forward as ff
 
 class Flatten:
 
-    def __init__(self,num_neurons=2,activate=cm.softmax):
+    def __init__(self):
 
         self.init = True
 
-        self.activate = activate
-        self.derivative = cm.get_derivative(activate)
-
         # Dimensions
         self.d = {}
-
-        self.d['d'] = num_neurons
 
         # Shapes
         self.s = {}

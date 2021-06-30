@@ -42,6 +42,7 @@ def lstm_forward(layer,A):
 
         # Calculate memory state
         C = f * C + i * g
+        c = layer.activate_memory(C)
 
         # Calculate output gate
         o = np.dot(layer.p['Wo'], z) + layer.p['bo']

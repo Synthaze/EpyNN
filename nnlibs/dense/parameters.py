@@ -7,8 +7,6 @@ import numpy as np
 @log_function
 def init_params(layer):
 
-    layer.s['X'] = layer.X.shape
-
     layer.s['W'] = ( layer.d['d'], layer.s['X'][0] )
 
     layer.s['b'] = ( layer.d['d'], 1 )

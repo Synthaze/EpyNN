@@ -3,8 +3,11 @@
 
 config = {
     'experiment_name': 'MNIST',
-    'logs_exhaustiveness': 0,
+    'logs_frequency': 25,
     'model_save': False,
+    'dsets_save': False,
+    'hPars_save': False,
+    'runData_save': False,
     'plot_display': True,
     'plot_save': True,
     'directory_clear': False,

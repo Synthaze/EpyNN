@@ -29,6 +29,4 @@ def schedule_mode(hPars):
 
     hPars.l = schedulers[hPars.s['s']](hPars)
 
-    clo.log_lr_schedule(hPars)
-
     return hPars.l

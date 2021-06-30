@@ -1,6 +1,7 @@
 #EpyNN/nnlibs/commons/library.py
 from nnlibs.commons.decorators import *
 
+import numpy as np
 import pickle
 import random
 import shutil
@@ -28,14 +29,6 @@ def write_pickle(f,c):
 
 
 @log_function
-def read_set_fasta(f):
-    with open(f,'r') as fp:
-        d = list(set([ x for x in fp.read().splitlines() if 'B' not in x and 'O' not in x and 'Z' not in x and 'X' not in x and 'U' not in x]))
-    random.shuffle(d)
-    return d
-
-
-@log_function
 def init_dir(CFG=None):
 
     if not os.path.exists('./sets'):
@@ -53,15 +46,26 @@ def init_dir(CFG=None):
 #@log_function
 def check_and_write(model,dsets,hPars,runData):
 
+    # Load metrics for target dataset (see ./metrics.py)
     metrics = runData.s[runData.m['m']][runData.m['d']]
-
+    # Evaluate metrics
     if min(metrics) == metrics[-1] and runData.b['ms']:
 
+        data = [model,dsets,hPars,runData]
+
+        bool = ['model_save','dsets_save','hPars_save','runData_save']
+
+        for i, _save in enumerate(bool):
+
+            if runData.c[_save] == False:
+
+                data[i] = None
+
         data = {
-                    'model': model,
-                    'dsets': dsets,
-                    'hPars': hPars,
-                    'runData': runData,
+                    'model': data[0],
+                    'dsets': data[1],
+                    'hPars': data[2],
+                    'runData': data[3],
                 }
 
         write_pickle(runData.p['ms'],data)

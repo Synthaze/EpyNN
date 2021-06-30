@@ -9,6 +9,8 @@ def dense_forward(layer,A):
 
     layer.X = A
 
+    layer.s['X'] = layer.X.shape
+
     if layer.init == True:
         dp.init_params(layer)
 

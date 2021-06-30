@@ -10,7 +10,7 @@ import numpy as np
 #@log_class
 class LSTM:
 
-    def __init__(self,hidden_size,runData,vocab_size=None,output_size=None,activate_input=cm.sigmoid,activate_forget=cm.sigmoid,activate_candidate=cm.tanh,activate_output=cm.sigmoid):
+    def __init__(self,hidden_size,runData,vocab_size=None,output_size=None,activate_input=cm.sigmoid,activate_forget=cm.sigmoid,activate_memory=cm.tanh,activate_candidate=cm.tanh,activate_output=cm.sigmoid):
 
         self.init = True
 
@@ -19,6 +19,9 @@ class LSTM:
 
         self.activate_forget = activate_forget
         self.derivative_forget = cm.get_derivative(activate_forget)
+
+        self.activate_memory = activate_memory
+        self.activate_memory = cm.get_derivative(activate_memory)
 
         self.activate_candidate = activate_candidate
         self.derivative_candidate = cm.get_derivative(activate_candidate)
@@ -71,13 +74,13 @@ class LSTM:
 
     def init_cache(self):
 
-        for x in ['h','C','z','f','i','g','z','o','v']:
+        for x in ['h','C','c','z','f','i','g','z','o','v']:
 
             self.c[x] = []
 
     def array_cache(self):
 
-        for x in ['h','C','z','f','i','g','z','o','v']:
+        for x in ['h','C','c','z','f','i','g','z','o','v']:
 
             self.c[x] = np.array(self.c[x])
 

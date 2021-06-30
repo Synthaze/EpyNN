@@ -1,5 +1,6 @@
 #EpyNN/nnlibs/rnn/models.py
 from nnlibs.commons.decorators import *
+import nnlibs.commons.maths as cm
 
 import nnlibs.rnn.backward as rb
 import nnlibs.rnn.forward as rf

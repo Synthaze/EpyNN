@@ -6,6 +6,6 @@ def dropout_backward(layer,dA):
 
     dA = np.multiply(dA,layer.D)
 
-    dA = dA / layer.k
+    dA /= layer.k
 
     return dA

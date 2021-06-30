@@ -1,6 +1,7 @@
 #EpyNN/nnlibs/commons/models.py
 from nnlibs.commons.decorators import *
 import nnlibs.commons.schedule as cs
+import nnlibs.commons.maths as cm
 
 import nnlibs.settings as settings
 
@@ -8,7 +9,6 @@ import numpy as np
 import time
 
 
-#@log_class
 class runData:
 
     @log_method
@@ -24,6 +24,8 @@ class runData:
         self.m['t'] = str(int(time.time()))
         # Experiment identifier
         self.m['nt'] = self.m['n']+'_'+self.m['t']
+        # Logs frequency
+        self.m['l'] = config['logs_frequency']
         # Target dataset
         self.m['d'] = config['dataset_target']
         # Target metrics
@@ -37,6 +39,12 @@ class runData:
         self.b = {}
         # Save model parameters and associated data
         self.b['ms'] = config['model_save']
+        # Save model parameters and associated data
+        self.b['ds'] = config['dsets_save']
+        # Save model parameters and associated data
+        self.b['hs'] = config['hPars_save']
+        # Save model parameters and associated data
+        self.b['rs'] = config['runData_save']
         # Display plot at the end of training
         self.b['pd'] = config['plot_display']
         # Save plot at the end of training
@@ -72,39 +80,6 @@ class runData:
         self.e['v'] = None
 
 
-#@log_class
-class dataSet:
-
-    @log_method
-    def __init__(self,dset,n='DUMMY'):
-        # Identifier
-        self.n = n
-
-        # Prepare X data
-        x_data = [ x[0] for x in dset ]
-        # Prepare Y data
-        y_data = [ x[1] for x in dset ]
-
-        # Set X and Y data for training in corresponding uppercase attributes
-        self.X = np.array(x_data)
-        self.Y = np.array(y_data)
-
-        # Restore Y data as single digit labels
-        self.y = np.argmax(self.Y,axis=1)
-
-        # Set numerical id for each sample
-        self.id = [ i for i in range(len(dset)) ]
-
-        # Number of samples
-        self.s = str(len(self.id))
-
-        ## Predicted data
-        # Output of forward propagation
-        self.A = None
-        # Predicted labels
-        self.P = None
-
-#@log_class
 class hPars:
 
     @log_method
@@ -156,3 +131,38 @@ class hPars:
         self.c['e'] = hPars['ELU_alpha']
         # Minimum parameter Epsilon (avoid division by zero, log of zero...)
         self.c['E'] = hPars['min_epsilon']
+
+        cm.global_constant(self)
+
+
+
+class dataSet:
+
+    @log_method
+    def __init__(self,dset,n='DUMMY'):
+        # Identifier
+        self.n = n
+
+        # Prepare X data
+        x_data = [ x[0] for x in dset ]
+        # Prepare Y data
+        y_data = [ x[1] for x in dset ]
+
+        # Set X and Y data for training in corresponding uppercase attributes
+        self.X = np.array(x_data)
+        self.Y = np.array(y_data)
+
+        # Restore Y data as single digit labels
+        self.y = np.argmax(self.Y,axis=1)
+
+        # Set numerical id for each sample
+        self.id = [ i for i in range(len(dset)) ]
+
+        # Number of samples
+        self.s = str(len(self.id))
+
+        ## Predicted data
+        # Output of forward propagation
+        self.A = None
+        # Predicted labels
+        self.P = None

@@ -1,29 +1,44 @@
 #EpyNN/nnlibs/commons/maths.py
+from nnlibs.commons.decorators import *
+
 import numpy as np
+import random
+
+
+# Seeding
+@log_function
+def global_seed(seed):
+    np.random.seed(seed)
+    random.seed(seed)
+    global SEED
+    SEED = seed
+
+
+@log_function
+def seeding():
+    try: return SEED
+    except: return None
+
+
+# Constant parameters
+@log_function
+def global_constant(hPars):
+    global CST
+    CST = hPars.c
 
 
 # Functions
-
-def binary(x):
-    if x<0:
-        return 0
-    else:
-        return 1
-
-
-def linear(x,a=4):
-    return a*x
-
-
 def relu(x):
     return np.maximum(0,x)
 
 
-def lrelu(x,a=0.01):
+def lrelu(x):
+    a = CST['l']
     return np.maximum(a*x, x)
 
 
-def elu(x,a=1):
+def elu(x):
+    a = CST['e']
     return np.where(x>0, x, a*(np.exp(x,where=x<=0)-1))
 
 
@@ -41,9 +56,10 @@ def tanh(x):
     return z
 
 
-def softmax(x,STEMP=1):
+def softmax(x):
+    T = CST['s']
     x = x - np.max(x,axis=1,keepdims=True)
-    x = np.exp(x/STEMP)
+    x = np.exp(x/T)
     x_ = np.sum(x,axis=0,keepdims=True)
     x_ = x / x_
     return x_
@@ -55,8 +71,9 @@ def drelu(dA,x):
     return dA * np.greater(x, 0).astype(int)
 
 
-def delu(dA,x,a=1):
-
+def delu(dA,x):
+    a = CST['e']
+    
     x = np.where(x>0, 1, elu(x)+a)
 
     dZ = dA * x
@@ -65,7 +82,7 @@ def delu(dA,x,a=1):
 
 
 def dlrelu(dA,x):
-    a = 0.01
+    a = CST['l']
     return dA * np.where(x>0, 1, a)
 
 
@@ -80,7 +97,6 @@ def dsigmoid(dA,x):
 
 
 def dsoftmax(dA,x):
-
     return dA / (1.0 + np.exp(-x)) * (1.0 - (1.0 / (1.0 + np.exp(-x))))
 
 

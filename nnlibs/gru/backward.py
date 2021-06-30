@@ -1,6 +1,4 @@
 #EpyNN/nnlibs/gru/backward.py
-import nnlibs.commons.maths as cm
-
 import nnlibs.meta.parameters as mp
 
 import numpy as np
@@ -28,7 +26,7 @@ def gru_backward(layer,dA):
 
         d_h = np.multiply(d_h,(1-layer.c['z'][t]))
 
-        d_h = cm.dtanh(d_h,layer.c['h'][t])
+        d_h = layer.derivative_input(d_h,layer.c['h'][t])
 
         layer.g['dWh'] += 1./ m * np.dot(d_h, layer.X[:,t].T)
 
@@ -38,7 +36,8 @@ def gru_backward(layer,dA):
 
         d_r = np.dot(layer.p['Uh'].T, d_h)
         d_r = np.multiply(d_r, layer.c['h'][t-1])
-        d_r = cm.dsigmoid(d_r,layer.c['r'][t])
+
+        d_r = layer.derivative_reset(d_r,layer.c['r'][t])
 
         layer.g['dWr'] += 1./ m * np.dot(d_r, layer.X[:,t].T)
 
@@ -47,7 +46,7 @@ def gru_backward(layer,dA):
         layer.g['dbr'] += 1./ m * np.sum(d_r,axis=1,keepdims=True)
 
         d_z = np.multiply(d_h, layer.c['h'][t-1] - layer.c['h'][t])
-        d_z = cm.dsigmoid(d_z,layer.c['z'][t])
+        d_z = layer.derivative_update(d_z,layer.c['z'][t])
 
         layer.g['dWz'] += 1./ m * np.dot(d_z, layer.X[:,t].T)
 

@@ -1,4 +1,6 @@
 #EpyNN/nnlibs/dense/models.py
+from nnlibs.commons.decorators import *
+
 import nnlibs.dense.backward as fb
 import nnlibs.dense.forward as ff
 
@@ -7,6 +9,7 @@ import nnlibs.commons.maths as cm
 
 class Dense:
 
+    @log_method
     def __init__(self,num_neurons=2,activate=cm.softmax):
 
         self.init = True
@@ -27,6 +30,7 @@ class Dense:
 
         # Gradients
         self.g = {}
+
 
     def forward(self,A):
         return ff.dense_forward(self,A)
