@@ -1,72 +1,61 @@
 #EpyNN/nnlibs/lstm/backward.py
 import nnlibs.meta.parameters as mp
 
+import nnlibs.lstm.parameters as lp
+
 import numpy as np
 
 
 def lstm_backward(layer,dA):
 
-    mp.init_grads(layer)
+    # Cache dX (current) from dA (prev)
+    dX = layer.bc['dX'] = dA
+    # Init dh_next (dhn) and dC_next (dCn)
+    dhn = layer.bc['dhn'] = np.zeros_like(layer.fc['h'][0])
+    dCn = layer.bc['dCn'] = np.zeros_like(layer.fc['C'][0])
 
-    m = layer.s['X'][-1]
+    # Loop through time steps
+    for t in reversed(range(layer.fs['X'][1])):
 
-    dh_next = np.zeros(layer.s['h'])
-    dC_next = np.zeros(layer.s['C'])
+        # Cache dXt (dX at current t) from dX
+        dXt = layer.bc['dXt'] = dX[t]
+        # Cache dh (current) from dXt (prev) and dhn
+        dh = layer.bc['dh'] = np.dot(layer.p['Wv'].T, dXt) + dhn
+        # Cache dhn (next) from dhn (current) and dh (current)
+        dhn = dhn + layer.bc['dh']
+        # Get memory state Cp (prev)  from C (prev)
+        Cp = layer.bc['Cp'] = layer.fc['C'][t-1]
+        # Cache do (current) from dh (current) and c (current)
+        do = dh * layer.fc['c'][t]
+        do = layer.bc['do'] = layer.derivative_output(do,layer.fc['o'][t])
+        # Cache dC (current) from o (current) and dh (current) and c (current)
+        dC = np.copy(dCn)
+        dC = layer.bc['dC'] = dC + layer.fc['o'][t] * layer.derivative_memory(dh,layer.fc['c'][t])
+        # Cache dg (current) from dC (current) and i (current) and g (current)
+        dg = dC * layer.fc['i'][t]
+        dg = layer.bc['dg'] = layer.derivative_candidate(dg,layer.fc['g'][t])
+        # Cache dg (current) from dC (current) and i (current) and g (current)
+        di = dC * layer.fc['g'][t]
+        di = layer.bc['di'] = layer.derivative_input(di,layer.fc['i'][t])
+        # Cache df (current) from dC (current) and Cp (current) and f (current)
+        df = dC * Cp
+        df = layer.bc['df'] = layer.derivative_forget(df,layer.fc['f'][t])
 
-    for t in reversed(range(layer.s['X'][1])):
+        # Update gradients
+        lp.update_gradients(layer,t)
 
-        dv = layer.c['v'][t] - dA[t]
+        # Cache dz (current) from do, dg, di, df
+        dz = np.dot(layer.p['Wg'].T, dg)
+        dz += np.dot(layer.p['Wo'].T, do)
+        dz += np.dot(layer.p['Wi'].T, di)
+        dz += np.dot(layer.p['Wf'].T, df)
+        dz = layer.bc['dz'] = dz
+        # Cache dhp from dz
+        dhp = layer.bc['dhp'] = dz[:layer.d['h'], :]
+        # Cache dCp from f (current) and  dC (current)
+        dCp = layer.bc['dCp'] = layer.fc['f'][t] * dC
 
-        layer.g['dWv'] += 1./ m * np.dot(dv, layer.c['h'][t].T)
-        layer.g['dbv'] += 1./ m * np.sum(dv,axis=1,keepdims=True)
-
-        dh = np.dot(layer.p['Wv'].T, dv)
-
-        dh += dh_next
-
-        C_prev = layer.c['C'][t-1]
-
-        do = dh * layer.c['c'][t]
-
-        do = layer.derivative_output(do,layer.c['o'][t])
-
-        layer.g['dWo'] += 1./ m * np.dot(do,layer.c['z'][t].T)
-        layer.g['dbo'] += 1./ m * np.sum(do,axis=1,keepdims=True)
-
-        dC = np.copy(dC_next)
-
-        dC += layer.c['o'][t] * layer.derivative_memory(dh,layer.c['c'][t])
-
-        dg = dC * layer.c['i'][t]
-
-        dg = layer.derivative_candidate(dg,layer.c['g'][t])
-
-        layer.g['dWg'] += 1./ m * np.dot(dg, layer.c['z'][t].T)
-        layer.g['dbg'] += 1./ m * np.sum(dg,axis=1,keepdims=True)
-
-        di = dC * layer.c['g'][t]
-
-        di = layer.derivative_input(di,layer.c['i'][t])
-
-        layer.g['dWi'] += 1./ m * np.dot(di, layer.c['z'][t].T)
-        layer.g['dbi'] += 1./ m * np.sum(di,axis=1,keepdims=True)
-
-        df = dC * C_prev
-
-        df = layer.derivative(df,layer.c['f'][t])
-
-        layer.g['dWf'] += 1./ m * np.dot(df, layer.c['z'][t].T)
-        layer.g['dbf'] += 1./ m * np.sum(df,axis=1,keepdims=True)
-
-        dz = (np.dot(layer.p['Wf'].T, df)
-             + np.dot(layer.p['Wi'].T, di)
-             + np.dot(layer.p['Wg'].T, dg)
-             + np.dot(layer.p['Wo'].T, do))
-
-        dh_prev = dz[:layer.d['h'], :]
-
-        dC_prev = layer.c['f'][t] * dC
-
+    # Clip gradients
     mp.clip_gradient(layer)
 
     return None

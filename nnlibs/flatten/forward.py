@@ -2,15 +2,16 @@
 import numpy as np
 
 
-#@log_function
 def flatten_forward(layer,A):
 
-    layer.X = A
+    # Cache X (current) from A (prev)
+    X = layer.fc['X'] = A
+    layer.fs['X'] = X.shape
 
-    layer.s['X'] = layer.X.shape
+    # Compute shape A (current) from X (current)
+    layer.fs['A'] = ( int(X.size / X.shape[-1]), X.shape[-1] )
 
-    layer.s['A'] = (int(layer.X.size / layer.s['X'][-1]),layer.s['X'][-1])
-
-    layer.A = np.reshape(layer.X,layer.s['A'])
-
-    return layer.A
+    # Cache A (current) from X (prev)
+    A = layer.fc['A'] = np.reshape( X, layer.fs['A'] )
+    
+    return A

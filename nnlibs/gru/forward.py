@@ -6,48 +6,54 @@ import numpy as np
 
 def gru_forward(layer,A):
 
-    layer.X = A
+    # Cache X (current) from A (prev)
+    X = layer.fc['X'] = A
+    layer.fs['X'] = X.shape
 
-    layer.init_cache()
-
-    layer.A = []
-
-    layer.s['X'] = layer.X.shape
-
-    layer.s['h'] = ( layer.d['h'],layer.s['X'][-1] )
-
-    h = np.zeros(layer.s['h'])
-
+    # Init layer parameters
     if layer.init == True:
         gp.init_params(layer)
 
-    for t in range(layer.s['X'][1]):
+    # Init h shape
+    layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
 
-        # Calculate update and reset gates
-        z = np.dot(layer.p['Wz'],layer.X[:,t]) + np.dot(layer.p['Uz'],h) + layer.p['bz']
+    # Init h
+    h = np.zeros(layer.fs['h'])
+
+    # Loop through time steps
+    for t in range(layer.fs['X'][1]):
+
+        # Xt (X at current t) from X
+        Xt = layer.fc['Xt'] = X[:,t]
+
+        # Calculate update gate
+        z = np.dot( layer.p['Wz'], Xt )
+        z += np.dot( layer.p['Uz'], h ) + layer.p['bz']
         z = layer.activate_update(z)
-
-        r = np.dot(layer.p['Wr'],layer.X[:,t]) + np.dot(layer.p['Ur'],h) + layer.p['br']
+        
+        # Calculate reset gate
+        r = np.dot( layer.p['Wr'], Xt )
+        r += np.dot( layer.p['Ur'], h ) + layer.p['br']
         r = layer.activate_reset(r)
 
-        # Calculate hidden units
-        h = np.dot(layer.p['Wh'],layer.X[:,t]) + np.dot(layer.p['Uh'], np.multiply(r,h) + layer.p['bh'])
+        # Calculate hidden units and input gate
+        h = np.dot( layer.p['Wh'], Xt )
+        h += np.dot(layer.p['Uh'], np.multiply(r,h) + layer.p['bh'])
         h = layer.activate_input(h)
 
-        h_prev = np.multiply(z,h) + np.multiply((1-z),h)
+        # Calculate hp units
+        hp = np.multiply(z,h) + np.multiply((1-z),h)
 
-        A = np.dot(layer.p['Wy'], h_prev) + layer.p['by']
+        # Calculate output gate
+        A = np.dot(layer.p['Wy'], hp) + layer.p['by']
         A = layer.activate_output(A)
 
-        layer.c['z'].append(z)
-        layer.c['r'].append(r)
-        layer.c['h'].append(h)
-        layer.c['hp'].append(h_prev)
+        layer.fc['z'].append(z)
+        layer.fc['r'].append(r)
+        layer.fc['h'].append(h)
+        layer.fc['hp'].append(hp)
+        layer.fc['A'].append(A)
 
-        layer.A.append(A)
+    layer.fc = { k:np.array(v) for k,v in layer.fc.items() }
 
-    layer.array_cache()
-
-    layer.A = np.array(layer.A)
-
-    return layer.A
+    return layer.fc['A']

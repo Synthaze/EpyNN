@@ -25,7 +25,9 @@ class runData:
         # Experiment identifier
         self.m['nt'] = self.m['n']+'_'+self.m['t']
         # Logs frequency
-        self.m['l'] = config['logs_frequency']
+        self.m['f'] = config['logs_frequency']
+        # Logs frequency
+        self.m['fd'] = config['logs_frequency_display']
         # Target dataset
         self.m['d'] = config['dataset_target']
         # Target metrics

@@ -2,42 +2,55 @@
 from nnlibs.commons.decorators import *
 import nnlibs.commons.maths as cm
 
+import nnlibs.conv.parameters as cp
 import nnlibs.conv.backward as cb
 import nnlibs.conv.forward as cf
 
 
-#@log_class
 class Convolution:
 
-    def __init__(self,num_filters,filter_width,activate,depth=1,stride=1,padding=0):
+    def __init__(self,n_filters,f_width,
+            depth=1,
+            stride=1,
+            padding=0,
+            activate=cm.relu):
 
+        """ Layer attributes """
+        ### Set layer init attribute to True
         self.init = True
-
-        self.activate = activate
-        self.derivative = cm.get_derivative(activate)
-
-        # Dimensions
+        ### Set layer activation attributes
+        self.activation = [activate]
+        cp.set_activation(self)
+        ### Define layer dictionaries attributes
+        ## Dimensions
         self.d = {}
-
-        self.d['fw'] = filter_width
-        self.d['n_f'] = num_filters
-        self.d['s'] = stride
-        self.d['p'] = padding
-
-        # Shapes
-        self.s = {}
-
-        self.s['W'] = (self.d['fw'], self.d['fw'], depth, self.d['n_f'])
-        self.s['b'] = (1, 1, 1, self.d['n_f'])
-
-        # Parameters
+        ## Parameters
         self.p = {}
-
-        # Gradients
+        ## Gradients
         self.g = {}
+        ## Forward pass cache
+        self.fc = {}
+        ## Backward pass cache
+        self.bc = {}
+        ## Forward pass shapes
+        self.fs = {}
+        ## Backward pass shapes
+        self.bs = {}
+
+        ### Set keys for layer cache attributes
+        self.attrs = ['X','Xt','A','Z','h','C','c','z','f','i','g','z','o']
+
+        ### Init shapes
+        cp.init_shapes(self,n_filters,f_width,depth,stride,padding)
+
 
     def forward(self,A):
-        return cf.convolution_forward(self,A)
+        # Forward pass
+        A = cf.convolution_forward(self,A)
+        return A
+
 
     def backward(self,dA):
-        return cb.convolution_backward(self,dA)
+        # Backward pass
+        dA = cb.convolution_backward(self,dA)
+        return dA

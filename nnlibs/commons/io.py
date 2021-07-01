@@ -22,12 +22,7 @@ def one_hot_encode_sequence(sequence,word_to_idx,vocab_size):
 
 def one_hot_encode_dataset(dataset,runData):
 
-    words = set(''.join([ x[0] for x in dataset ]))
-
-    runData.e['w2i'] = { k:i for i,k in enumerate(list(words)) }
-    runData.e['i2w'] = { v:k for k,v in runData.e['w2i'].items() }
-
-    runData.e['v'] = len(runData.e['w2i'].keys())
+    word_to_idx(dataset,runData)
 
     for i in range(len(dataset)):
 
@@ -92,3 +87,15 @@ def dataset_to_dsets(dataset,runData,prefix=None,encode=False):
     dsets = [dtrain,dtest,dval]
 
     return dsets
+
+
+def word_to_idx(dataset,runData):
+
+    words = set(''.join([ x[0] for x in dataset ]))
+
+    runData.e['w2i'] = { k:i for i,k in enumerate(list(words)) }
+    runData.e['i2w'] = { v:k for k,v in runData.e['w2i'].items() }
+
+    runData.e['v'] = len(runData.e['w2i'].keys())
+
+    return None

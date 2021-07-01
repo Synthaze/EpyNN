@@ -1,17 +1,21 @@
 #EpyNN/nnlibs/dense/backward.py
+import nnlibs.dense.parameters as dp
+
 import numpy as np
 
 
 def dense_backward(layer,dA):
 
-    m = dA.shape[1]
+    # Cache dX (current) from dA (prev)
+    dX = layer.bc['dX'] = dA
 
-    dZ = layer.derivative(dA,layer.Z)
+    # Cache dZ (current) from dX (prev)
+    dZ = layer.bc['dZ'] = layer.derivative( dX, layer.fc['Z'] )
 
-    layer.g['dW'] = 1./ m * np.dot(dZ,layer.X.T)
+    # Cache dA (current) from dZ (current)
+    dA = layer.bc['dA'] = np.dot( layer.p['W'].T, dZ )
 
-    layer.g['db'] = 1./ m * np.sum(dZ,axis=1,keepdims=True)
+    # Update layer gradients
+    dp.update_grads(layer)
 
-    dA_prev = np.dot(layer.p['W'].T,dZ)
-
-    return dA_prev
+    return dA

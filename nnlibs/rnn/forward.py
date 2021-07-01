@@ -1,4 +1,6 @@
 #EpyNN/nnlibs/rnn/forward.py
+import nnlibs.meta.parameters as mp
+
 import nnlibs.rnn.parameters as rp
 
 import numpy as np
@@ -6,36 +8,40 @@ import numpy as np
 
 def rnn_forward(layer,A):
 
-    layer.X = A
+    # Cache X (current) from A (prev)
+    X = layer.fc['X'] = A
+    layer.fs['X'] = X.shape
 
-    layer.h = []
-
-    layer.A = []
-
-    layer.s['X'] = layer.X.shape
-
-    layer.s['h'] = ( layer.d['h'],layer.s['X'][-1] )
-
-    h = np.zeros(layer.s['h'])
-
+    # Init layer parameters
     if layer.init == True:
         rp.init_params(layer)
 
-    for t in range(layer.s['X'][1]):
+    # Init h shape
+    layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
 
-        h = np.dot(layer.p['U'], layer.X[:,t])
+    # Init h
+    h = np.zeros(layer.fs['h'])
 
-        h = h + np.dot(layer.p['V'], h)
+    # Loop through time steps
+    for t in range(layer.fs['X'][1]):
 
-        h = h + layer.p['bh']
+        # Xt (X at current t) from X
+        Xt = layer.fc['Xt'] = X[:,t]
 
-        layer.h.append(layer.activate_input(h))
+        # Calculate input gate
+        h = np.dot(layer.p['U'], Xt)
+        h += np.dot(layer.p['V'], h) + layer.p['bh']
+        h = layer.activate_input(h)
 
-        layer.Z = np.dot(layer.p['W'], layer.h[-1]) + layer.p['bo']
+        # Calculate output gate
+        A = np.dot( layer.p['W'], h ) + layer.p['bo']
+        A = layer.activate_output(A)
 
-        layer.A.append(layer.activate_output(layer.Z))
+        layer.fc['h'].append(h)
+        layer.fc['A'].append(A)
 
-    layer.h = np.array(layer.h)
-    layer.A = np.array(layer.A)
+    layer.fc = { k:np.array(v) for k,v in layer.fc.items() }
 
-    return layer.A
+    A = layer.fc['A']
+
+    return A

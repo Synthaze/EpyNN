@@ -41,7 +41,7 @@ def sets_prepare(runData):
     random.shuffle(dataset)
 
     if runData.m['s'] == None:
-        runData.m['s'] = 1000
+        runData.m['s'] = len(dataset)
 
     dataset = dataset[:runData.m['s']]
 

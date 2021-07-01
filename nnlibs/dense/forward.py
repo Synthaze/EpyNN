@@ -1,23 +1,25 @@
 #EpyNN/nnlibs/dense/forward.py
+import nnlibs.meta.parameters as mp
+
 import nnlibs.dense.parameters as dp
 
 import numpy as np
 
 
-#@log_function
 def dense_forward(layer,A):
 
-    layer.X = A
+    # Cache X (current) from A (prev)
+    X = layer.fc['X'] = A
+    layer.fs['X'] = layer.fc['X'].shape
 
-    layer.s['X'] = layer.X.shape
-
+    # Init layer parameters
     if layer.init == True:
         dp.init_params(layer)
 
-    layer.Z = np.dot(layer.p['W'],layer.X) + layer.p['b']
+    # Cache Z (current) from X (current)
+    Z = layer.fc['Z'] = np.dot( layer.p['W'], X ) + layer.p['b']
 
-    layer.s['Z'] = layer.Z.shape
+    # Cache A (current) from Z (current)
+    A = layer.fc['A'] = layer.activate(Z)
 
-    layer.A = layer.activate(layer.Z)
-
-    return layer.A
+    return A

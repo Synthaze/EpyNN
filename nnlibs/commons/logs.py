@@ -6,6 +6,7 @@ from texttable import Texttable
 from pygments import highlight
 from tabulate import tabulate
 import traceback
+import time
 import sys
 
 
@@ -13,6 +14,7 @@ import sys
 def model_core_logs(model,dsets,hPars,runData):
 
     colors = ['green','red','magenta','cyan','yellow','blue','grey']
+
 
     if runData.b['i'] == True:
 
@@ -46,13 +48,27 @@ def model_core_logs(model,dsets,hPars,runData):
 
         logs.append(colored(runData.m['nt'],'white',attrs=[]))
 
-    runData.print.extend([logs])
+    if hPars.e % runData.m['f'] == 0:
+        runData.print.extend([logs])
 
-    if len(runData.print) == runData.m['l'] + 1 or hPars.e == hPars.i - 1:
+    if len(runData.print) == runData.m['fd'] + 1 or hPars.e == hPars.i - 1:
 
         print (tabulate(runData.print,headers="firstrow",numalign="center",stralign='center',tablefmt="pretty"),flush=True)
+        t = round(time.time()-int(runData.m['t']),2)
+
+        rate = round( (hPars.e + 1 ) / t,2)
+
+        ttc = round(( hPars.i - hPars.e + 1 ) / rate)
+
+        cprint ('TIME: %ss RATE: %se/s TTC: %ss' % (t,rate,str(ttc)),'white',attrs=['bold'])
 
         runData.print = runData.logs[0].copy()
+
+
+    if hPars.e + 1 == hPars.i:
+        for i in range(1,5):
+            print (runData.logs[i].draw())
+
 
     return None
 
@@ -68,6 +84,10 @@ def init_core_logs(model,dsets,hPars,runData,colors):
     init_3 = log_datasets(dsets,hPars,runData)
 
     init_4 = log_others(dsets,hPars,runData)
+
+    cprint ('----------------------- %s -------------------------\n' % model.n,attrs=['bold'])
+
+    print ('\n')
 
     headers = headers_log(runData,colors)
 
@@ -112,7 +132,7 @@ def log_model_network(model):
         'Pooling': 'green'
         }
 
-    headers = ['ID','Layer','Dimensions','Activation','Shapes']
+    headers = ['ID','Layer','Dimensions','Activation','FW_Shapes','BW_Shapes']
 
     logs = Texttable()
 
@@ -120,7 +140,7 @@ def log_model_network(model):
 
     for i, layer in enumerate(model.a):
 
-        log = [str(i),layer['Layer'],'\n'.join(layer['Dimensions']),'\n'.join(layer['Activation']),'\n'.join(layer['Shapes'])]
+        log = [str(i),layer['Layer'],'\n'.join(layer['Dimensions']),'\n'.join(layer['Activation']),'\n'.join(layer['FW_Shapes']),'\n'.join(layer['BW_Shapes'])]
 
         logs.add_row(log)
 
@@ -195,7 +215,7 @@ def log_others(dsets,hPars,runData):
 
     logs.add_rows([headers])
 
-    log = [hPars.c['l1'],hPars.c['l2'],hPars.c['E'],hPars.c['e'],hPars.c['l'],hPars.c['s']]
+    log = [hPars.c['l1'],hPars.c['l2'],hPars.c['E'],hPars.c['l'],hPars.c['e'],hPars.c['s']]
 
     logs.add_row(log)
 

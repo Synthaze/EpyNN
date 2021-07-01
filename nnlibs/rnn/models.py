@@ -2,6 +2,8 @@
 from nnlibs.commons.decorators import *
 import nnlibs.commons.maths as cm
 
+import nnlibs.rnn.parameters as rp
+
 import nnlibs.rnn.backward as rb
 import nnlibs.rnn.forward as rf
 
@@ -9,50 +11,46 @@ import nnlibs.rnn.forward as rf
 #@log_class
 class RNN:
 
-    def __init__(self,hidden_size,runData,vocab_size=None,output_size=None,activate_input=cm.tanh,activate_output=cm.softmax):
+    def __init__(self,hidden_size,runData,
+            output_size=None,
+            activate_input=cm.tanh,
+            activate_output=cm.softmax):
 
+        """ Layer attributes """
+        ### Set layer init attribute to True
         self.init = True
-
-        self.activate_input = activate_input
-        self.derivative_input = cm.get_derivative(activate_input)
-
-        self.activate_output = activate_output
-        self.derivative_output = cm.get_derivative(activate_output)
-
-        # Dimensions
+        ### Set layer activation attributes
+        self.activation = [activate_input,activate_output]
+        rp.set_activation(self)
+        ### Define layer dictionaries attributes
+        ## Dimensions
         self.d = {}
-
-        self.d['h'] = hidden_size
-
-        if vocab_size == None:
-            vocab_size = runData.e['v']
-
-        self.d['v'] = vocab_size
-
-        if output_size == None:
-            output_size = vocab_size
-
-        self.d['o'] = output_size
-
-        # Shapes
-        self.s = {}
-
-        self.s['U'] = ( self.d['h'], self.d['v'] )
-        self.s['V'] = ( self.d['h'], self.d['h'] )
-        self.s['W'] = ( self.d['o'], self.d['h'] )
-
-        self.s['bh'] = ( self.d['h'], 1 )
-        self.s['bo'] = ( self.d['o'], 1 )
-
-        # Parameters
+        ## Parameters
         self.p = {}
-
-        # Gradients
+        ## Gradients
         self.g = {}
+        ## Forward pass cache
+        self.fc = {}
+        ## Backward pass cache
+        self.bc = {}
+        ## Forward pass shapes
+        self.fs = {}
+        ## Backward pass shapes
+        self.bs = {}
+
+        ### Set keys for layer cache attributes
+        self.attrs = ['X','Xt','A','Z','h']
+
+        ### Init shapes
+        rp.init_shapes(self,hidden_size,runData)
 
 
     def forward(self,A):
-        return rf.rnn_forward(self,A)
+        # Forward pass
+        A = rf.rnn_forward(self,A)
+        return A
 
     def backward(self,dA):
-        return rb.rnn_backward(self,dA)
+        # Backward pass
+        dA = rb.rnn_backward(self,dA)
+        return dA

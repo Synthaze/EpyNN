@@ -2,6 +2,34 @@
 import numpy as np
 
 
+def init_grads(layer):
+
+
+    for parameter in layer.p.keys():
+
+        gradient = 'd'+parameter
+
+        layer.g[gradient] = np.zeros_like(layer.p[parameter])
+
+        layer.bs[gradient] = layer.g[gradient].shape
+
+    for g in layer.g.keys():
+        layer.bs[g] = layer.g[g].shape
+
+
+    return None
+
+
+def init_caches(layer):
+
+    for x in layer.attrs:
+
+        layer.fc[x] = []
+        layer.bc['d'+x] = []
+
+    return None
+
+
 def update_params(model,hPars):
 
     for layer in model.l:
@@ -12,16 +40,20 @@ def update_params(model,hPars):
 
             layer.p[parameter] -= hPars.l[hPars.e] * layer.g[gradient]
 
+    for p in layer.p.keys():
+        layer.fs[p] = layer.p[p].shape
+
     return None
 
 
-def init_grads(layer):
+def update_shapes(layer):
 
-    for parameter in layer.p.keys():
-
-        gradient = 'd'+parameter
-
-        layer.g[gradient] = np.zeros_like(layer.p[parameter])
+    for x in layer.attrs:
+        try:
+            layer.fs[x] = layer.fc[x].shape
+            layer.bs['d'+x] = layer.bc['d'+x].shape
+        except:
+            pass
 
     return None
 

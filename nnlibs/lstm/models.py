@@ -2,90 +2,59 @@
 from nnlibs.commons.decorators import *
 import nnlibs.commons.maths as cm
 
+import nnlibs.lstm.parameters as lp
 import nnlibs.lstm.backward as lb
 import nnlibs.lstm.forward as lf
 
 import numpy as np
 
-#@log_class
+
 class LSTM:
 
-    def __init__(self,hidden_size,runData,vocab_size=None,output_size=None,activate_input=cm.sigmoid,activate_forget=cm.sigmoid,activate_memory=cm.tanh,activate_candidate=cm.tanh,activate_output=cm.sigmoid):
+    @log_method
+    def __init__(self,hidden_size,runData,
+            output_size=None,
+            activate_input=cm.sigmoid,
+            activate_forget=cm.sigmoid,
+            activate_memory=cm.tanh,
+            activate_candidate=cm.tanh,
+            activate_output=cm.sigmoid):
 
+        """ Layer attributes """
+        ### Set layer init attribute to True
         self.init = True
-
-        self.activate_input = activate_input
-        self.derivative_input = cm.get_derivative(activate_input)
-
-        self.activate_forget = activate_forget
-        self.derivative_forget = cm.get_derivative(activate_forget)
-
-        self.activate_memory = activate_memory
-        self.activate_memory = cm.get_derivative(activate_memory)
-
-        self.activate_candidate = activate_candidate
-        self.derivative_candidate = cm.get_derivative(activate_candidate)
-
-        self.activate_output = activate_output
-        self.derivative_output = cm.get_derivative(activate_output)
-
-        # Dimensions
+        ### Set layer activation attributes
+        self.activation = [activate_input,activate_forget,activate_memory,activate_candidate,activate_output]
+        lp.set_activation(self)
+        ### Define layer dictionaries attributes
+        ## Dimensions
         self.d = {}
-
-        self.d['h'] = hidden_size
-
-        if vocab_size == None:
-            vocab_size = runData.e['v']
-
-        self.d['v'] = vocab_size
-
-        self.d['z'] = self.d['h'] + self.d['v']
-
-        if output_size == None:
-            output_size = vocab_size
-
-        self.d['o'] = output_size
-
-        # Shapes
-        self.s = {}
-
-        self.s['Wf'] = ( self.d['h'], self.d['z'] )
-        self.s['Wi'] = ( self.d['h'], self.d['z'] )
-        self.s['Wg'] = ( self.d['h'], self.d['z'] )
-        self.s['Wo'] = ( self.d['h'], self.d['z'] )
-        self.s['Wv'] = ( self.d['o'], self.d['h'] )
-
-        self.s['bf'] = ( self.d['h'], 1 )
-        self.s['bi'] = ( self.d['h'], 1 )
-        self.s['bg'] = ( self.d['h'], 1 )
-        self.s['bo'] = ( self.d['h'], 1 )
-        self.s['bv'] = ( self.d['o'], 1 )
-
-        # Parameters
+        ## Parameters
         self.p = {}
-
-
-        # Gradients
+        ## Gradients
         self.g = {}
+        ## Forward pass cache
+        self.fc = {}
+        ## Backward pass cache
+        self.bc = {}
+        ## Forward pass shapes
+        self.fs = {}
+        ## Backward pass shapes
+        self.bs = {}
 
+        ### Set keys for layer cache attributes
+        self.attrs = ['X','Xt','A','Z','h','C','c','z','f','i','g','z','o']
 
-        # Cache
-        self.c = {}
+        ### Init shapes
+        lp.init_shapes(self,hidden_size,runData)
 
-    def init_cache(self):
-
-        for x in ['h','C','c','z','f','i','g','z','o','v']:
-
-            self.c[x] = []
-
-    def array_cache(self):
-
-        for x in ['h','C','c','z','f','i','g','z','o','v']:
-
-            self.c[x] = np.array(self.c[x])
 
     def forward(self,A):
-        return lf.lstm_forward(self,A)
+        # Forward pass
+        A = lf.lstm_forward(self,A)
+        return A
 
     def backward(self,dA):
-        return lb.lstm_backward(self,dA)
+        # Backward pass
+        dA = lb.lstm_backward(self,dA)
+        return dA

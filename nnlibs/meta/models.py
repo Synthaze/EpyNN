@@ -38,7 +38,7 @@ class EpyNN:
 
             name = layer.__class__.__name__
 
-            self.a.append({'Layer': name, 'Dimensions': [], 'Shapes': [], 'Activation': [] })
+            self.a.append({'Layer': name, 'Dimensions': [], 'FW_Shapes': [], 'BW_Shapes': [], 'Activation': [] })
 
             for attr, content in layer.__dict__.items():
 
@@ -48,11 +48,17 @@ class EpyNN:
 
                         self.a[-1]['Dimensions'].append(d+' = '+str(v))
 
-                elif attr == 's':
+                elif attr == 'fs':
 
                     for s, v in content.items():
 
-                        self.a[-1]['Shapes'].append(s+' = '+str(v))
+                        self.a[-1]['FW_Shapes'].append(s+' = '+str(v))
+
+                elif attr == 'bs':
+
+                    for s, v in content.items():
+
+                        self.a[-1]['BW_Shapes'].append(s+' = '+str(v))
 
                 elif 'activate' in attr:
 

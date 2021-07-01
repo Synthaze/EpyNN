@@ -17,7 +17,7 @@ def compute_metrics(model,dsets,hPars,runData):
         'KLD': KLD,
     }
 
-    for k, dset in enumerate(dsets):
+    for k, dset in enumerate(reversed(dsets)):
 
         A = dset.X.T
 
@@ -29,7 +29,7 @@ def compute_metrics(model,dsets,hPars,runData):
 
             m = metrics[s](dset,hPars)
 
-            runData.s[s][k].append(m)
+            runData.s[s][len(dsets)-1-k].append(m)
 
     return runData
 

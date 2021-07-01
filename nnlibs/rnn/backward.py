@@ -1,37 +1,35 @@
 #EpyNN/nnlibs/rnn/backward.py
 import nnlibs.meta.parameters as mp
 
+import nnlibs.rnn.parameters as rp
+
 import numpy as np
 
 
 def rnn_backward(layer,dA):
 
-    mp.init_grads(layer)
+    # Cache X (current) from A (prev)
+    dX = layer.bc['dX'] = dA
+    # Init dh_next (dhn)
+    dhn = layer.bc['dh_n'] = np.zeros_like(layer.fc['h'][0])
 
-    m = layer.s['X'][-1]
+    # Loop through time steps
+    for t in reversed(range(layer.fs['X'][1])):
 
-    d_h_next = np.zeros(layer.s['h'])
+        # Cache dXt (dX at current t) from dX
+        dXt = layer.bc['dXt'] = dX[t]
+        # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
+        dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt) + dhn
+        # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
+        df = layer.bc['df'] = layer.derivative_input(dh,layer.fc['h'][t])
 
-    for t in reversed(range(layer.s['X'][1])):
+        # Update gradients
+        rp.update_gradients(layer,t)
 
-        d_o = layer.A[t] - dA[t]
+        # Cache dhn
+        dhn = layer.bc['dhn'] = np.dot(layer.p['V'].T, df)
 
-        layer.g['dW'] += 1./ m * np.dot(d_o,layer.h[t].T)
-
-        layer.g['dbo'] += 1./ m * np.sum(d_o,axis=1,keepdims=True)
-
-        d_h = np.dot(layer.p['W'].T, d_o) + d_h_next
-
-        d_f = layer.derivative_input(d_h,layer.h[:,t])
-
-        layer.g['dbh'] += 1./ m * np.sum(d_f,axis=1,keepdims=True)
-
-        layer.g['dU'] += 1./ m * np.dot(d_f, layer.X[:,t].T)
-
-        layer.g['dV'] += 1./ m * np.dot(d_f, layer.h[t-1].T)
-
-        d_h_next = np.dot(layer.p['V'].T, d_f)
-
+    # Clip gradients
     mp.clip_gradient(layer)
 
     return None

@@ -1,55 +1,48 @@
 #EpyNN/nnlibs/conv/backward.py
+import nnlibs.conv.parameters as cp
+
 import numpy as np
 
 
-def convolution_backward(layer,dZ):
+def convolution_backward(layer,dA):
 
-    im, ih, iw, id = layer.s['X']
+    # Cache dX (current) from dZ (prev)
+    dX = layer.bc['dX'] = dA
+    im, ih, iw, id = layer.fs['X']
 
-    dA_prev = np.zeros(layer.s['X'])
+    dA = np.zeros(layer.fs['X'])
 
-    dW = np.zeros(layer.s['W'])
-    db = np.zeros(layer.s['b'])
-
+    # Loop through image rows
     for t in range(layer.n_rows):
 
-        row = dZ[:, t::layer.n_rows, :, :]
+        row = dX[:, t::layer.n_rows, :, :]
 
+        # Loop through row columns
         for l in range(layer.n_cols):
 
+            # region of X and dZ for this block
             b = (ih - t * layer.d['s']) % layer.d['fw']
-            r = (iw - l * layer.d['s']) % layer.d['fw']  # region of X and dZ for this block
+            # region of X and dZ for this block
+            r = (iw - l * layer.d['s']) % layer.d['fw']
 
-            block = row[:, :, l * layer.d['s']::layer.n_cols, :]           # block = corresponding region of dA
+            # block = corresponding region of dA
+            block = row[:, :, l * layer.d['s']::layer.n_cols, :]
+            # Axis for channels, rows, columns
+            block = np.expand_dims(block, 3)
+            block = np.expand_dims(block, 3)
+            block = np.expand_dims(block, 3)
 
-            block = np.expand_dims(block, 3)              # axis for channels
-            block = np.expand_dims(block, 3)              # axis for rows
-            block = np.expand_dims(block, 3)              # axis for columns
+            layer.block = block
 
-            dW_block = block * layer.X_blocks[t][l]
+            # Update gradients
+            cp.update_gradients(layer,t,l)
 
-            dW_block = np.sum(dW_block, 2)
-            dW_block = np.sum(dW_block, 1)
-            dW_block = np.sum(dW_block, 0)
+            dA_block = block * layer.p['W']
+            dA_block = np.sum(dA_block, 6)
+            dA_block = np.reshape(dA_block, (im, ih - b - t, iw - r - l, id))
 
-            dW += dW_block
+            dA[:, t:ih - b, l:iw - r, :] += dA_block
 
-            db_block = np.sum(dW_block, 2, keepdims=True)
-            db_block = np.sum(db_block, 1, keepdims=True)
-            db_block = np.sum(db_block, 0, keepdims=True)
+    dA = layer.bc['dA'] = cp.restore_padding(layer,dA)
 
-            db += db_block
-
-            dA_prev_block = block * layer.p['W']
-            dA_prev_block = np.sum(dA_prev_block, 6)
-            dA_prev_block = np.reshape(dA_prev_block, (im, ih - b - t, iw - r - l, id))
-
-            dA_prev[:, t:ih - b, l:iw - r, :] += dA_prev_block
-
-    layer.g = { 'dW': dW, 'db': db}
-
-    if layer.d['p'] > 0:
-        p = layer.d['p']                             # remove padding
-        dA_prev = dA_prev[:, p:-p, p:-p, :]
-
-    return dA_prev
+    return dA
