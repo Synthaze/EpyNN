@@ -1,6 +1,6 @@
 # EpyNN - 0.0.1
 
-![alt text](https://github.com/Synthaze/EpyNN/tree/main/docs/logo.png)
+![alt text](https://github.com/Synthaze/EpyNN/blob/main/docs/logo.png)
 
 ## Last comments from development
 
