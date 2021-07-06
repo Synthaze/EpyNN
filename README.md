@@ -1,7 +1,5 @@
 # EpyNN - 0.0.1
 
-![alt text](https://github.com/Synthaze/EpyNN/blob/main/docs/logo.png)
-
 ## Last comments from development
 
 ### Current developpement axis with completion score (subjective).
