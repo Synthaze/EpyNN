@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Architectures &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Workflows" href="workflows.html" />
+    <link rel="prev" title="Philosophy" href="organization.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Philosophy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architectures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#feed-forward">Feed-forward</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.dense.models">Dense</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#recurrent">Recurrent</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rnn">RNN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gru">GRU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lstm">LSTM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#convolutional">Convolutional</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conv">Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pool">Pool</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#adapter">Adapter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#flatten">Flatten</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#regularization">Regularization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dropout">Dropout</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Architectures</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/architectures.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="toctree-wrapper compound">
+</div>
+<div class="section" id="architectures">
+<h1>Architectures<a class="headerlink" href="#architectures" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="feed-forward">
+<h2>Feed-forward<a class="headerlink" href="#feed-forward" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-nnlibs.dense.models">
+<span id="dense"></span><h3>Dense<a class="headerlink" href="#module-nnlibs.dense.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.dense.models.Dense">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.dense.models.</code><code class="sig-name descname">Dense</code><span class="sig-paren">(</span><em class="sig-param">layer_size=2</em>, <em class="sig-param">activate=&lt;function softmax&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">l1=0</em>, <em class="sig-param">l2=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="nnlibs.dense.models.Dense.backward">
+<code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Layer attributes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nnlibs.dense.models.Dense.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Layer attributes</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="recurrent">
+<h2>Recurrent<a class="headerlink" href="#recurrent" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rnn">
+<h3>RNN<a class="headerlink" href="#rnn" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="gru">
+<h3>GRU<a class="headerlink" href="#gru" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="lstm">
+<h3>LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="convolutional">
+<h2>Convolutional<a class="headerlink" href="#convolutional" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="conv">
+<h3>Conv<a class="headerlink" href="#conv" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="pool">
+<h3>Pool<a class="headerlink" href="#pool" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="adapter">
+<h2>Adapter<a class="headerlink" href="#adapter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="flatten">
+<h3>Flatten<a class="headerlink" href="#flatten" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="regularization">
+<h2>Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dropout">
+<h3>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="workflows.html" class="btn btn-neutral float-right" title="Workflows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="organization.html" class="btn btn-neutral float-left" title="Philosophy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
