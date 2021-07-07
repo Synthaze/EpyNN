@@ -81,7 +81,19 @@ Data sets can then be retrieved in ``train.py`` by calling the ``sets_prepare()`
 Model Builder
 -----------------
 
+Stack layers
+~~~~~~~~~~~~~~~~
+
 Neural Networks can be assembled easily by stacking layer architectures in a ``list`` object.
+
+.. code-block:: python
+
+    # Stack layers appropriately
+    layers = [LSTM(100),Flatten(),Dense(16,cm.elu),Dense(2)]
+
+
+Initialize your network
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Neural Networks can be initialized by providing the meta-model ``EpyNN`` with the list of layer architectures.
 
@@ -90,9 +102,6 @@ Neural Networks can be initialized by providing the meta-model ``EpyNN`` with th
     # Set a name for your model (optional)
     name = 'LSTM_Flatten_Dense_Dense'
 
-    # Stack layers appropriately
-    layers = [LSTM(100),Flatten(),Dense(16,cm.elu),Dense(2)]
-
     # Initialize your Neural Network
     model = EpyNN(name=name,layers=layers,hPars=hPars)
 
@@ -100,16 +109,34 @@ Neural Networks can be initialized by providing the meta-model ``EpyNN`` with th
 Model training
 -----------------
 
+Train
+~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
     model.train(dsets,hPars,runData)
+
+
+Plot results
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
 
     model.plot(hPars,runData)
 
 
 Use your model
 -----------------
+
+Prepare data
+~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    None
+
+Predict
+~~~~~~~~~~~~~~~~
 
 .. code-block:: python
 
