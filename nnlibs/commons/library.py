@@ -39,10 +39,14 @@ def init_dir(CFG=None):
         os.mkdir('./models')
 
     if CFG:
+        
         if CFG['directory_clear'] == True:
+
             shutil.rmtree('./models')
             os.mkdir('./models')
 
+            shutil.rmtree('./sets')
+            os.mkdir('./sets')
 
 #@log_function
 def check_and_write(model,dsets,hPars,runData):

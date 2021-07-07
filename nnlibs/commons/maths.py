@@ -113,6 +113,10 @@ def delu(dA,x):
     return dZ
 
 
+def dswish(dA,x):
+    return None
+
+
 def dlrelu(dA,x):
     a = CST['l']
     return dA * np.where(x>0, 1, a)

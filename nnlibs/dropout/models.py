@@ -6,7 +6,13 @@ import numpy as np
 
 
 class Dropout:
+    """
+    Description for class
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     def __init__(self,keep_prob=0.5):
 
         """ Layer attributes """

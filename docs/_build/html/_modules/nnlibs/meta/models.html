@@ -88,7 +88,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
@@ -169,7 +169,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="EpyNN"><a class="viewcode-back" href="../../../organization.html#nnlibs.meta.models.EpyNN">[docs]</a><span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
+<div class="viewcode-block" id="EpyNN"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.models.EpyNN">[docs]</a><span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;An example docstring for a class definition.&quot;&quot;&quot;</span>
 
     <span class="nd">@log_method</span>
@@ -194,22 +194,22 @@
             <span class="n">layer</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">layer</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="EpyNN.train"><a class="viewcode-back" href="../../../organization.html#nnlibs.meta.models.EpyNN.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.train"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.models.EpyNN.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
         <span class="n">mt</span><span class="o">.</span><span class="n">run_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../organization.html#nnlibs.meta.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
         <span class="n">cp</span><span class="o">.</span><span class="n">gnuplot_accuracy</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../organization.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">mf</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EpyNN.logs"><a class="viewcode-back" href="../../../organization.html#nnlibs.meta.models.EpyNN.logs">[docs]</a>    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.logs"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.models.EpyNN.logs">[docs]</a>    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">):</span>
 

@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Workflows" href="workflows.html" />
-    <link rel="prev" title="Philosophy" href="organization.html" /> 
+    <link rel="prev" title="Organization" href="organization.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -90,29 +90,29 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Architectures</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#feed-forward">Feed-forward</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.dense.models">Dense</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#recurrent">Recurrent</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rnn">RNN</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gru">GRU</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lstm">LSTM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.rnn.models">RNN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.gru.models">GRU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.lstm.models">LSTM</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#convolutional">Convolutional</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#conv">Conv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pool">Pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.conv.models">Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.pool.models">Pool</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#adapter">Adapter</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#flatten">Flatten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.flatten.models">Flatten</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#regularization">Regularization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#dropout">Dropout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nnlibs.dropout.models">Dropout</a></li>
 </ul>
 </li>
 </ul>
@@ -220,39 +220,324 @@
 
 </dd></dl>
 
+<dl class="py function">
+<dt id="nnlibs.dense.forward.dense_forward">
+<code class="sig-prename descclassname">nnlibs.dense.forward.</code><code class="sig-name descname">dense_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/forward.html#dense_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.forward.dense_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.dense.backward.dense_backward">
+<code class="sig-prename descclassname">nnlibs.dense.backward.</code><code class="sig-name descname">dense_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/backward.html#dense_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.backward.dense_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for function</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dx</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="p">)</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="recurrent">
 <h2>Recurrent<a class="headerlink" href="#recurrent" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="rnn">
-<h3>RNN<a class="headerlink" href="#rnn" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-nnlibs.rnn.models">
+<span id="rnn"></span><h3>RNN<a class="headerlink" href="#module-nnlibs.rnn.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.rnn.models.RNN">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.rnn.models.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">hidden_size</em>, <em class="sig-param">runData</em>, <em class="sig-param">binary=False</em>, <em class="sig-param">activate_input=&lt;function tanh&gt;</em>, <em class="sig-param">activate_output=&lt;function softmax&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.rnn.forward.rnn_forward">
+<code class="sig-prename descclassname">nnlibs.rnn.forward.</code><code class="sig-name descname">rnn_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/forward.html#rnn_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.forward.rnn_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.rnn.backward.rnn_backward">
+<code class="sig-prename descclassname">nnlibs.rnn.backward.</code><code class="sig-name descname">rnn_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/backward.html#rnn_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.backward.rnn_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="c1"># W, U, b - _ gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">])</span>
+
+    <span class="c1"># W, U, b - _ gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Set init to False</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
 </div>
-<div class="section" id="gru">
-<h3>GRU<a class="headerlink" href="#gru" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="section" id="lstm">
-<h3>LSTM<a class="headerlink" href="#lstm" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-nnlibs.gru.models">
+<span id="gru"></span><h3>GRU<a class="headerlink" href="#module-nnlibs.gru.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.gru.models.GRU">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.gru.models.</code><code class="sig-name descname">GRU</code><span class="sig-paren">(</span><em class="sig-param">hidden_size</em>, <em class="sig-param">runData</em>, <em class="sig-param">binary=False</em>, <em class="sig-param">activate_update=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_reset=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_input=&lt;function tanh&gt;</em>, <em class="sig-param">activate_output=&lt;function softmax&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/gru/models.html#GRU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.gru.models.GRU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.gru.forward.gru_forward">
+<code class="sig-prename descclassname">nnlibs.gru.forward.</code><code class="sig-name descname">gru_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/gru/forward.html#gru_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.gru.forward.gru_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.gru.backward.gru_backward">
+<code class="sig-prename descclassname">nnlibs.gru.backward.</code><code class="sig-name descname">gru_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/gru/backward.html#gru_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.gru.backward.gru_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wz&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Uz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Uz&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bz&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wr&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Ur&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Ur&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;br&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;br&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wh&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Uh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Uh&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wy&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;by&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;by&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Set init to False</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-nnlibs.lstm.models">
+<span id="lstm"></span><h3>LSTM<a class="headerlink" href="#module-nnlibs.lstm.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.lstm.models.LSTM">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.lstm.models.</code><code class="sig-name descname">LSTM</code><span class="sig-paren">(</span><em class="sig-param">hidden_size</em>, <em class="sig-param">runData</em>, <em class="sig-param">binary=False</em>, <em class="sig-param">activate_forget=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_input=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_candidate=&lt;function tanh&gt;</em>, <em class="sig-param">activate_output=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">activate_logits=&lt;function softmax&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/lstm/models.html#LSTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.lstm.models.LSTM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.lstm.forward.lstm_forward">
+<code class="sig-prename descclassname">nnlibs.lstm.forward.</code><code class="sig-name descname">lstm_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/lstm/forward.html#lstm_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.lstm.forward.lstm_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.lstm.backward.lstm_backward">
+<code class="sig-prename descclassname">nnlibs.lstm.backward.</code><code class="sig-name descname">lstm_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/lstm/backward.html#lstm_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.lstm.backward.lstm_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wf&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wi&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bi&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wg&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bg&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bg&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wv&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bv&#39;</span><span class="p">])</span>
+    <span class="c1"># Init W, b - Forget gate</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Set init to False</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="convolutional">
 <h2>Convolutional<a class="headerlink" href="#convolutional" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="conv">
-<h3>Conv<a class="headerlink" href="#conv" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-nnlibs.conv.models">
+<span id="conv"></span><h3>Conv<a class="headerlink" href="#module-nnlibs.conv.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.conv.models.Convolution">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.conv.models.</code><code class="sig-name descname">Convolution</code><span class="sig-paren">(</span><em class="sig-param">n_filters</em>, <em class="sig-param">f_width</em>, <em class="sig-param">depth=1</em>, <em class="sig-param">stride=1</em>, <em class="sig-param">padding=0</em>, <em class="sig-param">activate=&lt;function relu&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/conv/models.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.conv.models.Convolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.conv.forward.convolution_forward">
+<code class="sig-prename descclassname">nnlibs.conv.forward.</code><code class="sig-name descname">convolution_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/conv/forward.html#convolution_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.conv.forward.convolution_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.conv.backward.convolution_backward">
+<code class="sig-prename descclassname">nnlibs.conv.backward.</code><code class="sig-name descname">convolution_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/conv/backward.html#convolution_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.conv.backward.convolution_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">initialization</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">])</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">])</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
 </div>
-<div class="section" id="pool">
-<h3>Pool<a class="headerlink" href="#pool" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-nnlibs.pool.models">
+<span id="pool"></span><h3>Pool<a class="headerlink" href="#module-nnlibs.pool.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.pool.models.Pooling">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.pool.models.</code><code class="sig-name descname">Pooling</code><span class="sig-paren">(</span><em class="sig-param">f_width</em>, <em class="sig-param">stride=1</em>, <em class="sig-param">pool=&lt;function amax&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/pool/models.html#Pooling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.pool.models.Pooling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.pool.forward.pooling_forward">
+<code class="sig-prename descclassname">nnlibs.pool.forward.</code><code class="sig-name descname">pooling_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/pool/forward.html#pooling_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.pool.forward.pooling_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.pool.backward.pooling_backward">
+<code class="sig-prename descclassname">nnlibs.pool.backward.</code><code class="sig-name descname">pooling_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/pool/backward.html#pooling_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.pool.backward.pooling_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 <div class="section" id="adapter">
 <h2>Adapter<a class="headerlink" href="#adapter" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="flatten">
-<h3>Flatten<a class="headerlink" href="#flatten" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-nnlibs.flatten.models">
+<span id="flatten"></span><h3>Flatten<a class="headerlink" href="#module-nnlibs.flatten.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.flatten.models.Flatten">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.flatten.models.</code><code class="sig-name descname">Flatten</code><a class="reference internal" href="_modules/nnlibs/flatten/models.html#Flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.flatten.models.Flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.flatten.forward.flatten_forward">
+<code class="sig-prename descclassname">nnlibs.flatten.forward.</code><code class="sig-name descname">flatten_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/flatten/forward.html#flatten_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.flatten.forward.flatten_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.flatten.backward.flatten_backward">
+<code class="sig-prename descclassname">nnlibs.flatten.backward.</code><code class="sig-name descname">flatten_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/flatten/backward.html#flatten_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.flatten.backward.flatten_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 <div class="section" id="regularization">
 <h2>Regularization<a class="headerlink" href="#regularization" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="dropout">
-<h3>Dropout<a class="headerlink" href="#dropout" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-nnlibs.dropout.models">
+<span id="dropout"></span><h3>Dropout<a class="headerlink" href="#module-nnlibs.dropout.models" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="nnlibs.dropout.models.Dropout">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.dropout.models.</code><code class="sig-name descname">Dropout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keep_prob</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Description for class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var1</strong> – initial value: par1</p></li>
+<li><p><strong>var2</strong> – initial value: par2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.dropout.forward.dropout_forward">
+<code class="sig-prename descclassname">nnlibs.dropout.forward.</code><code class="sig-name descname">dropout_forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/forward.html#dropout_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.forward.dropout_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nnlibs.dropout.backward.dropout_backward">
+<code class="sig-prename descclassname">nnlibs.dropout.backward.</code><code class="sig-name descname">dropout_backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/backward.html#dropout_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.backward.dropout_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 </div>
@@ -264,7 +549,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="workflows.html" class="btn btn-neutral float-right" title="Workflows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="organization.html" class="btn btn-neutral float-left" title="Philosophy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="organization.html" class="btn btn-neutral float-left" title="Organization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -15,6 +15,7 @@ class Dense:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
+    
     @log_method
     def __init__(self,
             layer_size=2,

@@ -9,9 +9,6 @@ import os
 
 init_path = str(pathlib.Path(__file__).parent.absolute())
 
-if not os.path.exists('./models/'):
-    os.mkdir('./models')
-
 if not os.path.exists('./settings.py'):
     shutil.copy(init_path+'/settings.py','./settings.py')
 
