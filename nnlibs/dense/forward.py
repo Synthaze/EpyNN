@@ -7,6 +7,12 @@ import numpy as np
 
 
 def dense_forward(layer,A):
+    """
+    Description for function
+
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
 
     X = dp.init_forward(layer,A)
 

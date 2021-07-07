@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Philosophy &mdash; EpyNN 0.1.0 documentation</title>
+  <title>Organization &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -90,8 +90,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Philosophy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#guidelines">Guidelines</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Organization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#guidelines">Guidelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pure-python-numpy">Pure Python/NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functions-over-class-methods">Functions over Class Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#less-intricate-code">Less intricate code</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#layers">Layers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#models">models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#forward">forward</a></li>
@@ -104,6 +109,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id2">forward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id3">backward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#train">train</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#commons">Commons</a><ul>
@@ -171,7 +177,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Philosophy</li>
+      <li>Organization</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -192,105 +198,431 @@
             
   <div class="toctree-wrapper compound">
 </div>
-<div class="section" id="philosophy">
-<h1>Philosophy<a class="headerlink" href="#philosophy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="organization">
+<h1>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="guidelines">
 <h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this headline">¶</a></h2>
+<p>Although EpyNN can be used for production, it is meant to be a library of homogeneous architecture templates and practical examples which is expected to save an important amount of time for people who wish to learn, teach or develop from scratch, by themselves.</p>
+<div class="section" id="pure-python-numpy">
+<h3>Pure Python/NumPy<a class="headerlink" href="#pure-python-numpy" title="Permalink to this headline">¶</a></h3>
+<p>EpyNN in written in pure Python/NumPy without a single import from AI librairies.</p>
+<p>By focusing on readability, the source code of EpyNN thus directly reflects the mathematics underlying the diverse architectures provided with EpyNN.</p>
+</div>
+<div class="section" id="functions-over-class-methods">
+<h3>Functions over Class Methods<a class="headerlink" href="#functions-over-class-methods" title="Permalink to this headline">¶</a></h3>
+<p>Although Python is well suited - if not designed - for extensive use of Class and Method attributes, we choose to favor Functions as much as possible, consistently with directory structures.</p>
+</div>
+<div class="section" id="less-intricate-code">
+<h3>Less intricate code<a class="headerlink" href="#less-intricate-code" title="Permalink to this headline">¶</a></h3>
+<p>The root <code class="docutils literal notranslate"><span class="pre">EpyNN/</span></code> directory contains the <code class="docutils literal notranslate"><span class="pre">nnlibs</span></code> sub-directory which includes commons, the EpyNN meta-model, and each layer architectures used to build Neural Networks.</p>
+<p>Consequently, a single level of recursion from <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlibs</span></code> is required to explore all content and associated python sources.</p>
+</div>
 </div>
 <div class="section" id="layers">
 <h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
+<p>Neural Networks are made of architecture layers, implemented in EpyNN as <strong>models</strong>.</p>
+<p>A single layer contains nodes - often refereed to as neurons - and architecture-specific <strong>forward</strong> and <strong>backward</strong> schemes for <em>signal</em> and <em>error</em> propagation, respectively.</p>
+<p>Whereas a forward-propagated signal yields a result, a backward-propagated error enables the Neural Network to learn by computing <em>gradients</em> used to alter architecture-specific <strong>parameters</strong>.</p>
 <div class="section" id="models">
 <h3>models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/template/parameters.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.template.parameters</span> <span class="k">as</span> <span class="nn">tp</span>
+<span class="kn">import</span> <span class="nn">nnlibs.template.backward</span> <span class="k">as</span> <span class="nn">tb</span>
+<span class="kn">import</span> <span class="nn">nnlibs.template.forward</span> <span class="k">as</span> <span class="nn">tf</span>
+
+
+<span class="k">class</span> <span class="nc">Template</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot; Layer attributes &quot;&quot;&quot;</span>
+        <span class="c1">### Set layer init attribute to True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">### Set layer activation attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">set_activation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1">### Define layer dictionaries attributes</span>
+        <span class="c1">## Dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Gradients</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Forward pass cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Backward pass cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Forward pass shapes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1">## Backward pass shapes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bs</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1">### Set keys for layer cache attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+
+        <span class="c1">### Init shapes</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">init_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+        <span class="c1"># Forward pass</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">template_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span>
+
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
+        <span class="c1"># Backward pass</span>
+        <span class="n">dA</span> <span class="o">=</span> <span class="n">tb</span><span class="o">.</span><span class="n">template_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dA</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="forward">
 <h3>forward<a class="headerlink" href="#forward" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">forward.py</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/template/forward.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">import</span> <span class="nn">nnlibs.template.parameters</span> <span class="k">as</span> <span class="nn">tp</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">template_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+
+    <span class="c1"># If applicable - Init layer shapes and variables</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">init_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># If applicable - Init layer parameters</span>
+    <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">tp</span><span class="o">.</span><span class="n">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="c1"># Do stuff with X to compute A</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">X</span>
+
+    <span class="k">return</span> <span class="n">A</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="backward">
 <h3>backward<a class="headerlink" href="#backward" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">backward.py</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/template/backward.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">import</span> <span class="nn">nnlibs.template.parameters</span> <span class="k">as</span> <span class="nn">tp</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">template_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
+
+    <span class="c1"># If applicable - Init layer shapes and variables</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">init_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">dA</span><span class="p">)</span>
+
+    <span class="c1"># Do stuff with dX to compute dA</span>
+    <span class="n">dA</span> <span class="o">=</span> <span class="n">dX</span>
+
+    <span class="c1"># If applicable - Update layer gradients</span>
+    <span class="n">tp</span><span class="o">.</span><span class="n">update_grads</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dA</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="parameters">
 <h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">parameters.py</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/template/parameters.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
+
+
+<span class="k">def</span> <span class="nf">set_activation</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activation</span>
+
+    <span class="c1"># Assign activation function to corresponding layer attribute</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">init_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="c1"># Set layer shapes</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">init_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+
+    <span class="c1"># Set and cache layer X and X.shape</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">return</span> <span class="n">X</span>
+
+
+<span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="c1"># Init parameters with corresponding function</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="meta">
 <h2>Meta<a class="headerlink" href="#meta" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
 <h3>models<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<span class="target" id="module-nnlibs.meta.models"></span><dl class="py class">
-<dt id="nnlibs.meta.models.EpyNN">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.meta.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Model'</span></em>, <em class="sig-param"><span class="n">layers</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a class definition.</p>
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.logs">
-<code class="sig-name descname">logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.logs" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a method definition.</p>
-</dd></dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/meta/models.py</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">seeding</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.plot</span> <span class="k">as</span> <span class="nn">cp</span>
 
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hPars</span></em>, <em class="sig-param"><span class="n">runData</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a method definition.</p>
-</dd></dl>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.forward</span> <span class="k">as</span> <span class="nn">mf</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.train</span> <span class="k">as</span> <span class="nn">mt</span>
 
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a method definition.</p>
-</dd></dl>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dsets</span></em>, <em class="sig-param"><span class="n">hPars</span></em>, <em class="sig-param"><span class="n">runData</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a method definition.</p>
-</dd></dl>
 
-</dd></dl>
+<span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;An example docstring for a class definition.&quot;&quot;&quot;</span>
 
+    <span class="nd">@log_method</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span><span class="n">layers</span><span class="o">=</span><span class="p">[],</span><span class="n">hPars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">layers</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">seeding</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">layer</span><span class="o">.</span><span class="n">SEED</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">layer</span><span class="o">.</span><span class="n">SEED</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="n">layer</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">layer</span><span class="o">.</span><span class="n">SEED</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
+        <span class="n">mt</span><span class="o">.</span><span class="n">run_train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+        <span class="n">cp</span><span class="o">.</span><span class="n">gnuplot_accuracy</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">mf</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;An example docstring for a method definition.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">):</span>
+
+            <span class="n">name</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Layer&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;Dimensions&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;FW_Shapes&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;BW_Shapes&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Activation&#39;</span><span class="p">:</span> <span class="p">[]</span> <span class="p">})</span>
+
+            <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span>
+
+                    <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Dimensions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="o">+</span><span class="s1">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+                <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;fs&#39;</span><span class="p">:</span>
+
+                    <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;FW_Shapes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="s1">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+                <span class="k">elif</span> <span class="n">attr</span> <span class="o">==</span> <span class="s1">&#39;bs&#39;</span><span class="p">:</span>
+
+                    <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;BW_Shapes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">+</span><span class="s1">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+                <span class="k">elif</span> <span class="s1">&#39;activate&#39;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">gate</span> <span class="o">=</span> <span class="n">attr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="n">gate</span> <span class="o">=</span> <span class="s1">&#39;input&#39;</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;Activation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gate</span><span class="o">+</span><span class="s1">&#39; = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="id2">
 <h3>forward<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<span class="target" id="module-nnlibs.meta.forward"></span><dl class="py function">
-<dt id="nnlibs.meta.forward.forward">
-<code class="sig-prename descclassname">nnlibs.meta.forward.</code><code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/forward.html#forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.forward.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/meta/forward.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
 
+<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">l</span><span class="p">:</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="c1"># Update shapes</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">A</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="id3">
 <h3>backward<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<span class="target" id="module-nnlibs.meta.backward"></span><dl class="py function">
-<dt id="nnlibs.meta.backward.backward">
-<code class="sig-prename descclassname">nnlibs.meta.backward.</code><code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/backward.html#backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.backward.backward" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/meta/backward.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
 
+
+<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">l</span><span class="p">):</span>
+
+        <span class="n">mp</span><span class="o">.</span><span class="n">init_grads</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+        <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dA</span><span class="p">)</span>
+        <span class="c1"># Update shapes</span>
+        <span class="n">mp</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="id4">
 <h3>parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<span class="target" id="module-nnlibs.meta.parameters"></span><dl class="py function">
-<dt id="nnlibs.meta.parameters.clip_gradient">
-<code class="sig-prename descclassname">nnlibs.meta.parameters.</code><code class="sig-name descname">clip_gradient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">max_norm</span><span class="o">=</span><span class="default_value">0.25</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/parameters.html#clip_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.parameters.clip_gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/meta/parameters.py</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<dl class="py function">
-<dt id="nnlibs.meta.parameters.init_grads">
-<code class="sig-prename descclassname">nnlibs.meta.parameters.</code><code class="sig-name descname">init_grads</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/parameters.html#init_grads"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.parameters.init_grads" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
 
-<dl class="py function">
-<dt id="nnlibs.meta.parameters.update_params">
-<code class="sig-prename descclassname">nnlibs.meta.parameters.</code><code class="sig-name descname">update_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">hPars</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/parameters.html#update_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.parameters.update_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
+<span class="k">def</span> <span class="nf">init_grads</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
 
-<dl class="py function">
-<dt id="nnlibs.meta.parameters.update_shapes">
-<code class="sig-prename descclassname">nnlibs.meta.parameters.</code><code class="sig-name descname">update_shapes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/parameters.html#update_shapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.parameters.update_shapes" title="Permalink to this definition">¶</a></dt>
-<dd><p>An example docstring for a function definition.</p>
-</dd></dl>
+    <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 
+        <span class="n">gradient</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span><span class="o">+</span><span class="n">parameter</span>
+
+        <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">gradient</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">parameter</span><span class="p">])</span>
+
+        <span class="n">layer</span><span class="o">.</span><span class="n">bs</span><span class="p">[</span><span class="n">gradient</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">gradient</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">bs</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">update_params</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">l</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">gradient</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span> <span class="o">-=</span> <span class="n">hPars</span><span class="o">.</span><span class="n">l</span><span class="p">[</span><span class="n">hPars</span><span class="o">.</span><span class="n">e</span><span class="p">]</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">gradient</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">p</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">bs</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="o">+</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="o">+</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">clip_gradient</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">max_norm</span><span class="o">=</span><span class="mf">0.25</span><span class="p">):</span>
+
+    <span class="c1"># Set the maximum of the norm to be of type float</span>
+    <span class="n">max_norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_norm</span><span class="p">)</span>
+    <span class="n">total_norm</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Calculate the L2 norm squared for each gradient and add them to the total norm</span>
+    <span class="k">for</span> <span class="n">grad</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">grad_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">total_norm</span> <span class="o">+=</span> <span class="n">grad_norm</span>
+
+    <span class="n">total_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">total_norm</span><span class="p">)</span>
+
+    <span class="c1"># Calculate clipping coeficient</span>
+    <span class="n">clip_coef</span> <span class="o">=</span> <span class="n">max_norm</span> <span class="o">/</span> <span class="p">(</span><span class="n">total_norm</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+
+    <span class="c1"># If the total norm is larger than the maximum allowable norm, then clip the gradient</span>
+    <span class="k">if</span> <span class="n">clip_coef</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">*=</span> <span class="n">clip_coef</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="train">
+<h3>train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/meta/train.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cli</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.metrics</span> <span class="k">as</span> <span class="nn">cme</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.logs</span> <span class="k">as</span> <span class="nn">clo</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
+
+<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.backward</span> <span class="k">as</span> <span class="nn">mb</span>
+<span class="kn">import</span> <span class="nn">nnlibs.meta.forward</span> <span class="k">as</span> <span class="nn">mf</span>
+
+
+<span class="k">def</span> <span class="nf">run_train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;An example docstring for a function definition.&quot;&quot;&quot;</span>
+    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">batch_dtrain</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">mini_batches</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span><span class="n">hPars</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">hPars</span><span class="o">.</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hPars</span><span class="o">.</span><span class="n">i</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">batch_dtrain</span><span class="p">:</span>
+
+            <span class="n">A</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">A</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+
+            <span class="n">dA</span> <span class="o">=</span> <span class="n">A</span> <span class="o">-</span> <span class="n">batch</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="n">mb</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dA</span><span class="p">)</span>
+
+            <span class="n">mp</span><span class="o">.</span><span class="n">update_params</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">hPars</span><span class="p">)</span>
+
+        <span class="n">cme</span><span class="o">.</span><span class="n">compute_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+        <span class="n">cli</span><span class="o">.</span><span class="n">check_and_write</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+        <span class="n">clo</span><span class="o">.</span><span class="n">model_core_logs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="commons">
@@ -300,6 +632,109 @@
 </div>
 <div class="section" id="io">
 <h3>io<a class="headerlink" href="#io" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/io.py</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">dataSet</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="k">def</span> <span class="nf">one_hot_encode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab_size</span><span class="p">):</span>
+
+    <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">)</span>
+
+    <span class="n">one_hot</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">return</span> <span class="n">one_hot</span>
+
+
+<span class="k">def</span> <span class="nf">one_hot_encode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span><span class="n">word_to_idx</span><span class="p">,</span><span class="n">vocab_size</span><span class="p">):</span>
+
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">one_hot_encode</span><span class="p">(</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">encoding</span>
+
+
+<span class="k">def</span> <span class="nf">one_hot_encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+
+    <span class="n">word_to_idx</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)):</span>
+
+        <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">one_hot_encode_sequence</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;w2i&#39;</span><span class="p">],</span><span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">dataset</span>
+
+
+<span class="k">def</span> <span class="nf">dsets_padding</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+    <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">dsets</span><span class="p">:</span>
+
+        <span class="n">dset</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">))</span>
+
+        <span class="n">dset</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">dsets</span>
+
+
+<span class="k">def</span> <span class="nf">mini_batches</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="n">batch_dset</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hPars</span><span class="o">.</span><span class="n">b</span><span class="p">):</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">i</span> <span class="o">//</span> <span class="n">hPars</span><span class="o">.</span><span class="n">b</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">hPars</span><span class="o">.</span><span class="n">b</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">]</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">]</span>
+
+        <span class="n">batch</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span> <span class="p">]</span>
+
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span><span class="n">dset</span><span class="o">.</span><span class="n">n</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="n">batch_dset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">batch</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">batch_dset</span>
+
+
+<span class="k">def</span> <span class="nf">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">encode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">one_hot_encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+
+    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">dtest</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">dval</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">:]</span>
+
+    <span class="k">if</span> <span class="n">prefix</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1"># Initialization of dataSet() objects defined in nnlibs.commons.models</span>
+    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span><span class="n">prefix</span><span class="o">+</span><span class="s1">&#39;dtrain&#39;</span><span class="p">)</span>
+    <span class="n">dtest</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dtest</span><span class="p">,</span><span class="n">prefix</span><span class="o">+</span><span class="s1">&#39;dtest&#39;</span><span class="p">)</span>
+    <span class="n">dval</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dval</span><span class="p">,</span><span class="n">prefix</span><span class="o">+</span><span class="s1">&#39;dval&#39;</span><span class="p">)</span>
+
+    <span class="n">dsets</span> <span class="o">=</span> <span class="p">[</span><span class="n">dtrain</span><span class="p">,</span><span class="n">dtest</span><span class="p">,</span><span class="n">dval</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">dsets</span>
+
+
+<span class="k">def</span> <span class="nf">word_to_idx</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]))</span>
+
+    <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;w2i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">words</span><span class="p">))</span> <span class="p">}</span>
+    <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;i2w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;w2i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span>
+
+    <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;w2i&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="library">
 <h3>library<a class="headerlink" href="#library" title="Permalink to this headline">¶</a></h3>
@@ -309,18 +744,394 @@
 </div>
 <div class="section" id="maths">
 <h3>maths<a class="headerlink" href="#maths" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/maths.py</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+</pre></div>
+</div>
+<p><strong>Weights initialization</strong></p>
+<ul class="simple">
+<li><p>Xavier</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">xavier</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Orthogonal</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">orthogonal</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># Compute QR factorization</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">qr</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="c1"># Make Q uniform according to https://arxiv.org/pdf/math-ph/0609050.pdf</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">ph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">*=</span> <span class="n">ph</span>
+
+    <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">q</span>
+
+    <span class="k">return</span> <span class="n">p</span>
+</pre></div>
+</div>
+<p><strong>Activation functions and derivatives</strong></p>
+<p><em>Rectifier Linear Unit (ReLU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">drelu</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dA</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Leaky ReLu (LReLU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">lrelu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">CST</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dlrelu</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">CST</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dA</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Exponential Linear Unit (ELU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">elu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">CST</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">where</span><span class="o">=</span><span class="n">x</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">delu</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">CST</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">elu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="n">dZ</span> <span class="o">=</span> <span class="n">dA</span> <span class="o">*</span> <span class="n">x</span>
+
+    <span class="k">return</span> <span class="n">dZ</span>
+</pre></div>
+</div>
+<p><em>Sigmoid</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># condition</span>
+            <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)),</span> <span class="c1"># For positive values</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># For negative values</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">z</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dsigmoid</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dA</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Hyperbolic tangent (tanh)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">z</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dtanh</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">dZ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">dA</span> <span class="o">*</span> <span class="n">dZ</span>
+</pre></div>
+</div>
+<p><em>Swish</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">swish</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dswish</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p><em>Softmax</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">CST</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">x_</span>
+    <span class="k">return</span> <span class="n">x_</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dsoftmax</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dA</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))))</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="metrics">
 <h3>metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="id5">
 <h3>models<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/models.py</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.decorators</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.schedule</span> <span class="k">as</span> <span class="nn">cs</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
+
+<span class="kn">import</span> <span class="nn">nnlibs.settings</span> <span class="k">as</span> <span class="nn">settings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
+
+    <span class="nd">@log_method</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dset</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="s1">&#39;DUMMY&#39;</span><span class="p">):</span>
+        <span class="c1"># Identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+        <span class="c1"># Prepare X data</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dset</span> <span class="p">]</span>
+        <span class="c1"># Prepare Y data</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dset</span> <span class="p">]</span>
+
+        <span class="c1"># Set X and Y data for training in corresponding uppercase attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
+
+        <span class="c1"># Restore Y data as single digit labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Set numerical id for each sample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="p">[</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="p">))</span> <span class="p">]</span>
+
+        <span class="c1"># Number of samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+
+        <span class="c1">## Predicted data</span>
+        <span class="c1"># Output of forward propagation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Predicted labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">runData</span><span class="p">:</span>
+
+    <span class="nd">@log_method</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">config</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">config</span><span class="p">):</span>
+        <span class="c1">## Save current config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="c1">## Metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Experiment Name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;experiment_name&#39;</span><span class="p">]</span>
+        <span class="c1"># Unique identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+        <span class="c1"># Experiment identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;nt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+        <span class="c1"># Logs frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;logs_frequency&#39;</span><span class="p">]</span>
+        <span class="c1"># Logs frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;fd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;logs_frequency_display&#39;</span><span class="p">]</span>
+        <span class="c1"># Target dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;dataset_target&#39;</span><span class="p">]</span>
+        <span class="c1"># Target metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metrics_target&#39;</span><span class="p">]</span>
+        <span class="c1"># Metrics to plot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metrics_plot&#39;</span><span class="p">]</span>
+        <span class="c1"># Number of samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
+
+        <span class="c1">## Bolean for display and write on disk actions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Save model parameters and associated data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;model_save&#39;</span><span class="p">]</span>
+        <span class="c1"># Save model parameters and associated data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;ds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;dsets_save&#39;</span><span class="p">]</span>
+        <span class="c1"># Save model parameters and associated data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;hs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;hPars_save&#39;</span><span class="p">]</span>
+        <span class="c1"># Save model parameters and associated data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;rs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;runData_save&#39;</span><span class="p">]</span>
+        <span class="c1"># Display plot at the end of training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;pd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;plot_display&#39;</span><span class="p">]</span>
+        <span class="c1"># Save plot at the end of training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;ps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;plot_save&#39;</span><span class="p">]</span>
+        <span class="c1"># Flag on save</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># Flag init run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1">## Paths</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Save model parameters and associated data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;./models/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.pickle&#39;</span>
+        <span class="c1"># Save plots</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;ps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;./models/&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span>
+
+        <span class="c1">## Metrics for each dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Initialize metrics (see EpyNN/nnlibs/commons/metrics.py)</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;metrics_list&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Add list for each dataset (training, testing, validation)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+
+        <span class="c1">## Encoding data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># word_to_idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;w2i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># idx_to_word</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;i2w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">hPars</span><span class="p">:</span>
+
+    <span class="nd">@log_method</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hPars</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">hPars</span><span class="p">):</span>
+        <span class="c1">## Save current hPars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">hPars</span>
+
+        <span class="c1"># Number of training epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Number of training batch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;batch_number&#39;</span><span class="p">]</span>
+
+        <span class="c1">## Learning rate scheduling - Load parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Initial learning rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>
+        <span class="c1"># Schedule mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;schedule_mode&#39;</span><span class="p">]</span>
+        <span class="c1"># Decay rate k</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;decay_k&#39;</span><span class="p">]</span>
+        <span class="c1"># Number of cycles n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;cycling_n&#39;</span><span class="p">]</span>
+        <span class="c1"># Descent d for initial lr along cycles</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;descent_d&#39;</span><span class="p">]</span>
+
+        <span class="c1">## Learning rate scheduling - Evaluate parameters</span>
+        <span class="c1"># Number of epochs per cycle c</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+        <span class="c1"># Default decay</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># 0.005% of initial lr for last epoch in cycle</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Compute learning rate along training epochs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">schedule_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1">## Constant parameters for regularization and activation functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># l1 regularization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;l1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;regularization_l1&#39;</span><span class="p">]</span>
+        <span class="c1"># l2 regularization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;l2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;regularization_l2&#39;</span><span class="p">]</span>
+        <span class="c1"># Softmax temperature factor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;softmax_temperature&#39;</span><span class="p">]</span>
+        <span class="c1"># Leaky ReLU alpha parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;LRELU_alpha&#39;</span><span class="p">]</span>
+        <span class="c1"># ELU alpha parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;ELU_alpha&#39;</span><span class="p">]</span>
+        <span class="c1"># Minimum parameter Epsilon (avoid division by zero, log of zero...)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]</span>
+
+        <span class="n">cm</span><span class="o">.</span><span class="n">global_constant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="plot">
 <h3>plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="schedule">
 <h3>schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/schedule.py</span>
+<span class="kn">import</span> <span class="nn">nnlibs.commons.logs</span> <span class="k">as</span> <span class="nn">clo</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">def</span> <span class="nf">exp_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="p">[</span> <span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]</span><span class="o">**</span><span class="p">(</span><span class="n">x</span><span class="o">//</span><span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">*</span><span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hPars</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">lin_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="p">[</span> <span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hPars</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">steady</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="p">[</span> <span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hPars</span><span class="o">.</span><span class="n">i</span><span class="p">)</span> <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">schedule_mode</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+
+    <span class="n">schedulers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;steady&#39;</span><span class="p">:</span> <span class="n">steady</span><span class="p">,</span>
+    <span class="s1">&#39;exp_decay&#39;</span><span class="p">:</span> <span class="n">exp_decay</span><span class="p">,</span>
+    <span class="s1">&#39;lin_decay&#39;</span><span class="p">:</span> <span class="n">lin_decay</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">hPars</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="n">schedulers</span><span class="p">[</span><span class="n">hPars</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]](</span><span class="n">hPars</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hPars</span><span class="o">.</span><span class="n">l</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

@@ -89,7 +89,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
@@ -162,15 +162,32 @@
             
   <div class="section" id="welcome-to-epynn-s-documentation">
 <h1>Welcome to EpyNN’s documentation!<a class="headerlink" href="#welcome-to-epynn-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p><strong>EpyNN is written in pure Python/NumPy.</strong></p>
+<p>In you use EpyNN in academia, please cite:</p>
+<p>Malard F., […], Olivier-Van Stichelen S. <strong>EpyNN: an open Educational python resource for Neural Networks</strong>, 2021, to be submitted.</p>
+<p>Please email to <a class="reference external" href="mailto:florian&#46;malard&#37;&#52;&#48;gmail&#46;com">florian<span>&#46;</span>malard<span>&#64;</span>gmail<span>&#46;</span>com</a> or <a class="reference external" href="mailto:solivier&#37;&#52;&#48;mcw&#46;edu">solivier<span>&#64;</span>mcw<span>&#46;</span>edu</a> for any comments.</p>
 <div class="section" id="what-is-epynn">
 <h2>What is EpyNN?<a class="headerlink" href="#what-is-epynn" title="Permalink to this headline">¶</a></h2>
+<p>EpyNN is a production-ready but first Educational python resource for Neural Networks. EpyNN is designed for Supervised Machine Learning (SML) approaches in classification tasks by means of Neural Networks.</p>
+<p>EpyNN includes <strong>scalable</strong>, <strong>minimalistic</strong> and <strong>homogeneous</strong> implementations of major Neural Network architectures in <strong>pure Python/Numpy</strong>. Because EpyNN is meant to be <strong>educational</strong>, it contains several dummy and real world examples of problems in dedicated directory from specific input processing scheme to generic pipeline from training to prediction.</p>
 </div>
 <div class="section" id="do-i-need-epynn">
 <h2>Do I need EpyNN?<a class="headerlink" href="#do-i-need-epynn" title="Permalink to this headline">¶</a></h2>
+<p>EpyNN is intended for <strong>teachers</strong>, <strong>students</strong>, <strong>scientists</strong>, or more generally anyone with minimal skills in Python programming <strong>who wish to understand</strong> and build from basic implementations of NN architectures.</p>
+<p>Although EpyNN can be used for production, it is meant to be a library of <strong>homogeneous architecture templates</strong> and <strong>practical examples</strong> which is expected to save an important amount of time for people who wish to learn, teach or <strong>develop from scratch</strong>, by themselves.</p>
+</div>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#install">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#python">Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#pip">Pip</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#git">Git</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#epynn-install">EpyNN Install</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#linux-macos">Linux/MacOS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="quickstart.html#windows">Windows</a></li>
 </ul>
@@ -178,8 +195,13 @@
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#test-run">Test run</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Philosophy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="organization.html#guidelines">Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="organization.html#guidelines">Guidelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="organization.html#pure-python-numpy">Pure Python/NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="organization.html#functions-over-class-methods">Functions over Class Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="organization.html#less-intricate-code">Less intricate code</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="organization.html#layers">Layers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="organization.html#models">models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="organization.html#forward">forward</a></li>
@@ -192,6 +214,7 @@
 <li class="toctree-l3"><a class="reference internal" href="organization.html#id2">forward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="organization.html#id3">backward</a></li>
 <li class="toctree-l3"><a class="reference internal" href="organization.html#id4">parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="organization.html#train">train</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="organization.html#commons">Commons</a><ul>
@@ -214,28 +237,38 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architectures.html#recurrent">Recurrent</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#rnn">RNN</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#gru">GRU</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#lstm">LSTM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.rnn.models">RNN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.gru.models">GRU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.lstm.models">LSTM</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architectures.html#convolutional">Convolutional</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#conv">Conv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#pool">Pool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.conv.models">Conv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.pool.models">Pool</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architectures.html#adapter">Adapter</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#flatten">Flatten</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.flatten.models">Flatten</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architectures.html#regularization">Regularization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#dropout">Dropout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.dropout.models">Dropout</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflows.html#initialization">Initialization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.html#full-imports">Full imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.html#headers">Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.html#settings">Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflows.html#datasets">Datasets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflows.html#preparation">Preparation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="workflows.html#import">Import</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflows.html#model-builder">Model Builder</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflows.html#model-training">Model training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflows.html#use-your-model">Use your model</a></li>

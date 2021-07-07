@@ -5,7 +5,13 @@ import numpy as np
 
 
 def dense_backward(layer,dA):
+    """
+    Description for function
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     dX = dp.init_backward(layer,dA)
 
     # Cache dZ (current) from dX (prev)

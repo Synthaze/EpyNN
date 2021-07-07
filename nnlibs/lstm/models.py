@@ -10,7 +10,13 @@ import numpy as np
 
 
 class LSTM:
+    """
+    Description for class
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     @log_method
     def __init__(self,hidden_size,runData,
             binary=False,

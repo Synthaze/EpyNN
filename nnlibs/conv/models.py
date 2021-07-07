@@ -8,7 +8,13 @@ import nnlibs.conv.forward as cf
 
 
 class Convolution:
+    """
+    Description for class
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     def __init__(self,n_filters,f_width,
             depth=1,
             stride=1,

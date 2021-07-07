@@ -10,7 +10,13 @@ import nnlibs.rnn.forward as rf
 
 #@log_class
 class RNN:
+    """
+    Description for class
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     def __init__(self,hidden_size,runData,
             binary=False,
             activate_input=cm.tanh,

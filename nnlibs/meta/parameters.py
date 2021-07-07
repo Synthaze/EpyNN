@@ -3,7 +3,7 @@ import numpy as np
 
 
 def init_grads(layer):
-    """An example docstring for a function definition."""
+
     for parameter in layer.p.keys():
 
         gradient = 'd'+parameter
@@ -19,9 +19,8 @@ def init_grads(layer):
     return None
 
 
-
 def update_params(model,hPars):
-    """An example docstring for a function definition."""
+
     for layer in model.l:
 
         for gradient in layer.g.keys():
@@ -37,7 +36,7 @@ def update_params(model,hPars):
 
 
 def update_shapes(layer):
-    """An example docstring for a function definition."""
+
     for x in layer.attrs:
         try:
             layer.fs[x] = layer.fc[x].shape
@@ -49,7 +48,7 @@ def update_shapes(layer):
 
 
 def clip_gradient(layer,max_norm=0.25):
-    """An example docstring for a function definition."""
+
     # Set the maximum of the norm to be of type float
     max_norm = float(max_norm)
     total_norm = 0

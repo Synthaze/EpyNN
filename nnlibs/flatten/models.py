@@ -4,7 +4,13 @@ import nnlibs.flatten.forward as ff
 
 
 class Flatten:
+    """
+    Description for class
 
+    :ivar var1: initial value: par1
+    :ivar var2: initial value: par2
+    """
+    
     def __init__(self):
 
         """ Layer attributes """
