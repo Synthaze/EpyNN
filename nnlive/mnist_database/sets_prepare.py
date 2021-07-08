@@ -54,4 +54,6 @@ def sets_prepare(runData):
 
     dsets = cio.dataset_to_dsets(dataset,runData,prefix='mnist')
 
+    print (dsets[0].X.shape)
+
     return dsets

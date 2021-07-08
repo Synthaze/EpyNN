@@ -13,5 +13,5 @@ def flatten_forward(layer,A):
 
     # Cache A (current) from X (prev)
     A = layer.fc['A'] = np.reshape( X, layer.fs['A'] )
-    
+
     return A

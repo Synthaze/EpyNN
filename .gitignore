@@ -1,1 +1,4 @@
 *.pyc
+*.gz
+*.wav
+*.pickle
