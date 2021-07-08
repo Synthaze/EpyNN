@@ -8,16 +8,33 @@
 Live examples
 ==================
 
+Live examples in ``EpyNN/nnlive`` are directories each containing the required codes to run dummy and real world examples.
+
+Examples are intended to introduce different input data types, processing schemes and appropriate architecture layers to build Neural Networks with EpyNN.
+
+In the philosophy or EpyNN, example directories are specific templates with respect to the nature of input data. Thus, users can adapt relevant directories for their own situation, with minimal code modification.
+
 Dummy
 -------------
+
+Dummy examples are intended to help in understanding processing schemes for input data of diverse natures.
+
+During development or for educational purpose, these examples can also be used for debugging because dummy data are generated from models known *a priori*.
+
 Boleans
 ~~~~~~~~~~~~~
 
-``EpyNN/nnlive/dummy_boleans``
+``EpyNN/nnlive/dummy_bolean``
 
 *Data structure, shape, and preparation*
 
+.. include:: ./../nnlive/dummy_bolean/sets_prepare.py
+   :literal:
+
 *Architecture layers, training and prediction*
+
+.. include:: ./../nnlive/dummy_bolean/train.py
+   :literal:
 
 Numerical
 ~~~~~~~~~~~~~
@@ -35,7 +52,13 @@ Strings
 
 *Data structure, shape, and preparation*
 
+.. include:: ./../nnlive/dummy_strings/sets_prepare.py
+   :literal:
+
 *Architecture layers, training and prediction*
+
+.. include:: ./../nnlive/dummy_strings/train.py
+   :literal:
 
 Time series
 ~~~~~~~~~~~~~
@@ -44,7 +67,13 @@ Time series
 
 *Data structure, shape, and preparation*
 
+.. include:: ./../nnlive/dummy_time/sets_prepare.py
+   :literal:
+
 *Architecture layers, training and prediction*
+
+.. include:: ./../nnlive/dummy_time/train.py
+   :literal:
 
 Images
 ~~~~~~~~~~~~~

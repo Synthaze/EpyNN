@@ -21,10 +21,10 @@ config = {
 
 hPars = {
     'training_epochs': 1000,
-    'batch_number': 1,
-    'learning_rate': 1,
+    'batch_number': 5,
+    'learning_rate': 0.1,
     'schedule_mode': 'exp_decay',
-    'decay_k': 0.01,
+    'decay_k': 0.001,
     'cycling_n': 1,
     'descent_d': 1,
 

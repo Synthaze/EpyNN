@@ -6,7 +6,7 @@ import numpy as np
 
 def lstm_forward(layer,A):
 
-    X, h, C = lp.init_forward(layer,A)
+    X, hp, C = lp.init_forward(layer,A)
 
     # Init layer parameters
     if layer.init == True:
@@ -19,7 +19,7 @@ def lstm_forward(layer,A):
         Xt = layer.fc['Xt'] = X[:,t]
 
         # Concatenate input and hidden state
-        z = layer.fc['z'][t] = np.row_stack((h, Xt))
+        z = layer.fc['z'][t] = np.row_stack((hp, Xt))
 
         # Calculate forget gate
         f = np.dot(layer.p['Wf'], z) + layer.p['bf']

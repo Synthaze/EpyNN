@@ -20,7 +20,7 @@ What is EpyNN?
 --------------------
 
 EpyNN is a production-ready but first Educational python resource for Neural Networks. EpyNN is designed for Supervised Machine Learning (SML) approaches in classification tasks by means of Neural Networks.
-
+ 
 EpyNN includes **scalable**, **minimalistic** and **homogeneous** implementations of major Neural Network architectures in **pure Python/Numpy**. Because EpyNN is meant to be **educational**, it contains several dummy and real world examples of problems in dedicated directory from specific input processing scheme to generic pipeline from training to prediction.
 
 
@@ -44,3 +44,4 @@ Table of Contents
    architectures
    workflows
    examples
+   contribute

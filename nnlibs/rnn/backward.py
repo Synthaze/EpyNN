@@ -20,7 +20,7 @@ def rnn_backward(layer,dA):
             dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt) + dhn
 
         # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-        df = layer.bc['df'] = layer.derivative_input(dh,layer.fc['h'][t])
+        df = layer.bc['df'] = layer.derivative_output(dh,layer.fc['h'][t])
 
         # Update gradients
         rp.update_gradients(layer,t)

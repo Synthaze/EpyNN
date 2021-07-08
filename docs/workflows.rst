@@ -105,7 +105,7 @@ Neural Networks can be initialized by providing the meta-model ``EpyNN`` with th
     # Initialize your Neural Network
     model = EpyNN(name=name,layers=layers,hPars=hPars)
 
-
+ 
 Model training
 -----------------
 

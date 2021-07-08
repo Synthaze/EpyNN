@@ -55,7 +55,12 @@ def init_forward(layer,A):
     for c in ['h','A']:
         layer.fc[c] = [0] * layer.ts
 
-    return X
+    # Init h
+    layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
+    # Init h
+    hp = np.zeros(layer.fs['h'])
+
+    return X, hp
 
 
 def end_forward(layer):
