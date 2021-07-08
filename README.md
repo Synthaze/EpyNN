@@ -11,25 +11,20 @@
 3. Code organization: 75%
     - Improvement in nnlibs/commons
     - Think about general use of independant pseudo-random number generators
-    - Code comments
+    - Code comments - Ongoing
 
 3. EpyNN monitoring: 80%
     - Implement modes for logs (+color compatibility)
     
-
-**Although running smoothly, code performance in this new version is essentially untested**
-
-**Next goal is technical validation against previous versions / other librairies**
-
 ### Perspectives
 
 1. Documentation
-    - Technical
-    - Examples
+    - Technical - Ongoing
+    - Examples - Ongoing
 
 2. Jupyter?
 
-4. Paper redaction
+4. Paper redaction - Ongoing
 
 ## Installation
 
