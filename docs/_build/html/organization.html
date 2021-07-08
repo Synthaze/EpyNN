@@ -129,6 +129,7 @@
 <li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
 </ul>
 
             
@@ -652,6 +653,15 @@
     <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">one_hot_encode</span><span class="p">(</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">encoding</span>
+
+
+<span class="k">def</span> <span class="nf">one_hot_decode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+
+    <span class="n">decoding</span> <span class="o">=</span> <span class="p">[</span> <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;i2w&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">encoded</span><span class="p">)]</span> <span class="k">for</span> <span class="n">encoded</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
+
+    <span class="n">decoding</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decoding</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decoding</span>
 
 
 <span class="k">def</span> <span class="nf">one_hot_encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>

@@ -93,11 +93,11 @@ def init_forward(layer,A):
     # Init h and C shapes
     layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
     layer.fs['C'] = ( layer.d['h'],layer.fs['X'][-1] )
-    # Init h and C
-    h = np.zeros(layer.fs['h'])
+    # Init h_prev and C
+    hp = np.zeros(layer.fs['h'])
     C = np.zeros(layer.fs['C'])
 
-    return X, h, C
+    return X, hp, C
 
 
 def end_forward(layer):

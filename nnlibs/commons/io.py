@@ -20,6 +20,15 @@ def one_hot_encode_sequence(sequence,word_to_idx,vocab_size):
     return encoding
 
 
+def one_hot_decode_sequence(sequence,runData):
+
+    decoding = [ runData.e['i2w'][np.argmax(encoded)] for encoded in sequence]
+
+    decoding = ''.join(decoding)
+
+    return decoding
+
+
 def one_hot_encode_dataset(dataset,runData):
 
     word_to_idx(dataset,runData)

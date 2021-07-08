@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
 </ul>
 
             
@@ -189,7 +190,7 @@
         <span class="n">dhn</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dhn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
     <span class="c1"># Clip gradients</span>
-    <span class="n">mp</span><span class="o">.</span><span class="n">clip_gradient</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+    <span class="c1">#mp.clip_gradient(layer)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>

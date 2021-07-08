@@ -16,7 +16,7 @@ class GRU:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self,hidden_size,runData,
             binary=False,
             activate_update=cm.sigmoid,
@@ -50,7 +50,7 @@ class GRU:
         self.bs = {}
 
         ### Set keys for layer cache attributes
-        self.attrs = ['X','Xt','A','h','hp','z','r']
+        self.attrs = ['Xt','A','h','hh','z','r']
 
         ### Init shapes
         self.binary = binary

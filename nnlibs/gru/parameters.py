@@ -83,15 +83,15 @@ def init_forward(layer,A):
     # Init cache shapes
     layer.ts = layer.fs['X'][1]
 
-    for c in ['z','r','h','hp','A']:
+    for c in layer.attrs:
         layer.fc[c] = [0] * layer.ts
 
     # Init h shape
     layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
-    # Init h
-    h = np.zeros(layer.fs['h'])
+    # Init h_prev
+    hp = np.zeros(layer.fs['h'])
 
-    return X, h
+    return X, hp
 
 
 def end_forward(layer):
@@ -116,11 +116,11 @@ def init_backward(layer,dA):
     # Cache dXt (dX at current t) from dX
     dXt = layer.bc['dXt'] = dX
     # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-    dh = np.dot( layer.p['Wy'].T, dXt ) + dhn
-    dh = np.multiply( dh, (1-layer.fc['z'][-1]) )
-    dh = layer.bc['dh'] = layer.derivative_input(dh,layer.fc['h'][-1])
+    dh = layer.bc['dh'] = np.dot( layer.p['Wy'].T, dXt ) + dhn
+    dhh = np.multiply( dh, (1-layer.fc['z'][-1]) )
+    dhh = layer.bc['dhh'] = layer.derivative_input(dhh,layer.fc['hh'][-1])
 
-    return dX, dhn, dXt, dh
+    return dX, dhn, dXt, dh, dhh
 
 
 
@@ -130,6 +130,7 @@ def update_gradients(layer,t):
     # Retrieve h (current t)
     h = layer.fc['h'][t]
     hp = layer.fc['h'][t-1]
+
     # Retrieve Xt
     Xt = layer.fc['X'][:,t]
 
@@ -139,10 +140,10 @@ def update_gradients(layer,t):
     layer.g['dby'] += 1./ m * np.sum( dXt,axis=1,keepdims=True)
 
     # Retrieve dv and update dWv and dbv
-    dh = layer.bc['dh']
-    layer.g['dWh'] += 1./ m * np.dot( dh, Xt.T )
-    layer.g['dUh'] += 1./ m * np.dot( dh, np.multiply(layer.fc['r'][t], hp).T)
-    layer.g['dbh'] += 1./ m * np.sum( dh,axis=1,keepdims=True)
+    dhh = layer.bc['dhh']
+    layer.g['dWh'] += 1./ m * np.dot( dhh, Xt.T )
+    layer.g['dUh'] += 1./ m * np.dot( dhh, np.multiply(layer.fc['r'][t], hp).T)
+    layer.g['dbh'] += 1./ m * np.sum( dhh, axis=1, keepdims=True )
     # Retrieve dv and update dWv and dbv
     dr = layer.bc['dr']
     layer.g['dWr'] += 1./ m * np.dot( dr, Xt.T )

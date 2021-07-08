@@ -16,12 +16,12 @@ class RNN:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self,hidden_size,runData,
             binary=False,
             activate_input=cm.tanh,
             activate_output=cm.softmax,
-            initialization=cm.xavier):
+            initialization=cm.orthogonal):
 
         """ Layer attributes """
         ### Set layer init attribute to True

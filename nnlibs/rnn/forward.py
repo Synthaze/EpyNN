@@ -6,7 +6,7 @@ import numpy as np
 
 def rnn_forward(layer,A):
 
-    X = rp.init_forward(layer,A)
+    X, hp = rp.init_forward(layer,A)
 
     # Init layer parameters
     if layer.init == True:
@@ -20,8 +20,8 @@ def rnn_forward(layer,A):
 
         # Calculate input gate
         h = np.dot(layer.p['U'], Xt)
-        h += np.dot(layer.p['V'], h) + layer.p['bh']
-        h = layer.fc['h'][t] = layer.activate_input(h)
+        h += np.dot(layer.p['V'], hp) + layer.p['bh']
+        h = hp = layer.fc['h'][t] = layer.activate_input(h)
 
         # Calculate output gate
         At = np.dot( layer.p['W'], h ) + layer.p['bo']
