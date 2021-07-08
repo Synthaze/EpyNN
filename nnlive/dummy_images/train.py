@@ -41,7 +41,8 @@ dsets = sp.sets_prepare(runData)
 
 name = 'Convolution_Pooling_Flatten_Dense'
 #name = 'Convolution_Flatten_Dense_Dense'
-layers = [Convolution(32,2),Pooling(3,3),Flatten(),Dense(2)]
+layers = [Convolution(32,2),Pooling(3,3),Flatten(),Dense(48),Dense(2)]
+#layers = [Flatten(),Dense(48),Dense(2)]
 
 model = EpyNN(name=name,layers=layers,hPars=hPars)
 

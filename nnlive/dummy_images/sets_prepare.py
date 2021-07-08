@@ -41,7 +41,7 @@ def sets_prepare(runData):
 
         image = dataset[i].copy()
 
-        for j in range(PIXELS//2):
+        for j in range(PIXELS//20):
 
             idx = random.randint(0,PIXELS-1)
 
