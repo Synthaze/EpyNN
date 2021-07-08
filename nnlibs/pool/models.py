@@ -13,7 +13,7 @@ class Pooling:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self,f_width,
             stride=1,
             pool=np.max):

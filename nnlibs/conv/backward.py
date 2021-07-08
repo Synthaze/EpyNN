@@ -41,4 +41,4 @@ def convolution_backward(layer,dA):
 
     dA = layer.bc['dA'] = cp.restore_padding(layer,dA)
 
-    return dA
+    return None
