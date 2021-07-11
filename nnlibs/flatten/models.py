@@ -1,4 +1,5 @@
-#EpyNN/nnlibs/flatten/parameters.py
+#EpyNN/nnlibs/flatten/models.py
+import nnlibs.flatten.parameters as fp
 import nnlibs.flatten.backward as fb
 import nnlibs.flatten.forward as ff
 
@@ -10,7 +11,7 @@ class Flatten:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self):
 
         """ Layer attributes """
@@ -37,6 +38,8 @@ class Flatten:
         ### Set keys for layer cache attributes
         self.attrs = ['X','A']
 
+    def init_shapes(self):
+        fp.init_shapes(self)
 
     def forward(self,A):
         # Forward pass

@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def compute_metrics(model,dsets,hPars,runData):
+def compute_metrics(model,hPars,runData):
 
     metrics = {
         'accuracy': accuracy,
@@ -16,6 +16,10 @@ def compute_metrics(model,dsets,hPars,runData):
         'RMSLE': RMSLE,
         'KLD': KLD,
     }
+
+    embedding = model.l[0]
+
+    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
 
     for k, dset in enumerate(reversed(dsets)):
 

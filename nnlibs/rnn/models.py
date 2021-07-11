@@ -17,7 +17,7 @@ class RNN:
     :ivar var2: initial value: par2
     """
 
-    def __init__(self,hidden_size,runData,
+    def __init__(self,hidden_size,
             binary=False,
             activate_input=cm.tanh,
             activate_output=cm.softmax,
@@ -50,10 +50,12 @@ class RNN:
         ### Set keys for layer cache attributes
         self.attrs = ['X','Xt','A','h']
 
-        ### Init shapes
+        ###
         self.binary = binary
-        rp.init_shapes(self,hidden_size,runData)
+        self.hidden_size = hidden_size
 
+    def init_shapes(self):
+        rp.init_shapes(self)
 
     def forward(self,A):
         # Forward pass

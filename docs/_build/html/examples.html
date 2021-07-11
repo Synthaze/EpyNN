@@ -95,7 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Live examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#dummy">Dummy</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#boleans">Boleans</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boolean">Boolean</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#numerical">Numerical</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#strings">Strings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#time-series">Time series</a></li>
@@ -104,7 +104,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#real">Real</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#disease">Disease</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Numerical?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Numerical?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ptms">PTMs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#music">Music</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mnist">MNIST</a></li>
@@ -191,84 +191,154 @@
 <h2>Dummy<a class="headerlink" href="#dummy" title="Permalink to this headline">¶</a></h2>
 <p>Dummy examples are intended to help in understanding processing schemes for input data of diverse natures.</p>
 <p>During development or for educational purpose, these examples can also be used for debugging because dummy data are generated from models known <em>a priori</em>.</p>
-<div class="section" id="boleans">
-<h3>Boleans<a class="headerlink" href="#boleans" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_bolean</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_bolean/sets_prepare.py</span>
+<div class="section" id="boolean">
+<h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
+<p>Boolean data type is a form of data with only two possible values, namely <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> in most programming languages. In Python, these values evaluate to <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> behind the scene. Calculations using Boolean data are very quick and performance gain also arise from easier data and output processing compared to other data types.</p>
+<p>Examples of real world topics well suited for the Boolean data type may include: molecular interactions, gene regulation, disease prediction and diagnosis, among others. See the <a class="reference internal" href="#disease"><span class="std std-ref">Disease</span></a> example in the next section.</p>
+<p>The directory <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_boolean</span></code> contains a dummy example of EpyNN workflow for binary classification tasks with Boolean input data.</p>
+<p><em>Data preparation, structure and shape</em></p>
+<details>
+<summary style="cursor:pointer">Expand text details</summary>
+
+<br><p>One <code class="docutils literal notranslate"><span class="pre">dataset</span></code> is a list of <code class="docutils literal notranslate"><span class="pre">N_SAMPLES</span></code> samples.</p>
+<p>One <code class="docutils literal notranslate"><span class="pre">sample</span></code> is a list with <code class="docutils literal notranslate"><span class="pre">features</span></code> and associated <code class="docutils literal notranslate"><span class="pre">label</span></code>.</p>
+<p>One <code class="docutils literal notranslate"><span class="pre">features</span></code> object is a list of Boolean data and <code class="docutils literal notranslate"><span class="pre">label</span></code> a one-hot encoded label.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">sets_prepare()</span></code> function, a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop iterates over <code class="docutils literal notranslate"><span class="pre">N_SAMPLES</span></code> to generate <code class="docutils literal notranslate"><span class="pre">features</span></code> list of <code class="docutils literal notranslate"><span class="pre">N_FEATURES</span></code> random Boolean elements.</p>
+<p>If the arbitrary condition <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">features.count(True)</span> <span class="pre">&gt;</span> <span class="pre">features.count(False)</span> <span class="pre">)</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then <code class="docutils literal notranslate"><span class="pre">features</span></code> is associated with a positive label <code class="docutils literal notranslate"><span class="pre">p_label</span></code> in one <code class="docutils literal notranslate"><span class="pre">sample</span></code> object.</p>
+<p>Conversely, if the opposite condition <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">features.count(True)</span> <span class="pre">&lt;</span> <span class="pre">features.count(False)</span> <span class="pre">)</span></code> evaluates to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then <code class="docutils literal notranslate"><span class="pre">features</span></code> is associated with a negative label <code class="docutils literal notranslate"><span class="pre">n_label</span></code> in one <code class="docutils literal notranslate"><span class="pre">sample</span></code> object.</p>
+<p>At the end of each iteration, <code class="docutils literal notranslate"><span class="pre">sample</span></code> is appended to the <code class="docutils literal notranslate"><span class="pre">dataset</span></code> list object.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop completes, the <code class="docutils literal notranslate"><span class="pre">dsets</span></code> list object is returned from the <code class="docutils literal notranslate"><span class="pre">cio.dataset_to_dsets()</span></code> function which takes <code class="docutils literal notranslate"><span class="pre">dataset</span></code> as argument.</p>
+<p>The list <code class="docutils literal notranslate"><span class="pre">dsets</span></code> contains training, testing and validation sets such as <code class="docutils literal notranslate"><span class="pre">[dtrain,dtest,dval]</span></code>.</p>
+<p>Elements in <code class="docutils literal notranslate"><span class="pre">dsets</span></code> are <code class="docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code> objects with <code class="docutils literal notranslate"><span class="pre">features</span></code> and <code class="docutils literal notranslate"><span class="pre">label</span></code> vectors assigned to <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> attributes, respectively.</p>
+</details>
+
+<br><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_boolean/sets_prepare.py</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
+
+<span class="kn">import</span> <span class="nn">settings</span> <span class="k">as</span> <span class="nn">se</span>
 
 <span class="kn">import</span> <span class="nn">random</span>
 
 
-<span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prepare dummy dataset with bolean sample features</span>
+<span class="sd">    Prepare dummy dataset with Boolean sample features</span>
 
 <span class="sd">    sample = [features,label]</span>
 
-<span class="sd">    features is a list of sample features of shape (F_LENGTH,)</span>
-<span class="sd">    label is a one-hot encoded label of shape (N_LABELS,)</span>
+<span class="sd">    features is a list of sample features with length N_FEATURES</span>
+<span class="sd">    label is a one-hot encoded label with length N_LABELS</span>
+
+<span class="sd">    dataset = [sample_0,sample_1,...,sample_N]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="c1"># See ./settings.py - N_SAMPLES = 500</span>
+    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
+
+    <span class="c1"># N_FEATURES is the number of features describing a sample</span>
+    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="mi">11</span>
+
+    <span class="c1"># One-hot encoded positive and negative labels</span>
+    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Initialize dataset</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># See settings.py - config dict is cached into runData.m</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">runData</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span>
-
-    <span class="c1"># LENGTH is the number of features describing a sample</span>
-    <span class="n">F_LENGTH</span> <span class="o">=</span> <span class="mi">11</span>
-
-    <span class="c1"># Iterate through N_SAMPLES</span>
+    <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-        <span class="c1"># features is a 1D list of length F_LENGTH containing random boleans</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">][</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">F_LENGTH</span><span class="p">)</span> <span class="p">]</span>
-        <span class="c1"># Append X to dataset list object</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="c1"># Random choice True or False for N_FEATURES iterations</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="p">)</span> <span class="p">]</span>
 
-    <span class="c1"># Positive features contains more True</span>
-    <span class="n">positive</span> <span class="o">=</span> <span class="p">[</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span>  <span class="n">f</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="p">]</span>
-    <span class="c1"># Positive features associates with positive label [1,0]</span>
-    <span class="n">positive</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">f</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">positive</span> <span class="p">]</span>
+        <span class="c1"># Test if features associates with p_label (+)</span>
+        <span class="k">if</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span><span class="n">p_label</span><span class="p">]</span>
 
-    <span class="c1"># Negative features contains more False</span>
-    <span class="n">negative</span> <span class="o">=</span> <span class="p">[</span> <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">f</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="p">]</span>
-    <span class="c1"># Negative features associates with negative label [0,1]</span>
-    <span class="n">negative</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">f</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">negative</span> <span class="p">]</span>
+        <span class="c1"># Test if features associates with n_label (-)</span>
+        <span class="k">elif</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span><span class="n">n_label</span><span class="p">]</span>
 
-    <span class="c1"># Concatenate posive and negative lists of samples</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">positive</span> <span class="o">+</span> <span class="n">negative</span>
+        <span class="c1"># Append sample to dataset</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
 
-    <span class="c1"># Shuffle dataset before split</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="c1"># Split dataset and vectorize data</span>
+    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_bolean&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Return dsets = [dtrain,dtest,dval]</span>
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_bolean&#39;</span><span class="p">)</span>
+    <span class="c1"># Print data and shapes</span>
+    <span class="n">show_data_shapes</span><span class="p">(</span><span class="n">dsets</span><span class="p">)</span>
 
-    <span class="c1"># dtrain, dtest, dval are dataSet EpyNN objects</span>
-    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># dtrain.X (features) is a numpy array of shape (N_SAMPLES//2,F_LENGTH)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (500, 11)</span>
-    <span class="c1"># dtrain.X[0] is a numpy array of shape (F_LENGTH,)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (11,)</span>
-    <span class="c1"># dtrain.X[0] contains one sample features</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># [False False False ... False True]</span>
-    <span class="c1"># Note that True evaluates to 1 and False to 0</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># [0 0 0 ... 0 1]</span>
-
-    <span class="c1"># dtrain.Y (label) is a numpy array of shape (N_SAMPLES//2,N_LABELS)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (500, 2)</span>
-    <span class="c1"># dtrain.Y[0] is a numpy array of shape (N_LABELS,)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (2,)</span>
-    <span class="c1"># dtrain.Y[0] contains one sample label</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
+    <span class="c1"># dsets is a list equal to [dtrain,dtest,dval]</span>
     <span class="k">return</span> <span class="n">dsets</span>
 </pre></div>
 </div>
+<details>
+<summary style="cursor:pointer">Data and shapes</summary>
+
+<br><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataSet</span><span class="o">.</span><span class="n">n</span>           <span class="n">dummy_bolean_dtrain</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">shape</span>    <span class="p">(</span><span class="mi">500</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       <span class="mi">0</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">11</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span>  <span class="kc">True</span> <span class="kc">False</span> <span class="kc">False</span> <span class="kc">False</span> <span class="kc">False</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1</span>      <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">2</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">500</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="mi">1</span>
+
+<span class="n">dataSet</span><span class="o">.</span><span class="n">n</span>           <span class="n">dummy_bolean_dtest</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">shape</span>    <span class="p">(</span><span class="mi">250</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       <span class="mi">0</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">11</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span> <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span> <span class="kc">False</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span>  <span class="kc">True</span> <span class="kc">False</span> <span class="kc">False</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1</span>      <span class="p">[</span><span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">2</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="mi">0</span>
+
+<span class="n">dataSet</span><span class="o">.</span><span class="n">n</span>           <span class="n">dummy_bolean_dval</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">shape</span>    <span class="p">(</span><span class="mi">250</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>       <span class="mi">0</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">11</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span> <span class="kc">True</span> <span class="kc">False</span>  <span class="kc">True</span> <span class="kc">False</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span>  <span class="kc">True</span> <span class="kc">False</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">1</span>      <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>  <span class="p">(</span><span class="mi">2</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="p">[</span><span class="mi">1</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span>     <span class="p">(</span><span class="mi">250</span><span class="p">,)</span>
+<span class="n">dataSet</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>        <span class="mi">0</span>
+</pre></div>
+</div>
+</details>
+
+<br><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In real world problems, the relationship between <code class="docutils literal notranslate"><span class="pre">features</span></code> (X) and <code class="docutils literal notranslate"><span class="pre">label</span></code> (Y) is unknown <em>a priori</em>. In this dummy example, the relationship is known <em>a priori</em> and the Neural Network should converge to approximate the <code class="docutils literal notranslate"><span class="pre">model_dummy_boolean()</span></code> function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_dummy_boolean</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">X</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Positive</span>
+
+    <span class="k">elif</span> <span class="n">X</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">X</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Negative</span>
+
+    <span class="k">return</span> <span class="n">Y</span>
+</pre></div>
+</div>
+</div>
 <p><em>Architecture layers, training and prediction</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_bolean/train.py</span>
+<details>
+<summary style="cursor:pointer">Imports and headers</summary>
+
+<br><p>In the current example script template, the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">VARIABLE</span></code> comment in the <code class="docutils literal notranslate"><span class="pre">IMPORTS</span></code> part relates to imports which depends on input data type and shape.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code> part depends on user preferences and loads settings from the <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file in the working directory.</p>
+<p>Details can be found the <a class="reference internal" href="workflows.html#workflows"><span class="std std-ref">Workflows</span></a> chapter under the <a class="reference internal" href="workflows.html#initialization"><span class="std std-ref">Initialization</span></a> section. See <a class="reference internal" href="workflows.html#imports"><span class="std std-ref">Full imports</span></a>, <a class="reference internal" href="workflows.html#headers"><span class="std std-ref">Headers</span></a> and <a class="reference internal" href="workflows.html#settings"><span class="std std-ref">Settings</span></a> for direct access.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_boolean/train.py</span>
 <span class="c1">################################## IMPORTS ################################</span>
 <span class="c1"># Set environment and import default settings</span>
 <span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
@@ -276,7 +346,7 @@
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">runData</span><span class="p">,</span> <span class="n">hPars</span>
 <span class="c1"># Import EpyNN meta-model to build neural networks</span>
 <span class="kn">from</span> <span class="nn">nnlibs.meta.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
-<span class="c1"># Import models specific to layer architectures</span>
+<span class="c1"># VARIABLE - Import models specific to layer architectures</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
 <span class="c1"># Import utils</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
@@ -301,10 +371,16 @@
 <span class="n">runData</span> <span class="o">=</span> <span class="n">runData</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
 
 <span class="n">hPars</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">)</span>
+</pre></div>
+</div>
+</details>
 
-
-<span class="c1">################################## DATASETS ################################</span>
-<span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span>
+<br><p>Upon execution of the <code class="docutils literal notranslate"><span class="pre">IMPORTS</span></code> and <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code> parts, data are returned from the <code class="docutils literal notranslate"><span class="pre">sp.sets_prepare()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">DATASETS</span></code> part.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">MODEL</span></code> part contains examples of layer architectures and stacks relevant to input data type and shape.</p>
+<p>Given a number of samples <code class="docutils literal notranslate"><span class="pre">N_SAMPLES</span></code> and number of Boolean features <code class="docutils literal notranslate"><span class="pre">N_FEATURES</span></code> describing each sample, the features vector of the corresponding set in this example has shape <code class="docutils literal notranslate"><span class="pre">(N_SAMPLES,</span> <span class="pre">N_FEATURES)</span></code>.</p>
+<p>Given EpyNN built-in layer architectures, this shape is suited to the <code class="docutils literal notranslate"><span class="pre">Dense</span></code> layer, often referred to as <em>Fully connected layer</em>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################################## DATASETS ################################</span>
+<span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">()</span> <span class="c1"># See &quot;Data preparation, structure and shape&quot;</span>
 
 
 <span class="c1">################################ BUILD MODEL ###############################</span>
@@ -331,13 +407,13 @@
 <div class="section" id="numerical">
 <h3>Numerical<a class="headerlink" href="#numerical" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 <div class="section" id="strings">
 <h3>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_strings</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_strings/sets_prepare.py</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
 
@@ -469,12 +545,12 @@
 <span class="c1"># name = &#39;RNN-11-bin&#39;</span>
 <span class="c1"># layers = [RNN(11,runData,binary=True)]</span>
 <span class="c1"># name = &#39;GRU-11-bin&#39;</span>
-<span class="c1"># layers = [GRU(11,runData,binary=True)]</span>
+<span class="c1"># layers = [RNN(11,runData,binary=True)]</span>
 <span class="c1"># name = &#39;LSTM-11-bin&#39;</span>
 <span class="c1"># layers = [LSTM(11,runData,binary=True)]</span>
-<span class="c1">#</span>
+
 <span class="c1"># name = &#39;RNN-11_Flatten_Dense&#39;</span>
-<span class="c1"># layers = [RNN(11,runData),Flatten(),Dense(2)]</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">RNN</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="n">runData</span><span class="p">),</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
 
 
 <span class="c1">################################ TRAIN MODEL ################################</span>
@@ -492,8 +568,8 @@
 <div class="section" id="time-series">
 <h3>Time series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_wave/sets_prepare.py</span>
+<p><em>Data preparation, structure and shape</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_time/sets_prepare.py</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
 
@@ -508,35 +584,39 @@
 
 <span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">):</span>
 
-    <span class="n">fs</span> <span class="o">=</span> <span class="mi">44100</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="mi">64</span>
 
     <span class="n">t</span> <span class="o">=</span> <span class="mi">4</span>
 
     <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="o">*</span><span class="n">t</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">f_positive</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="n">f_positive</span> <span class="o">=</span> <span class="mi">4</span>
 
     <span class="n">positive</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
         <span class="n">f_positive</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f_positive</span> <span class="o">*</span> <span class="n">samples</span><span class="p">)</span>
-        <span class="n">positive</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+        <span class="n">positive</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
 
-    <span class="n">f_negative</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="n">f_negative</span> <span class="o">=</span> <span class="mi">16</span>
 
     <span class="n">negative</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
         <span class="n">f_negative</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f_negative</span> <span class="o">*</span> <span class="n">samples</span><span class="p">)</span>
-        <span class="n">negative</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+        <span class="n">negative</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
 
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">positive</span> <span class="o">+</span> <span class="n">negative</span>
 
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_wave&#39;</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_wave&#39;</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dsets</span>
 
@@ -567,7 +647,7 @@
 </pre></div>
 </div>
 <p><em>Architecture layers, training and prediction</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_wave/train.py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_time/train.py</span>
 <span class="c1"># Set environment and import default settings</span>
 <span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="c1"># Import common models</span>
@@ -609,9 +689,9 @@
 <span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span>
 
 <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Flatten_Dense_Dense&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">softmax</span><span class="p">)]</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dense</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">softmax</span><span class="p">)]</span>
 <span class="c1">#name = &#39;RNN_Flatte,_Dense_Dense&#39;</span>
-<span class="c1">#layers = [RNN(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">RNN</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="n">runData</span><span class="p">),</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
 <span class="c1">#name = &#39;GRU_Flatten_Dense_Dense&#39;</span>
 <span class="c1">#layers = [GRU(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]</span>
 <span class="c1">#name = &#39;LSTM_Flatten_Dense_Dense&#39;</span>
@@ -643,40 +723,40 @@
 <div class="section" id="images">
 <h3>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_images</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 </div>
 <div class="section" id="real">
 <h2>Real<a class="headerlink" href="#real" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="disease">
-<h3>Disease<a class="headerlink" href="#disease" title="Permalink to this headline">¶</a></h3>
+<span id="id1"></span><h3>Disease<a class="headerlink" href="#disease" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
-<div class="section" id="id1">
-<h3>Numerical?<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>Numerical?<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 <div class="section" id="ptms">
 <h3>PTMs<a class="headerlink" href="#ptms" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/ptm_prediction</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 <div class="section" id="music">
 <h3>Music<a class="headerlink" href="#music" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/music_author</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 <div class="section" id="mnist">
 <h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/mnist_database</span></code></p>
-<p><em>Data structure, shape, and preparation</em></p>
+<p><em>Data preparation, structure and shape</em></p>
 <p><em>Architecture layers, training and prediction</em></p>
 </div>
 </div>

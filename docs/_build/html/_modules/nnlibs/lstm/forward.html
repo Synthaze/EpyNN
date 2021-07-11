@@ -167,7 +167,7 @@
 
 <div class="viewcode-block" id="lstm_forward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.lstm.forward.lstm_forward">[docs]</a><span class="k">def</span> <span class="nf">lstm_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
 
-    <span class="n">X</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">init_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">lp</span><span class="o">.</span><span class="n">init_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
 
     <span class="c1"># Init layer parameters</span>
     <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">init</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
@@ -180,7 +180,7 @@
         <span class="n">Xt</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="n">t</span><span class="p">]</span>
 
         <span class="c1"># Concatenate input and hidden state</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">Xt</span><span class="p">))</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">hp</span><span class="p">,</span> <span class="n">Xt</span><span class="p">))</span>
 
         <span class="c1"># Calculate forget gate</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wf&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">]</span>

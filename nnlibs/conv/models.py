@@ -14,7 +14,7 @@ class Convolution:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self,n_filters,f_width,
             depth=1,
             stride=1,
@@ -50,8 +50,15 @@ class Convolution:
         self.attrs = ['X','Xt','A','Z','h','C','c','z','f','i','g','z','o']
 
         ### Init shapes
-        cp.init_shapes(self,n_filters,f_width,depth,stride,padding)
+        self.n_filters = n_filters
+        self.f_width = f_width
+        self.depth = depth
+        self.stride = stride
+        self.padding = padding
 
+
+    def init_shapes(self):
+        cp.init_shapes(self)
 
     def forward(self,A):
         # Forward pass

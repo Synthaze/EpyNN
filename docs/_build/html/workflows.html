@@ -193,13 +193,13 @@
   <div class="toctree-wrapper compound">
 </div>
 <div class="section" id="workflows">
-<h1>Workflows<a class="headerlink" href="#workflows" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Workflows<a class="headerlink" href="#workflows" title="Permalink to this headline">¶</a></h1>
 <p>The default template EpyNN directory contains a <code class="docutils literal notranslate"><span class="pre">sets_prepare.py</span></code> file to prepare data sets and a <code class="docutils literal notranslate"><span class="pre">train.py</span></code> file to import data, to build and train your model and to use it on unlabeled data.</p>
 <div class="section" id="initialization">
-<h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
 <p>This subsection presents imports and headers typically found in the <code class="docutils literal notranslate"><span class="pre">train.py</span></code> template, as well as the <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file containing EpyNN environment variables.</p>
 <div class="section" id="full-imports">
-<h3>Full imports<a class="headerlink" href="#full-imports" title="Permalink to this headline">¶</a></h3>
+<span id="imports"></span><h3>Full imports<a class="headerlink" href="#full-imports" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/template/train.py</span>
 <span class="c1"># Set environment and import default settings</span>
 <span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
@@ -231,7 +231,7 @@
 <p>Other imports are described in the code comments.</p>
 </div>
 <div class="section" id="headers">
-<h3>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h3>
+<span id="id3"></span><h3>Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Do not truncate NumPy arrays on print() call - Please comment for large arrays</span>
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
 
@@ -255,7 +255,7 @@
 </div>
 </div>
 <div class="section" id="settings">
-<h3>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/template/settings.py</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>

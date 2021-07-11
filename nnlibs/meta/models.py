@@ -1,10 +1,13 @@
 #EpyNN/nnlibs/meta/models.py
+from nnlibs.commons.models import runData, hPars
 from nnlibs.commons.maths import seeding
 from nnlibs.commons.decorators import *
 import nnlibs.commons.plot as cp
 
 import nnlibs.meta.forward as mf
 import nnlibs.meta.train as mt
+
+import nnlibs.settings as se
 
 import numpy as np
 
@@ -13,10 +16,17 @@ class EpyNN:
     """An example docstring for a class definition."""
 
     @log_method
-    def __init__(self,name='Model',layers=[],hPars=None):
+    def __init__(self,name='Model',layers=[],settings=[se.dataset,se.config,se.hPars]):
+
+        self.m = {}
+        self.m['settings'] = settings
 
         self.n = name
-        self.l = layers
+        self.layers = self.l = layers
+
+        self.runData = runData(settings[0],settings[1])
+
+        self.hPars = hPars(settings[2])
 
         self.s = seeding()
 
@@ -24,7 +34,11 @@ class EpyNN:
 
         self.g = {}
 
+        embedding = layers[0]
+
         for i, layer in enumerate(self.l):
+
+            layer.d['v'] = vocab_size = embedding.d['v']
 
             if self.s != None:
                 layer.SEED = self.s + i
@@ -33,14 +47,20 @@ class EpyNN:
 
             layer.np = np.random.default_rng(seed=layer.SEED)
 
+            layer.init_shapes()
 
-    def train(self,dsets,hPars,runData):
+
+    def train(self):
         """An example docstring for a method definition."""
-        mt.run_train(self,dsets,hPars,runData)
+        hPars = self.hPars
+        runData = self.runData
+        mt.run_train(self,hPars,runData)
 
 
-    def plot(self,hPars,runData):
+    def plot(self):
         """An example docstring for a method definition."""
+        hPars = self.hPars
+        runData = self.runData
         cp.pyplot_metrics(self,hPars,runData)
         cp.gnuplot_accuracy(runData)
 

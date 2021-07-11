@@ -15,7 +15,7 @@ def lstm_backward(layer,dA):
 
         if layer.binary == False:
             # Cache dXt (dX at current t) from dX
-            dXt = layer.bc['dXt'] = dX[:,t]
+            dXt = layer.bc['dXt'] = dX[t]
             # Cache dh (current) from dXt (prev) and dhn
             dh = layer.bc['dh'] = np.dot(layer.p['Wv'].T, dXt) + dhn
 

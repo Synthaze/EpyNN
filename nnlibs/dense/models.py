@@ -15,10 +15,10 @@ class Dense:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     @log_method
     def __init__(self,
-            layer_size=2,
+            nodes=2,
             activate=cm.softmax,
             initialization=cm.xavier,
             l1 = 0,
@@ -56,7 +56,12 @@ class Dense:
         self.attrs = ['X','A','Z']
 
         ### Init shapes
-        dp.init_shapes(self,layer_size)
+        #dp.init_shapes(self,nodes)
+        self.nodes = nodes
+
+    def init_shapes(self):
+        nodes = self.nodes
+        dp.init_shapes(self,nodes)
 
 
     def forward(self,A):

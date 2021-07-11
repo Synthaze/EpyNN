@@ -1,0 +1,38 @@
+dataSet.n           dummy_bolean_dtrain
+dataSet.id.shape    (500,)
+dataSet.id[0]       0
+dataSet.X.shape     (500, 11)
+dataSet.X[0].shape  (11,)
+dataSet.X[0]        [ True  True False  True False False False False  True  True False]
+dataSet.X[0]*1      [1 1 0 1 0 0 0 0 1 1 0]
+dataSet.Y.shape     (500, 2)
+dataSet.Y[0].shape  (2,)
+dataSet.Y[0]        [0 1]
+dataSet.y.shape     (500,)
+dataSet.y[0]        1
+
+dataSet.n           dummy_bolean_dtest
+dataSet.id.shape    (250,)
+dataSet.id[0]       0
+dataSet.X.shape     (250, 11)
+dataSet.X[0].shape  (11,)
+dataSet.X[0]        [ True  True  True False False  True  True False  True False False]
+dataSet.X[0]*1      [1 1 1 0 0 1 1 0 1 0 0]
+dataSet.Y.shape     (250, 2)
+dataSet.Y[0].shape  (2,)
+dataSet.Y[0]        [1 0]
+dataSet.y.shape     (250,)
+dataSet.y[0]        0
+
+dataSet.n           dummy_bolean_dval
+dataSet.id.shape    (250,)
+dataSet.id[0]       0
+dataSet.X.shape     (250, 11)
+dataSet.X[0].shape  (11,)
+dataSet.X[0]        [ True False  True False  True  True  True  True  True  True False]
+dataSet.X[0]*1      [1 0 1 0 1 1 1 1 1 1 0]
+dataSet.Y.shape     (250, 2)
+dataSet.Y[0].shape  (2,)
+dataSet.Y[0]        [1 0]
+dataSet.y.shape     (250,)
+dataSet.y[0]        0

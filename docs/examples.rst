@@ -21,27 +21,17 @@ Dummy examples are intended to help in understanding processing schemes for inpu
 
 During development or for educational purpose, these examples can also be used for debugging because dummy data are generated from models known *a priori*.
 
-Boleans
+Boolean
 ~~~~~~~~~~~~~
 
-``EpyNN/nnlive/dummy_bolean``
-
-*Data structure, shape, and preparation*
-
-.. include:: ./../nnlive/dummy_bolean/sets_prepare.py
-   :literal:
-
-*Architecture layers, training and prediction*
-
-.. include:: ./../nnlive/dummy_bolean/train.py
-   :literal:
+.. include:: ./_static/dummy_boolean.rst
 
 Numerical
 ~~~~~~~~~~~~~
 
 ``EpyNN/nnlive/to_be_done``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
@@ -50,7 +40,7 @@ Strings
 
 ``EpyNN/nnlive/dummy_strings``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 .. include:: ./../nnlive/dummy_strings/sets_prepare.py
    :literal:
@@ -65,7 +55,7 @@ Time series
 
 ``EpyNN/nnlive/dummy_time``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 .. include:: ./../nnlive/dummy_time/sets_prepare.py
    :literal:
@@ -80,19 +70,21 @@ Images
 
 ``EpyNN/nnlive/dummy_images``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
 Real
 -----------------
 
+.. _Disease:
+
 Disease
 ~~~~~~~~~~~~~
 
 ``EpyNN/nnlive/to_be_done``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
@@ -101,7 +93,7 @@ Numerical?
 
 ``EpyNN/nnlive/to_be_done``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
@@ -110,7 +102,7 @@ PTMs
 
 ``EpyNN/nnlive/ptm_prediction``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
@@ -119,7 +111,7 @@ Music
 
 ``EpyNN/nnlive/music_author``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*
 
@@ -128,6 +120,6 @@ MNIST
 
 ``EpyNN/nnlive/mnist_database``
 
-*Data structure, shape, and preparation*
+*Data preparation, structure and shape*
 
 *Architecture layers, training and prediction*

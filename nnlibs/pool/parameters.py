@@ -4,11 +4,11 @@ import math
 import numpy as np
 
 
-def init_shapes(layer,f_width,stride):
+def init_shapes(layer):
     ### Set layer dictionaries values
     ## Dimensions
-    layer.d['fw'] = f_width
-    layer.d['s'] = stride
+    layer.d['fw'] = layer.f_width
+    layer.d['s'] = layer.stride
 
     return None
 
