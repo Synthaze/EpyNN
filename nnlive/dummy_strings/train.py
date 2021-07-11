@@ -1,23 +1,22 @@
-#EpyNN/nnlive/dummy_strings/train.py
+#EpyNN/nnlive/dummy_boolean/train.py
 ################################## IMPORTS ################################
 # Set environment and import default settings
 from nnlibs.initialize import *
-# Import common models
-from nnlibs.commons.models import runData, hPars
 # Import EpyNN meta-model to build neural networks
 from nnlibs.meta.models import EpyNN
-# Import models specific to layer architectures
-from nnlibs.dense.models import Dense
-from nnlibs.dropout.models import Dropout
+#
+from nnlibs.embedding.models import Embedding
+# VARIABLE - Import models specific to layer architectures
 from nnlibs.flatten.models import Flatten
-from nnlibs.gru.models import GRU
+from nnlibs.dense.models import Dense
 from nnlibs.lstm.models import LSTM
 from nnlibs.rnn.models import RNN
+from nnlibs.gru.models import GRU
 # Import utils
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
 # Import data-specific routine to prepare sets
-import sets_prepare as sp
+import prepare_dataset as ps
 # Import local EpyNN settings
 import settings as se
 
@@ -33,38 +32,38 @@ cm.global_seed(1)
 
 cl.init_dir(se.config)
 
-runData = runData(se.config)
-
-hPars = hPars(se.hPars)
-
-
+# DOCS_HEADERS
 ################################## DATASETS ################################
-dsets = sp.sets_prepare(runData)
+dataset = ps.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
+#dataset = ps.read_dataset()
 
 
 ################################ BUILD MODEL ###############################
-name = 'Flatten_Dense-2-Softmax'
-layers = [Flatten(),Dense(2)]
-# name = 'Flatten_Dense-8-ReLU_Dense-2-Softmax'
-# layers = [Flatten(),Dense(8,activate=cm.elu),Dense(2)]
-#
-# name = 'RNN-11-bin'
-# layers = [RNN(11,runData,binary=True)]
-# name = 'GRU-11-bin'
-# layers = [RNN(11,runData,binary=True)]
-# name = 'LSTM-11-bin'
-# layers = [LSTM(11,runData,binary=True)]
+embedding = Embedding(dataset,se.dataset,encode=True)
 
-# name = 'RNN-11_Flatten_Dense'
-# layers = [RNN(11,runData),Flatten(),Dense(2)]
+name = 'Embedding_Flatten_Dense-2-Softmax' # (1)
+layers = [embedding,Flatten(),Dense()]
+
+# name = 'RNN-11-bin-Softmax' # (2)
+#layers = [embedding,RNN(hidden_size=11,binary=True)]
+
+# name = 'GRU-11-bin-Softmax' # (3)
+# layers = [embedding,GRU(11,binary=True)]
+
+# name = 'LSTM-11-bin-Softmax' # (4)
+# layers = [embedding,LSTM(11,binary=True)]
+
+#name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
+#layers = [embedding,RNN(11),Flatten(),Dense(48,cm.relu),Dense()]
+
+
+model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
 
 
 ################################ TRAIN MODEL ################################
-model = EpyNN(name=name,layers=layers,hPars=hPars)
+model.train()
 
-model.train(dsets,hPars,runData)
-
-model.plot(hPars,runData)
+model.plot()
 
 
 ################################# USE MODEL #################################

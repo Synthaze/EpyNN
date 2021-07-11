@@ -5,15 +5,21 @@
 
 .. toctree::
 
+.. _Workflows:
+
 Workflows
 ==================
 
 The default template EpyNN directory contains a ``sets_prepare.py`` file to prepare data sets and a ``train.py`` file to import data, to build and train your model and to use it on unlabeled data.
 
+.. _Initialization:
+
 Initialization
 ----------------
 
 This subsection presents imports and headers typically found in the ``train.py`` template, as well as the ``settings.py`` file containing EpyNN environment variables.
+
+.. _Imports:
 
 Full imports
 ~~~~~~~~~~~~~~~~
@@ -25,6 +31,7 @@ Upon execution of ``nnlibs.initialize import *``, a default ``settings.py`` file
 
 Other imports are described in the code comments.
 
+.. _Headers:
 
 Headers
 ~~~~~~~~~~~~~~~~
@@ -51,6 +58,7 @@ Headers
     # Initialize hPars object
     hPars = hPars(se.hPars)
 
+.. _Settings:
 
 Settings
 ~~~~~~~~~~~~~~~~
@@ -105,7 +113,7 @@ Neural Networks can be initialized by providing the meta-model ``EpyNN`` with th
     # Initialize your Neural Network
     model = EpyNN(name=name,layers=layers,hPars=hPars)
 
- 
+
 Model training
 -----------------
 

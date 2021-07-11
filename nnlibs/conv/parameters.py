@@ -13,13 +13,13 @@ def set_activation(layer):
     return None
 
 
-def init_shapes(layer,n_filters,f_width,depth,stride,padding):
+def init_shapes(layer):
 
-    fw = layer.d['fw'] = f_width
-    nf = layer.d['nf'] = n_filters
-    s = layer.d['s'] = stride
-    p = layer.d['p'] = padding
-    d = layer.d['d'] = depth
+    fw = layer.d['fw'] = layer.f_width
+    nf = layer.d['nf'] = layer.n_filters
+    s = layer.d['s'] = layer.stride
+    p = layer.d['p'] = layer.padding
+    d = layer.d['d'] = layer.depth
 
     layer.fs['W'] = ( fw, fw, d, nf)
     layer.fs['b'] = ( 1, 1, 1, nf )

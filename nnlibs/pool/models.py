@@ -44,7 +44,11 @@ class Pooling:
         self.attrs = ['X','A','Z']
 
         ### Init shapes
-        pp.init_shapes(self,f_width,stride)
+        self.f_width = f_width
+        self.stride = stride
+
+    def init_shapes(self):
+        pp.init_shapes(self)
 
     def assemble_block(self, block, t, b, l, r):
 

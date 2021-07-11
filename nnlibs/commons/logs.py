@@ -11,10 +11,13 @@ import sys
 
 
 #@log_function
-def model_core_logs(model,dsets,hPars,runData):
+def model_core_logs(model,hPars,runData):
 
     colors = ['green','red','magenta','cyan','yellow','blue','grey']
 
+    embedding = model.l[0]
+
+    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
 
     if runData.b['i'] == True:
 
@@ -81,7 +84,7 @@ def init_core_logs(model,dsets,hPars,runData,colors):
 
     init_2 = log_lr_schedule(hPars)
 
-    init_3 = log_datasets(dsets,hPars,runData)
+    init_3 = log_datasets(model,dsets,hPars,runData)
 
     init_4 = log_others(dsets,hPars,runData)
 
@@ -184,7 +187,7 @@ def log_lr_schedule(hPars):
     return logs
 
 
-def log_datasets(dsets,hPars,runData):
+def log_datasets(model,dsets,hPars,runData):
 
     headers = ['N_SAMPLES','dtrain\n(0)','dtest\n(1)','dval\n(2)','batch\nnumber\n(b)','dtrain/b','dataset\ntarget','metrics\ntarget']
 
@@ -192,7 +195,9 @@ def log_datasets(dsets,hPars,runData):
 
     logs.add_rows([headers])
 
-    log = [runData.m['s'],dsets[0].s,dsets[1].s,dsets[2].s,hPars.b,int(dsets[0].s)//int(hPars.b),runData.m['d'],runData.m['m']]
+    batch_number = model.m['settings'][0]['batch_number']
+
+    log = [runData.m['s'],dsets[0].s,dsets[1].s,dsets[2].s,batch_number,int(dsets[0].s)//int(batch_number),runData.m['d'],runData.m['m']]
 
     logs.add_row(log)
 
@@ -222,24 +227,6 @@ def log_others(dsets,hPars,runData):
     logs.set_max_width(0)
 
     cprint ('-------------------------- Others ---------------------\n',attrs=['bold'])
-
-    print (logs.draw())
-
-    print ('\n')
-
-    headers = ['model\nsave','dsets\nsave','hPars\nsave','runData\nsave','plot\nsave']
-
-    logs = Texttable()
-
-    logs.add_rows([headers])
-
-    log = [str(runData.b['ms']),str(runData.b['ds']),str(runData.b['hs']),str(runData.b['rs']),str(runData.b['ps'])]
-
-    logs.add_row(log)
-
-    logs.set_max_width(0)
-
-    cprint ('-------------------- Save -----------------\n',attrs=['bold'])
 
     print (logs.draw())
 

@@ -13,20 +13,20 @@ def set_activation(layer):
     return None
 
 
-def init_shapes(layer,hidden_size,runData):
+def init_shapes(layer):
     ### Set layer dictionaries values
     ## Dimensions
     # Hidden size
-    layer.d['h'] = hidden_size
+    layer.d['h'] = layer.hidden_size
     # Vocab size
-    layer.d['v'] = runData.e['v']
+    layer.d['v'] = layer.vocab_size = layer.d['v']
     # Output size
     if layer.binary == False:
         output_size = layer.d['v']
     else:
         output_size = 2
 
-    layer.d['o'] = output_size
+    layer.d['o'] = layer.output_size = output_size
 
     ## Forward pass shapes
     hv = ( layer.d['h'], layer.d['v'] )
@@ -85,7 +85,7 @@ def init_backward(layer,dA):
     # Cache dXt (dX at current t) from dX
     dXt = layer.bc['dXt'] = layer.bc['dX']
     # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-    dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt) + dhn
+    dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt)
 
     return dX, dhn, dXt, dh
 

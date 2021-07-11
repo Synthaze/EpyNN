@@ -17,7 +17,7 @@ class GRU:
     :ivar var2: initial value: par2
     """
 
-    def __init__(self,hidden_size,runData,
+    def __init__(self,hidden_size,
             binary=False,
             activate_update=cm.sigmoid,
             activate_reset=cm.sigmoid,
@@ -54,7 +54,10 @@ class GRU:
 
         ### Init shapes
         self.binary = binary
-        gp.init_shapes(self,hidden_size,runData)
+        self.hidden_size = hidden_size
+
+    def init_shapes(self):
+        gp.init_shapes(self)
 
 
     def forward(self,A):

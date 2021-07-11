@@ -16,9 +16,9 @@ class LSTM:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     @log_method
-    def __init__(self,hidden_size,runData,
+    def __init__(self,hidden_size,
             binary=False,
             activate_forget=cm.sigmoid,
             activate_input=cm.sigmoid,
@@ -57,8 +57,10 @@ class LSTM:
 
         ### Init shapes
         self.binary = binary
-        lp.init_shapes(self,hidden_size,runData)
+        self.hidden_size = hidden_size
 
+    def init_shapes(self):
+        lp.init_shapes(self)
 
     def forward(self,A):
         # Forward pass

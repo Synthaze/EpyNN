@@ -34,3 +34,11 @@ def init_params(layer):
     layer.init = False
 
     return None
+
+
+def init_backward(layer,dA):
+
+    # Cache dX (current) from dA (prev)
+    dX = layer.bc['dX'] = dA
+
+    return dX

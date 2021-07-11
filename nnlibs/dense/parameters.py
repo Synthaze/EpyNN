@@ -14,11 +14,11 @@ def set_activation(layer):
     return None
 
 
-def init_shapes(layer,layer_size):
+def init_shapes(layer,nodes):
     ### Set layer dictionaries values
     ## Dimensions
     # Layer size
-    layer.d['d'] = layer_size
+    layer.d['d'] = nodes
 
     dx = ( layer.d['d'], None )
     d1 = ( layer.d['d'], 1 )

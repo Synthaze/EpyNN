@@ -17,13 +17,13 @@ def set_activation(layer):
     return None
 
 
-def init_shapes(layer,hidden_size,runData):
+def init_shapes(layer):
     ### Set layer dictionaries values
     ## Dimensions
     # Hidden size
-    layer.d['h'] = hidden_size
+    layer.d['h'] = layer.hidden_size
     # Vocab size
-    layer.d['v'] = runData.e['v']
+    layer.d['v'] = layer.vocab_size = layer.d['v']
     # z size
     layer.d['z'] = layer.d['h'] + layer.d['v']
     # Output size
