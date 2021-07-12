@@ -6,7 +6,13 @@ import glob
 import os
 
 
-def features_boolean(N_FEATURES=11):
+def features_boolean():
+    """
+
+    """
+
+    # Number of features describing a sample
+    N_FEATURES = 11
 
     # Random choice True or False for N_FEATURES iterations
     features = [ random.choice([True,False]) for j in range(N_FEATURES) ]
@@ -40,14 +46,11 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # Number of features describing a sample
-    N_FEATURES = 11
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
         # Compute random boolean features
-        features = features_boolean(N_FEATURES)
+        features = features_boolean()
 
         # Test if features associates with p_label (+)
         if features.count(True) > features.count(False):
@@ -70,6 +73,9 @@ def prepare_dataset(se_dataset):
 
 
 def prepare_unlabeled(N_SAMPLES=1):
+    """
+
+    """
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
@@ -81,7 +87,7 @@ def prepare_unlabeled(N_SAMPLES=1):
     for i in range(N_SAMPLES):
 
         # Compute random boolean features
-        features = features_boolean(N_FEATURES)
+        features = features_boolean()
 
         # Unlabeled sample
         sample = [ features, None ]

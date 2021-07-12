@@ -39,7 +39,7 @@ dataset = pd.prepare_dataset(se.dataset)
 
 
 ################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset)
+embedding = Embedding(dataset,se.dataset,encode=True)
 
 name = 'Embedding_Flatten_Dense_Dense-2-Softmax' # (1)
 layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
@@ -48,7 +48,7 @@ layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
 # layers = [embedding,LSTM(128,binary=True)]
 
 # name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
-# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
+layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
@@ -63,9 +63,9 @@ model.plot()
 ################################# USE MODEL #################################
 model = cl.read_model()
 
-unlabeled_dataset = pd.prepare_unlabeled()
+unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
 
-X = model.embedding_unlabeled(unlabeled_dataset,encode=True);
+X = model.embedding_unlabeled(unlabeled_dataset,encode=True)
 #
 
 A = model.predict(X)

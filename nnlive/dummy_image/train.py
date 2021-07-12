@@ -45,7 +45,7 @@ name = 'Embedding_Flatten_Dense_Dense-2-Softmax'
 layers = [embedding,Flatten(),Dense(64,cm.relu),Dense()]
 
 # name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
-# layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
+#layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
@@ -60,7 +60,7 @@ model.plot()
 ################################# USE MODEL #################################
 model = cl.read_model()
 
-unlabeled_dataset = pd.prepare_unlabeled()
+unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
 
 X = model.embedding_unlabeled(unlabeled_dataset)
 #

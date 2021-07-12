@@ -6,7 +6,13 @@ import glob
 import os
 
 
-def features_string(N_FEATURES):
+def features_string():
+    """
+
+    """
+    
+    # Number of features describing a sample
+    N_FEATURES = 12
 
     # List of words
     WORDS = ['A','T','G','C']
@@ -43,13 +49,10 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # Number of features describing a sample
-    N_FEATURES = 12
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features = features_string(N_FEATURES)
+        features = features_string()
 
         # Test if features associates with p_label (+)
         if features.count('A') > 3:
@@ -75,17 +78,17 @@ def prepare_dataset(se_dataset):
 
 
 def prepare_unlabeled(N_SAMPLES=1):
+    """
+
+    """
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
 
-    # Number of features describing a sample
-    N_FEATURES = 12
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features = features_string(N_FEATURES)
+        features = features_string()
 
         sample = [ features, None ]
 
@@ -93,4 +96,3 @@ def prepare_unlabeled(N_SAMPLES=1):
         unlabeled_dataset.append(sample)
 
     return unlabeled_dataset
-

@@ -9,7 +9,17 @@ import glob
 import os
 
 
-def features_time(TIME,SAMPLING_RATE,N_BINS):
+def features_time():
+    """
+
+    """
+
+    # Number of bins for signal digitalization
+    N_BINS = 16 # 4-bits ADC converter
+
+    # Sampling rate (Hz) and Time (s)
+    SAMPLING_RATE = 128
+    TIME = 1
 
     # Number of features describing a sample
     N_FEATURES = SAMPLING_RATE * TIME
@@ -63,17 +73,10 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # Number of bins for features digitalization
-    N_BINS = 64 # 6-bits ADC converter
-
-    # Sampling rate (Hz) and Time (s)
-    SAMPLING_RATE = 128
-    TIME = 1
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features, raw_features, white_noise = features_time(TIME,SAMPLING_RATE,N_BINS)
+        features, raw_features, white_noise = features_time()
 
         # Test if features associates with p_label (+)
         if np.sum(raw_features) != np.sum(white_noise):
@@ -100,21 +103,17 @@ def prepare_dataset(se_dataset):
 
 
 def prepare_unlabeled(N_SAMPLES=1):
+    """
+
+    """
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
 
-    # Number of bins for signal digitalization
-    N_BINS = 64 # 6-bits ADC converter
-
-    # Sampling rate (Hz) and Time (s)
-    SAMPLING_RATE = 128
-    TIME = 1
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features, _, _ = features_time(TIME,SAMPLING_RATE,N_BINS)
+        features, _, _ = features_time()
 
         sample = [ features, None ]
 
