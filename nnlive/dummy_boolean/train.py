@@ -31,7 +31,7 @@ cl.init_dir(se.config)
 # DOCS_HEADERS
 ################################## DATASETS ################################
 dataset = pd.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
-#dataset = pd.read_dataset()
+#dataset = cl.read_dataset()
 
 
 ################################ BUILD MODEL ###############################
@@ -56,7 +56,7 @@ model.plot()
 ################################# USE MODEL #################################
 model = cl.read_model()
 
-unlabeled_dataset = pd.prepare_unlabeled()
+unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
 
 X = model.embedding_unlabeled(unlabeled_dataset)
 # [[ True  True  True False  True False False False  True False  True]]

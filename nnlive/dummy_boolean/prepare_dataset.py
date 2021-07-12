@@ -6,6 +6,20 @@ import glob
 import os
 
 
+def features_boolean():
+    """
+
+    """
+
+    # Number of features describing a sample
+    N_FEATURES = 11
+
+    # Random choice True or False for N_FEATURES iterations
+    features = [ random.choice([True,False]) for j in range(N_FEATURES) ]
+
+    return features
+
+
 def prepare_dataset(se_dataset):
     """
     Prepare dummy dataset with Boolean sample features
@@ -32,13 +46,11 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # Number of features describing a sample
-    N_FEATURES = 11
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
-        # Random choice True or False for N_FEATURES iterations
-        features = [ random.choice([True,False]) for j in range(N_FEATURES) ]
+
+        # Compute random boolean features
+        features = features_boolean()
 
         # Test if features associates with p_label (+)
         if features.count(True) > features.count(False):
@@ -60,19 +72,10 @@ def prepare_dataset(se_dataset):
 # DOCS_END
 
 
-def read_dataset(dataset_path=None):
+def prepare_unlabeled(N_SAMPLES=1):
+    """
 
-    # Get path most recent dataset
-    if dataset_path == None:
-        dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
-
-    # Read dataset
-    dataset = cli.read_pickle(dataset_path)
-
-    return dataset
-
-
-def prepare_unlabeled():
+    """
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
@@ -80,42 +83,47 @@ def prepare_unlabeled():
     # Number of features describing a sample
     N_FEATURES = 11
 
-    # Random choice True or False for N_FEATURES iterations
-    features = [ random.choice([True,False]) for j in range(N_FEATURES) ]
+    # Iterate over N_SAMPLES
+    for i in range(N_SAMPLES):
 
-    # Unlabeled sample
-    sample = [ features, None ]
+        # Compute random boolean features
+        features = features_boolean()
 
-    # Append to unlabeled_dataset
-    unlabeled_dataset.append(sample)
+        # Unlabeled sample
+        sample = [ features, None ]
+
+        # Append to unlabeled_dataset
+        unlabeled_dataset.append(sample)
 
     return unlabeled_dataset
 
 
-def show_data_shapes(dsets):
 
-    # Local pretty print function
-    def pprint(k,v,end='\n'):
-        print ('{:<20}{:<}'.format(k,str(v)),end=end)
-
-    # dsets in a list of nnlibs.commons.models.dataSet objects
-    for dset in dsets:
-
-        pprint('dataSet.n',dset.n) # Name of dset
-
-        pprint('dataSet.id.shape',dset.id.shape) # ids array shape
-        pprint('dataSet.id[0]',dset.id[0]) # sample id at index 0
-
-        pprint('dataSet.X.shape',dset.X.shape) # X (features) array shape
-        pprint('dataSet.X[0].shape',dset.X[0].shape) # X shape for sample 0
-        pprint('dataSet.X[0]',dset.X[0]) # X inputs for sample 0
-        pprint('dataSet.X[0]*1',dset.X[0]*1) # Boolean arithmetics
-
-        pprint('dataSet.Y.shape',dset.Y.shape) # Y (label) array shape
-        pprint('dataSet.Y[0].shape',dset.Y[0].shape) # Y shape for sample 0
-        pprint('dataSet.Y[0]',dset.Y[0]) # Y one-hot encoded label sample 0
-
-        pprint('dataSet.y.shape',dset.y.shape) # y (decoded label) array shape
-        pprint('dataSet.y[0]',dset.y[0],end='\n\n') # y integer label for sample 0
-
-    return None
+#
+# def show_data_shapes(dsets):
+#
+#     # Local pretty print function
+#     def pprint(k,v,end='\n'):
+#         print ('{:<20}{:<}'.format(k,str(v)),end=end)
+#
+#     # dsets in a list of nnlibs.commons.models.dataSet objects
+#     for dset in dsets:
+#
+#         pprint('dataSet.n',dset.n) # Name of dset
+#
+#         pprint('dataSet.id.shape',dset.id.shape) # ids array shape
+#         pprint('dataSet.id[0]',dset.id[0]) # sample id at index 0
+#
+#         pprint('dataSet.X.shape',dset.X.shape) # X (features) array shape
+#         pprint('dataSet.X[0].shape',dset.X[0].shape) # X shape for sample 0
+#         pprint('dataSet.X[0]',dset.X[0]) # X inputs for sample 0
+#         pprint('dataSet.X[0]*1',dset.X[0]*1) # Boolean arithmetics
+#
+#         pprint('dataSet.Y.shape',dset.Y.shape) # Y (label) array shape
+#         pprint('dataSet.Y[0].shape',dset.Y[0].shape) # Y shape for sample 0
+#         pprint('dataSet.Y[0]',dset.Y[0]) # Y one-hot encoded label sample 0
+#
+#         pprint('dataSet.y.shape',dset.y.shape) # y (decoded label) array shape
+#         pprint('dataSet.y[0]',dset.y[0],end='\n\n') # y integer label for sample 0
+#
+#     return None

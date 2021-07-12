@@ -6,6 +6,23 @@ import glob
 import os
 
 
+def features_string():
+    """
+
+    """
+    
+    # Number of features describing a sample
+    N_FEATURES = 12
+
+    # List of words
+    WORDS = ['A','T','G','C']
+
+    # Random choice of words for N_FEATURES iterations
+    features = [ random.choice(WORDS) for j in range(N_FEATURES) ]
+
+    return features
+
+
 def prepare_dataset(se_dataset):
     """
     Prepare dummy dataset with Boolean sample features
@@ -32,16 +49,10 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # List of words
-    WORDS = ['A','T','G','C']
-
-    # Number of features describing a sample
-    N_FEATURES = 12
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
-        # Random choice of words for N_FEATURES iterations
-        features = [ random.choice(WORDS) for j in range(N_FEATURES) ]
+
+        features = features_string()
 
         # Test if features associates with p_label (+)
         if features.count('A') > 3:
@@ -66,36 +77,22 @@ def prepare_dataset(se_dataset):
 # DOCS_END
 
 
-def read_dataset(dataset_path=None):
+def prepare_unlabeled(N_SAMPLES=1):
+    """
 
-    # Get path most recent dataset
-    if dataset_path == None:
-        dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
-
-    # Read dataset
-    dataset = cli.read_pickle(dataset_path)
-
-    return dataset
-
-
-def prepare_unlabeled():
+    """
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
 
-    # List of words
-    WORDS = ['A','T','G','C']
+    # Iterate over N_SAMPLES
+    for i in range(N_SAMPLES):
 
-    # Number of features describing a sample
-    N_FEATURES = 12
+        features = features_string()
 
-    # Random choice of words for N_FEATURES iterations
-    features = [ random.choice(WORDS) for j in range(N_FEATURES) ]
+        sample = [ features, None ]
 
-    # Unlabeled sample
-    sample = [ features, None ]
-
-    # Append to unlabeled_dataset
-    unlabeled_dataset.append(sample)
+        # Append sample to dataset
+        unlabeled_dataset.append(sample)
 
     return unlabeled_dataset

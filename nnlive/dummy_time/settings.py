@@ -1,7 +1,8 @@
 #EpyNN/nnlibs/dummy_time/settings.py
 
+
 dataset = {
-    'N_SAMPLES': 500,
+    'N_SAMPLES': 100,
     'dataset_name': 'dummy_time',
     'dataset_save': True,
     'dtrain_relative': 2,
@@ -9,6 +10,7 @@ dataset = {
     'dval_relative': 1,
     'batch_number': 5,
 }
+
 
 config = {
     'experiment_name': 'DUMMY_TIME',
@@ -26,8 +28,8 @@ config = {
 
 
 hPars = {
-    'training_epochs': 250,
-    'learning_rate': 0.1,
+    'training_epochs': 100,
+    'learning_rate': 1,
     'schedule_mode': 'exp_decay',
     'decay_k': 0.001,
     'cycling_n': 1,

@@ -56,7 +56,7 @@ def check_and_write(model,hPars,runData):
     metrics = runData.s[runData.m['m']][runData.m['d']]
 
     # Evaluate metrics
-    if max(metrics) == metrics[-1] and runData.b['ms']:
+    if max(metrics) == metrics[-1] and metrics.count(metrics[-1]) == 1 and runData.b['ms']:
 
         if runData.b['ms'] == True:
 
@@ -80,3 +80,15 @@ def read_model(model_path=None):
     model = read_pickle(model_path)['model']
 
     return model
+
+
+def read_dataset(dataset_path=None):
+
+    # Get path most recent dataset
+    if dataset_path == None:
+        dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
+
+    # Read dataset
+    dataset = cli.read_pickle(dataset_path)
+
+    return dataset
