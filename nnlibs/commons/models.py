@@ -12,38 +12,35 @@ class runData:
     @log_method
     def __init__(self,se_datasets,se_config):
 
-        datasets = se_datasets
-        config = se_config
-
         ## Metadata
         self.m = {}
         # Experiment Name
-        self.m['n'] = config['experiment_name']
+        self.m['n'] = se_config['experiment_name']
         # Unique identifier
         self.m['t'] = str(int(time.time()))
         # Experiment identifier
         self.m['nt'] = self.m['n']+'_'+self.m['t']
         # Logs frequency
-        self.m['f'] = config['logs_frequency']
+        self.m['f'] = se_config['logs_frequency']
         # Logs frequency
-        self.m['fd'] = config['logs_frequency_display']
+        self.m['fd'] = se_config['logs_frequency_display']
         # Target dataset
-        self.m['d'] = config['dataset_target']
+        self.m['d'] = se_config['dataset_target']
         # Target metrics
-        self.m['m'] = config['metrics_target']
+        self.m['m'] = se_config['metrics_target']
         # Metrics to plot
-        self.m['p'] = config['metrics_plot']
+        self.m['p'] = se_config['metrics_plot']
         # Number of samples
-        self.m['s'] = datasets['N_SAMPLES']
+        self.m['s'] = se_datasets['N_SAMPLES']
 
         ## Bolean for display and write on disk actions
         self.b = {}
         # Save model parameters and associated data
-        self.b['ms'] = config['model_save']
+        self.b['ms'] = se_config['model_save']
         # Display plot at the end of training
-        self.b['pd'] = config['plot_display']
+        self.b['pd'] = se_config['plot_display']
         # Save plot at the end of training
-        self.b['ps'] = config['plot_save']
+        self.b['ps'] = se_config['plot_save']
         # Flag on save
         self.b['s'] = False
         # Flag init run
@@ -59,7 +56,7 @@ class runData:
         ## Metrics for each dataset
         self.s = {}
         # Initialize metrics (see EpyNN/nnlibs/commons/metrics.py)
-        for s in config['metrics_list']:
+        for s in se_config['metrics_list']:
             self.s[s] = []
             # Add list for each dataset (training, testing, validation)
             for i in range(3):
@@ -71,24 +68,21 @@ class hPars:
     @log_method
     def __init__(self,se_hPars):
 
-        hPars = se_hPars
-
         # Number of training epochs
-        self.i = hPars['training_epochs']
-
+        self.i = se_hPars['training_epochs']
 
         ## Learning rate scheduling - Load parameters
         self.s = {}
         # Initial learning rate
-        self.s['l'] = hPars['learning_rate']
+        self.s['l'] = se_hPars['learning_rate']
         # Schedule mode
-        self.s['s'] = hPars['schedule_mode']
+        self.s['s'] = se_hPars['schedule_mode']
         # Decay rate k
-        self.s['k'] = hPars['decay_k']
+        self.s['k'] = se_hPars['decay_k']
         # Number of cycles n
-        self.s['n'] = hPars['cycling_n']
+        self.s['n'] = se_hPars['cycling_n']
         # Descent d for initial lr along cycles
-        self.s['d'] = hPars['descent_d']
+        self.s['d'] = se_hPars['descent_d']
 
         ## Learning rate scheduling - Evaluate parameters
         # Number of epochs per cycle c
@@ -104,16 +98,16 @@ class hPars:
         ## Constant parameters for regularization and activation functions
         self.c = {}
         # l1 regularization
-        self.c['l1'] = hPars['regularization_l1']
+        self.c['l1'] = se_hPars['regularization_l1']
         # l2 regularization
-        self.c['l2'] = hPars['regularization_l2']
+        self.c['l2'] = se_hPars['regularization_l2']
         # Softmax temperature factor
-        self.c['s'] = hPars['softmax_temperature']
+        self.c['s'] = se_hPars['softmax_temperature']
         # Leaky ReLU alpha parameter
-        self.c['l'] = hPars['LRELU_alpha']
+        self.c['l'] = se_hPars['LRELU_alpha']
         # ELU alpha parameter
-        self.c['e'] = hPars['ELU_alpha']
+        self.c['e'] = se_hPars['ELU_alpha']
         # Minimum parameter Epsilon (avoid division by zero, log of zero...)
-        self.c['E'] = hPars['min_epsilon']
+        self.c['E'] = se_hPars['min_epsilon']
 
         cm.global_constant(self)

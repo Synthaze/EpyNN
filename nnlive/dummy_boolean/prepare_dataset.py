@@ -62,12 +62,34 @@ def prepare_dataset(se_dataset):
 
 def read_dataset(dataset_path=None):
 
+    # Get path most recent dataset
     if dataset_path == None:
         dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
 
+    # Read dataset
     dataset = cli.read_pickle(dataset_path)
 
     return dataset
+
+
+def prepare_unlabeled():
+
+    # Initialize unlabeled_dataset
+    unlabeled_dataset = []
+
+    # Number of features describing a sample
+    N_FEATURES = 11
+
+    # Random choice True or False for N_FEATURES iterations
+    features = [ random.choice([True,False]) for j in range(N_FEATURES) ]
+
+    # Unlabeled sample
+    sample = [ features, None ]
+
+    # Append to unlabeled_dataset
+    unlabeled_dataset.append(sample)
+
+    return unlabeled_dataset
 
 
 def show_data_shapes(dsets):

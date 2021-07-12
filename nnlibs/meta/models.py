@@ -2,10 +2,13 @@
 from nnlibs.commons.models import runData, hPars
 from nnlibs.commons.maths import seeding
 from nnlibs.commons.decorators import *
+import nnlibs.commons.logs as clo
 import nnlibs.commons.plot as cp
 
 import nnlibs.meta.forward as mf
 import nnlibs.meta.train as mt
+
+import nnlibs.embedding.parameters as ep
 
 import nnlibs.settings as se
 
@@ -52,10 +55,30 @@ class EpyNN:
 
     def train(self):
         """An example docstring for a method definition."""
-        hPars = self.hPars
-        runData = self.runData
-        mt.run_train(self,hPars,runData)
+        embedding = self.l[0]
+        batch_dtrain = embedding.batch_dtrain
+        mt.run_train(self,batch_dtrain)
 
+
+    def embedding_unlabeled(self,X,encode=False):
+
+        if encode == True:
+            embedding = self.l[0]
+            X = ep.encode_dataset(embedding,X,unlabeled=True)
+        else:
+            X = [ x[0] for x in X ]
+            
+        X = np.array(X)
+
+        return X
+
+
+    def predict(self,X):
+        """An example docstring for a method definition."""
+        A = X
+        A = mf.forward(self,A)
+        A = A.T
+        return A
 
     def plot(self):
         """An example docstring for a method definition."""
@@ -63,45 +86,3 @@ class EpyNN:
         runData = self.runData
         cp.pyplot_metrics(self,hPars,runData)
         cp.gnuplot_accuracy(runData)
-
-
-    def predict(self,A):
-        """An example docstring for a method definition."""
-        return mf.forward(self,A)
-
-    def logs(self):
-        """An example docstring for a method definition."""
-        for i, layer in enumerate(self.l):
-
-            name = layer.__class__.__name__
-
-            self.a.append({'Layer': name, 'Dimensions': [], 'FW_Shapes': [], 'BW_Shapes': [], 'Activation': [] })
-
-            for attr, content in layer.__dict__.items():
-
-                if attr == 'd':
-
-                    for d, v in content.items():
-
-                        self.a[-1]['Dimensions'].append(d+' = '+str(v))
-
-                elif attr == 'fs':
-
-                    for s, v in content.items():
-
-                        self.a[-1]['FW_Shapes'].append(s+' = '+str(v))
-
-                elif attr == 'bs':
-
-                    for s, v in content.items():
-
-                        self.a[-1]['BW_Shapes'].append(s+' = '+str(v))
-
-                elif 'activate' in attr:
-
-                    try:
-                        gate = attr.split('_')[1]
-                    except:
-                        gate = 'input'
-
-                    self.a[-1]['Activation'].append(gate+' = '+str(content.__name__))

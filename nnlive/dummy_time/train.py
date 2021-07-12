@@ -1,10 +1,10 @@
 #EpyNN/nnlive/dummy_time/train.py
 ################################## IMPORTS ################################
-# Set environment and import default settings
+# Set default environment and settings
 from nnlibs.initialize import *
-# Import EpyNN meta-model to build neural networks
+# EpyNN meta-model for neural networks
 from nnlibs.meta.models import EpyNN
-# Import layer to embedd sample input data
+# Embedding layer for input data
 from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
 from nnlibs.dropout.models import Dropout
@@ -13,14 +13,14 @@ from nnlibs.dense.models import Dense
 from nnlibs.lstm.models import LSTM
 from nnlibs.rnn.models import RNN
 from nnlibs.gru.models import GRU
-# Import utils
+# Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
-# Import data-specific routine to prepare sets
+# Routines for dataset preparation
 import prepare_dataset as pd
-# Import local EpyNN settings
+# Local EpyNN settings
 import settings as se
-
+# Compute with NumPy
 import numpy as np
 
 
@@ -39,16 +39,16 @@ dataset = pd.prepare_dataset(se.dataset)
 
 
 ################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset,encode=True)
+embedding = Embedding(dataset,se.dataset)
 
 name = 'Embedding_Flatten_Dense_Dense-2-Softmax' # (1)
 layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
 
 # name = 'LSTM-128-bin-Softmax' # (2)
-#layers = [embedding,LSTM(128,binary=True)]
+# layers = [embedding,LSTM(128,binary=True)]
 
 # name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
-layers = [embedding,LSTM(128,binary=True),Dense(16,cm.relu),Dense()]
+# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
@@ -61,3 +61,15 @@ model.plot()
 
 
 ################################# USE MODEL #################################
+model = cl.read_model()
+
+unlabeled_dataset = pd.prepare_unlabeled()
+
+X = model.embedding_unlabeled(unlabeled_dataset,encode=True);
+#
+
+A = model.predict(X)
+#
+
+P = np.argmax(A,axis=1)
+#

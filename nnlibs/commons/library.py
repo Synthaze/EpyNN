@@ -56,9 +56,9 @@ def check_and_write(model,hPars,runData):
     metrics = runData.s[runData.m['m']][runData.m['d']]
 
     # Evaluate metrics
-    if min(metrics) == metrics[-1] and runData.b['ms']:
+    if max(metrics) == metrics[-1] and runData.b['ms']:
 
-        if runData.c[model_save] == True:
+        if runData.b['ms'] == True:
 
             data = {
                         'model': model,
@@ -69,3 +69,14 @@ def check_and_write(model,hPars,runData):
             runData.b['s'] = True
 
     return None
+
+
+@log_function
+def read_model(model_path=None):
+
+    if model_path == None:
+        model_path = max(glob.glob('./models/*'), key=os.path.getctime)
+
+    model = read_pickle(model_path)['model']
+
+    return model

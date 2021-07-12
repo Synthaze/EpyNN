@@ -1,6 +1,4 @@
 #EpyNN/nnlibs/dense/forward.py
-import nnlibs.meta.parameters as mp
-
 import nnlibs.dense.parameters as dp
 
 import numpy as np

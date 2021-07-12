@@ -2,13 +2,13 @@
 
 
 dataset = {
-    'N_SAMPLES': 100,
+    'N_SAMPLES': 500,
     'dataset_name': 'dummy_images',
     'dataset_save': True,
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
-    'batch_number': 1,
+    'batch_number': 5,
 }
 
 
@@ -31,7 +31,7 @@ hPars = {
     'training_epochs': 1000,
     'learning_rate': 0.1,
     'schedule_mode': 'exp_decay',
-    'decay_k': 0.0025,
+    'decay_k': 0.001,
     'cycling_n': 1,
     'descent_d': 1,
 

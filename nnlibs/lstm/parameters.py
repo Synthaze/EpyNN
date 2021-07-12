@@ -124,7 +124,7 @@ def init_backward(layer,dA):
     # Cache dXt (dX at current t) from dX
     dXt = layer.bc['dXt'] = layer.bc['dX']
     # Cache dh (current) from dXt (prev) and dhn
-    dh = layer.bc['dh'] = np.dot(layer.p['Wv'].T, dXt) + dhn
+    dh = layer.bc['dh'] = np.dot(layer.p['Wv'].T, dXt)
 
 
     return dX, dhn, dCn, dXt, dh

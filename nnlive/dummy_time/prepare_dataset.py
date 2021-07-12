@@ -36,14 +36,14 @@ def prepare_dataset(se_dataset):
     n_label = [0,1]
 
     # Number of bins for signal digitalization
-    N_BINS = 128 # 4-bits ADC converter
+    N_BINS = 64 # 6-bits ADC converter
 
     # BINS
     BINS = np.linspace(0, 1, N_BINS, endpoint=False)
 
     # Sampling rate (Hz) and Time (s)
-    SAMPLING_RATE = 64
-    TIME = 4
+    SAMPLING_RATE = 128
+    TIME = 1
 
     # Number of features describing a sample
     N_FEATURES = SAMPLING_RATE * TIME
@@ -65,7 +65,7 @@ def prepare_dataset(se_dataset):
         signal = signal + np.abs(np.min(features))
         signal /= np.max(signal)
 
-        signal = np.digitize(signal,bins=BINS)
+        signal = np.digitize(signal,bins=BINS) / N_BINS
 
         # Test if features associates with p_label (+)
         if np.sum(features) != np.sum(white_noise):
@@ -93,9 +93,54 @@ def prepare_dataset(se_dataset):
 
 def read_dataset(dataset_path=None):
 
+    # Get path most recent dataset
     if dataset_path == None:
         dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
 
+    # Read dataset
     dataset = cli.read_pickle(dataset_path)
 
     return dataset
+
+
+def prepare_unlabeled():
+
+    # Initialize unlabeled_dataset
+    unlabeled_dataset = []
+
+    # Number of bins for signal digitalization
+    N_BINS = 64 # 6-bits ADC converter
+
+    # BINS
+    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
+
+    # Sampling rate (Hz) and Time (s)
+    SAMPLING_RATE = 128
+    TIME = 1
+
+    # Number of features describing a sample
+    N_FEATURES = SAMPLING_RATE * TIME
+
+    # Initialize features array
+    features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
+    # Random choice of true signal frequency
+    signal_frequency = random.uniform(0,SAMPLING_RATE//2)
+    # Generate pure sine wave of N_FEATURES points
+    features = np.sin(2 * np.pi * signal_frequency * features)
+
+    # Generate white noise
+    white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
+
+    signal = features = random.choice([features + white_noise, white_noise])
+
+    signal = signal + np.abs(np.min(features))
+    signal /= np.max(signal)
+
+    signal = np.digitize(signal,bins=BINS) / N_BINS
+
+    sample = [ signal, None ]
+
+    # Append sample to dataset
+    unlabeled_dataset.append(sample)
+
+    return unlabeled_dataset

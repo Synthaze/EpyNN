@@ -9,17 +9,17 @@ import nnlibs.meta.backward as mb
 import nnlibs.meta.forward as mf
 
 
-def run_train(model,hPars,runData):
+def run_train(model,batch_dtrain):
     """An example docstring for a function definition."""
-#    dtrain = dsets[0]
 
-    batch_dtrain = model.l[0].batch_dtrain
+    hPars = model.hPars
+    runData = model.runData
 
     for hPars.e in range(hPars.i):
 
         for batch in batch_dtrain:
 
-            A = batch.X.T
+            A = X = batch.X
 
             A = mf.forward(model,A)
 

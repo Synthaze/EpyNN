@@ -23,11 +23,11 @@ def compute_metrics(model,hPars,runData):
 
     for k, dset in enumerate(reversed(dsets)):
 
-        A = dset.X.T
+        X = A = dset.X
 
-        dset.A = model.predict(A)
+        dset.A = model.predict(X)
 
-        dset.P = np.argmax(dset.A.T,axis=1)
+        dset.P = np.argmax(dset.A,axis=1)
 
         for s in runData.s.keys():
 
@@ -72,36 +72,36 @@ def precision(dset,hPars):
 
 
 def CCE(dset,hPars):
-    CCE = - 1 * np.mean(dset.Y * np.log(dset.A.T + hPars.c['E']))
+    CCE = - 1 * np.mean(dset.Y * np.log(dset.A + hPars.c['E']))
     return CCE
 
 
 def CE(dset,hPars):
-    B = np.array(list(1.0 * (dset.A.T[i] == np.max(dset.A.T[i])) for i in range(dset.A.T.shape[0])))
+    B = np.array(list(1.0 * (dset.A[i] == np.max(dset.A[i])) for i in range(dset.A.shape[0])))
     CE = np.sum(np.abs(B - dset.Y)) / len(dset.Y) / 2.0
     return CE
 
 
 def BCE(dset,hPars):
-    BCE = - np.mean(np.multiply(dset.Y, np.log(dset.A.T+hPars.c['E'])) + np.multiply((1-dset.Y), np.log(1-dset.A.T+hPars.c['E'])))
+    BCE = - np.mean(np.multiply(dset.Y, np.log(dset.A+hPars.c['E'])) + np.multiply((1-dset.Y), np.log(1-dset.A+hPars.c['E'])))
     return BCE
 
 
 def MSE(dset,hPars):
-    MSE = np.mean(np.square(np.subtract(dset.Y,dset.A.T)+hPars.c['E']))
+    MSE = np.mean(np.square(np.subtract(dset.Y,dset.A)+hPars.c['E']))
     return MSE
 
 
 def MAE(dset,hPars):
-    MAE = np.mean(np.abs(dset.Y-dset.A.T))
+    MAE = np.mean(np.abs(dset.Y-dset.A))
     return MAE
 
 
 def RMSLE(dset,hPars):
-    RMSLE = np.sqrt(np.mean(np.square(np.log1p(dset.Y+hPars.c['E']) - np.log1p(dset.A.T+hPars.c['E']))))
+    RMSLE = np.sqrt(np.mean(np.square(np.log1p(dset.Y+hPars.c['E']) - np.log1p(dset.A+hPars.c['E']))))
     return RMSLE
 
 
 def KLD(dset,hPars):
-    KLD = np.mean(dset.A.T * np.log(((dset.A.T+hPars.c['E']) / (dset.Y+hPars.c['E']))))
+    KLD = np.mean(dset.A * np.log(((dset.A+hPars.c['E']) / (dset.Y+hPars.c['E']))))
     return KLD

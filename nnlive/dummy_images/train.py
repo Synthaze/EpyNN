@@ -1,24 +1,24 @@
 #EpyNN/nnlive/mnist_database/train.py
 ################################## IMPORTS ################################
-# Set environment and import default settings
+# Set default environment and settings
 from nnlibs.initialize import *
-# Import EpyNN meta-model to build neural networks
+# EpyNN meta-model for neural networks
 from nnlibs.meta.models import EpyNN
-# Import layer to embedd sample input data
+# Embedding layer for input data
 from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
 from nnlibs.conv.models import Convolution
 from nnlibs.flatten.models import Flatten
 from nnlibs.pool.models import Pooling
 from nnlibs.dense.models import Dense
-# Import utils
+# Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
-# Import data-specific routine to prepare sets
+# Routines for dataset preparation
 import prepare_dataset as pd
-# Import local EpyNN settings
+# Local EpyNN settings
 import settings as se
-
+# Compute with NumPy
 import numpy as np
 
 
@@ -41,8 +41,11 @@ embedding = Embedding(dataset,se.dataset)
 convolution = Convolution(32,2)
 pooling = Pooling(3,3)
 
-name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
-layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
+name = 'Embedding_Flatten_Dense_Dense-2-Softmax'
+layers = [embedding,Flatten(),Dense(64,cm.relu),Dense()]
+
+# name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
+# layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
@@ -55,3 +58,15 @@ model.plot()
 
 
 ################################# USE MODEL #################################
+model = cl.read_model()
+
+unlabeled_dataset = pd.prepare_unlabeled()
+
+X = model.embedding_unlabeled(unlabeled_dataset)
+#
+
+A = model.predict(X)
+#
+
+P = np.argmax(A,axis=1)
+#
