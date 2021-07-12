@@ -26,3 +26,9 @@ def init_backward(layer,dA):
     dX = layer.bc['dX'] = dA
 
     return dX
+
+
+def init_shapes(layer):
+
+
+    return None
