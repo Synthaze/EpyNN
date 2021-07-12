@@ -1,4 +1,5 @@
 #EpyNN/nnlibs/dropout/models.py
+import nnlibs.dropout.parameters as dp
 import nnlibs.dropout.backward as db
 import nnlibs.dropout.forward as df
 
@@ -12,7 +13,7 @@ class Dropout:
     :ivar var1: initial value: par1
     :ivar var2: initial value: par2
     """
-    
+
     def __init__(self,keep_prob=0.5):
 
         """ Layer attributes """
@@ -38,9 +39,13 @@ class Dropout:
         ### Set keys for layer cache attributes
         self.attrs = ['X','D','A']
 
+    def init_shapes(self):
+        dp.init_shapes(self)
 
     def forward(self,A):
-        return df.dropout_forward(self,A)
+        A = df.dropout_forward(self,A)
+        return A
 
     def backward(self,dA):
-        return db.dropout_backward(self,dA)
+        dA = db.dropout_backward(self,dA)
+        return dA
