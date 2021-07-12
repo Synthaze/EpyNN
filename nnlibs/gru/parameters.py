@@ -116,7 +116,7 @@ def init_backward(layer,dA):
     # Cache dXt (dX at current t) from dX
     dXt = layer.bc['dXt'] = dX
     # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-    dh = layer.bc['dh'] = np.dot( layer.p['Wy'].T, dXt ) + dhn
+    dh = layer.bc['dh'] = np.dot( layer.p['Wy'].T, dXt )
     dhh = np.multiply( dh, (1-layer.fc['z'][-1]) )
     dhh = layer.bc['dhh'] = layer.derivative_input(dhh,layer.fc['hh'][-1])
 

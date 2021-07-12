@@ -44,9 +44,9 @@ class Embedding:
 
         dtrain, dtest, dval = ep.split_dataset(dataset,se_dataset)
 
-        self.dtrain = ep.object_vectorize(dataset,type='dtrain',prefix=prefix)
-        self.dtest = ep.object_vectorize(dataset,type='dtest',prefix=prefix)
-        self.dval = ep.object_vectorize(dataset,type='dval',prefix=prefix)
+        self.dtrain = ep.object_vectorize(dtrain,type='dtrain',prefix=prefix)
+        self.dtest = ep.object_vectorize(dtest,type='dtest',prefix=prefix)
+        self.dval = ep.object_vectorize(dval,type='dval',prefix=prefix)
 
         batch_dtrain = ep.mini_batches(dtrain,se_dataset)
 

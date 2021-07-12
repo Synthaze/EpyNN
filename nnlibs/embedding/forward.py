@@ -14,6 +14,6 @@ def embedding_forward(layer,A):
         ep.init_params(layer)
 
     # Do stuff with X to compute A
-    A = X
+    A = layer.fc['A'] = X.T
 
     return A

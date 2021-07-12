@@ -90,7 +90,9 @@ def tanh(x):
 
 def softmax(x):
     T = CST['s']
-    x = x - np.max(x,axis=1,keepdims=True)
+
+    x = x - np.max(x,axis=0,keepdims=True)
+
     x = np.exp(x/T)
     x_ = np.sum(x,axis=0,keepdims=True)
     x_ = x / x_

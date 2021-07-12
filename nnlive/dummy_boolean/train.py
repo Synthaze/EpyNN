@@ -1,21 +1,21 @@
 #EpyNN/nnlive/dummy_boolean/train.py
 ################################## IMPORTS ################################
-# Set environment and import default settings
+# Set default environment and settings
 from nnlibs.initialize import *
-# Import EpyNN meta-model to build neural networks
+# EpyNN meta-model for neural networks
 from nnlibs.meta.models import EpyNN
-#
+# Embedding layer for input data
 from nnlibs.embedding.models import Embedding
-# VARIABLE - Import models specific to layer architectures
+# Layers relevant to input data type
 from nnlibs.dense.models import Dense
-# Import utils
+# Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
-# Import data-specific routine to prepare sets
-import prepare_dataset as ps
-# Import local EpyNN settings
+# Routines for dataset preparation
+import prepare_dataset as pd
+# Local EpyNN settings
 import settings as se
-
+# Compute with NumPy
 import numpy as np
 
 
@@ -30,8 +30,8 @@ cl.init_dir(se.config)
 
 # DOCS_HEADERS
 ################################## DATASETS ################################
-dataset = ps.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
-#dataset = ps.read_dataset()
+dataset = pd.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
+#dataset = pd.read_dataset()
 
 
 ################################ BUILD MODEL ###############################
@@ -54,3 +54,15 @@ model.plot()
 
 
 ################################# USE MODEL #################################
+model = cl.read_model()
+
+unlabeled_dataset = pd.prepare_unlabeled()
+
+X = model.embedding_unlabeled(unlabeled_dataset)
+# [[ True  True  True False  True False False False  True False  True]]
+
+A = model.predict(X)
+# [[0.714 0.286]]
+
+P = np.argmax(A,axis=1)
+# [0]

@@ -21,7 +21,7 @@ def model_core_logs(model,hPars,runData):
 
     if runData.b['i'] == True:
 
-        init_core_logs(model,dsets,hPars,runData,colors)
+        init_core_logs(model,colors)
 
         runData.print = runData.logs[0].copy()
 
@@ -76,15 +76,23 @@ def model_core_logs(model,hPars,runData):
     return None
 
 
-def init_core_logs(model,dsets,hPars,runData,colors):
+def init_core_logs(model,colors):
+
+    embedding = model.l[0]
+
+    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
+
+    hPars = model.hPars
+
+    runData = model.runData
 
     print ('\n')
 
     init_1 = log_model_network(model)
 
-    init_2 = log_lr_schedule(hPars)
+    init_2 = log_datasets(model,dsets,hPars,runData)
 
-    init_3 = log_datasets(model,dsets,hPars,runData)
+    init_3 = log_lr_schedule(hPars)
 
     init_4 = log_others(dsets,hPars,runData)
 
@@ -122,18 +130,40 @@ def headers_log(runData,colors):
 
 def log_model_network(model):
 
-    model.logs()
+    for i, layer in enumerate(model.l):
 
-    colors = {
-        'Flatten': 'grey',
-        'Dense': 'red',
-        'LSTM': 'cyan',
-        'RNN': 'blue',
-        'GRU': 'magenta',
-        'Convolution': 'green',
-        'Dropout': 'yellow',
-        'Pooling': 'green'
-        }
+        name = layer.__class__.__name__
+
+        model.a.append({'Layer': name, 'Dimensions': [], 'FW_Shapes': [], 'BW_Shapes': [], 'Activation': [] })
+
+        for attr, content in layer.__dict__.items():
+
+            if attr == 'd':
+
+                for d, v in content.items():
+
+                    model.a[-1]['Dimensions'].append(d+' = '+str(v))
+
+            elif attr == 'fs':
+
+                for s, v in content.items():
+
+                    model.a[-1]['FW_Shapes'].append(s+' = '+str(v))
+
+            elif attr == 'bs':
+
+                for s, v in content.items():
+
+                    model.a[-1]['BW_Shapes'].append(s+' = '+str(v))
+
+            elif 'activate' in attr:
+
+                try:
+                    gate = attr.split('_')[1]
+                except:
+                    gate = 'input'
+
+                model.a[-1]['Activation'].append(gate+' = '+str(content.__name__))
 
     headers = ['ID','Layer','Dimensions','Activation','FW_Shapes','BW_Shapes']
 
@@ -204,6 +234,28 @@ def log_datasets(model,dsets,hPars,runData):
     logs.set_max_width(0)
 
     cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
+
+    print (logs.draw())
+
+    print ('\n')
+
+    headers = ['N_LABELS','dtrain\n(0)','dtest\n(1)','dval\n(2)']
+
+    logs = Texttable()
+
+    logs.add_rows([headers])
+
+    batch_number = model.m['settings'][0]['batch_number']
+
+    N_LABELS = len(dsets[0].b.keys())
+
+    dtrain_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[0].b.items()) ])
+    dtest_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[1].b.items()) ])
+    dval_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[2].b.items()) ])
+
+    log = [N_LABELS,dtrain_balance,dtest_balance,dval_balance]
+
+    logs.add_row(log)
 
     print (logs.draw())
 

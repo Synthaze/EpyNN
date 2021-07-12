@@ -23,30 +23,43 @@ def split_dataset(dataset,settings_datasets):
     return dtrain, dtest, dval
 
 
-def encode_dataset(layer,dataset):
+def encode_dataset(layer,dataset,unlabeled=False):
 
-    words = set([ w for x in dataset for w in x[0] ])
+    if unlabeled == False:
 
-    word_to_idx = layer.w2i = { k:i for i,k in enumerate(list(words)) }
-    idx_to_word = layer.i2w = { v:k for k,v in layer.w2i.items() }
+        words = set([ w for x in dataset for w in x[0] ])
 
-    vocab_size = layer.d['v'] = len(layer.w2i.keys())
+        word_to_idx = layer.w2i = { k:i for i,k in enumerate(list(words)) }
+        idx_to_word = layer.i2w = { v:k for k,v in layer.w2i.items() }
+
+        vocab_size = layer.d['v'] = len(layer.w2i.keys())
+
+    else:
+
+        word_to_idx = layer.w2i
+        idx_to_word = layer.i2w
+
+        vocab_size = layer.d['v']
 
     encoded_dataset = []
 
     for i in range(len(dataset)):
 
         features = dataset[i][0]
-        label = dataset[i][1].copy()
+
+        if unlabeled == False:
+            label = dataset[i][1].copy()
 
         encoded_features = cio.one_hot_encode_sequence(features,word_to_idx,vocab_size)
 
-        sample = [encoded_features,label]
+        if unlabeled == False:
+            sample = [encoded_features,label]
+        else:
+            sample = [encoded_features]
 
         encoded_dataset.append(sample)
 
     return encoded_dataset
-
 
 def mini_batches(dataset,settings_datasets):
 
@@ -65,6 +78,9 @@ def mini_batches(dataset,settings_datasets):
 
     return batch_dataset
 
+class Empty:
+    def __init__(self):
+        pass
 
 def object_vectorize(dataset,type=str(),prefix=str()):
 
@@ -78,7 +94,7 @@ def object_vectorize(dataset,type=str(),prefix=str()):
     else:
         name = type
 
-    dset = lambda: None
+    dset = Empty()
 
     # Identifier
     dset.n = name
@@ -89,6 +105,9 @@ def object_vectorize(dataset,type=str(),prefix=str()):
 
     # Restore Y data as single digit labels
     dset.y = np.argmax(dset.Y,axis=1)
+
+    # Labels balance
+    dset.b = {label:np.count_nonzero(dset.y == label) for label in dset.y}
 
     # Set numerical id for each sample
     dset.id = np.array([ i for i in range(len(dataset)) ])

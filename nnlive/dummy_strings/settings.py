@@ -16,7 +16,7 @@ config = {
     'experiment_name': 'DUMMY_STRINGS',
     'logs_frequency': 1,
     'logs_frequency_display': 25,
-    'model_save': False,
+    'model_save': True,
     'plot_display': True,
     'plot_save': False,
     'directory_clear': True,

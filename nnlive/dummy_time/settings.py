@@ -1,20 +1,20 @@
 #EpyNN/nnlibs/dummy_time/settings.py
 
 dataset = {
-    'N_SAMPLES': 100,
+    'N_SAMPLES': 500,
     'dataset_name': 'dummy_time',
     'dataset_save': True,
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
-    'batch_number': 1,
+    'batch_number': 5,
 }
 
 config = {
     'experiment_name': 'DUMMY_TIME',
     'logs_frequency': 1,
-    'logs_frequency_display': 25,
-    'model_save': False,
+    'logs_frequency_display': 5,
+    'model_save': True,
     'plot_display': True,
     'plot_save': False,
     'directory_clear': True,
@@ -26,7 +26,7 @@ config = {
 
 
 hPars = {
-    'training_epochs': 1000,
+    'training_epochs': 250,
     'learning_rate': 0.1,
     'schedule_mode': 'exp_decay',
     'decay_k': 0.001,
