@@ -9,6 +9,34 @@ import glob
 import os
 
 
+def features_time(TIME,SAMPLING_RATE,N_BINS):
+
+    # Number of features describing a sample
+    N_FEATURES = SAMPLING_RATE * TIME
+
+    # BINS
+    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
+
+    # Initialize features array
+    raw_features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
+    # Random choice of true signal frequency
+    signal_frequency = random.uniform(0,SAMPLING_RATE//2)
+    # Generate pure sine wave of N_FEATURES points
+    raw_features = np.sin(2 * np.pi * signal_frequency * raw_features)
+
+    # Generate white noise
+    white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
+
+    raw_features = random.choice([raw_features + white_noise, white_noise])
+
+    features = raw_features + np.abs(np.min(raw_features))
+    features /= np.max(features)
+
+    features = np.digitize(features,bins=BINS) / BINS.shape[0]
+
+    return features, raw_features, white_noise
+
+
 def prepare_dataset(se_dataset):
     """
     Prepare dummy dataset with Boolean sample features
@@ -35,51 +63,31 @@ def prepare_dataset(se_dataset):
     p_label = [1,0]
     n_label = [0,1]
 
-    # Number of bins for signal digitalization
+    # Number of bins for features digitalization
     N_BINS = 64 # 6-bits ADC converter
-
-    # BINS
-    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
 
     # Sampling rate (Hz) and Time (s)
     SAMPLING_RATE = 128
     TIME = 1
 
-    # Number of features describing a sample
-    N_FEATURES = SAMPLING_RATE * TIME
-
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
-        # Initialize features array
-        features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
-        # Random choice of true signal frequency
-        signal_frequency = random.uniform(0,SAMPLING_RATE//2)
-        # Generate pure sine wave of N_FEATURES points
-        features = np.sin(2 * np.pi * signal_frequency * features)
 
-        # Generate white noise
-        white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
-
-        signal = features = random.choice([features + white_noise, white_noise])
-
-        signal = signal + np.abs(np.min(features))
-        signal /= np.max(signal)
-
-        signal = np.digitize(signal,bins=BINS) / N_BINS
+        features, raw_features, white_noise = features_time(TIME,SAMPLING_RATE,N_BINS)
 
         # Test if features associates with p_label (+)
-        if np.sum(features) != np.sum(white_noise):
-            sample = [signal,p_label]
+        if np.sum(raw_features) != np.sum(white_noise):
+            sample = [features,p_label]
 
         # Test if features associates with n_label (-)
-        elif np.sum(features) == np.sum(white_noise):
-            sample = [signal,n_label]
+        elif np.sum(raw_features) == np.sum(white_noise):
+            sample = [features,n_label]
 
         # Append sample to dataset
         dataset.append(sample)
 
-    # Plot last signal
-    plt.plot(signal)
+    # Plot last features
+    plt.plot(features)
     plt.show()
 
     # Write dataset on disk
@@ -91,19 +99,7 @@ def prepare_dataset(se_dataset):
 # DOCS_END
 
 
-def read_dataset(dataset_path=None):
-
-    # Get path most recent dataset
-    if dataset_path == None:
-        dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
-
-    # Read dataset
-    dataset = cli.read_pickle(dataset_path)
-
-    return dataset
-
-
-def prepare_unlabeled():
+def prepare_unlabeled(N_SAMPLES=1):
 
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
@@ -111,36 +107,18 @@ def prepare_unlabeled():
     # Number of bins for signal digitalization
     N_BINS = 64 # 6-bits ADC converter
 
-    # BINS
-    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
-
     # Sampling rate (Hz) and Time (s)
     SAMPLING_RATE = 128
     TIME = 1
 
-    # Number of features describing a sample
-    N_FEATURES = SAMPLING_RATE * TIME
+    # Iterate over N_SAMPLES
+    for i in range(N_SAMPLES):
 
-    # Initialize features array
-    features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
-    # Random choice of true signal frequency
-    signal_frequency = random.uniform(0,SAMPLING_RATE//2)
-    # Generate pure sine wave of N_FEATURES points
-    features = np.sin(2 * np.pi * signal_frequency * features)
+        features, _, _ = features_time(TIME,SAMPLING_RATE,N_BINS)
 
-    # Generate white noise
-    white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
+        sample = [ features, None ]
 
-    signal = features = random.choice([features + white_noise, white_noise])
-
-    signal = signal + np.abs(np.min(features))
-    signal /= np.max(signal)
-
-    signal = np.digitize(signal,bins=BINS) / N_BINS
-
-    sample = [ signal, None ]
-
-    # Append sample to dataset
-    unlabeled_dataset.append(sample)
+        # Append sample to dataset
+        unlabeled_dataset.append(sample)
 
     return unlabeled_dataset

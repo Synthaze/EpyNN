@@ -1,4 +1,4 @@
-#EpyNN/nnlive/mnist_database/train.py
+#EpyNN/nnlive/dummy_boolean/train.py
 ################################## IMPORTS ################################
 # Set default environment and settings
 from nnlibs.initialize import *
@@ -6,16 +6,17 @@ from nnlibs.initialize import *
 from nnlibs.meta.models import EpyNN
 # Embedding layer for input data
 from nnlibs.embedding.models import Embedding
-# Import models specific to layer architectures
-from nnlibs.conv.models import Convolution
+# Layers relevant to input data type
 from nnlibs.flatten.models import Flatten
-from nnlibs.pool.models import Pooling
 from nnlibs.dense.models import Dense
+from nnlibs.lstm.models import LSTM
+from nnlibs.rnn.models import RNN
+from nnlibs.gru.models import GRU
 # Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
 # Routines for dataset preparation
-import prepare_dataset as pd
+import prepare_dataset as ps
 # Local EpyNN settings
 import settings as se
 # Compute with NumPy
@@ -30,22 +31,30 @@ np.seterr(all='warn')
 cm.global_seed(1)
 
 cl.init_dir(se.config)
+
 # DOCS_HEADERS
 ################################## DATASETS ################################
-dataset = pd.prepare_dataset(se.dataset)
-#dataset = pd.read_dataset()
+dataset = ps.prepare_dataset(se.dataset)
+#dataset = ps.read_dataset()
 
 
 ################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset)
-convolution = Convolution(32,2)
-pooling = Pooling(3,3)
+embedding = Embedding(dataset,se.dataset,encode=True)
 
-name = 'Embedding_Flatten_Dense_Dense-2-Softmax'
-layers = [embedding,Flatten(),Dense(64,cm.relu),Dense()]
+name = 'Embedding_Flatten_Dense-2-Softmax' # (1)
+layers = [embedding,Flatten(),Dense()]
 
-# name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
-# layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
+# name = 'RNN-11-bin-Softmax' # (2)
+#layers = [embedding,RNN(hidden_size=11,binary=True)]
+
+# name = 'GRU-11-bin-Softmax' # (3)
+# layers = [embedding,GRU(11,binary=True)]
+
+# name = 'LSTM-11-bin-Softmax' # (4)
+# layers = [embedding,LSTM(11,binary=True)]
+
+#name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
+#layers = [embedding,RNN(11),Flatten(),Dense(48,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
@@ -60,13 +69,14 @@ model.plot()
 ################################# USE MODEL #################################
 model = cl.read_model()
 
-unlabeled_dataset = pd.prepare_unlabeled()
+unlabeled_dataset = ps.prepare_unlabeled(N_SAMPLES=1)
+# [[['A', 'G', ... , 'C'], None]]
 
-X = model.embedding_unlabeled(unlabeled_dataset)
-#
+X = model.embedding_unlabeled(unlabeled_dataset,encode=True)
+# [[[0. 0. 1. 0.],[0. 1. 0. 0.], ... ,[0. 0. 0. 1.]]]
 
 A = model.predict(X)
-#
+# [[0.61  0.39 ]]
 
 P = np.argmax(A,axis=1)
-#
+# [0]

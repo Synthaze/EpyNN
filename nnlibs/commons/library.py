@@ -80,3 +80,15 @@ def read_model(model_path=None):
     model = read_pickle(model_path)['model']
 
     return model
+
+
+def read_dataset(dataset_path=None):
+
+    # Get path most recent dataset
+    if dataset_path == None:
+        dataset_path = max(glob.glob('./datasets/*'), key=os.path.getctime)
+
+    # Read dataset
+    dataset = cli.read_pickle(dataset_path)
+
+    return dataset

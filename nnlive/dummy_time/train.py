@@ -35,7 +35,7 @@ cl.init_dir(se.config)
 # DOCS_HEADERS
 ################################## DATASETS ################################
 dataset = pd.prepare_dataset(se.dataset)
-#dataset = pd.read_dataset()
+#dataset = cl.read_dataset()
 
 
 ################################ BUILD MODEL ###############################

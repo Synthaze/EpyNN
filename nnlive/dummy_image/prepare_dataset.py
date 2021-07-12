@@ -8,10 +8,10 @@ import glob
 import os
 
 
-def features_images(WIDTH,HEIGHT,DEPTH,N_TONES):
+def features_images(WIDTH,HEIGHT,N_TONES):
 
     # Number of features describing a sample
-    N_FEATURES = WIDTH * HEIGHT * DEPTH
+    N_FEATURES = WIDTH * HEIGHT
 
     # Shade of greys color palette
     GSCALE = [ i for i in range(N_TONES) ]
@@ -73,7 +73,7 @@ def prepare_dataset(se_dataset):
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features, tone = features_images(WIDTH,HEIGHT,DEPTH,N_TONES)
+        features, tone = features_images(WIDTH,HEIGHT,N_TONES)
 
         # Test if features associates with p_label (+)
         if tone == 0:
@@ -115,7 +115,10 @@ def prepare_unlabeled(N_SAMPLES=1):
     WIDTH = 28
     HEIGHT = 16
 
-    features, _ = features_images(WIDTH,HEIGHT,DEPTH,N_TONES)
+    # Number of features describing a sample
+    N_FEATURES = WIDTH * HEIGHT
+
+    features, _ = features_images(WIDTH,HEIGHT,N_TONES)
 
     # Unlabeled sample
     sample = [ features, None ]
