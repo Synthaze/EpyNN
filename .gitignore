@@ -2,3 +2,4 @@
 *.gz
 *.wav
 *.pickle
+*data*dat

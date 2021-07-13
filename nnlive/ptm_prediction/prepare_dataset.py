@@ -11,7 +11,7 @@ def prepare_dataset(se_dataset):
     """
 
     """
-    
+
     # Download data
     if not os.path.exists('./data'):
         url = 'https://synthase.s3.us-west-2.amazonaws.com/ptm_prediction_data.tar'
@@ -57,6 +57,7 @@ def prepare_dataset(se_dataset):
     if N_SAMPLES == None:
         N_SAMPLES = len(dataset)
 
+    # Truncate dataset to N_SAMPLES
     dataset = dataset[:N_SAMPLES]
 
     return dataset
