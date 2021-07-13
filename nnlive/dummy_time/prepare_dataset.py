@@ -17,15 +17,15 @@ def features_time():
     # Number of bins for signal digitalization
     N_BINS = 16 # 4-bits ADC converter
 
+    # BINS
+    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
+
     # Sampling rate (Hz) and Time (s)
     SAMPLING_RATE = 128
     TIME = 1
 
     # Number of features describing a sample
     N_FEATURES = SAMPLING_RATE * TIME
-
-    # BINS
-    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
 
     # Initialize features array
     raw_features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
@@ -37,11 +37,14 @@ def features_time():
     # Generate white noise
     white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
 
+    # Random choice for raw_features
     raw_features = random.choice([raw_features + white_noise, white_noise])
 
+    # Normalize features in range 0-1
     features = raw_features + np.abs(np.min(raw_features))
     features /= np.max(features)
 
+    # Digitize and normalize digits
     features = np.digitize(features,bins=BINS) / BINS.shape[0]
 
     return features, raw_features, white_noise
@@ -76,6 +79,7 @@ def prepare_dataset(se_dataset):
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
+        # Retrieve features, raw_features and white_noise
         features, raw_features, white_noise = features_time()
 
         # Test if features associates with p_label (+)
@@ -113,8 +117,10 @@ def prepare_unlabeled(N_SAMPLES=1):
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
+        # Retrieve features
         features, _, _ = features_time()
 
+        # Unlabeled sample
         sample = [ features, None ]
 
         # Append sample to dataset

@@ -1,30 +1,30 @@
-#EpyNN/nnlive/dummy_wave/train.py
-# Set environment and import default settings
+#EpyNN/nnlive/music_author/train.py
+################################## IMPORTS ################################
+# Set default environment and settings
 from nnlibs.initialize import *
-# Import common models
-from nnlibs.commons.models import runData, hPars
-# Import EpyNN meta-model to build neural networks
+# EpyNN meta-model for neural networks
 from nnlibs.meta.models import EpyNN
+# Embedding layer for input data
+from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
-from nnlibs.conv.models import Convolution
-from nnlibs.dense.models import Dense
 from nnlibs.dropout.models import Dropout
 from nnlibs.flatten.models import Flatten
-from nnlibs.gru.models import GRU
+from nnlibs.dense.models import Dense
 from nnlibs.lstm.models import LSTM
-from nnlibs.pool.models import Pooling
 from nnlibs.rnn.models import RNN
-# Import utils
+from nnlibs.gru.models import GRU
+# Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
-# Import data-specific routine to prepare sets
-import sets_prepare as sp
-# Import local EpyNN settings
+# Routines for dataset preparation
+import prepare_dataset as pd
+# Local EpyNN settings
 import settings as se
-
+# Compute with NumPy
 import numpy as np
 
 
+################################## HEADERS ################################
 np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
@@ -32,26 +32,44 @@ np.seterr(all='warn')
 cm.global_seed(1)
 
 cl.init_dir(se.config)
+# DOCS_HEADERS
+################################## DATASETS ################################
+dataset = pd.prepare_dataset(se.dataset)
+#dataset = cl.read_dataset()
 
-runData = runData(se.config)
 
-hPars = hPars(se.hPars)
+################################ BUILD MODEL ###############################
+embedding = Embedding(dataset,se.dataset,encode=True)
 
-dsets = sp.sets_prepare(runData,init=True)
+name = 'Embedding_Flatten_Dense_Dense-2-Softmax' # (1)
+layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
 
-print (dsets[0].X.shape)
+# name = 'LSTM-128-bin-Softmax' # (2)
+# layers = [embedding,RNN(400,binary=True)]
 
-name = 'Flatten_Dense_Dense'
-layers = [Flatten(),Dense(16,cm.relu),Dense(2,cm.sigmoid)]
-#name = 'RNN_Flatte,_Dense_Dense'
-#layers = [RNN(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]
-#name = 'GRU_Flatten_Dense_Dense'
-#layers = [GRU(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]
-#name = 'LSTM_Flatten_Dense_Dense'
-#layers = [LSTM(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]
+# name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
+# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
 
-model = EpyNN(name=name,layers=layers,hPars=hPars)
 
-model.train(dsets,hPars,runData)
+model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
 
-model.plot(hPars,runData)
+
+################################ TRAIN MODEL ################################
+model.train()
+
+model.plot()
+
+
+################################# USE MODEL #################################
+# model = cl.read_model()
+
+# unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
+
+# X = model.embedding_unlabeled(unlabeled_dataset)
+#
+
+# A = model.predict(X)
+#
+
+# P = np.argmax(A,axis=1)
+#

@@ -7,7 +7,6 @@ from nnlibs.meta.models import EpyNN
 # Embedding layer for input data
 from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
-from nnlibs.dropout.models import Dropout
 from nnlibs.flatten.models import Flatten
 from nnlibs.dense.models import Dense
 from nnlibs.lstm.models import LSTM
@@ -48,7 +47,7 @@ layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
 # layers = [embedding,LSTM(128,binary=True)]
 
 # name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
-layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
+# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
 
 
 model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])

@@ -61,6 +61,7 @@ def encode_dataset(layer,dataset,unlabeled=False):
 
     return encoded_dataset
 
+
 def mini_batches(dataset,settings_datasets):
 
     n_batch = settings_datasets['batch_number']
