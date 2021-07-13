@@ -1,4 +1,4 @@
-#EpyNN/nnlive/mnist_database/train.py
+#EpyNN/nnlive/dummy_image/train.py
 ################################## IMPORTS ################################
 # Set default environment and settings
 from nnlibs.initialize import *

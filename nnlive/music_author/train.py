@@ -58,18 +58,3 @@ model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
 model.train()
 
 model.plot()
-
-
-################################# USE MODEL #################################
-# model = cl.read_model()
-
-# unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
-
-# X = model.embedding_unlabeled(unlabeled_dataset)
-#
-
-# A = model.predict(X)
-#
-
-# P = np.argmax(A,axis=1)
-#

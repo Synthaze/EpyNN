@@ -1,30 +1,28 @@
 #EpyNN/nnlive/mnist_database/train.py
-# Set environment and import default settings
+################################## IMPORTS ################################
+# Set default environment and settings
 from nnlibs.initialize import *
-# Import common models
-from nnlibs.commons.models import runData, hPars
-# Import EpyNN meta-model to build neural networks
+# EpyNN meta-model for neural networks
 from nnlibs.meta.models import EpyNN
+# Embedding layer for input data
+from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
 from nnlibs.conv.models import Convolution
-from nnlibs.dense.models import Dense
-from nnlibs.dropout.models import Dropout
 from nnlibs.flatten.models import Flatten
-from nnlibs.gru.models import GRU
-from nnlibs.lstm.models import LSTM
 from nnlibs.pool.models import Pooling
-from nnlibs.rnn.models import RNN
-# Import utils
+from nnlibs.dense.models import Dense
+# Commons utils and maths
 import nnlibs.commons.library as cl
 import nnlibs.commons.maths as cm
-# Import data-specific routine to prepare sets
-import sets_prepare as sp
-# Import local EpyNN settings
+# Routines for dataset preparation
+import prepare_dataset as pd
+# Local EpyNN settings
 import settings as se
-
+# Compute with NumPy
 import numpy as np
 
 
+################################## HEADERS ################################
 np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
@@ -32,20 +30,28 @@ np.seterr(all='warn')
 cm.global_seed(1)
 
 cl.init_dir(se.config)
+# DOCS_HEADERS
+################################## DATASETS ################################
+dataset = pd.prepare_dataset(se.dataset)
+#dataset = cl.read_dataset()
 
-runData = runData(se.config)
 
-hPars = hPars(se.hPars)
+################################ BUILD MODEL ###############################
+embedding = Embedding(dataset,se.dataset)
+convolution = Convolution(32,2)
+pooling = Pooling(3,3)
 
-dsets = sp.sets_prepare(runData)
+name = 'Embedding_Flatten_Dense_Dense-2-Softmax'
+layers = [embedding,Flatten(),Dense(64,cm.relu),Dense(10)]
 
-name = 'Flatten_Dense_Dense'
-layers = [Flatten(),Dense(16,cm.elu),Dense(10)]
-#name = 'Convolution_Flatten_Dense_Dense'
-layers = [Convolution(32,2),Pooling(3,3),Flatten(),Dense(48,cm.relu),Dense(10)]
+# name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
+# layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense(10)]
 
-model = EpyNN(name=name,layers=layers,hPars=hPars)
 
-model.train(dsets,hPars,runData)
+model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
 
-model.plot(hPars,runData)
+
+################################ TRAIN MODEL ################################
+model.train()
+
+model.plot()

@@ -1,4 +1,4 @@
-#EpyNN/nnlive/dummy_images/settings.py
+#EpyNN/nnlive/dummy_image/settings.py
 
 
 dataset = {

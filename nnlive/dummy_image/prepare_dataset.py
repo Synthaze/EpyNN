@@ -1,4 +1,4 @@
-#EpyNN/nnlive/dummy_images/prepare_dataset.py
+#EpyNN/nnlive/dummy_image/prepare_dataset.py
 import nnlibs.commons.library as cli
 
 import matplotlib.pyplot as plt

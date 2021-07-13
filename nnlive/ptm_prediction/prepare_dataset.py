@@ -61,19 +61,3 @@ def prepare_dataset(se_dataset):
     dataset = dataset[:N_SAMPLES]
 
     return dataset
-
-
-def prepare_unlabeled(N_SAMPLES=1):
-    """
-
-    """
-
-    # Initialize unlabeled_dataset
-    unlabeled_dataset = []
-
-    path_unlabeled = 'data/21_unlabeled.dat'
-
-    # Read text files, each containing one sequence per line
-    unlabeled_dataset = [ [x,None] for x in cl.read_file(path_unlabeled).splitlines() ]
-
-    return unlabeled_dataset
