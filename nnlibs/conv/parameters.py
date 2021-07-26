@@ -33,8 +33,8 @@ def init_forward(layer,A):
     X = layer.fc['X'] = A.T
     im, ih, iw, id = layer.fs['X'] = X.shape
 
-    layer.n_rows = math.ceil(min(layer.d['fw'], ih - layer.d['fw'] + 1) / layer.d['s'])
-    layer.n_cols = math.ceil(min(layer.d['fw'], iw - layer.d['fw'] + 1) / layer.d['s'])
+    layer.n_rows = math.ceil(min(layer.d['fw'], ih - layer.d['fw'] + 1) / layer.d['s']) #
+    layer.n_cols = math.ceil(min(layer.d['fw'], iw - layer.d['fw'] + 1) / layer.d['s']) #
 
     z_h = int(((ih - layer.d['fw']) / layer.d['s']) + 1)
     z_w = int(((iw - layer.d['fw']) / layer.d['s']) + 1)
@@ -71,15 +71,14 @@ def update_gradients(layer,t,l):
 
     dW_block = layer.block * layer.X_blocks[t][l]
 
-    dW_block = np.sum(dW_block, 2)
-    dW_block = np.sum(dW_block, 1)
-    dW_block = np.sum(dW_block, 0)
+    dW_block = np.sum(dW_block,axis=(2,1,0))
 
     layer.g['dW'] += dW_block
 
-    db_block = np.sum(dW_block, 2, keepdims=True)
-    db_block = np.sum(db_block, 1, keepdims=True)
-    db_block = np.sum(db_block, 0, keepdims=True)
+    db_block = np.sum(dW_block,axis=(2,1,0),keepdims=True)
+#    db_block = np.sum(dW_block, 2, keepdims=True)
+#    db_block = np.sum(db_block, 1, keepdims=True)
+#    db_block = np.sum(db_block, 0, keepdims=True)
 
     layer.g['db'] += db_block
 

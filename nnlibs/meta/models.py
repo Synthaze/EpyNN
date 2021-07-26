@@ -1,64 +1,84 @@
-#EpyNN/nnlibs/meta/models.py
-from nnlibs.commons.models import runData, hPars
-from nnlibs.commons.maths import seeding
-from nnlibs.commons.decorators import *
-import nnlibs.commons.logs as clo
+# EpyNN/nnlibs/meta/models.py
+# Standard library imports
+import traceback
+
+# Related third party imports
+import numpy as np
+
+# Local application/library specific imports
+from nnlibs.commons.metrics import model_compute_metrics
+from nnlibs.commons.logs import model_logs, initialize_model_logs
 import nnlibs.commons.plot as cp
 
-import nnlibs.meta.forward as mf
+from nnlibs.meta.initialize import initialize_model_layers, initialize_exceptions
+from nnlibs.meta.parameters import assign_seed_layers, compute_learning_rate
+
+from nnlibs.meta.forward import model_forward
+from nnlibs.meta.backward import model_backward
 import nnlibs.meta.train as mt
 
 import nnlibs.embedding.parameters as ep
 
 import nnlibs.settings as se
 
-import numpy as np
-
 
 class EpyNN:
-    """An example docstring for a class definition."""
 
-    @log_method
-    def __init__(self,name='Model',layers=[],settings=[se.dataset,se.config,se.hPars]):
+    def __init__(self, layers=[], settings=se, seed=None, name='Model'):
 
-        self.m = {}
-        self.m['settings'] = settings
+        self.layers = layers
 
-        self.n = name
-        self.layers = self.l = layers
+        self.se_dataset = settings.dataset
+        self.se_config = settings.config
+        self.se_hPars = settings.hPars
 
-        self.runData = runData(settings[0],settings[1])
+        self.seed = seed
 
-        self.hPars = hPars(settings[2])
+        self.name = name
 
-        self.s = seeding()
+        self.network = { id(layer):{} for layer in self.layers }
 
-        self.a = []
+        self.metrics = { m:[[]]*3 for m in self.se_config['metrics_list'] }
 
-        self.g = {}
+    def initialize(self):
 
-        embedding = layers[0]
+        assign_seed_layers(self)
 
-        for i, layer in enumerate(self.l):
+        try:
+            initialize_model_layers(self)
+            initialize_model_logs(self)
 
-            layer.d['v'] = vocab_size = embedding.d['v']
+        except Exception:
+            trace = traceback.format_exc()
+            initialize_exceptions(self,trace)
 
-            if self.s != None:
-                layer.SEED = self.s + i
-            else:
-                layer.SEED = None
-
-            layer.np = np.random.default_rng(seed=layer.SEED)
-
-            layer.init_shapes()
-
+        return None
 
     def train(self):
         """An example docstring for a method definition."""
-        embedding = self.l[0]
+        embedding = self.layers[0]
         batch_dtrain = embedding.batch_dtrain
         mt.run_train(self,batch_dtrain)
 
+    def forward(self, A):
+        A = model_forward(self, A)
+        return A
+
+    def backward(self, dA):
+        dA = model_backward(self, dA)
+        return dA
+
+    def compute_metrics(self):
+        model_compute_metrics(self)
+        return None
+
+    def evaluate(self):
+        pass
+        return None
+
+    def logs(self):
+        model_logs(self)
+        return None
 
     def embedding_unlabeled(self,X,encode=False):
 
@@ -67,18 +87,11 @@ class EpyNN:
             X = ep.encode_dataset(embedding,X,unlabeled=True)
         else:
             X = [ x[0] for x in X ]
-            
+
         X = np.array(X)
 
         return X
 
-
-    def predict(self,X):
-        """An example docstring for a method definition."""
-        A = X
-        A = mf.forward(self,A)
-        A = A.T
-        return A
 
     def plot(self):
         """An example docstring for a method definition."""

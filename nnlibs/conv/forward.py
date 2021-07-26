@@ -25,7 +25,9 @@ def convolution_forward(layer,A):
         for i in range(layer.n_cols):
 
             # _
-            l = i * layer.d['s']; r = iw - (iw - l) % layer.d['fw']
+            l = i * layer.d['s']
+
+            r = iw - (iw - l) % layer.d['fw']
 
             # _
             block = X[:, t:b, l:r, :]
@@ -44,12 +46,12 @@ def convolution_forward(layer,A):
             layer.X_blocks[t].append(block)
 
             # _
-            block = block * layer.p['W']
+            block *= layer.p['W']
 
             # _
-            block = np.sum(block, 5)
-            block = np.sum(block, 4)
-            block = np.sum(block, 3)
+            block = np.sum(block,axis=5)
+            block = np.sum(block,axis=4)
+            block = np.sum(block,axis=3)
 
             # _
             cols[:, :, i::layer.n_cols, :] = block

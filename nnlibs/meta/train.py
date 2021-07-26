@@ -12,27 +12,26 @@ import nnlibs.meta.forward as mf
 def run_train(model,batch_dtrain):
     """An example docstring for a function definition."""
 
-    hPars = model.hPars
-    runData = model.runData
+    model.initialize()
 
-    for hPars.e in range(hPars.i):
+    epochs = model.se_hPars['training_epochs']
+
+    for e in range(epochs):
 
         for batch in batch_dtrain:
 
             A = X = batch.X
 
-            A = mf.forward(model,A)
+            A = model.forward(A)
 
-            dA = A - batch.Y.T
+            dA = dX = A - batch.Y.T
 
-            mb.backward(model,dA)
+            dA = model.backward(dA)
 
-            mp.update_params(model,hPars)
+        model.compute_metrics()
 
-        cme.compute_metrics(model,hPars,runData)
+        model.evaluate()
 
-        cli.check_and_write(model,hPars,runData)
-
-        clo.model_core_logs(model,hPars,runData)
+        model.logs()
 
     return None

@@ -24,8 +24,6 @@ np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
 
-cm.global_seed(1)
-
 cl.init_dir(se.config)
 
 # DOCS_HEADERS
@@ -36,7 +34,7 @@ dataset = pd.prepare_dataset(se.dataset) # See "Data preparation, structure and 
 
 ################################ BUILD MODEL ###############################
 name = 'Embedding_Dense-2-Softmax' # (1)
-layers = [Embedding(dataset,se.dataset),Dense()] # Dense() same as Dense(nodes=2,activate=cm.softmax)
+layers = [Embedding(dataset,se.dataset),Dense(2,cm.sigmoid),Dense()] # Dense() same as Dense(nodes=2,activate=cm.softmax)
 
 #name = 'Dense-2-Sigmoid' # (2)
 #layers = [Dense(nodes=2,activate=cm.sigmoid)]
@@ -44,7 +42,7 @@ layers = [Embedding(dataset,se.dataset),Dense()] # Dense() same as Dense(nodes=2
 #name = 'Dense-8-ReLU_Dense-2-Softmax' # (3)
 #layers = [Dense(8,activate=cm.relu),Dense(2)]
 
-model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
+model = EpyNN(name=name,layers=layers)
 
 
 ################################ TRAIN MODEL ################################

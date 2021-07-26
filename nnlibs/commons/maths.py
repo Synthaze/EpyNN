@@ -1,42 +1,207 @@
-#EpyNN/nnlibs/commons/maths.py
-from nnlibs.commons.decorators import *
-
-import numpy as np
+# EpyNN/nnlibs/commons/maths.py
+# Standard library imports
 import random
 
-
-# Seeding
-@log_function
-def global_seed(seed):
-    np.random.seed(seed)
-    random.seed(seed)
-    global SEED
-    SEED = seed
+# Related third party imports
+import numpy as np
 
 
-@log_function
-def seeding():
-    try: return SEED
-    except: return None
+### Activation functions and derivatives
 
 
-# Constant parameters
-@log_function
-def global_constant(hPars):
-    global CST
-    CST = hPars.c
+# Rectifier Linear Unit (ReLU)
+
+def relu(x, deriv=False):
+    """Compute ReLU activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    if deriv == False:
+        x = np.maximum(0, x)
+
+    elif deriv == True:
+        x = np.greater(x, 0).astype(int)
+
+    return x
+
+
+# Leaky Rectifier Linear Unit (LReLU)
+
+def lrelu(x, deriv=False):
+    """Compute LReLU activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    a = CST['l']
+
+    if deriv == False:
+        x = np.maximum(a * x, x)
+
+    elif deriv == True:
+        x = np.where(x > 0, 1, a)
+
+    return x
+
+
+# Exponential Linear Unit (ELU)
+
+def elu(x, deriv=False):
+    """Compute ELU activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    a = CST['e']
+
+    if deriv == False:
+        x = np.where(x > 0, x, a * (np.exp(x, where=x<=0)-1))
+
+    elif deriv == True:
+        x = np.where(x > 0, 1, elu(x) + a)
+
+    return x
+
+
+# Swish
+
+def swish(x, deriv=False):
+    """Compute Swish activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    if deriv == False:
+        x = x / (1-np.exp(-x))
+
+    elif deriv == True:
+        x = None
+
+    return x
+
+
+# Sigmoid (σ)
+
+def sigmoid(x, deriv=False):
+    """Compute Sigmoid activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    if deriv == False:
+        x = np.where(
+                    x >= 0, # condition
+                    1 / (1+np.exp(-x)), # For positive values
+                    np.exp(x) / (1+np.exp(x)) # For negative values
+                    )
+
+    elif deriv == True:
+        x = sigmoid(x)
+        x = x * (1-x)
+
+    return x
+
+
+# Hyperbolic tangent (tanh)
+
+def tanh(x, deriv=False):
+    """Compute tanh activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    if deriv == False:
+        x = (2 / (1+np.exp(-2*x))) - 1
+
+    elif deriv == True:
+        x = 1 - tanh(x)**2
+
+    return x
+
+
+# Softmax
+
+def softmax(x, deriv=False):
+    """Compute softmax activation or derivative
+
+    :param x:
+    :type x: class:`numpy.ndarray`
+
+    :param deriv:
+    :type deriv: bool
+
+    :return:
+    :rtype: class:`numpy.ndarray`
+    """
+
+    #T = CST['s']
+    T = 1
+
+    if deriv == False:
+        x = x - np.max(x, axis=0, keepdims=True)
+        x = np.exp(x / T)
+        x = x / np.sum(x, axis=0, keepdims=True)
+
+    elif deriv == True:
+        x = (1.0+np.exp(-x)) * (1.0-(1.0 / (1.0+np.exp(-x))))
+
+    return x
+
 
 
 # Weights initialization
-def xavier(shape):
-    x = np.random.randn(*shape)
+def xavier(shape, rng=np.random):
+    x = rng.standard_normal(shape)
     x /= np.sqrt(shape[1])
     return x
 
 
-def orthogonal(shape):
+def orthogonal(shape, rng=np.random):
 
-    p = np.random.randn(*shape)
+    p = rng.standard_normal(shape)
 
     if shape[0] < shape[1]:
         p = p.T
@@ -53,102 +218,3 @@ def orthogonal(shape):
     p = q
 
     return p
-
-
-# Functions
-def relu(x):
-    return np.maximum(0,x)
-
-
-def lrelu(x):
-    a = CST['l']
-    return np.maximum(a*x, x)
-
-
-def elu(x):
-    a = CST['e']
-    return np.where(x>0, x, a*(np.exp(x,where=x<=0)-1))
-
-
-def swish(x):
-    return x/(1-np.exp(-x))
-
-
-def sigmoid(x):
-    z = np.where(
-            x >= 0, # condition
-            1 / (1 + np.exp(-x)), # For positive values
-            np.exp(x) / (1 + np.exp(x)) # For negative values
-    )
-    return z
-
-
-def tanh(x):
-    z = (2/(1 + np.exp(-2*x))) - 1
-    return z
-
-
-def softmax(x):
-    T = CST['s']
-
-    x = x - np.max(x,axis=0,keepdims=True)
-
-    x = np.exp(x/T)
-    x_ = np.sum(x,axis=0,keepdims=True)
-    x_ = x / x_
-    return x_
-
-
-# Derivatives
-
-def drelu(dA,x):
-    return dA * np.greater(x, 0).astype(int)
-
-
-def delu(dA,x):
-    a = CST['e']
-
-    x = np.where(x>0, 1, elu(x)+a)
-
-    dZ = dA * x
-
-    return dZ
-
-
-def dswish(dA,x):
-    return None
-
-
-def dlrelu(dA,x):
-    a = CST['l']
-    return dA * np.where(x>0, 1, a)
-
-
-def dtanh(dA,x):
-    dZ = 1 - np.square(tanh(x))
-    return dA * dZ
-
-
-def dsigmoid(dA,x):
-    a = sigmoid(x)
-    return dA * a * (1 - a)
-
-
-def dsoftmax(dA,x):
-    return dA / (1.0 + np.exp(-x)) * (1.0 - (1.0 / (1.0 + np.exp(-x))))
-
-
-# Utils
-
-def get_derivative(activate):
-
-    DFUNCS = {
-        relu: drelu,
-        lrelu: dlrelu,
-        elu: delu,
-        sigmoid: dsigmoid,
-        softmax: dsoftmax,
-        tanh: dtanh
-        }
-
-    return DFUNCS[activate]

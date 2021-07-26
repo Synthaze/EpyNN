@@ -1,15 +1,10 @@
-#EpyNN/nnlibs/meta/backward.py
-import nnlibs.meta.parameters as mp
+# EpyNN/nnlibs/meta/backward.py
 
 
-def backward(model,dA):
+def model_backward(model, dA):
 
-    for layer in reversed(model.l):
-
-        mp.init_grads(layer)
+    for layer in reversed(model.layers):
 
         dA = layer.backward(dA)
-        # Update shapes
-        mp.update_shapes(layer)
 
     return None

@@ -1,15 +1,27 @@
-#EpyNN/nnlibs/embedding/backward.py
-import nnlibs.embedding.parameters as ep
-
+# EpyNN/nnlibs/embedding/backward.py
+# Related third party imports
 import numpy as np
 
 
-def embedding_backward(layer,dA):
+def embedding_backward(layer, dA):
+    """
 
-    # If applicable - Init layer shapes and variables
-    dX = ep.init_backward(layer,dA)
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: class:`nnlibs.embedding.models.Embedding`
 
-    # Do stuff with dX to compute dA
-    dA = dX
+    :param dA:
+    :type dA: class:`numpy.ndarray`
+    """
+
+    dX = initialize_backward(layer, dA)
+
+    dA = layer.bc['dA'] = dX
 
     return dA
+
+
+def initialize_backward(layer, dA):
+
+    dX = layer.bc['dX'] = dA
+
+    return dX

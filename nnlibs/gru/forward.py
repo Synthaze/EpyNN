@@ -18,15 +18,15 @@ def gru_forward(layer,A):
         # Xt (X at current t) from X
         Xt = layer.fc['Xt'] = X[:,t]
 
-        # Calculate update gate
-        z = np.dot( layer.p['Wz'], Xt )
-        z += np.dot( layer.p['Uz'], hp ) + layer.p['bz']
-        z = layer.fc['z'][t] = layer.activate_update(z)
-
         # Calculate reset gate
         r = np.dot( layer.p['Wr'], Xt )
         r += np.dot( layer.p['Ur'], hp ) + layer.p['br']
         r = layer.fc['r'][t] = layer.activate_reset(r)
+
+        # Calculate update gate
+        z = np.dot( layer.p['Wz'], Xt )
+        z += np.dot( layer.p['Uz'], hp ) + layer.p['bz']
+        z = layer.fc['z'][t] = layer.activate_update(z)
 
         # Calculate hidden units and input gate
         hh = np.dot( layer.p['Wh'], Xt )

@@ -1,158 +1,56 @@
-#EpyNN/nnlibs/embedding/parameters.py
-import nnlibs.commons.io as cio
-
+# EpyNN/nnlibs/embedding/parameters.py
+# Related third party imports
 import numpy as np
 
 
-def split_dataset(dataset,settings_datasets):
+def embedding_compute_shapes(layer, A):
+    """Compute shapes for Embedding layer object
 
-    dtrain_relative = settings_datasets['dtrain_relative']
-    dtest_relative = settings_datasets['dtest_relative']
-    dval_relative = settings_datasets['dval_relative']
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: class:`nnlibs.embedding.models.Embedding`
+    """
 
-    sum_relative = sum([dtrain_relative,dtest_relative,dval_relative])
+    X = A
 
-    dtrain_length = round(dtrain_relative / sum_relative * len(dataset))
-    dtest_length = round(dtest_relative / sum_relative * len(dataset))
-    dval_length = round(dval_relative / sum_relative * len(dataset))
+    layer.fs['X'] = X.shape
 
-    dtrain = dataset[:dtrain_length]
-    dtest = dataset[dtrain_length:dtrain_length+dtest_length]
-    dval = dataset[dtrain_length+dtest_length:]
-
-    return dtrain, dtest, dval
-
-
-def encode_dataset(layer,dataset,unlabeled=False):
-
-    if unlabeled == False:
-
-        words = set([ w for x in dataset for w in x[0] ])
-
-        word_to_idx = layer.w2i = { k:i for i,k in enumerate(list(words)) }
-        idx_to_word = layer.i2w = { v:k for k,v in layer.w2i.items() }
-
-        vocab_size = layer.d['v'] = len(layer.w2i.keys())
-
-    else:
-
-        word_to_idx = layer.w2i
-        idx_to_word = layer.i2w
-
-        vocab_size = layer.d['v']
-
-    encoded_dataset = []
-
-    for i in range(len(dataset)):
-
-        features = dataset[i][0]
-
-        if unlabeled == False:
-            label = dataset[i][1].copy()
-
-        encoded_features = cio.one_hot_encode_sequence(features,word_to_idx,vocab_size)
-
-        if unlabeled == False:
-            sample = [encoded_features,label]
-        else:
-            sample = [encoded_features]
-
-        encoded_dataset.append(sample)
-
-    return encoded_dataset
-
-
-def mini_batches(dataset,settings_datasets):
-
-    n_batch = settings_datasets['batch_number']
-
-    batch_dataset = []
-
-    for i in range(n_batch):
-
-        start = len(dataset) * i // n_batch
-        stop = len(dataset) * (i + 1) // n_batch
-
-        batch = dataset[start:stop]
-
-        batch_dataset.append(batch)
-
-    return batch_dataset
-
-class Empty:
-    def __init__(self):
-        pass
-
-def object_vectorize(dataset,type=str(),prefix=str()):
-
-    # Prepare X data
-    x_data = [ x[0] for x in dataset ]
-    # Prepare Y data
-    y_data = [ x[1] for x in dataset ]
-
-    if prefix != str():
-        name = prefix + '_' + type
-    else:
-        name = type
-
-    dset = Empty()
-
-    # Identifier
-    dset.n = name
-
-    # Set X and Y data for training in corresponding uppercase attributes
-    dset.X = np.array(x_data)
-    dset.Y = np.array(y_data)
-
-    # Restore Y data as single digit labels
-    dset.y = np.argmax(dset.Y,axis=1)
-
-    # Labels balance
-    dset.b = {label:np.count_nonzero(dset.y == label) for label in dset.y}
-
-    # Set numerical id for each sample
-    dset.id = np.array([ i for i in range(len(dataset)) ])
-
-    # Number of samples
-    dset.s = str(len(dset.id))
-
-    ## Predicted data
-    # Output of forward propagation
-    dset.A = None
-    # Predicted labels
-    dset.P = None
-
-    return dset
-
-
-def init_shapes(layer):
-
-    # Set layer shapes
+    layer.d['m'] = layer.fs['X'][0]
+    layer.d['n'] = layer.fs['X'][1]
 
     return None
 
 
-def init_forward(layer,A):
+def embedding_initialize_parameters(layer):
+    """Dummy function - Initialize parameters for Embedding layer object
 
-    # Set and cache layer X and X.shape
-    X = layer.fc['X'] = A
-    layer.fs['X'] = X.shape
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: class:`nnlibs.embedding.models.Embedding`
+    """
 
-    return X
+    # No parameters to initialize for Embedding layer
 
-
-def init_backward(layer,dA):
-
-    # Cache dX (current) from dA (prev)
-    dX = layer.bc['dX'] = dA
-
-    return dX
+    return None
 
 
-def init_params(layer):
+def embedding_update_gradients(layer):
+    """Dummy function - Update weight and bias gradients for Embedding layer object
 
-    # Init parameters with corresponding function
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: class:`nnlibs.embedding.models.Embedding`
+    """
 
-    layer.init = False
+    # No gradients to update for Embedding layer
+
+    return None
+
+
+def embedding_update_parameters(layer):
+    """Dummy function - Update parameters for Embedding layer object
+
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: class:`nnlibs.embedding.models.Embedding`
+    """
+
+    # No parameters to update for Embedding layer
 
     return None

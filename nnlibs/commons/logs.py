@@ -1,5 +1,6 @@
 #EpyNN/nnlibs/commons/logs.py
 from pygments.formatters import TerminalTrueColorFormatter
+from pygments import highlight, lexers, formatters
 from pygments.lexers import get_lexer_by_name
 from termcolor import cprint, colored
 from texttable import Texttable
@@ -8,22 +9,21 @@ from tabulate import tabulate
 import traceback
 import time
 import sys
-
+import json
 
 #@log_function
-def model_core_logs(model,hPars,runData):
+def model_logs(model):
 
     colors = ['green','red','magenta','cyan','yellow','blue','grey']
 
-    embedding = model.l[0]
+    embedding = model.layers[0]
 
     dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
 
-    if runData.b['i'] == True:
+    if model.init == True:
 
-        init_core_logs(model,colors)
 
-        runData.print = runData.logs[0].copy()
+        metrics.print = metrics.logs[0].copy()
 
     logs = []
 
@@ -31,33 +31,33 @@ def model_core_logs(model,hPars,runData):
 
     logs.append(colored("{:.2e}".format(hPars.l[hPars.e]),'white',attrs=['bold']))
 
-    for i, s in enumerate(runData.s.keys()):
+    for i, s in enumerate(metrics.s.keys()):
 
         i = i % len(colors)
 
         for k in range(len(dsets)):
 
-            log = round(runData.s[s][k][-1],3)
+            log = round(metrics.s[s][k][-1],3)
 
             logs.append(colored('%.3f' % log,colors[i],attrs=['bold']))
 
-    if runData.b['s'] == True:
+    if metrics.b['s'] == True:
 
         logs.append(colored('SAVED','red','on_white',attrs=['bold','blink']))
 
-        runData.b['s'] = False
+        metrics.b['s'] = False
 
     else:
 
-        logs.append(colored(runData.m['nt'],'white',attrs=[]))
+        logs.append(colored(metrics['nt'],'white',attrs=[]))
 
-    if hPars.e % runData.m['f'] == 0:
-        runData.print.extend([logs])
+    if hPars.e % metrics['f'] == 0:
+        metrics.print.extend([logs])
 
-    if len(runData.print) == runData.m['fd'] + 1 or hPars.e == hPars.i - 1:
+    if len(metrics.print) == metrics['fd'] + 1 or hPars.e == hPars.i - 1:
 
-        print (tabulate(runData.print,headers="firstrow",numalign="center",stralign='center',tablefmt="pretty"),flush=True)
-        t = round(time.time()-int(runData.m['t']),2)
+        print (tabulate(metrics.print,headers="firstrow",numalign="center",stralign='center',tablefmt="pretty"),flush=True)
+        t = round(time.time()-int(metrics['t']),2)
 
         rate = round( (hPars.e + 1 ) / t,2)
 
@@ -65,55 +65,57 @@ def model_core_logs(model,hPars,runData):
 
         cprint ('TIME: %ss RATE: %se/s TTC: %ss' % (t,rate,str(ttc)),'white',attrs=['bold'])
 
-        runData.print = runData.logs[0].copy()
+        metrics.print = metrics.logs[0].copy()
 
 
     if hPars.e + 1 == hPars.i:
         for i in range(1,5):
-            print (runData.logs[i].draw())
+            print (metrics.logs[i].draw())
 
 
     return None
 
 
-def init_core_logs(model,colors):
+def initialize_model_logs(model):
 
-    embedding = model.l[0]
+    embedding = model.layers[0]
 
     dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
 
-    hPars = model.hPars
+    hPars = model.se_hPars
 
-    runData = model.runData
+    metrics = model.metrics
 
     print ('\n')
 
     init_1 = log_model_network(model)
 
-    init_2 = log_datasets(model,dsets,hPars,runData)
+    init_2 = log_datasets(model,dsets,hPars,metrics)
 
-    init_3 = log_lr_schedule(hPars)
+    init_3 = [] #log_lr_schedule(hPars)
 
-    init_4 = log_others(dsets,hPars,runData)
+    init_4 = [] #log_others(dsets,hPars,metrics)
 
-    cprint ('----------------------- %s -------------------------\n' % model.n,attrs=['bold'])
+    cprint ('----------------------- %s -------------------------\n' % model.name,attrs=['bold'])
 
     print ('\n')
+    colors = ['green','red','magenta','cyan','yellow','blue','grey']
 
-    headers = headers_log(runData,colors)
+    headers = headers_log(metrics,colors)
 
-    runData.logs = [headers,init_1,init_2,init_3,init_4]
+    model.logs = [headers,init_1,init_2,init_3,init_4]
 
-    runData.b['i'] = False
+    model.init = False
 
     return None
 
 
-def headers_log(runData,colors):
+def headers_log(metrics,colors):
+    colors = ['green','red','magenta','cyan','yellow','blue','grey']
 
     headers = [colored('epoch','white',attrs=['bold'])+'\n',colored('lr','white',attrs=['bold'])+'\n']
 
-    for i, s in enumerate(runData.s.keys()):
+    for i, s in enumerate(metrics.keys()):
 
         i = i % len(colors)
 
@@ -130,48 +132,13 @@ def headers_log(runData,colors):
 
 def log_model_network(model):
 
-    for i, layer in enumerate(model.l):
-
-        name = layer.__class__.__name__
-
-        model.a.append({'Layer': name, 'Dimensions': [], 'FW_Shapes': [], 'BW_Shapes': [], 'Activation': [] })
-
-        for attr, content in layer.__dict__.items():
-
-            if attr == 'd':
-
-                for d, v in content.items():
-
-                    model.a[-1]['Dimensions'].append(d+' = '+str(v))
-
-            elif attr == 'fs':
-
-                for s, v in content.items():
-
-                    model.a[-1]['FW_Shapes'].append(s+' = '+str(v))
-
-            elif attr == 'bs':
-
-                for s, v in content.items():
-
-                    model.a[-1]['BW_Shapes'].append(s+' = '+str(v))
-
-            elif 'activate' in attr:
-
-                try:
-                    gate = attr.split('_')[1]
-                except:
-                    gate = 'input'
-
-                model.a[-1]['Activation'].append(gate+' = '+str(content.__name__))
-
     headers = ['ID','Layer','Dimensions','Activation','FW_Shapes','BW_Shapes']
 
     logs = Texttable()
 
     logs.add_rows([headers])
 
-    for i, layer in enumerate(model.a):
+    for i, layer in enumerate(model.network.values()):
 
         log = [str(i),layer['Layer'],'\n'.join(layer['Dimensions']),'\n'.join(layer['Activation']),'\n'.join(layer['FW_Shapes']),'\n'.join(layer['BW_Shapes'])]
 
@@ -217,7 +184,7 @@ def log_lr_schedule(hPars):
     return logs
 
 
-def log_datasets(model,dsets,hPars,runData):
+def log_datasets(model,dsets,hPars,metrics):
 
     headers = ['N_SAMPLES','dtrain\n(0)','dtest\n(1)','dval\n(2)','batch\nnumber\n(b)','dtrain/b','dataset\ntarget','metrics\ntarget']
 
@@ -225,9 +192,12 @@ def log_datasets(model,dsets,hPars,runData):
 
     logs.add_rows([headers])
 
-    batch_number = model.m['settings'][0]['batch_number']
+    batch_number = model.se_dataset['batch_number']
+    n_samples = model.se_dataset['N_SAMPLES']
+    dataset_target = model.se_config['dataset_target']
+    metrics_target = model.se_config['metrics_target']
 
-    log = [runData.m['s'],dsets[0].s,dsets[1].s,dsets[2].s,batch_number,int(dsets[0].s)//int(batch_number),runData.m['d'],runData.m['m']]
+    log = [n_samples,dsets[0].s,dsets[1].s,dsets[2].s,batch_number,int(dsets[0].s)//int(batch_number),dataset_target,metrics_target]
 
     logs.add_row(log)
 
@@ -245,7 +215,6 @@ def log_datasets(model,dsets,hPars,runData):
 
     logs.add_rows([headers])
 
-    batch_number = model.m['settings'][0]['batch_number']
 
     N_LABELS = len(dsets[0].b.keys())
 
@@ -264,7 +233,7 @@ def log_datasets(model,dsets,hPars,runData):
     return logs
 
 
-def log_others(dsets,hPars,runData):
+def log_others(dsets,hPars,metrics):
 
     headers = ['reg.\nl1','reg.\nl2','min.\nepsilon','LRELU\nalpha','ELU\nalpha','softmax\ntemperature']
 
@@ -298,3 +267,10 @@ def set_highlighted_excepthook():
         sys.stderr.write(highlight(tbtext, lexer, formatter))
 
     sys.excepthook = myexcepthook
+
+
+
+
+def pretty_json(data):
+    print (highlight(json.dumps(data,sort_keys=False,indent=4), lexers.JsonLexer(), formatters.TerminalFormatter()))
+    return data

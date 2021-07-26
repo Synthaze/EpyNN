@@ -1,26 +1,31 @@
-#EpyNN/nnlibs/dense/backward.py
-import nnlibs.dense.parameters as dp
-
+# EpyNN/nnlibs/dense/backward.py
+# Related third party imports
 import numpy as np
 
 
-def dense_backward(layer,dA):
+def dense_backward(layer, dA):
+    """Compute shapes for Dense layer object
+
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
     """
-    Description for function
 
-    :ivar var1: initial value: par1
-    :ivar var2: initial value: par2
-    """
-    
-    dX = dp.init_backward(layer,dA)
+    dX = initialize_backward(layer, dA)
 
-    # Cache dZ (current) from dX (prev)
-    dZ = layer.bc['dZ'] = layer.derivative( dX, layer.fc['Z'] )
+    dZ = layer.bc['dZ'] = dX * layer.activate(layer.fc['Z'], deriv=True)
 
-    # Cache dA (current) from dZ (current)
-    dA = layer.bc['dA'] = np.dot( layer.p['W'].T, dZ )
-
-    # Update layer gradients
-    dp.update_grads(layer)
+    dA = layer.bc['dA'] = np.dot(layer.p['W'].T, dZ)
 
     return dA
+
+
+def initialize_backward(layer, dA):
+    """Compute shapes for Dense layer object
+
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
+
+    dX = layer.bc['dX'] = dA
+
+    return dX

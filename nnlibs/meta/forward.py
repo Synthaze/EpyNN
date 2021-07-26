@@ -1,12 +1,10 @@
-#EpyNN/nnlibs/meta/forward.py
-import nnlibs.meta.parameters as mp
+# EpyNN/nnlibs/meta/forward.py
 
-def forward(model,A):
 
-    for layer in model.l:
+def model_forward(model, A):
+
+    for layer in model.layers:
 
         A = layer.forward(A)
-        # Update shapes
-        mp.update_shapes(layer)
 
     return A

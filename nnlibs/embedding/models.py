@@ -1,71 +1,90 @@
-#EpyNN/nnlibs/embedding/parameters.py
-import nnlibs.embedding.parameters as ep
-import nnlibs.embedding.backward as eb
-import nnlibs.embedding.forward as ef
-
+# EpyNN/nnlibs/embedding/parameters.py
+# Local application/library specific imports
+from nnlibs.commons.models import Layer
+from nnlibs.embedding.dataset import embedding_prepare
+from nnlibs.embedding.forward import embedding_forward
+from nnlibs.embedding.backward import embedding_backward
+from nnlibs.embedding.parameters import (
+    embedding_compute_shapes,
+    embedding_initialize_parameters,
+    embedding_update_gradients,
+    embedding_update_parameters
+)
 import nnlibs.settings as se
 
 
-class Embedding:
+class Embedding(Layer):
+    """
+    Definition of an Embedding Layer prototype
 
-    def __init__(self,dataset,se_dataset=se.dataset,encode=False):
+    Attributes
+    ----------
+    dtrain : numpy.ndarray
+        .
+    batch_dtrain : list
+        .
+    dtest : numpy.ndarray
+        .
+    dval : numpy.ndarray
+        .
 
-        """ Layer attributes """
-        ### Set layer init attribute to True
-        self.init = True
+    Methods
+    -------
+    compute_shapes()
+        .
+    initialize_parameters()
+        .
+    forward(A)
+        .
+    backward(dA)
+        .
+    update_gradients()
+        .
+    update_parameters()
+        .
 
-        ### Define layer dictionaries attributes
-        ## Dimensions
-        self.d = {}
-        ## Parameters
-        self.p = {}
-        ## Gradients
-        self.g = {}
-        ## Forward pass cache
-        self.fc = {}
-        ## Backward pass cache
-        self.bc = {}
-        ## Forward pass shapes
-        self.fs = {}
-        ## Backward pass shapes
-        self.bs = {}
+    See Also
+    --------
+    nnlibs.commons.models.Layer :
+        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    """
 
-        ### Set keys for layer cache attributes
-        self.attrs = ['X','A']
+    def __init__(self,
+                dataset,
+                se_dataset=se.dataset,
+                encode=False
+                ):
 
-        ### Init shapes
-        #tp.init_shapes(self)
-        prefix = se_dataset['dataset_name']
+        super().__init__()
 
-        if encode == True:
-            dataset = encoded_dataset = ep.encode_dataset(self,dataset)
-        else:
-            self.d['v'] = None
+        embedded_data = embedding_prepare(self, dataset, se_dataset, encode)
 
-        dtrain, dtest, dval = ep.split_dataset(dataset,se_dataset)
+        self.dtrain, self.dtest, self.dval, self.batch_dtrain = embedded_data
 
-        self.dtrain = ep.object_vectorize(dtrain,type='dtrain',prefix=prefix)
-        self.dtest = ep.object_vectorize(dtest,type='dtest',prefix=prefix)
-        self.dval = ep.object_vectorize(dval,type='dval',prefix=prefix)
+    def compute_shapes(self, A):
+        embedding_compute_shapes(self, A)
+        return None
 
-        batch_dtrain = ep.mini_batches(dtrain,se_dataset)
+    def initialize_parameters(self):
+        embedding_initialize_parameters(self)
+        return None
 
-        self.batch_dtrain = []
-
-        for b, batch in enumerate(batch_dtrain):
-            batch = ep.object_vectorize(batch,type='dtrain_'+str(b),prefix=prefix)
-            self.batch_dtrain.append(batch)
-
-    def init_shapes(self):
-        ep.init_shapes(self)
-
-    def forward(self,A):
+    def forward(self, A):
         # Forward pass
-        A = ef.embedding_forward(self,A)
+        A = embedding_forward(self, A)
+        self.update_shapes(mode='forward')
         return A
 
-
-    def backward(self,dA):
+    def backward(self, dA):
         # Backward pass
-        dA = eb.embedding_backward(self,dA)
+        dA = embedding_backward(self, dA)
+        self.update_shapes(mode='backward')
         return dA
+
+    def update_gradients(self):
+        embedding_update_gradients(self)
+        return None
+
+    def update_parameters(self):
+        embedding_update_parameters(self)
+        return None

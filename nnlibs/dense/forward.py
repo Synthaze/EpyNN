@@ -1,27 +1,26 @@
-#EpyNN/nnlibs/dense/forward.py
-import nnlibs.dense.parameters as dp
-
+# EpyNN/nnlibs/dense/forward.py
+# Related third party imports
 import numpy as np
 
 
-def dense_forward(layer,A):
-    """
-    Description for function
-
-    :ivar var1: initial value: par1
-    :ivar var2: initial value: par2
+def dense_forward(layer, A):
     """
 
-    X = dp.init_forward(layer,A)
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
 
-    # Init layer parameters
-    if layer.init == True:
-        dp.init_params(layer)
+    X = initialize_forward(layer, A)
 
-    # Cache Z (current) from X (current)
-    Z = layer.fc['Z'] = np.dot( layer.p['W'], X ) + layer.p['b']
+    Z = layer.fc['Z'] = np.dot(layer.p['W'], X) + layer.p['b']
 
-    # Cache A (current) from Z (current)
     A = layer.fc['A'] = layer.activate(Z)
 
     return A
+
+
+def initialize_forward(layer, A):
+
+    X = layer.fc['X'] = A
+
+    return X

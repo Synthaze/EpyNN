@@ -1,75 +1,72 @@
-#EpyNN/nnlibs/dense/parameters.py
-import nnlibs.commons.maths as cm
-
-import nnlibs.meta.parameters as mp
-
+# EpyNN/nnlibs/dense/parameters.py
+# Related third party imports
 import numpy as np
 
 
-def set_activation(layer):
+def dense_compute_shapes(layer, A):
+    """Compute shapes for Dense layer object
 
-    args = layer.activation
-    layer.activate, layer.derivative = args[0], cm.get_derivative(args[0])
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
 
-    return None
+    X = A
 
+    layer.fs['X'] = X.shape
 
-def init_shapes(layer,nodes):
-    ### Set layer dictionaries values
-    ## Dimensions
-    # Layer size
-    layer.d['d'] = nodes
+    layer.d['p'] = layer.fs['X'][0]
+    layer.d['m'] = layer.fs['X'][1]
 
-    dx = ( layer.d['d'], None )
-    d1 = ( layer.d['d'], 1 )
-
-    layer.fs['W'], layer.fs['b'] = dx, d1
+    nm = layer.fs['W'] = (layer.d['n'], layer.d['p'])
+    n1 = layer.fs['b'] = (layer.d['n'], 1)
 
     return None
 
 
-def init_forward(layer,A):
+def dense_initialize_parameters(layer):
+    """Initialize parameters for Dense layer object
 
-    # Cache X (current) from A (prev)
-    X = layer.fc['X'] = A
-    layer.fs['X'] = layer.fc['X'].shape
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
 
-    return X
-
-
-def init_backward(layer,dA):
-
-    # Cache dX (current) from dA (prev)
-    dX = layer.bc['dX'] = dA
-
-    return dX
-
-
-def init_params(layer):
-
-    dx = ( layer.fs['W'][0], layer.fs['X'][0] )
-
-    layer.fs['W'] = dx
-
-    layer.p['W'] = layer.initialization(layer.fs['W'])
-    layer.p['b'] = np.zeros( layer.fs['b'] )
-
-    layer.init = False
+    layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
+    layer.p['b'] = np.zeros(layer.fs['b'])
 
     return None
 
 
-def update_grads(layer):
+def dense_update_gradients(layer):
+    """Update weight and bias gradients for Dense layer object
 
-    m = layer.m = layer.fs['X'][-1]
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
 
+    # X - Input of forward propagation
     X = layer.fc['X']
+    # dZ - Gradient of the cost with respect to the linear output of forward propagation (Z)
+    dZ = layer.bc['dZ']
 
-    l1 = layer.l1 / m
-    l2 = layer.l2 * layer.p['W'] / m
+    # dW - Gradient of the cost with respect to weight (W)
+    dW = layer.g['dW'] = 1./ layer.d['m'] * np.dot(dZ, X.T)
+    # db - Gradient of the cost with respect to biais (b)
+    db = layer.g['db'] = 1./ layer.d['m'] * np.sum(dZ, axis=1, keepdims=True)
 
-    layer.g['dW'] = 1./ m * np.dot(layer.bc['dZ'],X.T) + l1 + l2
+    return None
 
-    layer.g['db'] = 1./ m * np.sum(layer.bc['dZ'],axis=1,keepdims=True)
+
+def dense_update_parameters(layer):
+    """Update parameters for Dense layer object
+
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
+
+    for gradient in layer.g.keys():
+
+        parameter = gradient[1:]
+
+        layer.p[parameter] -= layer.lrate[hPars.e] * layer.g[gradient]
 
     return None
