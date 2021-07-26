@@ -18,7 +18,7 @@ def features_images():
 
     # Image dimensions
     WIDTH = 28
-    HEIGHT = 16
+    HEIGHT = 28
 
     # Number of channels is one for greyscale images
     DEPTH = 1

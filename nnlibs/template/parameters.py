@@ -1,44 +1,49 @@
-#EpyNN/nnlibs/template/parameters.py
-import nnlibs.commons.maths as cm
+# EpyNN/nnlibs/template/parameters.py
 
 
-def set_activation(layer):
+def template_compute_shapes(layer, A):
+    """Compute shapes for Template layer object
 
-    args = layer.activation
+    :param layer: An instance of the :class:`nnlibs.template.models.Template`
+    :type layer: class:`nnlibs.template.models.Template`
+    """
 
-    # Assign activation function to corresponding layer attribute
-
-    return None
-
-
-def init_shapes(layer):
-
-    # Set layer shapes
+    X = A
 
     return None
 
 
-def init_forward(layer,A):
+def template_initialize_parameters(layer):
+    """Dummy function - Initialize parameters for Template layer object
 
-    # Set and cache layer X and X.shape
-    X = layer.fc['X'] = A
-    layer.fs['X'] = X.shape
+    :param layer: An instance of the :class:`nnlibs.template.models.Template`
+    :type layer: class:`nnlibs.template.models.Template`
+    """
 
-    return X
-
-
-def init_params(layer):
-
-    # Init parameters with corresponding function
-
-    layer.init = False
+    # No parameters to initialize for Template layer
 
     return None
 
 
-def init_backward(layer,dA):
+def template_update_gradients(layer):
+    """Dummy function - Update weight and bias gradients for Template layer object
 
-    # Cache dX (current) from dA (prev)
-    dX = layer.bc['dX'] = dA
+    :param layer: An instance of the :class:`nnlibs.template.models.Template`
+    :type layer: class:`nnlibs.template.models.Template`
+    """
 
-    return dX
+    # No gradients to update for Template layer
+
+    return None
+
+
+def template_update_parameters(layer):
+    """Dummy function - Update parameters for Template layer object
+
+    :param layer: An instance of the :class:`nnlibs.template.models.Template`
+    :type layer: class:`nnlibs.template.models.Template`
+    """
+
+    # No parameters to update for Template layer
+
+    return None

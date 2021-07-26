@@ -2,12 +2,25 @@
 import numpy as np
 
 
-def flatten_backward(layer,dA):
+def flatten_backward(layer, dA):
+    """
 
-    # Cache dX (current) from dA (prev)
-    dX = layer.bc['dX'] = dA
+    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
+    :type layer: class:`nnlibs.flatten.models.Flatten`
 
-    # Cache dA (current) from dX (current)
+    :param dA:
+    :type dA: class:`numpy.ndarray`
+    """
+
+    dX = initialize_backward(layer, dA)
+
     dA = layer.bc['dA'] = np.reshape(dX, layer.fs['X'])
 
     return dA
+
+
+def initialize_backward(layer, dA):
+
+    dX = layer.bc['dX'] = dA
+
+    return dX

@@ -35,6 +35,7 @@ def compute_learning_rate(model):
 
         layer.se_hPars, layer.lrate = schedulers(se_hPars)
 
+    return None
 
 #
 # def clip_gradient(layer,max_norm=0.25):

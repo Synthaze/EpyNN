@@ -12,16 +12,18 @@ from nnlibs.commons.logs import pretty_json
 
 def initialize_model_layers(model):
 
-        embedding = model.layers[0]
+        batch_dtrain = model.embedding.batch_dtrain
 
-        sample = embedding.batch_dtrain[0]
+        sample = batch_dtrain[0]
 
         A = X = sample.X
         Y = sample.Y
 
         for layer in model.layers:
 
-            model.network[id(layer)]['Layer'] = layer.__class__.__name__
+            layer.name = layer.__class__.__name__
+
+            model.network[id(layer)]['Layer'] = layer.name
             model.network[id(layer)]['Activation'] = layer.activation
             model.network[id(layer)]['Dimensions'] = layer.d
 

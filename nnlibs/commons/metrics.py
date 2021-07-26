@@ -17,9 +17,8 @@ def model_compute_metrics(model):
         'KLD': KLD,
     }
 
-    embedding = model.layers[0]
 
-    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
+    dsets = model.embedding.dsets
 
     hPars = model.se_hPars
 
@@ -29,13 +28,13 @@ def model_compute_metrics(model):
 
         dset.A = model.forward(X).T
 
-        dset.P = np.argmax(dset.A,axis=1)
+        dset.P = np.argmax(dset.A, axis=1)
 
         for s in model.metrics.keys():
 
-            m = metrics[s](dset,hPars)
+            m = metrics[s](dset, hPars)
 
-            model.metrics[s][len(dsets)-1-k].append(m)
+            model.metrics[s][len(dsets) - 1 - k].append(m)
 
     return None
 

@@ -1,6 +1,4 @@
 # EpyNN/nnlibs/embedding/forward.py
-# Related third party imports
-import numpy as np
 
 
 def embedding_forward(layer, A):

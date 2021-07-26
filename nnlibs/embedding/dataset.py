@@ -28,7 +28,7 @@ def embedding_prepare(layer, dataset, se_dataset, encode):
 
     if encode == True:
         index_vocabulary_auto(layer, dataset)
-        dataset = encoded_dataset = encode_dataset(self, dataset)
+        dataset = encoded_dataset = encode_dataset(layer, dataset)
 
     dtrain, dtest, dval = split_dataset(dataset,se_dataset)
 

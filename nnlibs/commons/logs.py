@@ -1,4 +1,11 @@
-#EpyNN/nnlibs/commons/logs.py
+# EpyNN/nnlibs/commons/logs.py
+# Standard library imports
+import traceback
+import json
+import time
+import sys
+
+# Related third party imports
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments import highlight, lexers, formatters
 from pygments.lexers import get_lexer_by_name
@@ -6,261 +13,362 @@ from termcolor import cprint, colored
 from texttable import Texttable
 from pygments import highlight
 from tabulate import tabulate
-import traceback
-import time
-import sys
-import json
 
-#@log_function
+
 def model_logs(model):
 
-    colors = ['green','red','magenta','cyan','yellow','blue','grey']
+    colors = [
+        'white',
+        'green',
+        'red',
+        'magenta',
+        'cyan',
+        'yellow',
+        'blue',
+        'grey',
+    ]
 
-    embedding = model.layers[0]
+    logs_freq = model.se_config['logs_frequency']
+    logs_freq_disp = model.se_config['logs_frequency_display']
 
-    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
+    if model.e == 0:
+        model.current_logs = [headers_logs(model.metrics, colors)]
 
-    if model.init == True:
+    if model.e % logs_freq == 0:
+        model.current_logs.append(current_logs(model, colors))
+
+    if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
+
+        logs = tabulate(model.current_logs,
+                        headers="firstrow",
+                        numalign="center",
+                        stralign='center',
+                        tablefmt="pretty",
+                        )
+
+        print (logs, flush=True)
+
+        remaining_time_logs(model)
+
+        model.current_logs = [headers_logs(model.metrics, colors)]
+
+    if model.e + 1 == model.epochs:
+        initialize_logs_print(model)
+
+    return None
 
 
-        metrics.print = metrics.logs[0].copy()
+def current_logs(model, colors):
 
-    logs = []
+    metrics = model.metrics
+    dsets = model.embedding.dsets
 
-    logs.append(colored(hPars.e,'white',attrs=['bold']))
+    log = []
 
-    logs.append(colored("{:.2e}".format(hPars.l[hPars.e]),'white',attrs=['bold']))
+    log.append(colored(model.e, 'white', attrs=['bold']))
 
-    for i, s in enumerate(metrics.s.keys()):
+    for layer in model.layers:
+        log.append(colored("{:.2e}".format(layer.lrate[model.e]), 'white', attrs=['bold']))
 
-        i = i % len(colors)
+    for i, s in enumerate(metrics.keys()):
+
+        i = (i+1) % len(colors)
 
         for k in range(len(dsets)):
 
-            log = round(metrics.s[s][k][-1],3)
+            m = round(metrics[s][k][-1],3)
 
-            logs.append(colored('%.3f' % log,colors[i],attrs=['bold']))
+            log.append(colored('%.3f' % m, colors[i], attrs=['bold']))
 
-    if metrics.b['s'] == True:
-
-        logs.append(colored('SAVED','red','on_white',attrs=['bold','blink']))
-
-        metrics.b['s'] = False
-
+    if model.saved == True:
+        log.append(colored('SAVED','red','on_white',attrs=['bold','blink']))
+        model.saved = False
     else:
+        log.append(colored(model.uname,'white',attrs=[]))
 
-        logs.append(colored(metrics['nt'],'white',attrs=[]))
-
-    if hPars.e % metrics['f'] == 0:
-        metrics.print.extend([logs])
-
-    if len(metrics.print) == metrics['fd'] + 1 or hPars.e == hPars.i - 1:
-
-        print (tabulate(metrics.print,headers="firstrow",numalign="center",stralign='center',tablefmt="pretty"),flush=True)
-        t = round(time.time()-int(metrics['t']),2)
-
-        rate = round( (hPars.e + 1 ) / t,2)
-
-        ttc = round(( hPars.i - hPars.e + 1 ) / rate)
-
-        cprint ('TIME: %ss RATE: %se/s TTC: %ss' % (t,rate,str(ttc)),'white',attrs=['bold'])
-
-        metrics.print = metrics.logs[0].copy()
+    return log
 
 
-    if hPars.e + 1 == hPars.i:
-        for i in range(1,5):
-            print (metrics.logs[i].draw())
+def remaining_time_logs(model):
 
+    elapsed_time = round(time.time() - int(model.ts), 2)
+
+    rate = round((model.e+1) / elapsed_time, 2)
+
+    ttc = round((model.epochs - model.e + 1) / rate)
+
+    cprint ('TIME: %ss RATE: %se/s TTC: %ss' % (elapsed_time, rate, ttc), 'white', attrs=['bold'])
 
     return None
 
 
 def initialize_model_logs(model):
 
-    embedding = model.layers[0]
+    model.current_logs = []
 
-    dsets = [embedding.dtrain,embedding.dtest,embedding.dval]
+    model.init_logs = []
 
-    hPars = model.se_hPars
+    #
+    dsets = model.embedding.dsets
+    se_dataset = model.se_dataset
+    se_config = model.se_config
 
-    metrics = model.metrics
+    model.init_logs.append(dsets_samples_logs(dsets, se_dataset, se_config))
+    model.init_logs.append(dsets_labels_logs(dsets))
 
-    print ('\n')
+    #
+    network = model.network
 
-    init_1 = log_model_network(model)
+    model.init_logs.append(network_logs(network))
 
-    init_2 = log_datasets(model,dsets,hPars,metrics)
+    #
+    layers = model.layers
 
-    init_3 = [] #log_lr_schedule(hPars)
+    model.init_logs.append(layers_lrate_logs(layers))
+    model.init_logs.append(layers_others_logs(layers))
 
-    init_4 = [] #log_others(dsets,hPars,metrics)
-
-    cprint ('----------------------- %s -------------------------\n' % model.name,attrs=['bold'])
-
-    print ('\n')
-    colors = ['green','red','magenta','cyan','yellow','blue','grey']
-
-    headers = headers_log(metrics,colors)
-
-    model.logs = [headers,init_1,init_2,init_3,init_4]
-
-    model.init = False
+    initialize_logs_print(model)
 
     return None
 
 
-def headers_log(metrics,colors):
-    colors = ['green','red','magenta','cyan','yellow','blue','grey']
+def initialize_logs_print(model):
 
-    headers = [colored('epoch','white',attrs=['bold'])+'\n',colored('lr','white',attrs=['bold'])+'\n']
+    cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
 
-    for i, s in enumerate(metrics.keys()):
+    print (model.init_logs[0].draw(), end='\n\n')
 
-        i = i % len(colors)
-
-        headers.append('\n'+colored('(0)',colors[i],attrs=['bold']))
-
-        headers.append(colored('%s' % s,colors[i],attrs=['bold'])+'\n'+colored('(1)',colors[i],attrs=['bold']))
-
-        headers.append('\n'+colored('(2)',colors[i],attrs=['bold']))
-
-    headers.append(colored('Experiment','white',attrs=[])+'\n')
-
-    return [headers]
+    print (model.init_logs[1].draw(), end='\n\n')
 
 
-def log_model_network(model):
+    cprint ('----------------------- Model Architecture -------------------------\n',attrs=['bold'])
 
-    headers = ['ID','Layer','Dimensions','Activation','FW_Shapes','BW_Shapes']
+    print (model.init_logs[2].draw(), end='\n\n')
+
+
+    cprint ('------------------------------------------- Layers ---------------------------------------------\n',attrs=['bold'])
+
+    print (model.init_logs[3].draw(), end='\n\n')
+
+    print (model.init_logs[4].draw(), end='\n\n')
+
+
+    cprint ('----------------------- %s -------------------------\n' % model.name, attrs=['bold'], end='\n\n')
+
+    return None
+
+
+def network_logs(network):
+
+    headers = [
+        'ID',
+        'Layer',
+        'Dimensions',
+        'Activation',
+        'FW_Shapes',
+        'BW_Shapes',
+    ]
 
     logs = Texttable()
 
-    logs.add_rows([headers])
+    logs.add_row(headers)
 
-    for i, layer in enumerate(model.network.values()):
+    for i, layer in enumerate(network.values()):
 
-        log = [str(i),layer['Layer'],'\n'.join(layer['Dimensions']),'\n'.join(layer['Activation']),'\n'.join(layer['FW_Shapes']),'\n'.join(layer['BW_Shapes'])]
+        log = []
+
+        log.append(str(i))
+        log.append(layer['Layer'])
+
+        for key in ['Dimensions', 'Activation', 'FW_Shapes', 'BW_Shapes']:
+            log.append('\n'.join([k + ': ' + str(v) for k,v in layer[key].items()]))
 
         logs.add_row(log)
 
     logs.set_max_width(0)
 
-    cprint ('----------------------- Model Architecture -------------------------\n',attrs=['bold'])
+    return logs
 
-    print (logs.draw())
 
-    print ('\n')
+def layers_lrate_logs(layers):
+
+    headers = [
+        'Layer',
+        'training\nepochs\n(e)',
+        'schedule\nmode',
+        'cycling\n(n)',
+        'e/n',
+        'decay\n(k)',
+        'descent\n(d)',
+        'start',
+        'end',
+        'end\n(%)',
+    ]
+
+    logs = Texttable()
+
+    logs.add_row(headers)
+
+    for layer in layers:
+
+        log = []
+
+        se_hPars = layer.se_hPars
+
+        lr_ori = layer.lrate[0]
+        lr_end = layer.lrate[-1]
+
+        pc_end = round(lr_end / lr_ori * 100,3)
+
+        log.append(layer.name)
+        log.append(se_hPars['training_epochs'])
+        log.append(se_hPars['schedule_mode'])
+        log.append(se_hPars['cycling_n'])
+        log.append(se_hPars['epochs_per_cycle'])
+        log.append(se_hPars['decay_k'])
+        log.append(se_hPars['descent_d'])
+        log.append("{:.2e}".format(lr_ori))
+        log.append("{:.2e}".format(lr_end))
+        log.append(pc_end)
+
+        logs.add_row(log)
+
+    logs.set_max_width(0)
 
     return logs
 
 
-def log_lr_schedule(hPars):
+def layers_others_logs(layers):
 
-
-    headers = ['training\nepochs\n(e)','schedule\nmode','cycling\n(n)','e/n','decay\n(k)','descent\n(d)','start','end','end\n(%)']
+    headers = [
+        'Layer',
+        'LRELU\nalpha',
+        'ELU\nalpha',
+        'softmax\ntemperature',
+        'min.\nepsilon',
+        'reg.\nl1',
+        'reg.\nl2',
+    ]
 
     logs = Texttable()
 
-    logs.add_rows([headers])
+    logs.add_row(headers)
 
-    pc_end = round(hPars.l[-1] / hPars.s['l'] * 100,3)
+    for layer in layers:
 
-    lr_ori = "{:.2e}".format(hPars.s['l'])
-    lr_end = "{:.2e}".format(hPars.l[-1])
+        se_hPars = layer.se_hPars
 
-    log = [hPars.i,hPars.s['s'],hPars.s['n'],hPars.s['c'],hPars.s['k'],hPars.s['d'],lr_ori,lr_end,pc_end]
+        log = []
+
+        log.append(layer.name)
+        log.append(se_hPars['LRELU_alpha'])
+        log.append(se_hPars['ELU_alpha'])
+        log.append(se_hPars['softmax_temperature'])
+        log.append(se_hPars['min_epsilon'])
+        log.append(se_hPars['regularization_l1'])
+        log.append(se_hPars['regularization_l2'])
+
+        logs.add_row(log)
+
+    logs.set_max_width(0)
+
+    return logs
+
+
+def dsets_samples_logs(dsets, se_dataset, se_config):
+
+    headers = [
+        'N_SAMPLES',
+        'dtrain\n(0)',
+        'dtest\n(1)',
+        'dval\n(2)',
+        'batch\nnumber\n(b)',
+        'dtrain/b',
+        'dataset\ntarget',
+        'metrics\ntarget',
+    ]
+
+    logs = Texttable()
+
+    logs.add_row(headers)
+
+    batch_number = se_dataset['batch_number']
+
+    sample_per_batch = int(dsets[0].s) // int(batch_number)
+
+    log = []
+
+    log.append(se_dataset['N_SAMPLES'])
+    log.append(dsets[0].s)
+    log.append(dsets[1].s)
+    log.append(dsets[2].s)
+    log.append(batch_number)
+    log.append(sample_per_batch)
+    log.append(se_config['dataset_target'])
+    log.append(se_config['metrics_target'])
 
     logs.add_row(log)
 
     logs.set_max_width(0)
 
-    cprint ('-------------------------------- Learning rate -----------------------------------\n',attrs=['bold'])
+    return logs
 
-    print (logs.draw())
 
-    print ('\n')
+def dsets_labels_logs(dsets):
+
+    headers = [
+        'N_LABELS',
+        'dtrain\n(0)',
+        'dtest\n(1)',
+        'dval\n(2)',
+    ]
+
+    logs = Texttable()
+
+    logs.add_row(headers)
+
+    log = []
+
+    log.append(len(dsets[0].b.keys()))
+
+    for dset in dsets:
+        log.append('\n'.join([str(k) + ': ' + str(v) for k,v in sorted(dset.b.items())]))
+
+    logs.add_row(log)
 
     return logs
 
 
-def log_datasets(model,dsets,hPars,metrics):
+def headers_logs(metrics,colors):
 
-    headers = ['N_SAMPLES','dtrain\n(0)','dtest\n(1)','dval\n(2)','batch\nnumber\n(b)','dtrain/b','dataset\ntarget','metrics\ntarget']
+    headers = [
+        colored('epoch', 'white', attrs=['bold']) + '\n',
+    ]
 
-    logs = Texttable()
+    for i, s in enumerate(['lr']+list(metrics.keys())):
 
-    logs.add_rows([headers])
+        i = i % len(colors)
 
-    batch_number = model.se_dataset['batch_number']
-    n_samples = model.se_dataset['N_SAMPLES']
-    dataset_target = model.se_config['dataset_target']
-    metrics_target = model.se_config['metrics_target']
+        headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
 
-    log = [n_samples,dsets[0].s,dsets[1].s,dsets[2].s,batch_number,int(dsets[0].s)//int(batch_number),dataset_target,metrics_target]
+        headers.append(
+            colored('%s' % s, colors[i], attrs=['bold'])
+            + '\n'
+            + colored('(1)', colors[i], attrs=['bold'])
+        )
 
-    logs.add_row(log)
+        headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
 
-    logs.set_max_width(0)
+    headers.append(colored('Experiment', 'white', attrs=[]) + '\n')
 
-    cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
-
-    print (logs.draw())
-
-    print ('\n')
-
-    headers = ['N_LABELS','dtrain\n(0)','dtest\n(1)','dval\n(2)']
-
-    logs = Texttable()
-
-    logs.add_rows([headers])
-
-
-    N_LABELS = len(dsets[0].b.keys())
-
-    dtrain_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[0].b.items()) ])
-    dtest_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[1].b.items()) ])
-    dval_balance = '\n'.join([ str(k)+': '+ str(v) for k,v in sorted(dsets[2].b.items()) ])
-
-    log = [N_LABELS,dtrain_balance,dtest_balance,dval_balance]
-
-    logs.add_row(log)
-
-    print (logs.draw())
-
-    print ('\n')
-
-    return logs
-
-
-def log_others(dsets,hPars,metrics):
-
-    headers = ['reg.\nl1','reg.\nl2','min.\nepsilon','LRELU\nalpha','ELU\nalpha','softmax\ntemperature']
-
-    logs = Texttable()
-
-    logs.add_rows([headers])
-
-    log = [hPars.c['l1'],hPars.c['l2'],hPars.c['E'],hPars.c['l'],hPars.c['e'],hPars.c['s']]
-
-    logs.add_row(log)
-
-    logs.set_max_width(0)
-
-    cprint ('-------------------------- Others ---------------------\n',attrs=['bold'])
-
-    print (logs.draw())
-
-    print ('\n')
-
-    return logs
+    return headers
 
 
 def set_highlighted_excepthook():
 
-    lexer = get_lexer_by_name("pytb" if sys.version_info.major < 3 else "py3tb")
+    lexer = get_lexer_by_name('pytb' if sys.version_info.major < 3 else 'py3tb')
 
-    formatter = TerminalTrueColorFormatter(bg="dark",style="fruity")
+    formatter = TerminalTrueColorFormatter(bg='dark', style='fruity')
 
     def myexcepthook(type, value, tb):
         tbtext = ''.join(traceback.format_exception(type, value, tb))
@@ -269,8 +377,12 @@ def set_highlighted_excepthook():
     sys.excepthook = myexcepthook
 
 
-
-
 def pretty_json(data):
-    print (highlight(json.dumps(data,sort_keys=False,indent=4), lexers.JsonLexer(), formatters.TerminalFormatter()))
-    return data
+
+    data = json.dumps(data, sort_keys=False, indent=4)
+
+    data = highlight(data, lexers.JsonLexer(), formatters.TerminalFormatter())
+
+    print (data)
+
+    return None

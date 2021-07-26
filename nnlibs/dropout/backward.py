@@ -1,17 +1,23 @@
-#EpyNN/nnlibs/dropout/backward.py
-import nnlibs.dropout.parameters as dp
-
+# EpyNN/nnlibs/dropout/backward.py
+# Related third party imports
 import numpy as np
 
 
-def dropout_backward(layer,dA):
+def dropout_backward(layer, dA):
 
-    dX = dp.init_backward(layer,dA)
+    dX = initialize_backward(layer, dA)
 
-    dA = np.multiply(dX,layer.fc['D'])
+    dA = dX * layer.fc['D']
 
-    dA /= layer.k
+    dA /= layer.d['k']
 
-    layer.bc['dA'] = dA
+    dA = layer.bc['dA'] = dA
 
     return dA
+
+
+def initialize_backward(layer, dA):
+
+    dX = layer.bc['dX'] = dA
+
+    return dX

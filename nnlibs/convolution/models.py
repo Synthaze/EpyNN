@@ -1,20 +1,20 @@
-# EpyNN/nnlibs/dense/models.py
+# EpyNN/nnlibs/conv/models.py
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.commons.maths import softmax, sigmoid, xavier
-from nnlibs.dense.forward import dense_forward
-from nnlibs.dense.backward import dense_backward
-from nnlibs.dense.parameters import (
-    dense_compute_shapes,
-    dense_initialize_parameters,
-    dense_update_gradients,
-    dense_update_parameters
+from nnlibs.commons.maths import relu, xavier
+from nnlibs.convolution.forward import convolution_forward
+from nnlibs.convolution.backward import convolution_backward
+from nnlibs.convolution.parameters import (
+    convolution_compute_shapes,
+    convolution_initialize_parameters,
+    convolution_update_gradients,
+    convolution_update_parameters
 )
 
 
-class Dense(Layer):
+class Convolution(Layer):
     """
-    Definition of a Dense Layer prototype
+    Definition of a Convolution Layer prototype
 
     Attributes
     ----------
@@ -25,7 +25,7 @@ class Dense(Layer):
     activate : function
         Activation function.
     lrate : list
-        Learning rate along epochs for Dense layer
+        Learning rate along epochs for Convolution layer
 
     Methods
     -------
@@ -49,11 +49,22 @@ class Dense(Layer):
     """
 
     def __init__(self,
-                nodes=2,
-                activate=sigmoid,
+                n_filters=1,
+                f_width=3,
+                depth=1,
+                stride=1,
+                padding=0,
+                activate=relu,
                 initialization=xavier):
 
         super().__init__()
+
+        ### Init shapes
+        self.n_filters = n_filters
+        self.f_width = f_width
+        self.depth = depth
+        self.stride = stride
+        self.padding = padding
 
         self.initialization = initialization
 
@@ -61,37 +72,41 @@ class Dense(Layer):
 
         self.activate = activate
 
-        # Store the number of nodes in the dimension dictionary
-        self.d['n'] = nodes
+        self.d['n'] = n_filters
+        self.d['w'] = f_width
+        self.d['d'] = depth
+        self.d['s'] = stride
+        self.d['p'] = padding
 
         self.lrate = []
 
     def compute_shapes(self, A):
-        dense_compute_shapes(self, A)
+        convolution_compute_shapes(self, A)
         return None
 
     def initialize_parameters(self):
-        dense_initialize_parameters(self)
+        convolution_initialize_parameters(self)
         return None
 
     def forward(self, A):
         # Forward pass
-        A = dense_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.compute_shapes(A)
+        A = convolution_forward(self, A)
+        #self.update_shapes(mode='forward')
         return A
 
     def backward(self, dA):
         # Backward pass
-        dA = dense_backward(self, dA)
-        self.update_shapes(mode='backward')
+        dA = convolution_backward(self, dA)
+        #self.update_shapes(mode='backward')
         return dA
 
     def update_gradients(self):
         # Backward pass
-        dense_update_gradients(self)
+        convolution_update_gradients(self)
         return None
 
     def update_parameters(self):
         # Update parameters
-        dense_update_parameters(self)
+        convolution_update_parameters(self)
         return None

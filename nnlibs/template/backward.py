@@ -1,20 +1,25 @@
-#EpyNN/nnlibs/template/backward.py
-import nnlibs.meta.parameters as mp
-
-import nnlibs.template.parameters as tp
-
-import numpy as np
+# EpyNN/nnlibs/template/backward.py
 
 
-def template_backward(layer,dA):
+def template_backward(layer, dA):
+    """
 
-    # If applicable - Init layer shapes and variables
-    dX = tp.init_backward(layer,dA)
+    :param layer: An instance of the :class:`nnlibs.template.models.Template`
+    :type layer: class:`nnlibs.template.models.Template`
 
-    # Do stuff with dX to compute dA
-    dA = dX
+    :param dA:
+    :type dA: class:`numpy.ndarray`
+    """
 
-    # If applicable - Update layer gradients
-    tp.update_grads(layer)
+    dX = initialize_backward(layer, dA)
+
+    dA = layer.bc['dA'] = dX
 
     return dA
+
+
+def initialize_backward(layer, dA):
+
+    dX = layer.bc['dX'] = dA
+
+    return dX

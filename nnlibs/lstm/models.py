@@ -1,73 +1,119 @@
-#EpyNN/nnlibs/lstm/models.py
-from nnlibs.commons.decorators import *
-import nnlibs.commons.maths as cm
+# EpyNN/nnlibs/lstm/models.py
+# Local application/library specific imports
+from nnlibs.commons.models import Layer
+from nnlibs.commons.maths import tanh, sigmoid, xavier
+from nnlibs.lstm.forward import lstm_forward
+from nnlibs.lstm.backward import lstm_backward
+from nnlibs.lstm.parameters import (
+    lstm_compute_shapes,
+    lstm_initialize_parameters,
+    lstm_update_gradients,
+    lstm_update_parameters
+)
 
-import nnlibs.lstm.parameters as lp
-import nnlibs.lstm.backward as lb
-import nnlibs.lstm.forward as lf
 
-import numpy as np
-
-
-class LSTM:
+class LSTM(Layer):
     """
-    Description for class
+    Definition of a LSTM Layer prototype
 
-    :ivar var1: initial value: par1
-    :ivar var2: initial value: par2
+    Attributes
+    ----------
+    initialization : function
+        Function used for weight initialization.
+    activation : dict
+        Activation functions as key-value pairs for log purpose.
+    activate : function
+        Activation function.
+    lrate : list
+        Learning rate along epochs for LSTM layer
+    binary : bool
+        .
+
+    Methods
+    -------
+    compute_shapes(A)
+        .
+    initialize_parameters()
+        .
+    forward(A)
+        .
+    backward(dA)
+        .
+    update_gradients()
+        .
+    update_parameters()
+        .
+
+    See Also
+    --------
+    nnlibs.commons.models.Layer :
+        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
     """
 
-    @log_method
-    def __init__(self,hidden_size,
-            binary=False,
-            activate_forget=cm.sigmoid,
-            activate_input=cm.sigmoid,
-            activate_candidate=cm.tanh,
-            activate_output=cm.sigmoid,
-            activate_hidden=cm.tanh,
-            activate_logits=cm.softmax,
-            initialization=cm.xavier):
+    def __init__(self,
+                hidden_size=10,
+                activate=sigmoid,
+                activate_input=tanh,
+                activate_candidate=tanh,
+                activate_forget=sigmoid,
+                activate_output=sigmoid,
+                activate_hidden=tanh,
+                initialization=xavier,
+                binary=False):
 
-        """ Layer attributes """
-        ### Set layer init attribute to True
-        self.init = True
-        ### Set layer weigths init attribute
+        super().__init__()
+
         self.initialization = initialization
-        ### Set layer activation attributes
-        self.activation = [activate_forget,activate_input,activate_candidate,activate_output,activate_hidden,activate_logits]
-        lp.set_activation(self)
-        ### Define layer dictionaries attributes
-        ## Dimensions
-        self.d = {}
-        ## Parameters
-        self.p = {}
-        ## Gradients
-        self.g = {}
-        ## Forward pass cache
-        self.fc = {}
-        ## Backward pass cache
-        self.bc = {}
-        ## Forward pass shapes
-        self.fs = {}
-        ## Backward pass shapes
-        self.bs = {}
 
-        ### Set keys for layer cache attributes
-        self.attrs = ['X','Xt','A','Z','h','c','z','f','i','g','z','o']
+        self.activation = {
+            'activate': activate.__name__,
+            'activate_input': activate_input.__name__,
+            'activate_candidate': activate_candidate.__name__,
+            'activate_forget': activate_forget.__name__,
+            'activate_hidden': activate_hidden.__name__,
+            'activate_output': activate_output.__name__,
+        }
 
-        ### Init shapes
+        self.activate = activate
+        self.activate_input = activate_input
+        self.activate_candidate = activate_candidate
+        self.activate_forget = activate_forget
+        self.activate_output = activate_output
+        self.activate_hidden = activate_hidden
+
+        self.d['h'] = hidden_size
+
         self.binary = binary
-        self.hidden_size = hidden_size
 
-    def init_shapes(self):
-        lp.init_shapes(self)
+        self.lrate = []
 
-    def forward(self,A):
+    def compute_shapes(self, A):
+        lstm_compute_shapes(self, A)
+        return None
+
+    def initialize_parameters(self):
+        lstm_initialize_parameters(self)
+        return None
+
+    def forward(self, A):
         # Forward pass
-        A = lf.lstm_forward(self,A)
+        self.compute_shapes(A)
+        A = lstm_forward(self, A)
+        self.update_shapes(mode='forward')
         return A
 
-    def backward(self,dA):
+    def backward(self, dA):
         # Backward pass
-        dA = lb.lstm_backward(self,dA)
+        dA = lstm_backward(self, dA)
+        self.update_shapes(mode='backward')
         return dA
+
+    def update_gradients(self):
+        # Backward pass
+        lstm_update_gradients(self)
+        return None
+
+    def update_parameters(self):
+        # Update parameters
+        lstm_update_parameters(self)
+        return None

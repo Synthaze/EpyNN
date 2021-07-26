@@ -181,12 +181,16 @@ def softmax(x, deriv=False):
     T = 1
 
     if deriv == False:
+
         x = x - np.max(x, axis=0, keepdims=True)
+
         x = np.exp(x / T)
-        x = x / np.sum(x, axis=0, keepdims=True)
+        x_ = np.sum(x, axis=0, keepdims=True)
+        x_ = x / x_
 
     elif deriv == True:
-        x = (1.0+np.exp(-x)) * (1.0-(1.0 / (1.0+np.exp(-x))))
+
+        pass
 
     return x
 

@@ -7,9 +7,9 @@ from nnlibs.meta.models import EpyNN
 # Embedding layer for input data
 from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures
-from nnlibs.conv.models import Convolution
+from nnlibs.convolution.models import Convolution
 from nnlibs.flatten.models import Flatten
-from nnlibs.pool.models import Pooling
+from nnlibs.pooling.models import Pooling
 from nnlibs.dense.models import Dense
 # Commons utils and maths
 import nnlibs.commons.library as cl
@@ -21,13 +21,12 @@ import settings as se
 # Compute with NumPy
 import numpy as np
 
-
+import random
+random.seed(1)
 ################################## HEADERS ################################
 np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
-
-cm.global_seed(1)
 
 cl.init_dir(se.config)
 # DOCS_HEADERS
@@ -38,17 +37,17 @@ dataset = pd.prepare_dataset(se.dataset)
 
 ################################ BUILD MODEL ###############################
 embedding = Embedding(dataset,se.dataset)
-convolution = Convolution(32,2)
+convolution = Convolution()
 pooling = Pooling(3,3)
 
 name = 'Embedding_Flatten_Dense_Dense-2-Softmax'
 layers = [embedding,Flatten(),Dense(64,cm.relu),Dense()]
 
-# name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
-#layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
+name = 'Embedding_Convolution_Pooling_Flatten_Dense_Dense-2-Softmax'
+layers = [embedding,convolution,pooling,Flatten(),Dense(64,cm.relu),Dense()]
 
 
-model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
+model = EpyNN(layers=layers, settings=[se.dataset,se.config,se.hPars], seed=1, name=name)
 
 
 ################################ TRAIN MODEL ################################

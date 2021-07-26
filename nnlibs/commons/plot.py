@@ -1,65 +1,77 @@
-#EpyNN/nnlibs/commons/plot.py
-from nnlibs.commons.decorators import *
+# EpyNN/nnlibs/commons/plot.py
+# Related third party imports
+import termplotlib
+from matplotlib import pyplot as plt
 
-import matplotlib.pyplot as plt
-import termplotlib as tpl
 
 
-@log_function
-def pyplot_metrics(model,hPars,runData):
+def pyplot_metrics(model):
 
-    set_names = ['Training','Testing','Validation']
+    se_config = model.se_config
+
+    set_names = [
+        'Training',
+        'Testing',
+        'Validation',
+    ]
 
     plt.figure()
 
-    for s in runData.m['p']:
+    for s in model.se_config['metrics_plot']:
 
-        for k, dset in enumerate(set_names):
+        for k, dname in enumerate(set_names):
 
-            x = [ x for x in range(len(runData.s[s][k]))]
-            y = runData.s[s][k]
+            x = [x for x in range(len(model.metrics[s][k]))]
 
-            plt.plot(x,y,label=dset+' '+s)
+            y = model.metrics[s][k]
 
-    x = range(len(hPars.l))
-    y = [ x / max(hPars.l) for x in hPars.l ]
+            plt.plot(x, y, label=dname + ' ' + s)
 
-    plt.plot(x,y,label='lr (Norm.)')
+    # x = range(len(hPars.l))
+    # y = [ x / max(hPars.l) for x in hPars.l ]
+    #
+    # plt.plot(x,y,label='lr (Norm.)')
 
     plt.legend()
 
-    plt.xlabel('Epoch'), plt.ylabel('Value')
+    plt.xlabel('Epoch')
+    plt.ylabel('Value')
 
-    t = runData.m['nt']+'\n'+model.n
+    plt.title(model.uname)
 
-    plt.title(t)
-
-    if runData.b['pd'] == True:
+    if se_config['plot_display'] == True:
         plt.show()
 
-    if runData.b['ps'] == True:
-        plt.savefig(runData.p['ps'])
+    if se_config['plot_save'] == True:
+        pass
+        #plt.savefig()
 
     return None
 
 
-@log_function
-def gnuplot_accuracy(runData):
+def gnuplot_accuracy(model):
 
-    set_names = ['Training','Testing','Validation']
+    se_config = model.se_config
 
-    fig = tpl.figure()
+    set_names = [
+        'Training',
+        'Testing',
+        'Validation',
+    ]
+
+    fig = termplotlib.figure()
 
     s = 'accuracy'
 
-    for k, dset in enumerate(set_names):
+    for k, dname in enumerate(set_names):
 
-        x = [ x for x in range(len(runData.s[s][k]))]
-        y = runData.s[s][k]
+        x = [x for x in range(len(model.metrics[s][k]))]
 
-        fig.plot(x,y, label=dset+' '+s, width=50, height=15)
+        y = model.metrics[s][k]
 
-    if runData.b['pd'] == True:
+        fig.plot(x, y, label=dname + ' ' + s, width=50, height=15)
+
+    if se_config['plot_display'] == True:
         fig.show()
 
     return None

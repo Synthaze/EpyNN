@@ -1,131 +1,111 @@
-#EpyNN/nnlibs/rnn/parameters.py
-import nnlibs.commons.maths as cm
-
+# EpyNN/nnlibs/rnn/parameters.py
+# Related third party imports
 import numpy as np
 
 
-def set_activation(layer):
+def rnn_compute_shapes(layer, A):
+    """Compute shapes for RNN layer object
 
-    args = layer.activation
-    layer.activate_input, layer.derivative_input = args[0], cm.get_derivative(args[0])
-    layer.activate_output, layer.derivative_output = args[1], cm.get_derivative(args[1])
+    :param layer: An instance of the :class:`nnlibs.rnn.models.RNN`
+    :type layer: class:`nnlibs.rnn.models.RNN`
+    """
 
-    return None
+    X = A
 
-
-def init_shapes(layer):
-    ### Set layer dictionaries values
-    ## Dimensions
-    # Hidden size
-    layer.d['h'] = layer.hidden_size
-    # Vocab size
-    layer.d['v'] = layer.vocab_size = layer.d['v']
-    # Output size
-    if layer.binary == False:
-        output_size = layer.d['v']
-    else:
-        output_size = 2
-
-    layer.d['o'] = layer.output_size = output_size
-
-    ## Forward pass shapes
-    hv = ( layer.d['h'], layer.d['v'] )
-    hh = ( layer.d['h'], layer.d['h'] )
-    h1 = ( layer.d['h'], 1 )
-    oh = ( layer.d['o'], layer.d['h'] )
-    o1 = ( layer.d['o'], 1 )
-
-    # W, U, b - _ gate
-    layer.fs['U'], layer.fs['V'], layer.fs['bh'] = hv, hh, h1
-    # W, U, b - _ gate
-    layer.fs['W'], layer.fs['bo'] = oh, o1
-
-    return None
-
-
-def init_forward(layer,A):
-
-    # Cache X (current) from A (prev)
-    X = layer.fc['X'] = A
     layer.fs['X'] = X.shape
 
-    # Init cache shapes
-    layer.ts = layer.fs['X'][1]
+    layer.d['v'] = layer.fs['X'][0]
+    layer.d['t'] = layer.fs['X'][1]
+    layer.d['m'] = layer.fs['X'][2]
 
-    for c in ['h','A']:
-        layer.fc[c] = [0] * layer.ts
+    if layer.binary == False:
+        layer.d['o'] = layer.d['v']
+    else:
+        layer.d['o'] = 2
 
-    # Init h
-    layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
-    # Init h
-    hp = np.zeros(layer.fs['h'])
+    hv = layer.fs['Uh'] = ( layer.d['h'], layer.d['v'] )
+    hh = layer.fs['Vh'] = ( layer.d['h'], layer.d['h'] )
+    h1 = layer.fs['bh'] = ( layer.d['h'], 1 )
 
-    return X, hp
+    oh = layer.fs['W'] = ( layer.d['o'], layer.d['h'] )
+    o1 = layer.fs['b'] = ( layer.d['o'], 1 )
 
+    tvm = layer.fs['Xt'] = (layer.d['t'], layer.d['v'], layer.d['m'])
+    thm = layer.fs['h'] = (layer.d['t'], layer.d['h'], layer.d['m'])
+    tom = layer.fs['A'] = (layer.d['t'], layer.d['o'], layer.d['m'])
 
-def end_forward(layer):
+    hm = layer.fs['ht'] = (layer.d['h'], layer.d['m'])
 
-    layer.fc = { k:np.array(v) for k,v in layer.fc.items() }
-
-    A = layer.fc['A']
-
-    if layer.binary == True:
-        A = layer.fc['A'] = A[-1]
-
-    return A
-
-
-def init_backward(layer,dA):
-
-    # Cache X (current) from A (prev)
-    dX = layer.bc['dX'] = dA
-    # Init dh_next (dhn)
-    dhn = layer.bc['dhn'] = np.zeros_like(layer.fc['h'][0])
-
-    # Cache dXt (dX at current t) from dX
-    dXt = layer.bc['dXt'] = layer.bc['dX']
-    # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-    dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt)
-
-    return dX, dhn, dXt, dh
+    return None
 
 
-def init_params(layer):
+def rnn_initialize_parameters(layer):
+    """Dummy function - Initialize parameters for RNN layer object
+
+    :param layer: An instance of the :class:`nnlibs.rnn.models.RNN`
+    :type layer: class:`nnlibs.rnn.models.RNN`
+    """
 
     # W, U, b - _ gate
-    layer.p['U'] = layer.initialization(layer.fs['U'])
-    layer.p['V'] = layer.initialization(layer.fs['V'])
+    layer.p['Uh'] = layer.initialization(layer.fs['Uh'], rng=layer.np_rng)
+    layer.p['Vh'] = layer.initialization(layer.fs['Vh'], rng=layer.np_rng)
     layer.p['bh'] = np.zeros(layer.fs['bh'])
 
     # W, U, b - _ gate
-    layer.p['W'] = layer.initialization(layer.fs['W'])
-    layer.p['bo'] = np.zeros(layer.fs['bo'])
-
-    # Set init to False
-    layer.init = False
+    layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
+    layer.p['b'] = np.zeros(layer.fs['b'])
 
     return None
 
 
-def update_gradients(layer,t):
-    # Number of sample
-    m = layer.m = layer.fs['X'][-1]
-    # Retrieve h (current t)
-    h = layer.fc['h'][t]
-    hp = layer.fc['h'][t-1]
-    # Retrieve Xt
-    Xt = layer.fc['X'][:,t]
+def rnn_update_gradients(layer):
+    """Dummy function - Update weight and bias gradients for RNN layer object
 
-    # _
-    dXt = layer.bc['dXt']
-    layer.g['dW'] += 1./ m * np.dot(dXt,h.T)
-    layer.g['dbo'] += 1./ m * np.sum(dXt,axis=1,keepdims=True)
+    :param layer: An instance of the :class:`nnlibs.rnn.models.RNN`
+    :type layer: class:`nnlibs.rnn.models.RNN`
+    """
 
-    # _
-    df = layer.bc['df']
-    layer.g['dU'] += 1./ m * np.dot(df, Xt.T)
-    layer.g['dV'] += 1./ m * np.dot(df, hp.T)
-    layer.g['dbh'] += 1./ m * np.sum(df,axis=1,keepdims=True)
+    for parameter in layer.p.keys():
+        gradient = 'd' + parameter
+        layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
+    for t in reversed(range(layer.d['t'])):
+
+        h = layer.fc['h'][t]
+        hp = layer.fc['h'][t-1]
+
+        Xt = layer.fc['X'][:, t]
+
+        # _
+
+        if layer.binary == False:
+            dXt = layer.bc['dXt'][t]
+        else:
+            dXt = layer.bc['dXt']
+
+        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXt, h.T)
+        layer.g['db'] += 1./ layer.d['m'] * np.sum(dXt, axis=1, keepdims=True)
+
+        # _
+        _dh = layer.bc['_dh']
+        layer.g['dUh'] += 1./ layer.d['m'] * np.dot(_dh, Xt.T)
+        layer.g['dVh'] += 1./ layer.d['m'] * np.dot(_dh, hp.T)
+        layer.g['dbh'] += 1./ layer.d['m'] * np.sum(_dh, axis=1, keepdims=True)
+
+    return None
+
+
+def rnn_update_parameters(layer):
+    """Dummy function - Update parameters for RNN layer object
+
+    :param layer: An instance of the :class:`nnlibs.rnn.models.RNN`
+    :type layer: class:`nnlibs.rnn.models.RNN`
+    """
+
+    for gradient in layer.g.keys():
+
+        parameter = gradient[1:]
+
+        layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

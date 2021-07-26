@@ -1,34 +1,56 @@
-#EpyNN/nnlibs/dropout/paremeters.py
-
+# EpyNN/nnlibs/dropout/paremeters.py
+# Related third party imports
 import numpy as np
 
-def init_mask(layer):
 
-    D = layer.np.random(layer.fs['D'])
+def dropout_compute_shapes(layer, A):
+    """Compute shapes for Dropout layer object
 
-    D = layer.fc['D'] = ( D < layer.k )
+    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`
+    :type layer: class:`nnlibs.dropout.models.Dropout`
+    """
 
-    return D
+    X = A
 
+    layer.fs['X'] = layer.fs['D'] = X.shape
 
-def init_forward(layer,A):
+    layer.d['m'] = layer.fs['X'][-1]
+    layer.d['n'] = X.size // layer.d['m']
 
-    # Cache X (current) from A (prev)
-    X = layer.fc['X'] = A
-    layer.fs['X'] = layer.fs['D'] = layer.fc['X'].shape
-
-    return X
-
-
-def init_backward(layer,dA):
-
-    # Cache dX (current) from dA (prev)
-    dX = layer.bc['dX'] = dA
-
-    return dX
+    return None
 
 
-def init_shapes(layer):
+def dropout_initialize_parameters(layer):
+    """Dummy function - Initialize parameters for Dropout layer object
 
+    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`
+    :type layer: class:`nnlibs.dropout.models.Dropout`
+    """
+
+    # No parameters to initialize for Dropout layer
+
+    return None
+
+
+def dropout_update_gradients(layer):
+    """Dummy function - Update weight and bias gradients for Dropout layer object
+
+    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`
+    :type layer: class:`nnlibs.dropout.models.Dropout`
+    """
+
+    # No gradients to update for Dropout layer
+
+    return None
+
+
+def dropout_update_parameters(layer):
+    """Dummy function - Update parameters for Dropout layer object
+
+    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`
+    :type layer: class:`nnlibs.dropout.models.Dropout`
+    """
+
+    # No parameters to update for Dropout layer
 
     return None

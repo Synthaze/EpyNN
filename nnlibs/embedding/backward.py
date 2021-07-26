@@ -1,6 +1,4 @@
 # EpyNN/nnlibs/embedding/backward.py
-# Related third party imports
-import numpy as np
 
 
 def embedding_backward(layer, dA):

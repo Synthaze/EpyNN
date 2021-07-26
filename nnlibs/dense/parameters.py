@@ -67,6 +67,6 @@ def dense_update_parameters(layer):
 
         parameter = gradient[1:]
 
-        layer.p[parameter] -= layer.lrate[hPars.e] * layer.g[gradient]
+        layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

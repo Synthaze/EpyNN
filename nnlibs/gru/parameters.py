@@ -1,158 +1,133 @@
-#EpyNN/nnlibs/gru/parameters.py
-import nnlibs.commons.maths as cm
-
-import nnlibs.meta.parameters as mp
-
+# EpyNN/nnlibs/gru/parameters.py
+# Related third party imports
 import numpy as np
 
 
-def set_activation(layer):
+def gru_compute_shapes(layer, A):
+    """Compute shapes for GRU layer object
 
-    args = layer.activation
-    layer.activate_update, layer.derivative_update = args[0], cm.get_derivative(args[0])
-    layer.activate_reset, layer.derivative_reset = args[1], cm.get_derivative(args[1])
-    layer.activate_input, layer.derivative_input = args[2], cm.get_derivative(args[2])
-    layer.activate_output, layer.derivative_output = args[3], cm.get_derivative(args[3])
+    :param layer: An instance of the :class:`nnlibs.gru.models.GRU`
+    :type layer: class:`nnlibs.gru.models.GRU`
+    """
 
-    return None
+    X = A
 
-
-def init_shapes(layer):
-    ### Set layer dictionaries values
-    ## Dimensions
-    # Hidden size
-    layer.d['h'] = layer.hidden_size
-    # Vocab size
-    layer.d['v'] = vocab_size = layer.d['v']
-    # Output size
-    if layer.binary == False:
-        output_size = layer.d['v']
-    else:
-        output_size = 2
-
-    layer.d['o'] = output_size
-
-    ## Forward pass shapes
-    hv = ( layer.d['h'], layer.d['v'] )
-    hh = ( layer.d['h'], layer.d['h'] )
-    h1 = ( layer.d['h'], 1 )
-    oh = ( layer.d['o'], layer.d['h'] )
-    o1 = ( layer.d['o'], 1 )
-
-    # W, U, b - z gate
-    layer.fs['Wz'], layer.fs['Uz'], layer.fs['bz'] = hv, hh, h1
-    # W, U, b - Reset gate
-    layer.fs['Wr'], layer.fs['Ur'], layer.fs['br'] = hv, hh, h1
-    # W, U, b - h gate
-    layer.fs['Wh'], layer.fs['Uh'], layer.fs['bh'] = hv, hh, h1
-    # W, b - Output gate
-    layer.fs['Wy'], layer.fs['by'] = oh, o1
-
-    return None
-
-def init_params(layer):
-
-    # Init W, b - Forget gate
-    layer.p['Wz'] = layer.initialization(layer.fs['Wz'])
-    layer.p['Uz'] = layer.initialization(layer.fs['Uz'])
-    layer.p['bz'] = np.zeros(layer.fs['bz'])
-    # Init W, b - Forget gate
-    layer.p['Wr'] = layer.initialization(layer.fs['Wr'])
-    layer.p['Ur'] = layer.initialization(layer.fs['Ur'])
-    layer.p['br'] = np.zeros(layer.fs['br'])
-    # Init W, b - Forget gate
-    layer.p['Wh'] = layer.initialization(layer.fs['Wh'])
-    layer.p['Uh'] = layer.initialization(layer.fs['Uh'])
-    layer.p['bh'] = np.zeros(layer.fs['bh'])
-    # Init W, b - Forget gate
-    layer.p['Wy'] = layer.initialization(layer.fs['Wy'])
-    layer.p['by'] = np.zeros(layer.fs['by'])
-
-    # Set init to False
-    layer.init = False
-
-    return None
-
-
-def init_forward(layer,A):
-
-    # Cache X (current) from A (prev)
-    X = layer.fc['X'] = A
     layer.fs['X'] = X.shape
 
-    # Init cache shapes
-    layer.ts = layer.fs['X'][1]
+    layer.d['v'] = layer.fs['X'][0]
+    layer.d['t'] = layer.fs['X'][1]
+    layer.d['m'] = layer.fs['X'][2]
 
-    for c in layer.attrs:
-        layer.fc[c] = [0] * layer.ts
+    if layer.binary == False:
+        layer.d['o'] = layer.d['v']
+    else:
+        layer.d['o'] = 2
 
-    # Init h shape
-    layer.fs['h'] = ( layer.d['h'],layer.fs['X'][-1] )
-    # Init h_prev
-    hp = np.zeros(layer.fs['h'])
+    hv = (layer.d['h'], layer.d['v'])
+    hh = (layer.d['h'], layer.d['h'])
+    h1 = (layer.d['h'], 1)
+    oh = (layer.d['o'], layer.d['h'])
+    o1 = (layer.d['o'], 1)
 
-    return X, hp
+    layer.fs['Wz'] = layer.fs['Wr'] = layer.fs['Wh'] = hv
+    layer.fs['Uz'] = layer.fs['Ur'] = layer.fs['Uh'] = hh
+    layer.fs['bz'] = layer.fs['br'] = layer.fs['bh'] = h1
 
+    layer.fs['W'] = oh
+    layer.fs['b'] = o1
 
-def end_forward(layer):
+    tvm = layer.fs['Xt'] = (layer.d['t'], layer.d['v'], layer.d['m'])
+    thm = layer.fs['h'] = layer.fs['C'] = (layer.d['t'], layer.d['h'], layer.d['m'])
+    tom = layer.fs['A'] = (layer.d['t'], layer.d['o'], layer.d['m'])
 
-    layer.fc = { k:np.array(v) for k,v in layer.fc.items() }
+    hm = layer.fs['ht'] = (layer.d['h'], layer.d['m'])
 
-    A = layer.fc['A']
-
-    if layer.binary == True:
-        A = layer.fc['A'] = A[-1]
-
-    return A
-
-
-def init_backward(layer,dA):
-
-    # Cache X (current) from A (prev)
-    dX = layer.bc['dX'] = dA
-    # Init dh_next (dhn)
-    dhn = layer.bc['dh_n'] = np.zeros_like(layer.fc['h'][0])
-
-    # Cache dXt (dX at current t) from dX
-    dXt = layer.bc['dXt'] = dX
-    # Cache dh (current) from dXt (prev), dhn, z (current) and h (current)
-    dh = layer.bc['dh'] = np.dot( layer.p['Wy'].T, dXt )
-    dhh = np.multiply( dh, (1-layer.fc['z'][-1]) )
-    dhh = layer.bc['dhh'] = layer.derivative_input(dhh,layer.fc['hh'][-1])
-
-    return dX, dhn, dXt, dh, dhh
+    return None
 
 
+def gru_initialize_parameters(layer):
+    """Dummy function - Initialize parameters for GRU layer object
 
-def update_gradients(layer,t):
-    # Number of sample
-    m = layer.m = layer.fs['X'][-1]
-    # Retrieve h (current t)
-    h = layer.fc['h'][t]
-    hp = layer.fc['h'][t-1]
+    :param layer: An instance of the :class:`nnlibs.gru.models.GRU`
+    :type layer: class:`nnlibs.gru.models.GRU`
+    """
 
-    # Retrieve Xt
-    Xt = layer.fc['X'][:,t]
+    # Init W, b - Forget gate
+    layer.p['Wz'] = layer.initialization(layer.fs['Wz'], rng=layer.np_rng)
+    layer.p['Uz'] = layer.initialization(layer.fs['Uz'], rng=layer.np_rng)
+    layer.p['bz'] = np.zeros(layer.fs['bz'])
+    # Init W, b - Forget gate
+    layer.p['Wr'] = layer.initialization(layer.fs['Wr'], rng=layer.np_rng)
+    layer.p['Ur'] = layer.initialization(layer.fs['Ur'], rng=layer.np_rng)
+    layer.p['br'] = np.zeros(layer.fs['br'])
+    # Init W, b - Forget gate
+    layer.p['Wh'] = layer.initialization(layer.fs['Wh'], rng=layer.np_rng)
+    layer.p['Uh'] = layer.initialization(layer.fs['Uh'], rng=layer.np_rng)
+    layer.p['bh'] = np.zeros(layer.fs['bh'])
+    # Init W, b - Forget gate
+    layer.p['W'] = layer.initialization(layer.fs['W'])
+    layer.p['b'] = np.zeros(layer.fs['b'])
 
-    # Retrieve dv and update dWv and dbv
-    dXt = layer.bc['dXt']
-    layer.g['dWy'] += 1./ m * np.dot( dXt, h.T )
-    layer.g['dby'] += 1./ m * np.sum( dXt,axis=1,keepdims=True)
+    return None
 
-    # Retrieve dv and update dWv and dbv
-    dhh = layer.bc['dhh']
-    layer.g['dWh'] += 1./ m * np.dot( dhh, Xt.T )
-    layer.g['dUh'] += 1./ m * np.dot( dhh, np.multiply(layer.fc['r'][t], hp).T)
-    layer.g['dbh'] += 1./ m * np.sum( dhh, axis=1, keepdims=True )
-    # Retrieve dv and update dWv and dbv
-    dr = layer.bc['dr']
-    layer.g['dWr'] += 1./ m * np.dot( dr, Xt.T )
-    layer.g['dUr'] += 1./ m * np.dot( dr, hp.T )
-    layer.g['dbr'] += 1./ m * np.sum( dr,axis=1,keepdims=True)
-    # Retrieve dv and update dWv and dbv
-    dz = layer.bc['dz']
-    layer.g['dWz'] += 1./ m * np.dot( dz, Xt.T )
-    layer.g['dUz'] += 1./ m * np.dot( dz, hp.T )
-    layer.g['dbz'] += 1./ m * np.sum( dz,axis=1,keepdims=True)
+
+def gru_update_gradients(layer):
+    """Dummy function - Update weight and bias gradients for GRU layer object
+
+    :param layer: An instance of the :class:`nnlibs.gru.models.GRU`
+    :type layer: class:`nnlibs.gru.models.GRU`
+    """
+
+    for parameter in layer.p.keys():
+        gradient = 'd' + parameter
+        layer.g[gradient] = np.zeros_like(layer.p[parameter])
+
+    for t in reversed(range(layer.d['t'])):
+
+        h = layer.fc['h'][t]
+        hp = layer.fc['h'][t-1]
+
+        Xt = layer.fc['X'][:,t]
+
+        if layer.binary == False:
+            dXt = layer.bc['dXt'][t]
+        else:
+            dXt = layer.bc['dXt']
+
+        # Retrieve dv and update dWv and dbv
+        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXt, h.T)
+        layer.g['db'] += 1./ layer.d['m'] * np.sum(dXt, axis=1, keepdims=True)
+
+        # Retrieve dv and update dWv and dbv
+        dhh = layer.bc['dhh'][t]
+        layer.g['dWh'] += 1./ layer.d['m'] * np.dot(dhh, Xt.T)
+        layer.g['dUh'] += 1./ layer.d['m'] * np.dot(dhh, (layer.fc['r'][t] * hp).T)
+        layer.g['dbh'] += 1./ layer.d['m'] * np.sum(dhh, axis=1, keepdims=True)
+        # Retrieve dv and update dWv and dbv
+        dr = layer.bc['dr'][t]
+        layer.g['dWr'] += 1./ layer.d['m'] * np.dot(dr, Xt.T)
+        layer.g['dUr'] += 1./ layer.d['m'] * np.dot(dr, hp.T)
+        layer.g['dbr'] += 1./ layer.d['m'] * np.sum(dr, axis=1, keepdims=True)
+        # Retrieve dv and update dWv and dbv
+        dz = layer.bc['dz'][t]
+        layer.g['dWz'] += 1./ layer.d['m'] * np.dot(dz, Xt.T)
+        layer.g['dUz'] += 1./ layer.d['m'] * np.dot(dz, hp.T)
+        layer.g['dbz'] += 1./ layer.d['m'] * np.sum(dz, axis=1, keepdims=True)
+
+    return None
+
+
+def gru_update_parameters(layer):
+    """Dummy function - Update parameters for GRU layer object
+
+    :param layer: An instance of the :class:`nnlibs.gru.models.GRU`
+    :type layer: class:`nnlibs.gru.models.GRU`
+    """
+
+    for gradient in layer.g.keys():
+
+        parameter = gradient[1:]
+
+        layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

@@ -18,9 +18,12 @@ import settings as se
 # Compute with NumPy
 import numpy as np
 
+from nnlibs.dropout.models import Dropout
+import random
+random.seed(1)
 
 ################################## HEADERS ################################
-np.set_printoptions(precision=3,threshold=sys.maxsize)
+np.set_printoptions(precision=3, threshold=sys.maxsize)
 
 np.seterr(all='warn')
 
@@ -31,10 +34,9 @@ cl.init_dir(se.config)
 dataset = pd.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
 #dataset = cl.read_dataset()
 
-
 ################################ BUILD MODEL ###############################
 name = 'Embedding_Dense-2-Softmax' # (1)
-layers = [Embedding(dataset,se.dataset),Dense(2,cm.sigmoid),Dense()] # Dense() same as Dense(nodes=2,activate=cm.softmax)
+layers = [Embedding(dataset, se.dataset), Dense(2)] # Dense() same as Dense(nodes=2,activate=cm.softmax)
 
 #name = 'Dense-2-Sigmoid' # (2)
 #layers = [Dense(nodes=2,activate=cm.sigmoid)]
@@ -42,7 +44,7 @@ layers = [Embedding(dataset,se.dataset),Dense(2,cm.sigmoid),Dense()] # Dense() s
 #name = 'Dense-8-ReLU_Dense-2-Softmax' # (3)
 #layers = [Dense(8,activate=cm.relu),Dense(2)]
 
-model = EpyNN(name=name,layers=layers)
+model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)
 
 
 ################################ TRAIN MODEL ################################
@@ -62,5 +64,5 @@ X = model.embedding_unlabeled(unlabeled_dataset)
 A = model.predict(X)
 # [[0.714 0.286]]
 
-P = np.argmax(A,axis=1)
+P = np.argmax(A, axis=1)
 # [0]

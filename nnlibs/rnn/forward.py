@@ -1,32 +1,43 @@
-#EpyNN/nnlibs/rnn/forward.py
-import nnlibs.rnn.parameters as rp
-
+# EpyNN/nnlibs/rnn/forward.py
+# Related third party imports
 import numpy as np
 
 
-def rnn_forward(layer,A):
+def rnn_forward(layer, A):
 
-    X, hp = rp.init_forward(layer,A)
-
-    # Init layer parameters
-    if layer.init == True:
-        rp.init_params(layer)
+    X, hp = initialize_forward(layer, A)
 
     # Loop through time steps
-    for t in range(layer.ts):
+    for t in range(layer.d['t']):
 
         # Xt (X at current t) from X
-        Xt = layer.fc['Xt'] = X[:,t]
+        X = layer.fc['Xt'][t] = layer.fc['X'][:, t]
 
         # Calculate input gate
-        h = np.dot(layer.p['U'], Xt)
-        h += np.dot(layer.p['V'], hp) + layer.p['bh']
+        h = np.dot(layer.p['Uh'], X)
+        h += np.dot(layer.p['Vh'], hp) + layer.p['bh']
         h = hp = layer.fc['h'][t] = layer.activate_input(h)
 
         # Calculate output gate
-        At = np.dot( layer.p['W'], h ) + layer.p['bo']
-        At = layer.fc['A'][t] = layer.activate_output(At)
+        A = np.dot(layer.p['W'], h) + layer.p['b']
+        A = layer.fc['A'][t] = layer.activate(A)
 
-    A = rp.end_forward(layer)
+    if layer.binary == True:
+        A = layer.fc['A'] = layer.fc['A'][-1]
+    else:
+        A = layer.fc['A']
 
     return A
+
+
+def initialize_forward(layer, A):
+
+    X = layer.fc['X'] = A
+
+    layer.fc['Xt'] = np.zeros(layer.fs['Xt'])
+    layer.fc['h'] = np.zeros(layer.fs['h'])
+    layer.fc['A'] = np.zeros(layer.fs['A'])
+
+    hp = np.zeros(layer.fs['ht'])
+
+    return X, hp

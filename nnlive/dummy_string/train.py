@@ -22,13 +22,12 @@ import settings as se
 # Compute with NumPy
 import numpy as np
 
-
+import random
+random.seed(1)
 ################################## HEADERS ################################
 np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
-
-cm.global_seed(1)
 
 cl.init_dir(se.config)
 
@@ -39,25 +38,24 @@ dataset = ps.prepare_dataset(se.dataset)
 
 
 ################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset,encode=True)
+embedding = Embedding(dataset, se.dataset, encode=True)
 
 name = 'Embedding_Flatten_Dense-2-Softmax' # (1)
-layers = [embedding,Flatten(),Dense()]
+layers = [embedding, Flatten(), Dense()]
 
 # name = 'RNN-11-bin-Softmax' # (2)
-#layers = [embedding,RNN(hidden_size=11,binary=True)]
+# layers = [embedding, RNN(hidden_size=12, binary=True)]
 
-# name = 'GRU-11-bin-Softmax' # (3)
-# layers = [embedding,GRU(11,binary=True)]
+# name = 'GRU-12-bin-Softmax' # (3)
+# layers = [embedding,GRU(12,binary=True)]
 
-# name = 'LSTM-11-bin-Softmax' # (4)
-# layers = [embedding,LSTM(11,binary=True)]
+# name = 'LSTM-12-bin-Softmax' # (4)
+# layers = [embedding,LSTM(12, binary=True)]
 
-#name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
-#layers = [embedding,RNN(11),Flatten(),Dense(48,cm.relu),Dense()]
+# name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
+# layers = [embedding, RNN(12), Flatten(), Dense(48,cm.relu), Dense()]
 
-
-model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
+model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)
 
 
 ################################ TRAIN MODEL ################################
@@ -72,11 +70,11 @@ model = cl.read_model()
 unlabeled_dataset = ps.prepare_unlabeled(N_SAMPLES=1)
 # [[['A', 'G', ... , 'C'], None]]
 
-X = model.embedding_unlabeled(unlabeled_dataset,encode=True)
+X = model.embedding_unlabeled(unlabeled_dataset, encode=True)
 # [[[0. 0. 1. 0.],[0. 1. 0. 0.], ... ,[0. 0. 0. 1.]]]
 
 A = model.predict(X)
 # [[0.61  0.39 ]]
 
-P = np.argmax(A,axis=1)
+P = np.argmax(A, axis=1)
 # [0]

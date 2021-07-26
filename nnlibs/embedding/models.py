@@ -27,6 +27,8 @@ class Embedding(Layer):
         .
     dval : numpy.ndarray
         .
+    dsets : list
+        .
 
     Methods
     -------
@@ -52,14 +54,15 @@ class Embedding(Layer):
     def __init__(self,
                 dataset,
                 se_dataset=se.dataset,
-                encode=False
-                ):
+                encode=False):
 
         super().__init__()
 
         embedded_data = embedding_prepare(self, dataset, se_dataset, encode)
 
         self.dtrain, self.dtest, self.dval, self.batch_dtrain = embedded_data
+
+        self.dsets = [self.dtrain, self.dtest, self.dval]
 
     def compute_shapes(self, A):
         embedding_compute_shapes(self, A)
