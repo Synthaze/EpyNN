@@ -12,62 +12,64 @@ import nnlibs.commons.maths as cm
 
 class Layer:
     """
-    Definition of a Layer meta-type
-
-    Attributes
-    ----------
-    d : dict
-        Dimensions.
-    p : dict
-        Parameters.
-    g : dict
-        Gradients.
-    fc : dict
-        Forward cache.
-    bc : dict
-        Backward cache.
-    fs : dict
-        Forward shapes.
-    bs : dict
-        Backward shapes.
-    o : dict
-        Other information.
-    se_hPars: dict
-        Local hyperparameters.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
+    Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.
     """
 
     def __init__(self):
+        """Initialize instance variable attributes.
 
-        ## Dimensions
+        Attributes
+        ----------
+        d : dict
+            Instance attribute for layer **dimensions**. It contains **scalar quantities** such as the number of nodes, hidden units, filters or samples with respect to a given layer prototype and instantiated object.
+        fs : dict
+            Instance attribute for **forward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to forward propagation. This includes shapes for parameters (weight, bias) and for layer input, output, as well as processing intermediates.
+        p : dict
+            Instance attribute for **parameters**. It contains independant :class:`numpy.ndarray` associated with **weight** and **bias** with respect to a given layer architecture. Shapes for parameters initialization are retrieved from the *fs* attribute described above.
+        fc : dict
+            Instance attribute for **forward cache**. It contains independant :class:`numpy.ndarray` associated with **forward propagation processing** which includes input, output and intermediates.
+        bs : dict
+            Instance attribute for **backward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to backward propagation. This includes shapes for gradients (weight, bias) and for layer input, output, as well as processing intermediates.
+        g : dict
+            Instance attribute for **gradients**. It contains independant :class:`numpy.ndarray` associated with **weight and bias gradients** with respect to parameters from the *p* attribute described above. Shapes for gradients are identical to the corresponding parameters.
+        bc : dict
+            Instance attribute for **backward cache**. It contains independant :class:`numpy.ndarray` associated with **backward propagation processing** which includes input, output and intermediates.
+        o : dict
+            Instance attribute for other information. Rarely used. It may contain scalar quantities that do not fit within the above-described dictionary attributes.
+        activation : dict
+            Activation functions for layer. This conveniency attribute stores key:value pairs for activation gates and name of the corresponding function.
+        se_hPars: NoneType
+            Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the :class:`nnlibs.meta.models.EpyNN` meta-model.
+        """
+
         self.d = {}
-        ## Parameters
-        self.p = {}
-        ## Gradients
-        self.g = {}
-        ## Forward pass cache
-        self.fc = {}
-        ## Backward pass cache
-        self.bc = {}
-        ## Forward pass shapes
         self.fs = {}
-        ## Backward pass shapes
+        self.p = {}
+        self.fc = {}
         self.bs = {}
-        ##
+        self.g = {}
+        self.bc = {}
         self.o = {}
-
-        self.se_hPars = None
 
         self.activation = {}
 
-    def update_shapes(self,mode):
+        self.se_hPars = None
 
-        if mode == 'forward':
-            self.fs.update({ k:v.shape for k,v in self.fc.items() })
+        return None
 
-        elif mode == 'backward':
-            self.bs.update({ k:v.shape for k,v in self.bc.items() })
+    def update_shapes(self, cache, shapes):
+        """Update shapes from cache.
+
+        :param cache: Forward of backward cache as documented above.
+        :type cache: dict
+
+        :param shapes: Corresponding forward or backward shapes as documented above.
+        :type shapes: dict
+        """
+
+        shapes.update({k:v.shape for k,v in cache.items()})
+
+        return None
 
 
 class dataSet:
@@ -81,7 +83,14 @@ class dataSet:
     """
 
     def __init__(self, dataset, name='dummy'):
+        """.
 
+        :param dataset: .
+        :type dataset: list
+
+        :param name: .
+        :type name: string
+        """
         # Prepare X data
         x_data = [ x[0] for x in dataset ]
         # Prepare Y data
@@ -111,3 +120,5 @@ class dataSet:
         self.A = None
         # Predicted labels
         self.P = None
+
+        return None

@@ -103,12 +103,11 @@ Details can be found the :ref:`Workflows` chapter under the :ref:`Initialization
 
 Upon execution of the ``IMPORTS`` and ``HEADERS`` parts, data are returned from the ``sp.sets_prepare()`` function in the ``DATASETS`` part.
 
-The ``BUILD MODEL`` part contains examples of layer architectures and stacks relevant to input data type and shape.
-
 Given a number of samples ``N_SAMPLES`` and number of Boolean features ``N_FEATURES`` describing each sample, the features vector of the corresponding set in this example has shape ``(N_SAMPLES, N_FEATURES)``.
 
-Given EpyNN built-in layer architectures, this shape is suited to the ``Dense`` layer, often referred to as *Fully connected layer*.
+Given EpyNN built-in layer architectures, this shape is suited to the ``Dense`` layer, often referred to as *Fully connected layer* (See :ref:Dense).
 
+In the ``BUILD MODEL`` part, the ``# (1)`` comments denotes a first example of architectures built in the ``layers`` list.
 
 
 

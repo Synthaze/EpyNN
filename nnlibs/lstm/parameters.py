@@ -74,7 +74,7 @@ def lstm_initialize_parameters(layer):
     return None
 
 
-def lstm_update_gradients(layer):
+def lstm_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for LSTM layer object
 
     :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`

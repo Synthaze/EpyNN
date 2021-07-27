@@ -7,7 +7,7 @@ def model_backward(model, dA):
 
         dA = layer.backward(dA)
 
-        layer.update_gradients()
+        layer.compute_gradients()
         layer.update_parameters()
 
     return None

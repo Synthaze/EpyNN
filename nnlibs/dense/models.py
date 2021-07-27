@@ -7,45 +7,23 @@ from nnlibs.dense.backward import dense_backward
 from nnlibs.dense.parameters import (
     dense_compute_shapes,
     dense_initialize_parameters,
-    dense_update_gradients,
+    dense_compute_gradients,
     dense_update_parameters
 )
 
 
 class Dense(Layer):
     """
-    Definition of a Dense Layer prototype
+    Definition of a dense layer prototype.
 
-    Attributes
-    ----------
-    initialization : function
-        Function used for weight initialization.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
-    activate : function
-        Activation function.
-    lrate : list
-        Learning rate along epochs for Dense layer
+    :param nodes: Number of nodes for dense layer.
+    :type nodes: int
 
-    Methods
-    -------
-    compute_shapes(A)
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param activate: Activation function for output of nodes.
+    :type activate: function
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param initialization: Weight initialization function for dense layer.
+    :type initialization: function
     """
 
     def __init__(self,
@@ -64,7 +42,7 @@ class Dense(Layer):
         # Store the number of nodes in the dimension dictionary
         self.d['n'] = nodes
 
-        self.lrate = []
+        return None
 
     def compute_shapes(self, A):
         dense_compute_shapes(self, A)
@@ -77,21 +55,23 @@ class Dense(Layer):
     def forward(self, A):
         # Forward pass
         A = dense_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
         return A
 
     def backward(self, dA):
         # Backward pass
         dA = dense_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
         return dA
 
-    def update_gradients(self):
-        # Backward pass
-        dense_update_gradients(self)
+    def compute_gradients(self):
+
+        dense_compute_gradients(self)
+        
         return None
 
     def update_parameters(self):
-        # Update parameters
+
         dense_update_parameters(self)
+
         return None

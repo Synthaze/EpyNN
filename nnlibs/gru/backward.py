@@ -17,7 +17,7 @@ def gru_backward(layer, dA):
             dh = layer.bc['dh'][t] = np.dot(layer.p['W'].T, dXt) + dhn
 
             dhh = dh * (1-layer.fc['z'][t])
-            dhh = layer.bc['dhh'][t] = dhh * layer.activate_input(layer.fc['hh'][t], deriv=True)
+            dhh = layer.bc['dhh'][t] = dhh * layer.activate_hidden(layer.fc['hh'][t], deriv=True)
 
         dr = np.dot(layer.p['Uh'].T, dhh)
         dr = dr * layer.fc['h'][t-1]

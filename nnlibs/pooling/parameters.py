@@ -53,7 +53,7 @@ def pooling_initialize_parameters(layer):
     return None
 
 
-def pooling_update_gradients(layer):
+def pooling_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Pooling layer object
 
     :param layer: An instance of the :class:`nnlibs.pooling.models.Pooling`

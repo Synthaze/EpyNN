@@ -43,8 +43,8 @@ embedding = Embedding(dataset, se.dataset, encode=True)
 name = 'Embedding_Flatten_Dense-2-Softmax' # (1)
 layers = [embedding, Flatten(), Dense()]
 
-# name = 'RNN-11-bin-Softmax' # (2)
-# layers = [embedding, RNN(hidden_size=12, binary=True)]
+name = 'RNN-11-bin-Softmax' # (2)
+layers = [embedding, RNN(hidden_size=12, binary=True)]
 
 # name = 'GRU-12-bin-Softmax' # (3)
 # layers = [embedding,GRU(12,binary=True)]
@@ -53,7 +53,7 @@ layers = [embedding, Flatten(), Dense()]
 # layers = [embedding,LSTM(12, binary=True)]
 
 # name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
-# layers = [embedding, RNN(12), Flatten(), Dense(48,cm.relu), Dense()]
+#layers = [embedding, RNN(12), Flatten(), Dense(48,cm.relu), Dense()]
 
 model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)
 

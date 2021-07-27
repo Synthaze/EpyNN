@@ -33,6 +33,9 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -93,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
 </ul>
 
             
@@ -162,36 +166,65 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#B"><strong>B</strong></a>
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
  
 </div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.commons.models.Layer.__init__">__init__() (nnlibs.commons.models.Layer method)</a>
+
+      <ul>
+        <li><a href="architectures.html#nnlibs.meta.models.EpyNN.__init__">(nnlibs.meta.models.EpyNN method)</a>
+</li>
+        <li><a href="architectures.html#nnlibs.template.models.Template.__init__">(nnlibs.template.models.Template method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.dense.models.Dense.backward">backward() (nnlibs.dense.models.Dense method)</a>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.backward">backward() (nnlibs.meta.models.EpyNN method)</a>
+
+      <ul>
+        <li><a href="test.html#nnlibs.rnn.models.RNN.backward">(nnlibs.rnn.models.RNN method)</a>
 </li>
+        <li><a href="architectures.html#nnlibs.template.models.Template.backward">(nnlibs.template.models.Template method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.conv.models.Convolution">Convolution (class in nnlibs.conv.models)</a>
+      <li><a href="test.html#nnlibs.rnn.models.RNN.compute_gradients">compute_gradients() (nnlibs.rnn.models.RNN method)</a>
+</li>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.compute_metrics">compute_metrics() (nnlibs.meta.models.EpyNN method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.conv.backward.convolution_backward">convolution_backward() (in module nnlibs.conv.backward)</a>
+      <li><a href="test.html#nnlibs.rnn.models.RNN.compute_shapes">compute_shapes() (nnlibs.rnn.models.RNN method)</a>
+
+      <ul>
+        <li><a href="architectures.html#nnlibs.template.models.Template.compute_shapes">(nnlibs.template.models.Template method)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.conv.forward.convolution_forward">convolution_forward() (in module nnlibs.conv.forward)</a>
+      </ul></li>
+      <li><a href="architectures.html#nnlibs.convolution.models.Convolution">Convolution (class in nnlibs.convolution.models)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -199,19 +232,27 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.dense.models.Dense">Dense (class in nnlibs.dense.models)</a>
-</li>
-      <li><a href="architectures.html#nnlibs.dense.backward.dense_backward">dense_backward() (in module nnlibs.dense.backward)</a>
-</li>
-      <li><a href="architectures.html#nnlibs.dense.forward.dense_forward">dense_forward() (in module nnlibs.dense.forward)</a>
+      <li><a href="architectures.html#nnlibs.commons.models.dataSet">dataSet (class in nnlibs.commons.models)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.dense.models.Dense">Dense (class in nnlibs.dense.models)</a>
+</li>
       <li><a href="architectures.html#nnlibs.dropout.models.Dropout">Dropout (class in nnlibs.dropout.models)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.dropout.backward.dropout_backward">dropout_backward() (in module nnlibs.dropout.backward)</a>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.embedding.models.Embedding">Embedding (class in nnlibs.embedding.models)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.dropout.forward.dropout_forward">dropout_forward() (in module nnlibs.dropout.forward)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN">EpyNN (class in nnlibs.meta.models)</a>
+</li>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.evaluate">evaluate() (nnlibs.meta.models.EpyNN method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -221,14 +262,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="architectures.html#nnlibs.flatten.models.Flatten">Flatten (class in nnlibs.flatten.models)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.flatten.backward.flatten_backward">flatten_backward() (in module nnlibs.flatten.backward)</a>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.forward">forward() (nnlibs.meta.models.EpyNN method)</a>
+
+      <ul>
+        <li><a href="test.html#nnlibs.rnn.models.RNN.forward">(nnlibs.rnn.models.RNN method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.flatten.forward.flatten_forward">flatten_forward() (in module nnlibs.flatten.forward)</a>
+        <li><a href="architectures.html#nnlibs.template.models.Template.forward">(nnlibs.template.models.Template method)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.dense.models.Dense.forward">forward() (nnlibs.dense.models.Dense method)</a>
-</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -238,10 +279,16 @@
       <li><a href="architectures.html#nnlibs.gru.models.GRU">GRU (class in nnlibs.gru.models)</a>
 </li>
   </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.gru.backward.gru_backward">gru_backward() (in module nnlibs.gru.backward)</a>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.initialize">initialize() (nnlibs.meta.models.EpyNN method)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.gru.forward.gru_forward">gru_forward() (in module nnlibs.gru.forward)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.template.models.Template.initialize_parameters">initialize_parameters() (nnlibs.template.models.Template method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -249,118 +296,25 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.commons.models.Layer">Layer (class in nnlibs.commons.models)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.logs">logs() (nnlibs.meta.models.EpyNN method)</a>
+</li>
       <li><a href="architectures.html#nnlibs.lstm.models.LSTM">LSTM (class in nnlibs.lstm.models)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.lstm.backward.lstm_backward">lstm_backward() (in module nnlibs.lstm.backward)</a>
-</li>
-      <li><a href="architectures.html#nnlibs.lstm.forward.lstm_forward">lstm_forward() (in module nnlibs.lstm.forward)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    module
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.conv.models">nnlibs.conv.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.dense.models">nnlibs.dense.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.dropout.models">nnlibs.dropout.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.flatten.models">nnlibs.flatten.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.gru.models">nnlibs.gru.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.lstm.models">nnlibs.lstm.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.pool.models">nnlibs.pool.models</a>
-</li>
-        <li><a href="architectures.html#module-nnlibs.rnn.models">nnlibs.rnn.models</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    nnlibs.conv.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.conv.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.dense.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.dense.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.dropout.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.dropout.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.flatten.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.flatten.models">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    nnlibs.gru.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.gru.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.lstm.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.lstm.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.pool.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.pool.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    nnlibs.rnn.models
-
-      <ul>
-        <li><a href="architectures.html#module-nnlibs.rnn.models">module</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.pool.models.Pooling">Pooling (class in nnlibs.pool.models)</a>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.plot">plot() (nnlibs.meta.models.EpyNN method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.pool.backward.pooling_backward">pooling_backward() (in module nnlibs.pool.backward)</a>
-</li>
-      <li><a href="architectures.html#nnlibs.pool.forward.pooling_forward">pooling_forward() (in module nnlibs.pool.forward)</a>
+      <li><a href="architectures.html#nnlibs.pooling.models.Pooling">Pooling (class in nnlibs.pooling.models)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -368,13 +322,31 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.rnn.models.RNN">RNN (class in nnlibs.rnn.models)</a>
+      <li><a href="architectures.html#nnlibs.rnn.models.RNN">RNN (class in nnlibs.rnn.models)</a>, <a href="test.html#nnlibs.rnn.models.RNN">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.template.models.Template">Template (class in nnlibs.template.models)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="architectures.html#nnlibs.rnn.backward.rnn_backward">rnn_backward() (in module nnlibs.rnn.backward)</a>
+      <li><a href="architectures.html#nnlibs.meta.models.EpyNN.train">train() (nnlibs.meta.models.EpyNN method)</a>
 </li>
-      <li><a href="architectures.html#nnlibs.rnn.forward.rnn_forward">rnn_forward() (in module nnlibs.rnn.forward)</a>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.template.models.Template.update_parameters">update_parameters() (nnlibs.template.models.Template method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="architectures.html#nnlibs.commons.models.Layer.update_shapes">update_shapes() (nnlibs.commons.models.Layer method)</a>
 </li>
   </ul></td>
 </tr></table>

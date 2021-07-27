@@ -9,49 +9,27 @@ from nnlibs.pooling.backward import pooling_backward
 from nnlibs.pooling.parameters import (
     pooling_compute_shapes,
     pooling_initialize_parameters,
-    pooling_update_gradients,
+    pooling_compute_gradients,
     pooling_update_parameters
 )
 
 
 class Pooling(Layer):
     """
-    Definition of a Pooling Layer prototype
+    Definition of a pooling layer prototype.
 
-    Attributes
-    ----------
-    initialization : function
-        Function used for weight initialization.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
-    activate : function
-        Activation function.
-    lrate : list
-        Learning rate along epochs for Pooling layer
+    :param f_width: Filter width for filters in pooling layer.
+    :type f_width: int
 
-    Methods
-    -------
-    compute_shapes(A)
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param stride: Walking step for filters in pooling layer.
+    :type stride: int
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param pool: Pooling function in pooling layer.
+    :type stride: function
     """
 
     def __init__(self,
-                f_width,
+                f_width=2,
                 stride=1,
                 pool=np.max):
 
@@ -87,9 +65,9 @@ class Pooling(Layer):
         self.update_shapes(mode='backward')
         return dA
 
-    def update_gradients(self):
+    def compute_gradients(self):
         # Backward pass
-        pooling_update_gradients(self)
+        pooling_compute_gradients(self)
         return None
 
     def update_parameters(self):

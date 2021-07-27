@@ -18,28 +18,6 @@ import nnlibs.settings as se
 class EpyNN:
     """
     Definition of an . prototype
-
-    Attributes
-    ----------
-    . : .
-        .
-
-    Methods
-    -------
-    forward(A)
-        .
-    backward(dA)
-        .
-    initialize()
-        .
-    train()
-        .
-    compute_metrics()
-        .
-    evaluate()
-        .
-    plot()
-        .
     """
 
     def __init__(self,
@@ -67,11 +45,15 @@ class EpyNN:
 
         self.saved = False
 
+        return None
+
     def forward(self, A):
+
         A = model_forward(self, A)
         return A
 
     def backward(self, dA):
+
         dA = model_backward(self, dA)
         return dA
 
@@ -86,27 +68,38 @@ class EpyNN:
             initialize_exceptions(self,trace)
 
         initialize_model_logs(self)
+
         return None
 
     def train(self):
+
         model_training(self)
+
         return None
 
     def compute_metrics(self):
+
         model_compute_metrics(self)
+
         return None
 
     def evaluate(self):
+
         pass
+
         return None
 
     def logs(self):
+
         model_logs(self)
+
         return None
 
     def plot(self):
+
         pyplot_metrics(self)
         gnuplot_accuracy(self)
+
         return None
 
     # def embedding_unlabeled(self,X,encode=False):

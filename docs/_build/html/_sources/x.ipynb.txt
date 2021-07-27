@@ -1,0 +1,122 @@
+.. EpyNN documentation master file, created by
+   sphinx-quickstart on Tue Jul  6 18:46:11 2021.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+.. toctree::
+
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\u001b[32msF: init_dir\u001b[0m\u001b[0m\n",
+      "\u001b[1m\u001b[32meF: init_dir\u001b[0m\u001b[0m\n"
+     ]
+    }
+   ],
+   "source": [
+    "# EpyNN/nnlive/dummy_boolean/train.py\n",
+    "# Standard library imports\n",
+    "import random\n",
+    "# Related third party imports\n",
+    "import numpy as np\n",
+    "# Local application/library specific imports\n",
+    "from nnlibs.initialize import *\n",
+    "from nnlibs.meta.models import EpyNN\n",
+    "from nnlibs.embedding.models import Embedding\n",
+    "from nnlibs.dense.models import Dense\n",
+    "import nnlibs.commons.library as cl\n",
+    "import nnlibs.commons.maths as cm\n",
+    "import prepare_dataset as pd\n",
+    "import settings as se\n",
+    "\n",
+    "\n",
+    "\n",
+    "\n",
+    "################################## HEADERS ################################\n",
+    "\n",
+    "random.seed(1)\n",
+    "\n",
+    "np.set_printoptions(precision=3, threshold=sys.maxsize)\n",
+    "\n",
+    "np.seterr(all='warn')\n",
+    "\n",
+    "cl.init_dir(se.config)\n",
+    "\n",
+    "# DOCS_HEADERS\n",
+    "################################## DATASETS ################################\n",
+    "dataset = pd.prepare_dataset(se.dataset) # See \"Data preparation, structure and shape\"\n",
+    "#dataset = cl.read_dataset()\n",
+    "\n",
+    "################################ BUILD MODEL ###############################\n",
+    "name = 'Embedding_Dense-2-Softmax' # (1)\n",
+    "layers = [Embedding(dataset, se.dataset), Dense(2)] # Dense() same as Dense(nodes=2,activate=cm.softmax)\n",
+    "\n",
+    "#name = 'Dense-2-Sigmoid' # (2)\n",
+    "#layers = [Dense(nodes=2,activate=cm.sigmoid)]\n",
+    "\n",
+    "#name = 'Dense-8-ReLU_Dense-2-Softmax' # (3)\n",
+    "#layers = [Dense(8,activate=cm.relu),Dense(2)]\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)\n",
+    "\n",
+    "\n",
+    "################################ TRAIN MODEL ################################\n",
+    "model.train()\n",
+    "\n",
+    "model.plot()\n",
+    "\n",
+    "\n",
+    "################################# USE MODEL #################################\n",
+    "model = cl.read_model()\n",
+    "\n",
+    "unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)\n",
+    "\n",
+    "X = model.embedding_unlabeled(unlabeled_dataset)\n",
+    "# [[ True  True  True False  True False False False  True False  True]]\n",
+    "\n",
+    "A = model.predict(X)\n",
+    "# [[0.714 0.286]]\n",
+    "\n",
+    "P = np.argmax(A, axis=1)\n",
+    "# [0]\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

@@ -32,7 +32,7 @@ def dropout_initialize_parameters(layer):
     return None
 
 
-def dropout_update_gradients(layer):
+def dropout_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Dropout layer object
 
     :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`

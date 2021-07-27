@@ -33,6 +33,9 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -93,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
 </ul>
 
             
@@ -159,52 +163,63 @@
            <div itemprop="articleBody">
             
   <h1>Source code for nnlibs.dropout.models</h1><div class="highlight"><pre>
-<span></span><span class="c1">#EpyNN/nnlibs/dropout/models.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.dropout.backward</span> <span class="k">as</span> <span class="nn">db</span>
-<span class="kn">import</span> <span class="nn">nnlibs.dropout.forward</span> <span class="k">as</span> <span class="nn">df</span>
+<span></span><span class="c1"># EpyNN/nnlibs/dropout/models.py</span>
+<span class="c1"># Local application/library specific imports</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dropout.forward</span> <span class="kn">import</span> <span class="n">dropout_forward</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dropout.backward</span> <span class="kn">import</span> <span class="n">dropout_backward</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dropout.parameters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dropout_compute_shapes</span><span class="p">,</span>
+    <span class="n">dropout_initialize_parameters</span><span class="p">,</span>
+    <span class="n">dropout_compute_gradients</span><span class="p">,</span>
+    <span class="n">dropout_update_parameters</span>
+<span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-
-<div class="viewcode-block" id="Dropout"><a class="viewcode-back" href="../../../architectures.html#nnlibs.dropout.models.Dropout">[docs]</a><span class="k">class</span> <span class="nc">Dropout</span><span class="p">:</span>
+<div class="viewcode-block" id="Dropout"><a class="viewcode-back" href="../../../architectures.html#nnlibs.dropout.models.Dropout">[docs]</a><span class="k">class</span> <span class="nc">Dropout</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description for class</span>
+<span class="sd">    Definition of a dropout layer prototype.</span>
 
-<span class="sd">    :ivar var1: initial value: par1</span>
-<span class="sd">    :ivar var2: initial value: par2</span>
+<span class="sd">    :param keep_prob: Probability to keep active one unit from previous layer.</span>
+<span class="sd">    :type keep_prob: float</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">keep_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot; Layer attributes &quot;&quot;&quot;</span>
-        <span class="c1">### Set layer init attribute to True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1">### Define layer dictionaries attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="n">keep_prob</span>
-        <span class="c1">## Dimensions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Gradients</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Forward pass cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Backward pass cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Forward pass shapes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Backward pass shapes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
-        <span class="c1">### Set keys for layer cache attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">keep_prob</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">dropout_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="n">dropout_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">dropout_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dropout_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="c1"># Forward pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">dropout_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+        <span class="c1"># Backward pass</span>
+        <span class="n">dA</span> <span class="o">=</span> <span class="n">dropout_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dA</span>
+
+    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Backward pass</span>
+        <span class="n">dropout_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Update parameters</span>
+        <span class="n">dropout_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>

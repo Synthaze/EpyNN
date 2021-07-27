@@ -3,41 +3,53 @@
 import numpy as np
 
 
-def rnn_forward(layer, A):
+def initialize_forward(layer, A):
+    """.
+    """
+    X = layer.fc['X'] = A
 
+    layer.fc['Xs'] = np.zeros(layer.fs['Xs'])
+    layer.fc['h'] = np.zeros(layer.fs['h'])
+    layer.fc['A'] = np.zeros(layer.fs['A'])
+
+    hp = np.zeros(layer.fs['hs'])
+
+    return X, hp
+
+
+def rnn_forward(layer, A):
+    """.
+    """
+    # (1) Initialize cache and hidden cell state
     X, hp = initialize_forward(layer, A)
 
-    # Loop through time steps
-    for t in range(layer.d['t']):
+    # Step through sequence
+    for s in range(layer.d['s']):
 
-        # Xt (X at current t) from X
-        X = layer.fc['Xt'][t] = layer.fc['X'][:, t]
+        # (2s) Slice sequence (v, s, m) with respect to step
+        X = layer.fc['Xs'][s] = layer.fc['X'][:, s]    # (v, m)
 
-        # Calculate input gate
-        h = np.dot(layer.p['Uh'], X)
-        h += np.dot(layer.p['Vh'], hp) + layer.p['bh']
-        h = hp = layer.fc['h'][t] = layer.activate_input(h)
+        # (3s) Compute hidden cell state
+        h = np.dot(layer.p['Wx'], X)
+        h += np.dot(layer.p['Wh'], hp) + layer.p['bh']
+        h = hp = layer.fc['h'][s] = layer.activate_hidden(h)
 
-        # Calculate output gate
+        # (4s) Compute cell output to next layer
         A = np.dot(layer.p['W'], h) + layer.p['b']
-        A = layer.fc['A'][t] = layer.activate(A)
+        A = layer.fc['A'][s] = layer.activate(A)
 
-    if layer.binary == True:
+    # Return layer.fc['A'] if layer.binary else A
+    A = terminate_forward(layer)
+
+    return A    # To next layer
+
+
+def terminate_forward(layer):
+    """.
+    """
+    if layer.binary:
         A = layer.fc['A'] = layer.fc['A'][-1]
     else:
         A = layer.fc['A']
 
     return A
-
-
-def initialize_forward(layer, A):
-
-    X = layer.fc['X'] = A
-
-    layer.fc['Xt'] = np.zeros(layer.fs['Xt'])
-    layer.fc['h'] = np.zeros(layer.fs['h'])
-    layer.fc['A'] = np.zeros(layer.fs['A'])
-
-    hp = np.zeros(layer.fs['ht'])
-
-    return X, hp

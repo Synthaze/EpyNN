@@ -36,7 +36,7 @@ def dense_initialize_parameters(layer):
     return None
 
 
-def dense_update_gradients(layer):
+def dense_compute_gradients(layer):
     """Update weight and bias gradients for Dense layer object
 
     :param layer: An instance of the :class:`nnlibs.dense.models.Dense`

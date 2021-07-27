@@ -7,57 +7,51 @@ from nnlibs.lstm.backward import lstm_backward
 from nnlibs.lstm.parameters import (
     lstm_compute_shapes,
     lstm_initialize_parameters,
-    lstm_update_gradients,
+    lstm_compute_gradients,
     lstm_update_parameters
 )
 
 
 class LSTM(Layer):
     """
-    Definition of a LSTM Layer prototype
+    Definition of a LSTM layer prototype.
 
-    Attributes
-    ----------
-    initialization : function
-        Function used for weight initialization.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
-    activate : function
-        Activation function.
-    lrate : list
-        Learning rate along epochs for LSTM layer
-    binary : bool
-        .
+    :param hidden_size: Number of LSTM cells in one LSTM layer.
+    :type nodes: int
 
-    Methods
-    -------
-    compute_shapes(A)
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param activate: Activation function for output of LSTM cells.
+    :type activate: function
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param activate_hidden: Activation function for hidden state of LSTM cells.
+    :type activate_hidden: function
+
+    :param activate_output: Activation function for output gate in LSTM cells.
+    :type activate_output: function
+
+    :param activate_candidate: Activation function for canidate gate in LSTM cells.
+    :type activate_candidate: function
+
+    :param activate_input: Activation function for input gate in LSTM cells.
+    :type activate_input: function
+
+    :param activate_forget: Activation function for forget gate in LSTM cells.
+    :type activate_forget: function
+
+    :param initialization: Weight initialization function for LSTM layer.
+    :type initialization: function
+
+    :param binary: Set the LSTM layer from many-to-many to many-to-one mode.
+    :type binary: bool
     """
 
     def __init__(self,
                 hidden_size=10,
                 activate=sigmoid,
-                activate_input=tanh,
-                activate_candidate=tanh,
-                activate_forget=sigmoid,
-                activate_output=sigmoid,
                 activate_hidden=tanh,
+                activate_output=sigmoid,
+                activate_candidate=tanh,
+                activate_input=sigmoid,
+                activate_forget=sigmoid,
                 initialization=xavier,
                 binary=False):
 
@@ -108,9 +102,9 @@ class LSTM(Layer):
         self.update_shapes(mode='backward')
         return dA
 
-    def update_gradients(self):
+    def compute_gradients(self):
         # Backward pass
-        lstm_update_gradients(self)
+        lstm_compute_gradients(self)
         return None
 
     def update_parameters(self):

@@ -7,45 +7,35 @@ from nnlibs.convolution.backward import convolution_backward
 from nnlibs.convolution.parameters import (
     convolution_compute_shapes,
     convolution_initialize_parameters,
-    convolution_update_gradients,
+    convolution_compute_gradients,
     convolution_update_parameters
 )
 
 
 class Convolution(Layer):
     """
-    Definition of a Convolution Layer prototype
+    Definition of a convolution layer prototype.
 
-    Attributes
-    ----------
-    initialization : function
-        Function used for weight initialization.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
-    activate : function
-        Activation function.
-    lrate : list
-        Learning rate along epochs for Convolution layer
+    :param n_filters: Number of filters in convolution layer.
+    :type n_filters: int
 
-    Methods
-    -------
-    compute_shapes(A)
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param f_width: Filter width for filters in convolution layer.
+    :type f_width: int
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param activate: Activation function for convolution layer.
+    :type activate: function
+
+    :param depth: Depth or number of channels for input.
+    :type depth: int
+
+    :param stride: Walking step for filters.
+    :type stride: int
+
+    :param padding: ...
+    :type padding: int
+
+    :param initialization: Weight initialization function for convolution layer.
+    :type initialization: bool
     """
 
     def __init__(self,
@@ -101,9 +91,9 @@ class Convolution(Layer):
         #self.update_shapes(mode='backward')
         return dA
 
-    def update_gradients(self):
+    def compute_gradients(self):
         # Backward pass
-        convolution_update_gradients(self)
+        convolution_compute_gradients(self)
         return None
 
     def update_parameters(self):

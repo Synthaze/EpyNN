@@ -8,6 +8,48 @@
 Architectures
 ==================
 
+Layer
+~~~~~~~~~~~~~~
+
+.. autoclass:: nnlibs.commons.models.Layer
+
+    .. automethod:: __init__
+
+    .. seealso::
+
+        :py:mod:``
+           Documentation of ...
+
+        :py:mod:``
+           Documentation of the :class:`nnlibs.meta.models.EpyNN` meta-model.
+
+
+    .. automethod:: update_shapes
+
+
+
+Template
+~~~~~~~~~~~~~~
+
+.. autoclass:: nnlibs.template.models.Template
+    :show-inheritance:
+
+    .. automethod:: __init__
+
+    .. automethod:: compute_shapes
+
+    .. automethod:: initialize_parameters
+
+    .. automethod:: forward
+
+    .. automethod:: backward
+
+    .. automethod:: update_gradients
+
+    .. automethod:: update_parameters
+
+
+
 Feed-forward
 --------------
 
@@ -16,16 +58,10 @@ Feed-forward
 Dense
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.dense.models
-   :members:
-
-.. autofunction:: nnlibs.dense.forward.dense_forward
+.. autoclass:: nnlibs.dense.models.Dense
+    :show-inheritance:
 
 
-.. autofunction:: nnlibs.dense.backward.dense_backward
-
-.. literalinclude:: ./../nnlibs/dense/parameters.py
-    :pyobject: init_params
 
 Recurrent
 --------------
@@ -33,72 +69,37 @@ Recurrent
 RNN
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.rnn.models
-   :members:
-
-.. autofunction:: nnlibs.rnn.forward.rnn_forward
-
-
-.. autofunction:: nnlibs.rnn.backward.rnn_backward
-
-.. literalinclude:: ./../nnlibs/rnn/parameters.py
-    :pyobject: init_params
+.. autoclass:: nnlibs.rnn.models.RNN
+    :show-inheritance:
 
 GRU
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.gru.models
-   :members:
-
-.. autofunction:: nnlibs.gru.forward.gru_forward
-
-
-.. autofunction:: nnlibs.gru.backward.gru_backward
-
-.. literalinclude:: ./../nnlibs/gru/parameters.py
-    :pyobject: init_params
+.. autoclass:: nnlibs.gru.models.GRU
+    :show-inheritance:
 
 LSTM
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.lstm.models
-   :members:
+.. autoclass:: nnlibs.lstm.models.LSTM
+    :show-inheritance:
 
-.. autofunction:: nnlibs.lstm.forward.lstm_forward
-
-
-.. autofunction:: nnlibs.lstm.backward.lstm_backward
-
-.. literalinclude:: ./../nnlibs/lstm/parameters.py
-    :pyobject: init_params
 
 
 Convolutional
 --------------
-Conv
+
+Convolution
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.conv.models
-   :members:
+.. autoclass:: nnlibs.convolution.models.Convolution
+    :show-inheritance:
 
-.. autofunction:: nnlibs.conv.forward.convolution_forward
-
-
-.. autofunction:: nnlibs.conv.backward.convolution_backward
-
-.. literalinclude:: ./../nnlibs/conv/parameters.py
-    :pyobject: init_params
-
-Pool
+Pooling
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.pool.models
-   :members:
-
-.. autofunction:: nnlibs.pool.forward.pooling_forward
-
-
-.. autofunction:: nnlibs.pool.backward.pooling_backward
+.. autoclass:: nnlibs.pooling.models.Pooling
+    :show-inheritance:
 
 
 Adapter
@@ -107,14 +108,14 @@ Adapter
 Flatten
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.flatten.models
-   :members:
+.. autoclass:: nnlibs.flatten.models.Flatten
+    :show-inheritance:
 
-.. autofunction:: nnlibs.flatten.forward.flatten_forward
+Embedding
+~~~~~~~~~~~~~~
 
-
-.. autofunction:: nnlibs.flatten.backward.flatten_backward
-
+.. autoclass:: nnlibs.embedding.models.Embedding
+    :show-inheritance:
 
 
 Regularization
@@ -123,10 +124,41 @@ Regularization
 Dropout
 ~~~~~~~~~~~~~~
 
-.. automodule:: nnlibs.dropout.models
-   :members:
-
-.. autofunction:: nnlibs.dropout.forward.dropout_forward
+.. autoclass:: nnlibs.dropout.models.Dropout
+    :show-inheritance:
 
 
-.. autofunction:: nnlibs.dropout.backward.dropout_backward
+
+Alt
+----------------
+
+Dataset
+~~~~~~~~~~~~~~
+
+.. autoclass:: nnlibs.commons.models.dataSet
+
+
+EpyNN
+~~~~~~~~~~~~~~
+
+
+.. autoclass:: nnlibs.meta.models.EpyNN
+    :show-inheritance:
+
+    .. automethod:: __init__
+
+    .. automethod:: forward
+
+    .. automethod:: backward
+
+    .. automethod:: initialize
+
+    .. automethod:: train
+
+    .. automethod:: compute_metrics
+
+    .. automethod:: evaluate
+
+    .. automethod:: logs
+
+    .. automethod:: plot

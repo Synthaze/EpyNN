@@ -7,53 +7,35 @@ from nnlibs.rnn.backward import rnn_backward
 from nnlibs.rnn.parameters import (
     rnn_compute_shapes,
     rnn_initialize_parameters,
-    rnn_update_gradients,
+    rnn_compute_gradients,
     rnn_update_parameters
 )
 
 
 class RNN(Layer):
     """
-    Definition of a RNN Layer prototype
+    Definition of a RNN layer prototype.
 
-    Attributes
-    ----------
-    initialization : function
-        Function used for weight initialization.
-    activation : dict
-        Activation functions as key-value pairs for log purpose.
-    activate : function
-        Activation function.
-    lrate : list
-        Learning rate along epochs for RNN layer
-    binary : bool
-        .
+    :param hidden_size: Number of RNN cells in one RNN layer.
+    :type nodes: int
 
-    Methods
-    -------
-    compute_shapes(A)
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param activate: Activation function for output of RNN cells.
+    :type activate: function
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param activate_hidden: Activation function for hidden state of RNN cells.
+    :type activate_hidden: function
+
+    :param initialization: Weight initialization function for RNN layer.
+    :type initialization: function
+
+    :param binary: Set the RNN layer from many-to-many to many-to-one mode.
+    :type binary: bool
     """
 
     def __init__(self,
                 hidden_size=10,
                 activate=sigmoid,
-                activate_input=tanh,
+                activate_hidden=tanh,
                 initialization=xavier,
                 binary=False):
 
@@ -63,45 +45,58 @@ class RNN(Layer):
 
         self.activation = {
             'activate': activate.__name__,
-            'activate_input': activate_input.__name__,
+            'activate_hidden': activate_hidden.__name__,
         }
 
         self.activate = activate
-        self.activate_input = activate_input
-
-        self.d['h'] = hidden_size
+        self.activate_hidden = activate_hidden
 
         self.binary = binary
 
-        self.lrate = []
+        self.d['h'] = hidden_size
+
+        return None
 
     def compute_shapes(self, A):
+        """Wrapper for ``nnlibs.rnn.parameters.rnn_compute_shapes()``.
+        """
         rnn_compute_shapes(self, A)
         return None
 
     def initialize_parameters(self):
+        """Wrapper for ``nnlibs.rnn.parameters.rnn_initialize_parameters()``.
+        """
         rnn_initialize_parameters(self)
+
         return None
 
     def forward(self, A):
-        # Forward pass
+        """Wrapper for ``nnlibs.rnn.forward.rnn_forward()``.
+        """
         self.compute_shapes(A)
         A = rnn_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
+
         return A
 
     def backward(self, dA):
-        # Backward pass
+        """Wrapper for ``nnlibs.rnn.backward.rnn_backward()``.
+        """
         dA = rnn_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
+
         return dA
 
-    def update_gradients(self):
-        # Backward pass
-        rnn_update_gradients(self)
+    def compute_gradients(self):
+        """Wrapper for ``nnlibs.rnn.parameters.rnn_compute_gradients()``.
+        """
+        rnn_compute_gradients(self)
+
         return None
 
     def update_parameters(self):
-        # Update parameters
+        """Wrapper for ``nnlibs.rnn.parameters.rnn_update_parameters()``.
+        """
         rnn_update_parameters(self)
+
         return None

@@ -71,7 +71,7 @@ def gru_initialize_parameters(layer):
     return None
 
 
-def gru_update_gradients(layer):
+def gru_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for GRU layer object
 
     :param layer: An instance of the :class:`nnlibs.gru.models.GRU`

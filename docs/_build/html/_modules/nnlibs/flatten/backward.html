@@ -33,6 +33,8 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -93,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
 </ul>
 
             
@@ -163,15 +166,28 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="flatten_backward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.flatten.backward.flatten_backward">[docs]</a><span class="k">def</span> <span class="nf">flatten_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="flatten_backward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.flatten.backward.flatten_backward">[docs]</a><span class="k">def</span> <span class="nf">flatten_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="c1"># Cache dX (current) from dA (prev)</span>
-    <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
+<span class="sd">    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`</span>
+<span class="sd">    :type layer: class:`nnlibs.flatten.models.Flatten`</span>
 
-    <span class="c1"># Cache dA (current) from dX (current)</span>
+<span class="sd">    :param dA:</span>
+<span class="sd">    :type dA: class:`numpy.ndarray`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+
     <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">dA</span></div>
+
+
+<span class="k">def</span> <span class="nf">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
+
+    <span class="k">return</span> <span class="n">dX</span>
 </pre></div>
 
            </div>

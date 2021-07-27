@@ -56,7 +56,7 @@ def convolution_initialize_parameters(layer):
     return None
 
 
-def convolution_update_gradients(layer):
+def convolution_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Convolution layer object
 
     :param layer: An instance of the :class:`nnlibs.convolution.models.Convolution`

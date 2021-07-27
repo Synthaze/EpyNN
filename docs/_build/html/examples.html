@@ -33,6 +33,9 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -113,6 +116,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
 </ul>
 
             
@@ -180,7 +184,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="toctree-wrapper compound">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="toctree-wrapper compound">
 </div>
 <div class="section" id="live-examples">
 <h1>Live examples<a class="headerlink" href="#live-examples" title="Permalink to this headline">¶</a></h1>
@@ -212,66 +240,7 @@
 <p>Elements in <code class="docutils literal notranslate"><span class="pre">dsets</span></code> are <code class="docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code> objects with <code class="docutils literal notranslate"><span class="pre">features</span></code> and <code class="docutils literal notranslate"><span class="pre">label</span></code> vectors assigned to <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">Y</span></code> attributes, respectively.</p>
 </details>
 
-<br><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_boolean/sets_prepare.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
-
-<span class="kn">import</span> <span class="nn">settings</span> <span class="k">as</span> <span class="nn">se</span>
-
-<span class="kn">import</span> <span class="nn">random</span>
-
-
-<span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prepare dummy dataset with Boolean sample features</span>
-
-<span class="sd">    sample = [features,label]</span>
-
-<span class="sd">    features is a list of sample features with length N_FEATURES</span>
-<span class="sd">    label is a one-hot encoded label with length N_LABELS</span>
-
-<span class="sd">    dataset = [sample_0,sample_1,...,sample_N]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># See ./settings.py - N_SAMPLES = 500</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
-
-    <span class="c1"># N_FEATURES is the number of features describing a sample</span>
-    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="mi">11</span>
-
-    <span class="c1"># One-hot encoded positive and negative labels</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-        <span class="c1"># Random choice True or False for N_FEATURES iterations</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span><span class="kc">False</span><span class="p">])</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="p">)</span> <span class="p">]</span>
-
-        <span class="c1"># Test if features associates with p_label (+)</span>
-        <span class="k">if</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
-            <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span><span class="n">p_label</span><span class="p">]</span>
-
-        <span class="c1"># Test if features associates with n_label (-)</span>
-        <span class="k">elif</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
-            <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span><span class="n">n_label</span><span class="p">]</span>
-
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="c1"># Split dataset and vectorize data</span>
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_bolean&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Print data and shapes</span>
-    <span class="n">show_data_shapes</span><span class="p">(</span><span class="n">dsets</span><span class="p">)</span>
-
-    <span class="c1"># dsets is a list equal to [dtrain,dtest,dval]</span>
-    <span class="k">return</span> <span class="n">dsets</span>
-</pre></div>
-</div>
-<details>
+<br><details>
 <summary style="cursor:pointer">Data and shapes</summary>
 
 <br><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataSet</span><span class="o">.</span><span class="n">n</span>           <span class="n">dummy_bolean_dtrain</span>
@@ -338,69 +307,78 @@
 <br><p>In the current example script template, the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">VARIABLE</span></code> comment in the <code class="docutils literal notranslate"><span class="pre">IMPORTS</span></code> part relates to imports which depends on input data type and shape.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code> part depends on user preferences and loads settings from the <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file in the working directory.</p>
 <p>Details can be found the <a class="reference internal" href="workflows.html#workflows"><span class="std std-ref">Workflows</span></a> chapter under the <a class="reference internal" href="workflows.html#initialization"><span class="std std-ref">Initialization</span></a> section. See <a class="reference internal" href="workflows.html#imports"><span class="std std-ref">Full imports</span></a>, <a class="reference internal" href="workflows.html#headers"><span class="std std-ref">Headers</span></a> and <a class="reference internal" href="workflows.html#settings"><span class="std std-ref">Settings</span></a> for direct access.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_boolean/train.py</span>
-<span class="c1">################################## IMPORTS ################################</span>
-<span class="c1"># Set environment and import default settings</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/train.py</span>
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="c1"># Related third party imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1"># Local application/library specific imports</span>
 <span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c1"># Import common models</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">runData</span><span class="p">,</span> <span class="n">hPars</span>
-<span class="c1"># Import EpyNN meta-model to build neural networks</span>
 <span class="kn">from</span> <span class="nn">nnlibs.meta.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
-<span class="c1"># VARIABLE - Import models specific to layer architectures</span>
+<span class="kn">from</span> <span class="nn">nnlibs.embedding.models</span> <span class="kn">import</span> <span class="n">Embedding</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
-<span class="c1"># Import utils</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="c1"># Import data-specific routine to prepare sets</span>
-<span class="kn">import</span> <span class="nn">sets_prepare</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="c1"># Import local EpyNN settings</span>
+<span class="kn">import</span> <span class="nn">prepare_dataset</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">settings</span> <span class="k">as</span> <span class="nn">se</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 
 
 <span class="c1">################################## HEADERS ################################</span>
-<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">)</span>
 
-<span class="n">cm</span><span class="o">.</span><span class="n">global_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
 <span class="n">cl</span><span class="o">.</span><span class="n">init_dir</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
 
-<span class="n">runData</span> <span class="o">=</span> <span class="n">runData</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">hPars</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">)</span>
 </pre></div>
 </div>
 </details>
 
 <br><p>Upon execution of the <code class="docutils literal notranslate"><span class="pre">IMPORTS</span></code> and <code class="docutils literal notranslate"><span class="pre">HEADERS</span></code> parts, data are returned from the <code class="docutils literal notranslate"><span class="pre">sp.sets_prepare()</span></code> function in the <code class="docutils literal notranslate"><span class="pre">DATASETS</span></code> part.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">MODEL</span></code> part contains examples of layer architectures and stacks relevant to input data type and shape.</p>
 <p>Given a number of samples <code class="docutils literal notranslate"><span class="pre">N_SAMPLES</span></code> and number of Boolean features <code class="docutils literal notranslate"><span class="pre">N_FEATURES</span></code> describing each sample, the features vector of the corresponding set in this example has shape <code class="docutils literal notranslate"><span class="pre">(N_SAMPLES,</span> <span class="pre">N_FEATURES)</span></code>.</p>
-<p>Given EpyNN built-in layer architectures, this shape is suited to the <code class="docutils literal notranslate"><span class="pre">Dense</span></code> layer, often referred to as <em>Fully connected layer</em>.</p>
+<p>Given EpyNN built-in layer architectures, this shape is suited to the <code class="docutils literal notranslate"><span class="pre">Dense</span></code> layer, often referred to as <em>Fully connected layer</em> (See :ref:Dense).</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">BUILD</span> <span class="pre">MODEL</span></code> part, the <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">(1)</span></code> comments denotes a first example of architectures built in the <code class="docutils literal notranslate"><span class="pre">layers</span></code> list.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">################################## DATASETS ################################</span>
-<span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">()</span> <span class="c1"># See &quot;Data preparation, structure and shape&quot;</span>
-
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">prepare_dataset</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span> <span class="c1"># See &quot;Data preparation, structure and shape&quot;</span>
+<span class="c1">#dataset = cl.read_dataset()</span>
 
 <span class="c1">################################ BUILD MODEL ###############################</span>
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Dense-2-Softmax&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-<span class="c1">#name = &#39;Dense-2-Sigmoid&#39;</span>
-<span class="c1">#layers = [Dense(2,activate=cm.sigmoid)]</span>
-<span class="c1">#name = &#39;Dense-8-ReLU_Dense-2-Softmax&#39;</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Embedding_Dense-2-Softmax&#39;</span> <span class="c1"># (1)</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Embedding</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">),</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span> <span class="c1"># Dense() same as Dense(nodes=2,activate=cm.softmax)</span>
+
+<span class="c1">#name = &#39;Dense-2-Sigmoid&#39; # (2)</span>
+<span class="c1">#layers = [Dense(nodes=2,activate=cm.sigmoid)]</span>
+
+<span class="c1">#name = &#39;Dense-8-ReLU_Dense-2-Softmax&#39; # (3)</span>
 <span class="c1">#layers = [Dense(8,activate=cm.relu),Dense(2)]</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span><span class="n">hPars</span><span class="o">=</span><span class="n">hPars</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="p">[</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
 
 <span class="c1">################################ TRAIN MODEL ################################</span>
-<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 
 <span class="c1">################################# USE MODEL #################################</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">read_model</span><span class="p">()</span>
+
+<span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">prepare_unlabeled</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding_unlabeled</span><span class="p">(</span><span class="n">unlabeled_dataset</span><span class="p">)</span>
+<span class="c1"># [[ True  True  True False  True False False False  True False  True]]</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1"># [[0.714 0.286]]</span>
+
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># [0]</span>
 </pre></div>
 </div>
 </div>
@@ -414,107 +392,35 @@
 <h3>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_strings</span></code></p>
 <p><em>Data preparation, structure and shape</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_strings/sets_prepare.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
-
-<span class="kn">import</span> <span class="nn">random</span>
-
-
-<span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prepare dummy dataset with bolean sample features</span>
-
-<span class="sd">    sample = [features,label]</span>
-
-<span class="sd">    features is a one-hot encoded string of shape (F_LENGTH,vocab_size)</span>
-<span class="sd">    label is a one-hot encoded label of shape (N_LABELS,)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># See settings.py - config dict is cached into runData.m</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">runData</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span>
-
-    <span class="c1"># LENGTH is the number of features describing a sample</span>
-    <span class="n">F_LENGTH</span> <span class="o">=</span> <span class="mi">11</span>
-
-    <span class="n">positive</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">negative</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate until positive + negative is equal to N_SAMPLES</span>
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">positive</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">negative</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N_SAMPLES</span><span class="p">:</span>
-        <span class="c1"># features is a 1D list of length F_LENGTH containing random boleans</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">][</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">F_LENGTH</span><span class="p">)</span> <span class="p">]</span>
-        <span class="c1"># Get features as string</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="c1"># Positive features contain pattern &#39;AAA&#39; but not &#39;BBB&#39;</span>
-        <span class="k">if</span> <span class="s1">&#39;AAA&#39;</span> <span class="ow">in</span> <span class="n">features</span> <span class="ow">and</span> <span class="s1">&#39;BBB&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-            <span class="n">positive</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="c1"># Negative features contain pattern &#39;BBB&#39; but not &#39;AAA&#39;</span>
-        <span class="k">elif</span> <span class="s1">&#39;BBB&#39;</span> <span class="ow">in</span> <span class="n">features</span> <span class="ow">and</span> <span class="s1">&#39;AAA&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-            <span class="n">negative</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-
-    <span class="c1"># Positive features associates with positive label [1,0]</span>
-    <span class="n">positive</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">f</span><span class="p">,[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">positive</span> <span class="p">]</span>
-
-    <span class="c1"># Negative features associates with negative label [0,1]</span>
-    <span class="n">negative</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span><span class="n">f</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">negative</span> <span class="p">]</span>
-
-    <span class="c1"># Concatenate posive and negative lists of samples</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">positive</span> <span class="o">+</span> <span class="n">negative</span>
-
-    <span class="c1"># Shuffle dataset before split</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-
-    <span class="c1"># Return dsets = [dtrain,dtest,dval]</span>
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_strings&#39;</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># dtrain, dtest, dval are dataSet EpyNN objects</span>
-    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dsets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># dtrain.X (features) is a numpy array of shape (N_SAMPLES//2,F_LENGTH,vocab_size)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (500, 11, 3)</span>
-    <span class="c1"># dtrain.X[0] is a numpy array of shape (F_LENGTH,)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (11, 3)</span>
-    <span class="c1"># dtrain.X[0] contains one encoded sample features</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># [ [0. 1. 0.] [0. 1. 0.] ... [0. 1. 0.] ]</span>
-    <span class="c1"># Note that you can decode sample features</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">cio</span><span class="o">.</span><span class="n">one_hot_decode_sequence</span><span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">runData</span><span class="p">))</span> <span class="c1"># AAAACABACCA</span>
-
-    <span class="c1"># dtrain.Y (label) is a numpy array of shape (N_SAMPLES//2,N_LABELS)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (500, 2)</span>
-    <span class="c1"># dtrain.Y[0] is a numpy array of shape (N_LABELS,)</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1"># (2,)</span>
-    <span class="c1"># dtrain.Y[0] contains one sample label</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="k">return</span> <span class="n">dsets</span>
-</pre></div>
-</div>
 <p><em>Architecture layers, training and prediction</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_strings/train.py</span>
+</div>
+<div class="section" id="time-series">
+<h3>Time series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_time/train.py</span>
 <span class="c1">################################## IMPORTS ################################</span>
-<span class="c1"># Set environment and import default settings</span>
+<span class="c1"># Set default environment and settings</span>
 <span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c1"># Import common models</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">runData</span><span class="p">,</span> <span class="n">hPars</span>
-<span class="c1"># Import EpyNN meta-model to build neural networks</span>
+<span class="c1"># EpyNN meta-model for neural networks</span>
 <span class="kn">from</span> <span class="nn">nnlibs.meta.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
+<span class="c1"># Embedding layer for input data</span>
+<span class="kn">from</span> <span class="nn">nnlibs.embedding.models</span> <span class="kn">import</span> <span class="n">Embedding</span>
 <span class="c1"># Import models specific to layer architectures</span>
-<span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
-<span class="kn">from</span> <span class="nn">nnlibs.dropout.models</span> <span class="kn">import</span> <span class="n">Dropout</span>
 <span class="kn">from</span> <span class="nn">nnlibs.flatten.models</span> <span class="kn">import</span> <span class="n">Flatten</span>
-<span class="kn">from</span> <span class="nn">nnlibs.gru.models</span> <span class="kn">import</span> <span class="n">GRU</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">nnlibs.lstm.models</span> <span class="kn">import</span> <span class="n">LSTM</span>
 <span class="kn">from</span> <span class="nn">nnlibs.rnn.models</span> <span class="kn">import</span> <span class="n">RNN</span>
-<span class="c1"># Import utils</span>
+<span class="kn">from</span> <span class="nn">nnlibs.gru.models</span> <span class="kn">import</span> <span class="n">GRU</span>
+<span class="c1"># Commons utils and maths</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
 <span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="c1"># Import data-specific routine to prepare sets</span>
-<span class="kn">import</span> <span class="nn">sets_prepare</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="c1"># Import local EpyNN settings</span>
+<span class="c1"># Routines for dataset preparation</span>
+<span class="kn">import</span> <span class="nn">prepare_dataset</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># Local EpyNN settings</span>
 <span class="kn">import</span> <span class="nn">settings</span> <span class="k">as</span> <span class="nn">se</span>
-
+<span class="c1"># Compute with NumPy</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
@@ -526,197 +432,47 @@
 <span class="n">cm</span><span class="o">.</span><span class="n">global_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">cl</span><span class="o">.</span><span class="n">init_dir</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">runData</span> <span class="o">=</span> <span class="n">runData</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">hPars</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">)</span>
-
-
+<span class="c1"># DOCS_HEADERS</span>
 <span class="c1">################################## DATASETS ################################</span>
-<span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">prepare_dataset</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+<span class="c1">#dataset = cl.read_dataset()</span>
 
 
 <span class="c1">################################ BUILD MODEL ###############################</span>
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Flatten_Dense-2-Softmax&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-<span class="c1"># name = &#39;Flatten_Dense-8-ReLU_Dense-2-Softmax&#39;</span>
-<span class="c1"># layers = [Flatten(),Dense(8,activate=cm.elu),Dense(2)]</span>
-<span class="c1">#</span>
-<span class="c1"># name = &#39;RNN-11-bin&#39;</span>
-<span class="c1"># layers = [RNN(11,runData,binary=True)]</span>
-<span class="c1"># name = &#39;GRU-11-bin&#39;</span>
-<span class="c1"># layers = [RNN(11,runData,binary=True)]</span>
-<span class="c1"># name = &#39;LSTM-11-bin&#39;</span>
-<span class="c1"># layers = [LSTM(11,runData,binary=True)]</span>
+<span class="n">embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># name = &#39;RNN-11_Flatten_Dense&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">RNN</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="n">runData</span><span class="p">),</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Embedding_Flatten_Dense_Dense-2-Softmax&#39;</span> <span class="c1"># (1)</span>
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding</span><span class="p">,</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">()]</span>
+
+<span class="c1"># name = &#39;LSTM-128-bin-Softmax&#39; # (2)</span>
+<span class="c1"># layers = [embedding,LSTM(128,binary=True)]</span>
+
+<span class="c1"># name = &#39;Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax&#39; # (3)</span>
+<span class="c1"># layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span><span class="n">settings</span><span class="o">=</span><span class="p">[</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">,</span><span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">])</span>
 
 
 <span class="c1">################################ TRAIN MODEL ################################</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span><span class="n">hPars</span><span class="o">=</span><span class="n">hPars</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 
 <span class="c1">################################# USE MODEL #################################</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="time-series">
-<h3>Time series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time</span></code></p>
-<p><em>Data preparation, structure and shape</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_time/sets_prepare.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.io</span> <span class="k">as</span> <span class="nn">cio</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">read_model</span><span class="p">()</span>
 
-<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">wavfile</span>
+<span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">prepare_unlabeled</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding_unlabeled</span><span class="p">(</span><span class="n">unlabeled_dataset</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#</span>
 
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">glob</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1">#</span>
 
-
-<span class="k">def</span> <span class="nf">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">):</span>
-
-    <span class="n">fs</span> <span class="o">=</span> <span class="mi">64</span>
-
-    <span class="n">t</span> <span class="o">=</span> <span class="mi">4</span>
-
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="o">*</span><span class="n">t</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="n">f_positive</span> <span class="o">=</span> <span class="mi">4</span>
-
-    <span class="n">positive</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
-        <span class="n">f_positive</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f_positive</span> <span class="o">*</span> <span class="n">samples</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
-        <span class="n">positive</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
-
-    <span class="n">f_negative</span> <span class="o">=</span> <span class="mi">16</span>
-
-    <span class="n">negative</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
-        <span class="n">f_negative</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f_negative</span> <span class="o">*</span> <span class="n">samples</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
-        <span class="n">negative</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
-
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">positive</span> <span class="o">+</span> <span class="n">negative</span>
-
-    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">cio</span><span class="o">.</span><span class="n">dataset_to_dsets</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;dummy_wave&#39;</span><span class="p">,</span><span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">dsets</span>
-
-
-<span class="k">def</span> <span class="nf">unk_prepare</span><span class="p">():</span>
-
-    <span class="n">fs</span> <span class="o">=</span> <span class="mi">44100</span>
-
-    <span class="n">t</span> <span class="o">=</span> <span class="mi">4</span>
-
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="o">*</span><span class="n">t</span><span class="p">),</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">freqs</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-
-        <span class="n">f_data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">][</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f_data</span> <span class="o">*</span> <span class="n">samples</span><span class="p">)</span>
-
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-        <span class="n">freqs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f_data</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">freqs</span>
-</pre></div>
-</div>
-<p><em>Architecture layers, training and prediction</em></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlive/dummy_time/train.py</span>
-<span class="c1"># Set environment and import default settings</span>
-<span class="kn">from</span> <span class="nn">nnlibs.initialize</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c1"># Import common models</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">runData</span><span class="p">,</span> <span class="n">hPars</span>
-<span class="c1"># Import EpyNN meta-model to build neural networks</span>
-<span class="kn">from</span> <span class="nn">nnlibs.meta.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
-<span class="c1"># Import models specific to layer architectures</span>
-<span class="kn">from</span> <span class="nn">nnlibs.conv.models</span> <span class="kn">import</span> <span class="n">Convolution</span>
-<span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
-<span class="kn">from</span> <span class="nn">nnlibs.dropout.models</span> <span class="kn">import</span> <span class="n">Dropout</span>
-<span class="kn">from</span> <span class="nn">nnlibs.flatten.models</span> <span class="kn">import</span> <span class="n">Flatten</span>
-<span class="kn">from</span> <span class="nn">nnlibs.gru.models</span> <span class="kn">import</span> <span class="n">GRU</span>
-<span class="kn">from</span> <span class="nn">nnlibs.lstm.models</span> <span class="kn">import</span> <span class="n">LSTM</span>
-<span class="kn">from</span> <span class="nn">nnlibs.pool.models</span> <span class="kn">import</span> <span class="n">Pooling</span>
-<span class="kn">from</span> <span class="nn">nnlibs.rnn.models</span> <span class="kn">import</span> <span class="n">RNN</span>
-<span class="c1"># Import utils</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.library</span> <span class="k">as</span> <span class="nn">cl</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="c1"># Import data-specific routine to prepare sets</span>
-<span class="kn">import</span> <span class="nn">sets_prepare</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="c1"># Import local EpyNN settings</span>
-<span class="kn">import</span> <span class="nn">settings</span> <span class="k">as</span> <span class="nn">se</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
-<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">)</span>
-
-<span class="n">cm</span><span class="o">.</span><span class="n">global_seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">cl</span><span class="o">.</span><span class="n">init_dir</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">runData</span> <span class="o">=</span> <span class="n">runData</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
-
-<span class="n">hPars</span> <span class="o">=</span> <span class="n">hPars</span><span class="p">(</span><span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">)</span>
-
-<span class="n">dsets</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sets_prepare</span><span class="p">(</span><span class="n">runData</span><span class="p">)</span>
-
-<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Flatten_Dense_Dense&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dense</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">softmax</span><span class="p">)]</span>
-<span class="c1">#name = &#39;RNN_Flatte,_Dense_Dense&#39;</span>
-<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">RNN</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="n">runData</span><span class="p">),</span><span class="n">Flatten</span><span class="p">(),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span><span class="n">cm</span><span class="o">.</span><span class="n">relu</span><span class="p">),</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-<span class="c1">#name = &#39;GRU_Flatten_Dense_Dense&#39;</span>
-<span class="c1">#layers = [GRU(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]</span>
-<span class="c1">#name = &#39;LSTM_Flatten_Dense_Dense&#39;</span>
-<span class="c1">#layers = [LSTM(100,runData),Flatten(),Dense(48,cm.relu),Dense(2)]</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span><span class="n">hPars</span><span class="o">=</span><span class="n">hPars</span><span class="p">)</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
-
-
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">cl</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
-
-<span class="n">unk</span><span class="p">,</span> <span class="n">freqs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">unk_prepare</span><span class="p">()</span>
-
-<span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">unk</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-
-<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)):</span>
-    <span class="nb">print</span> <span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],[</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">][</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span><span class="n">freqs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#</span>
 </pre></div>
 </div>
 </div>

@@ -6,39 +6,14 @@ from nnlibs.flatten.backward import flatten_backward
 from nnlibs.flatten.parameters import (
     flatten_compute_shapes,
     flatten_initialize_parameters,
-    flatten_update_gradients,
+    flatten_compute_gradients,
     flatten_update_parameters
 )
 
 
 class Flatten(Layer):
     """
-    Definition of an Flatten Layer prototype
-
-    Attributes
-    ----------
-    . : .
-        .
-
-    Methods
-    -------
-    compute_shapes()
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
-
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    Definition of a flatten layer prototype.
     """
 
     def __init__(self):
@@ -58,17 +33,17 @@ class Flatten(Layer):
         # Forward pass
         self.compute_shapes(A)
         A = flatten_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
         return A
 
     def backward(self, dA):
         # Backward pass
         dA = flatten_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
         return dA
 
-    def update_gradients(self):
-        flatten_update_gradients(self)
+    def compute_gradients(self):
+        flatten_compute_gradients(self)
         return None
 
     def update_parameters(self):

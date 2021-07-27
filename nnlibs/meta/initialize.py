@@ -45,7 +45,7 @@ def initialize_model_layers(model):
 
             model.network[id(layer)]['BW_Shapes'] = layer.bs
 
-            layer.update_gradients()
+            layer.compute_gradients()
 
         return None
 

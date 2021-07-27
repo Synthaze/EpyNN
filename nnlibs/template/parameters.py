@@ -25,7 +25,7 @@ def template_initialize_parameters(layer):
     return None
 
 
-def template_update_gradients(layer):
+def template_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Template layer object
 
     :param layer: An instance of the :class:`nnlibs.template.models.Template`

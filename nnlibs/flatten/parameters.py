@@ -34,7 +34,7 @@ def flatten_initialize_parameters(layer):
     return None
 
 
-def flatten_update_gradients(layer):
+def flatten_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Flatten layer object
 
     :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`

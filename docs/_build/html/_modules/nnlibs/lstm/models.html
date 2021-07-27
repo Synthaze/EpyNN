@@ -33,6 +33,9 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -93,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
 </ul>
 
             
@@ -159,77 +163,119 @@
            <div itemprop="articleBody">
             
   <h1>Source code for nnlibs.lstm.models</h1><div class="highlight"><pre>
-<span></span><span class="c1">#EpyNN/nnlibs/lstm/models.py</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.decorators</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
+<span></span><span class="c1"># EpyNN/nnlibs/lstm/models.py</span>
+<span class="c1"># Local application/library specific imports</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">tanh</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">xavier</span>
+<span class="kn">from</span> <span class="nn">nnlibs.lstm.forward</span> <span class="kn">import</span> <span class="n">lstm_forward</span>
+<span class="kn">from</span> <span class="nn">nnlibs.lstm.backward</span> <span class="kn">import</span> <span class="n">lstm_backward</span>
+<span class="kn">from</span> <span class="nn">nnlibs.lstm.parameters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lstm_compute_shapes</span><span class="p">,</span>
+    <span class="n">lstm_initialize_parameters</span><span class="p">,</span>
+    <span class="n">lstm_compute_gradients</span><span class="p">,</span>
+    <span class="n">lstm_update_parameters</span>
+<span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">nnlibs.lstm.parameters</span> <span class="k">as</span> <span class="nn">lp</span>
-<span class="kn">import</span> <span class="nn">nnlibs.lstm.backward</span> <span class="k">as</span> <span class="nn">lb</span>
-<span class="kn">import</span> <span class="nn">nnlibs.lstm.forward</span> <span class="k">as</span> <span class="nn">lf</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-
-<div class="viewcode-block" id="LSTM"><a class="viewcode-back" href="../../../architectures.html#nnlibs.lstm.models.LSTM">[docs]</a><span class="k">class</span> <span class="nc">LSTM</span><span class="p">:</span>
+<div class="viewcode-block" id="LSTM"><a class="viewcode-back" href="../../../architectures.html#nnlibs.lstm.models.LSTM">[docs]</a><span class="k">class</span> <span class="nc">LSTM</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Description for class</span>
+<span class="sd">    Definition of a LSTM layer prototype.</span>
 
-<span class="sd">    :ivar var1: initial value: par1</span>
-<span class="sd">    :ivar var2: initial value: par2</span>
+<span class="sd">    :param hidden_size: Number of LSTM cells in one LSTM layer.</span>
+<span class="sd">    :type nodes: int</span>
+
+<span class="sd">    :param activate: Activation function for output of LSTM cells.</span>
+<span class="sd">    :type activate: function</span>
+
+<span class="sd">    :param activate_hidden: Activation function for hidden state of LSTM cells.</span>
+<span class="sd">    :type activate_hidden: function</span>
+
+<span class="sd">    :param activate_output: Activation function for output gate in LSTM cells.</span>
+<span class="sd">    :type activate_output: function</span>
+
+<span class="sd">    :param activate_candidate: Activation function for canidate gate in LSTM cells.</span>
+<span class="sd">    :type activate_candidate: function</span>
+
+<span class="sd">    :param activate_input: Activation function for input gate in LSTM cells.</span>
+<span class="sd">    :type activate_input: function</span>
+
+<span class="sd">    :param activate_forget: Activation function for forget gate in LSTM cells.</span>
+<span class="sd">    :type activate_forget: function</span>
+
+<span class="sd">    :param initialization: Weight initialization function for LSTM layer.</span>
+<span class="sd">    :type initialization: function</span>
+
+<span class="sd">    :param binary: Set the LSTM layer from many-to-many to many-to-one mode.</span>
+<span class="sd">    :type binary: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    <span class="nd">@log_method</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hidden_size</span><span class="p">,</span><span class="n">runData</span><span class="p">,</span>
-            <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">activate_forget</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span>
-            <span class="n">activate_input</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span>
-            <span class="n">activate_candidate</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
-            <span class="n">activate_output</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span>
-            <span class="n">activate_hidden</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span>
-            <span class="n">activate_logits</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">softmax</span><span class="p">,</span>
-            <span class="n">initialization</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">xavier</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot; Layer attributes &quot;&quot;&quot;</span>
-        <span class="c1">### Set layer init attribute to True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1">### Set layer weigths init attribute</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">hidden_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                <span class="n">activate</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">,</span>
+                <span class="n">activate_hidden</span><span class="o">=</span><span class="n">tanh</span><span class="p">,</span>
+                <span class="n">activate_output</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">,</span>
+                <span class="n">activate_candidate</span><span class="o">=</span><span class="n">tanh</span><span class="p">,</span>
+                <span class="n">activate_input</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">,</span>
+                <span class="n">activate_forget</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">,</span>
+                <span class="n">initialization</span><span class="o">=</span><span class="n">xavier</span><span class="p">,</span>
+                <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="n">initialization</span>
-        <span class="c1">### Set layer activation attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="p">[</span><span class="n">activate_forget</span><span class="p">,</span><span class="n">activate_input</span><span class="p">,</span><span class="n">activate_candidate</span><span class="p">,</span><span class="n">activate_output</span><span class="p">,</span><span class="n">activate_hidden</span><span class="p">,</span><span class="n">activate_logits</span><span class="p">]</span>
-        <span class="n">lp</span><span class="o">.</span><span class="n">set_activation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="c1">### Define layer dictionaries attributes</span>
-        <span class="c1">## Dimensions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Parameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Gradients</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Forward pass cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Backward pass cache</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bc</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Forward pass shapes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1">## Backward pass shapes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bs</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="c1">### Set keys for layer cache attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;Xt&#39;</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span><span class="s1">&#39;h&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;activate&#39;</span><span class="p">:</span> <span class="n">activate</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;activate_input&#39;</span><span class="p">:</span> <span class="n">activate_input</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;activate_candidate&#39;</span><span class="p">:</span> <span class="n">activate_candidate</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;activate_forget&#39;</span><span class="p">:</span> <span class="n">activate_forget</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;activate_hidden&#39;</span><span class="p">:</span> <span class="n">activate_hidden</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;activate_output&#39;</span><span class="p">:</span> <span class="n">activate_output</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+        <span class="p">}</span>
 
-        <span class="c1">### Init shapes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate</span> <span class="o">=</span> <span class="n">activate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_input</span> <span class="o">=</span> <span class="n">activate_input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_candidate</span> <span class="o">=</span> <span class="n">activate_candidate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_forget</span> <span class="o">=</span> <span class="n">activate_forget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_output</span> <span class="o">=</span> <span class="n">activate_output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate_hidden</span> <span class="o">=</span> <span class="n">activate_hidden</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hidden_size</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">binary</span> <span class="o">=</span> <span class="n">binary</span>
-        <span class="n">lp</span><span class="o">.</span><span class="n">init_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">hidden_size</span><span class="p">,</span><span class="n">runData</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">lrate</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="n">lstm_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lstm_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="c1"># Forward pass</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">lf</span><span class="o">.</span><span class="n">lstm_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">lstm_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">A</span>
 
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="c1"># Backward pass</span>
-        <span class="n">dA</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">lstm_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dA</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">dA</span></div>
+        <span class="n">dA</span> <span class="o">=</span> <span class="n">lstm_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dA</span>
+
+    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Backward pass</span>
+        <span class="n">lstm_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Update parameters</span>
+        <span class="n">lstm_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>

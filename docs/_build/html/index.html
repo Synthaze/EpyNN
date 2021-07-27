@@ -33,6 +33,9 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -94,6 +97,7 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
 </ul>
 
             
@@ -161,7 +165,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-epynn-s-documentation">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="welcome-to-epynn-s-documentation">
 <h1>Welcome to EpyNN’s documentation!<a class="headerlink" href="#welcome-to-epynn-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p><strong>EpyNN is written in pure Python/NumPy.</strong></p>
 <p>In you use EpyNN in academia, please cite:</p>
@@ -233,29 +261,37 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#feed-forward">Feed-forward</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.dense.models">Dense</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#layer">Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#feed-forward">Feed-forward</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#recurrent">Recurrent</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.rnn.models">RNN</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.gru.models">GRU</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.lstm.models">LSTM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#dense">Dense</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#recurrent">Recurrent</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#convolutional">Convolutional</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.conv.models">Conv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.pool.models">Pool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#rnn">RNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#gru">GRU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#lstm">LSTM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#convolutional">Convolutional</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#adapter">Adapter</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.flatten.models">Flatten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#convolution">Convolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#pooling">Pooling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#adapter">Adapter</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#regularization">Regularization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#module-nnlibs.dropout.models">Dropout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#flatten">Flatten</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#embedding">Embedding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#regularization">Regularization</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#dropout">Dropout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architectures.html#alt">Alt</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architectures.html#epynn">EpyNN</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a><ul>
@@ -307,6 +343,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
 </ul>
 </div>
 </div>

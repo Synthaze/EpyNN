@@ -7,7 +7,7 @@ from nnlibs.embedding.backward import embedding_backward
 from nnlibs.embedding.parameters import (
     embedding_compute_shapes,
     embedding_initialize_parameters,
-    embedding_update_gradients,
+    embedding_compute_gradients,
     embedding_update_parameters
 )
 import nnlibs.settings as se
@@ -15,40 +15,16 @@ import nnlibs.settings as se
 
 class Embedding(Layer):
     """
-    Definition of an Embedding Layer prototype
+    Definition of an embedding layer prototype.
 
-    Attributes
-    ----------
-    dtrain : numpy.ndarray
-        .
-    batch_dtrain : list
-        .
-    dtest : numpy.ndarray
-        .
-    dval : numpy.ndarray
-        .
-    dsets : list
-        .
+    :param dataset: Samples as list of features and label.
+    :type dataset: list
 
-    Methods
-    -------
-    compute_shapes()
-        .
-    initialize_parameters()
-        .
-    forward(A)
-        .
-    backward(dA)
-        .
-    update_gradients()
-        .
-    update_parameters()
-        .
+    :param se_dataset: Settings to embed data in layer.
+    :type se_dataset: dict
 
-    See Also
-    --------
-    nnlibs.commons.models.Layer :
-        Layer Parent class which defines dictionary attributes for dimensions, parameters, gradients, shapes and caches. It also define the update_shapes() method.
+    :param encode: One-hot encoding of features.
+    :type encode: bool
     """
 
     def __init__(self,
@@ -75,17 +51,17 @@ class Embedding(Layer):
     def forward(self, A):
         # Forward pass
         A = embedding_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
         return A
 
     def backward(self, dA):
         # Backward pass
         dA = embedding_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
         return dA
 
-    def update_gradients(self):
-        embedding_update_gradients(self)
+    def compute_gradients(self):
+        embedding_compute_gradients(self)
         return None
 
     def update_parameters(self):

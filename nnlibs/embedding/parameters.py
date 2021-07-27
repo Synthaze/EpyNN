@@ -32,7 +32,7 @@ def embedding_initialize_parameters(layer):
     return None
 
 
-def embedding_update_gradients(layer):
+def embedding_compute_gradients(layer):
     """Dummy function - Update weight and bias gradients for Embedding layer object
 
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`

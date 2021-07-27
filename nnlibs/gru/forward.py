@@ -21,7 +21,7 @@ def gru_forward(layer, A):
 
         hh = np.dot(layer.p['Wh'], X)
         hh += np.dot(layer.p['Uh'], r * hp) + layer.p['bh']
-        hh = layer.fc['hh'][t] = layer.activate_input(hh)
+        hh = layer.fc['hh'][t] = layer.activate_hidden(hh)
 
         h = hp = layer.fc['h'][t] = z*hp + (1-z)*hh
 
