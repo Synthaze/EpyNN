@@ -53,7 +53,7 @@ name = 'RNN-11-bin-Softmax' # (2)
 # layers = [embedding,LSTM(12, binary=True)]
 
 # name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
-layers = [embedding, RNN(16), Flatten(), Dense(48,cm.relu), Dense()]
+layers = [embedding, RNN(8), Flatten(), Dense(48,cm.relu), Dense()]
 
 model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)
 

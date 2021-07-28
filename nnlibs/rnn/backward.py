@@ -8,7 +8,7 @@ def initialize_backward(layer, dA):
     """
     #
     dX = layer.bc['dX'] = dA
-    dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dX)
+    dh = np.dot(layer.p['W'].T, dX)
     #
     layer.bc['df'] = np.zeros(layer.fs['h'])
     layer.bc['dhn'] = np.zeros(layer.fs['h'])
