@@ -60,13 +60,13 @@ def rnn_compute_gradients(layer):
 
         #
         h = layer.fc['h'][s]
-        dXs = layer.bc['dXs'] if layer.binary else layer.bc['dXs'][s]
+        dXs = layer.bc['dX'] if layer.binary else layer.bc['dX'][s]
         # Gradients
         layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXs, h.T)
         layer.g['db'] += 1./ layer.d['m'] * np.sum(dXs, axis=1, keepdims=True)
 
         #
-        Xs = layer.fc['Xs'][s]
+        Xs = layer.fc['X'][:, s]
         hp = layer.fc['h'][s - 1]
         df = layer.bc['df'][s]
         # Gradients
@@ -83,7 +83,7 @@ def rnn_update_parameters(layer):
     for gradient in layer.g.keys():
 
         parameter = gradient[1:]
-        
+
         layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

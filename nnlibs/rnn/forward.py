@@ -8,7 +8,6 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    layer.fc['Xs'] = np.zeros(layer.fs['Xs'])
     layer.fc['h'] = np.zeros(layer.fs['h'])
     layer.fc['A'] = np.zeros(layer.fs['A'])
 
@@ -27,7 +26,7 @@ def rnn_forward(layer, A):
     for s in range(layer.d['s']):
 
         # (2s) Slice sequence (v, s, m) with respect to step
-        X = layer.fc['Xs'][s] = layer.fc['X'][:, s]    # (v, m)
+        X = layer.fc['X'][:, s]    # (v, m)
 
         # (3s) Compute hidden cell state
         h = np.dot(layer.p['Wx'], X)

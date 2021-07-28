@@ -3,6 +3,18 @@
 import numpy as np
 
 
+def initialize_backward(layer, dA):
+    """Compute shapes for Dense layer object
+
+    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
+    :type layer: class:`nnlibs.dense.models.Dense`
+    """
+
+    dX = layer.bc['dX'] = dA
+
+    return dX
+
+
 def dense_backward(layer, dA):
     """Compute shapes for Dense layer object
 
@@ -17,15 +29,3 @@ def dense_backward(layer, dA):
     dA = layer.bc['dA'] = np.dot(layer.p['W'].T, dZ)
 
     return dA
-
-
-def initialize_backward(layer, dA):
-    """Compute shapes for Dense layer object
-
-    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
-    :type layer: class:`nnlibs.dense.models.Dense`
-    """
-
-    dX = layer.bc['dX'] = dA
-
-    return dX

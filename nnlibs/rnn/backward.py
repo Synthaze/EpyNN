@@ -10,7 +10,6 @@ def initialize_backward(layer, dA):
     dX = layer.bc['dX'] = dA
     dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dX)
     #
-    layer.bc['dXs'] = np.zeros_like(dX)
     layer.bc['df'] = np.zeros(layer.fs['h'])
     layer.bc['dhn'] = np.zeros(layer.fs['h'])
     #
@@ -25,12 +24,14 @@ def rnn_backward(layer, dA):
     # ()
     dX, dhn, dh = initialize_backward(layer, dA)
 
+    dA = []
+
     # Step through reversed sequence
     for s in reversed(range(layer.d['s'])):
 
         if not layer.binary:
             # ()
-            dXs = layer.bc['dXs'][s] = dX[s]
+            dXs = layer.bc['dX'][s]
             # ()
             dh = layer.bc['dh'][s] = np.dot(layer.p['W'].T, dXs) + dhn
 
@@ -39,5 +40,9 @@ def rnn_backward(layer, dA):
 
         # ()
         dhn = layer.bc['dhn'][s] = np.dot(layer.p['Wh'].T, df)
+
+        dA.append(df * dhn)
+
+    dA = np.array(dA)
 
     return dA    # To previous layer

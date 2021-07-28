@@ -52,8 +52,8 @@ def initialize_model_layers(model):
 
 def initialize_exceptions(model,trace):
 
-    for layer in model.network.keys():
-        pretty_json(model.network[layer])
+    #for layer in model.network.keys():
+    #    pretty_json(model.network[layer])
 
     cprint('/!\\ Initialization of EpyNN model failed','red',attrs=['bold'])
 
