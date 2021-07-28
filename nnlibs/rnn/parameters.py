@@ -28,7 +28,6 @@ def rnn_compute_shapes(layer, A):
     svm = layer.fs['Xs'] = (layer.d['s'], layer.d['v'], layer.d['m'])
     shm = layer.fs['h'] = (layer.d['s'], layer.d['h'], layer.d['m'])
     som = layer.fs['A'] = (layer.d['s'], layer.d['o'], layer.d['m'])
-    hm = layer.fs['hs'] = (layer.d['h'], layer.d['m'])
 
     return None
 
@@ -60,17 +59,17 @@ def rnn_compute_gradients(layer):
 
         #
         h = layer.fc['h'][s]
-        dXs = layer.bc['dX'] if layer.binary else layer.bc['dX'][s]
+        dX = layer.bc['dX'] if layer.binary else layer.bc['dX'][s]
         # Gradients
-        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXs, h.T)
-        layer.g['db'] += 1./ layer.d['m'] * np.sum(dXs, axis=1, keepdims=True)
+        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dX, h.T)
+        layer.g['db'] += 1./ layer.d['m'] * np.sum(dX, axis=1, keepdims=True)
 
         #
-        Xs = layer.fc['X'][:, s]
+        X = layer.fc['X'][:, s]
         hp = layer.fc['h'][s - 1]
         df = layer.bc['df'][s]
         # Gradients
-        layer.g['dWx'] += 1./ layer.d['m'] * np.dot(df, Xs.T)
+        layer.g['dWx'] += 1./ layer.d['m'] * np.dot(df, X.T)
         layer.g['dWh'] += 1./ layer.d['m'] * np.dot(df, hp.T)
         layer.g['dbh'] += 1./ layer.d['m'] * np.sum(df, axis=1, keepdims=True)
 

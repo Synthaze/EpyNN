@@ -13,7 +13,7 @@ def initialize_backward(layer, dA):
     layer.bc['df'] = np.zeros(layer.fs['h'])
     layer.bc['dhn'] = np.zeros(layer.fs['h'])
     #
-    dhn = np.zeros(layer.fs['hs'])
+    dhn = np.zeros_like(layer.fs['h'][0])
 
     return dX, dhn, dh
 
