@@ -25,7 +25,6 @@ def rnn_compute_shapes(layer, A):
     o1 = layer.fs['b'] = (layer.d['o'], 1)
 
     # Shapes to initialize forward cache
-    svm = layer.fs['Xs'] = (layer.d['s'], layer.d['v'], layer.d['m'])
     shm = layer.fs['h'] = (layer.d['s'], layer.d['h'], layer.d['m'])
     som = layer.fs['A'] = (layer.d['s'], layer.d['o'], layer.d['m'])
 

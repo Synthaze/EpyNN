@@ -31,9 +31,9 @@ def rnn_backward(layer, dA):
 
         if not layer.binary:
             # ()
-            dXs = layer.bc['dX'][s]
+            dX = layer.bc['dX'][s]
             # ()
-            dh = layer.bc['dh'][s] = np.dot(layer.p['W'].T, dXs) + dhn
+            dh = np.dot(layer.p['W'].T, dX) + dhn
 
         # ()
         df = layer.bc['df'][s] = dh * layer.activate(layer.fc['h'][s], deriv=True)
