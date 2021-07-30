@@ -4,7 +4,7 @@ import numpy as np
 
 
 def one_hot_encode(i, vocab_size):
-    """.
+    """
 
     :param i:
     :type i:

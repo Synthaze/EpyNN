@@ -92,7 +92,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -101,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples and data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
@@ -184,7 +183,7 @@
 <span class="kn">import</span> <span class="nn">nnlibs.settings</span> <span class="k">as</span> <span class="nn">se</span>
 
 
-<div class="viewcode-block" id="Embedding"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.embedding.models.Embedding">[docs]</a><span class="k">class</span> <span class="nc">Embedding</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="Embedding"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.models.Embedding">[docs]</a><span class="k">class</span> <span class="nc">Embedding</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of an embedding layer prototype.</span>
 
@@ -211,29 +210,29 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dsets</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dtrain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Embedding.compute_shapes"><a class="viewcode-back" href="../../../Embedding.html#nnlibs.embedding.models.Embedding.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="n">embedding_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">embedding_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Embedding.forward"><a class="viewcode-back" href="../../../Embedding.html#nnlibs.embedding.models.Embedding.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="c1"># Forward pass</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">embedding_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">A</span>
+        <span class="k">return</span> <span class="n">A</span></div>
 
-    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="Embedding.backward"><a class="viewcode-back" href="../../../Embedding.html#nnlibs.embedding.models.Embedding.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="c1"># Backward pass</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">embedding_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">dA</span>
+        <span class="k">return</span> <span class="n">dA</span></div>
 
-    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Embedding.compute_gradients"><a class="viewcode-back" href="../../../Embedding.html#nnlibs.embedding.models.Embedding.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">embedding_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">embedding_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>

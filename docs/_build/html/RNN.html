@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Long Short-Term Memory (LSTM)" href="LSTM.html" />
+    <link rel="next" title="Many-to-one RNN" href="nnlive/dummy_string/RNN_binary.html" />
     <link rel="prev" title="Fully Connected (Dense)" href="Dense.html" /> 
 </head>
 
@@ -94,14 +94,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Recurrent Neural Network (RNN)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#layer-architecture">Layer architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#live-examples">Live examples</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dummy-string-data">Dummy string data</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="RNN_binary.html">Many-to-one RNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nnlive/dummy_string/RNN_binary.html">Many-to-one RNN</a></li>
 </ul>
 </li>
 </ul>
@@ -113,7 +112,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
@@ -215,16 +214,16 @@
 <img alt="_images/rnn1-01.svg" src="_images/rnn1-01.svg" /><dl class="py class">
 <dt id="nnlibs.rnn.models.RNN">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.rnn.models.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="old/architectures.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="Details.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a RNN layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hidden_size</strong> (<em>int</em>) – Number of RNN cells in one RNN layer.</p></li>
+<li><p><strong>hidden_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of RNN cells in one RNN layer.</p></li>
 <li><p><strong>activate</strong> (<em>function</em>) – Activation function for output of RNN cells.</p></li>
 <li><p><strong>activate_hidden</strong> (<em>function</em>) – Activation function for hidden state of RNN cells.</p></li>
 <li><p><strong>initialization</strong> (<em>function</em>) – Weight initialization function for RNN layer.</p></li>
-<li><p><strong>binary</strong> (<em>bool</em>) – Set the RNN layer from many-to-many to many-to-one mode.</p></li>
+<li><p><strong>binary</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Set the RNN layer from many-to-many to many-to-one mode.</p></li>
 </ul>
 </dd>
 </dl>
@@ -402,7 +401,7 @@
 <h3>Dummy string data<a class="headerlink" href="#dummy-string-data" title="Permalink to this headline">¶</a></h3>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="RNN_binary.html">Many-to-one RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nnlive/dummy_string/RNN_binary.html">Many-to-one RNN</a></li>
 </ul>
 </div>
 </div>
@@ -415,7 +414,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="LSTM.html" class="btn btn-neutral float-right" title="Long Short-Term Memory (LSTM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nnlive/dummy_string/RNN_binary.html" class="btn btn-neutral float-right" title="Many-to-one RNN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="Dense.html" class="btn btn-neutral float-left" title="Fully Connected (Dense)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

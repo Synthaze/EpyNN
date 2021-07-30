@@ -4,7 +4,7 @@
 dataset = {
     'N_SAMPLES': 1000,
     'dataset_name': 'dummy_strings',
-    'dataset_save': True,
+    'dataset_save': False,
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,

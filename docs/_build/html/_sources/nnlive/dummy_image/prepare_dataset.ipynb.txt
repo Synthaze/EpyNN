@@ -1,0 +1,508 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Dummy image data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Regular Python code located in ..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... using these data:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Imports."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# EpyNN/nnlive/dummy_image/prepare_dataset.ipynb\n",
+    "# Standard library imports\n",
+    "import random\n",
+    "import glob\n",
+    "import os\n",
+    "\n",
+    "# Related third party imports\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "\n",
+    "# Local application/library specific imports\n",
+    "from nnlibs.commons.library import write_pickle\n",
+    "from settings import dataset as se_dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Set `random` seed for reproducibility."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "random.seed(1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Dummy image features."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def features_images(WIDTH=28, HEIGHT=28):\n",
+    "    \"\"\"Generate dummy image features.\n",
+    "\n",
+    "    :param WIDTH: Image width\n",
+    "    :type WIDTH: int\n",
+    "\n",
+    "    :param HEIGHT: Image height\n",
+    "    :type HEIGHT: int\n",
+    "    \n",
+    "    :return: alterated random image features of length N_FEATURES\n",
+    "    :rtype: int\n",
+    "\n",
+    "    :return: Value of tone used to alterate random image features\n",
+    "    :rtype: int\n",
+    "\n",
+    "    :return: original random image features of length N_FEATURES\n",
+    "    :rtype: list[int]\n",
+    "    \"\"\"\n",
+    "    # Number of distinct tones in features\n",
+    "    N_TONES = 16\n",
+    "\n",
+    "    # Number of channels is one for greyscale images\n",
+    "    DEPTH = 1\n",
+    "\n",
+    "    # Number of features describing a sample\n",
+    "    N_FEATURES = WIDTH * HEIGHT\n",
+    "    \n",
+    "    # Number of channels is one for greyscale images\n",
+    "    DEPTH = 1\n",
+    "    \n",
+    "    # Shade of greys color palette\n",
+    "    GSCALE = [i for i in range(N_TONES)]\n",
+    "\n",
+    "    # Random choice of shade of greys for N_FEATURES iterations\n",
+    "    features = [random.choice(GSCALE) for j in range(N_FEATURES)]\n",
+    "    o_features = features.copy()\n",
+    "\n",
+    "    # Random choice darkest or lightest shade in GSCALE\n",
+    "    tone = random.choice([0, N_TONES-1])\n",
+    "    \n",
+    "    # Random choice of features indexes for 5% of N_FEATURES iterations\n",
+    "    idxs = [random.choice(range(N_FEATURES)) for j in range(N_FEATURES // 20)]\n",
+    "\n",
+    "    # Alteration of features with darkest or lightest tone\n",
+    "    for idx in idxs:\n",
+    "        features[idx] = tone\n",
+    "        \n",
+    "    # Vectorization of features to image and scaling\n",
+    "    features = np.array(features).reshape(HEIGHT, WIDTH, DEPTH) / (N_TONES-1)\n",
+    "    \n",
+    "    o_features = np.array(o_features).reshape(features.shape) / (N_TONES-1)\n",
+    "    \n",
+    "    return features, tone, o_features\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(28, 28, 1)\n"
+     ]
+    }
+   ],
+   "source": [
+    "features, tone, o_features = features_images()\n",
+    "print(features.shape)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Inspect the image before alteration."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.imshow(o_features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Inspect the image after alteration."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.imshow(features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Not obvious, though. Let's inspect the image difference."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "diff_features = np.abs(o_features - features)\n",
+    "\n",
+    "plt.imshow(diff_features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Label from features."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def label_features(features, tone):\n",
+    "    \"\"\"Prepare label associated with features.\n",
+    "\n",
+    "    :param features: random image features of length N_FEATURES\n",
+    "    :type features: list[int]\n",
+    "\n",
+    "    :param tone: Darker or lighter tone used to alterate image features\n",
+    "    :type tone: int\n",
+    "    \n",
+    "    :return: One-hot encoded label\n",
+    "    :rtype: list[int]\n",
+    "    \"\"\"\n",
+    "    # One-hot encoded positive and negative labels\n",
+    "    p_label = [1, 0]\n",
+    "    n_label = [0, 1]\n",
+    "\n",
+    "    # Test if image was alterated with lightest tone (+)\n",
+    "    if tone == 0:\n",
+    "        label = p_label\n",
+    "\n",
+    "    # Test if features associates with darkest tone (-)\n",
+    "    else:\n",
+    "        label = n_label\n",
+    "\n",
+    "    return label"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1, 0] 0\n"
+     ]
+    }
+   ],
+   "source": [
+    "label = label_features(features, tone)\n",
+    "print(label, tone)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Prepare labeled dataset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def labeled_dataset(se_dataset):\n",
+    "    \"\"\"Prepare a dummy dataset of labeled samples.\n",
+    "    \n",
+    "    One sample is a list such as [features, label].\n",
+    "    \n",
+    "    For one sample, features is a class:`numpy.ndarray` and label is a list.\n",
+    "\n",
+    "    :param se_dataset: Settings for dataset preparation\n",
+    "    :type se_dataset: dict\n",
+    "\n",
+    "    :return: A dataset of length N_SAMPLES\n",
+    "    :rtype: list[list[class:`numpy.ndarray`,list[int]]]\n",
+    "    \"\"\"\n",
+    "    # See ./settings.py\n",
+    "    N_SAMPLES = se_dataset['N_SAMPLES']\n",
+    "\n",
+    "    # Initialize dataset\n",
+    "    dataset = []\n",
+    "\n",
+    "    # Iterate over N_SAMPLES\n",
+    "    for i in range(N_SAMPLES):\n",
+    "\n",
+    "        # Generate dummy string features \n",
+    "        features, tone, _ = features_images()\n",
+    "        \n",
+    "        # Retrieve label associated with features\n",
+    "        label = label_features(features, tone)\n",
+    "\n",
+    "        # Define labeled sample\n",
+    "        sample = [features, label]\n",
+    "        \n",
+    "        # Append sample to dataset\n",
+    "        dataset.append(sample)\n",
+    "\n",
+    "    return dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(28, 28, 1) [0, 1]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [0, 1]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [0, 1]\n",
+      "(28, 28, 1) [1, 0]\n",
+      "(28, 28, 1) [1, 0]\n"
+     ]
+    }
+   ],
+   "source": [
+    "se_dataset['N_SAMPLES'] = 10\n",
+    "\n",
+    "for sample in labeled_dataset(se_dataset):\n",
+    "    features, label = sample\n",
+    "    print(features.shape, label)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Prepare unlabeled dataset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def unlabeled_dataset(N_SAMPLES=1):\n",
+    "    \"\"\"Prepare a dummy dataset of unlabeled samples.\n",
+    "    \n",
+    "    One sample is a list such as [features, []].\n",
+    "\n",
+    "    For one sample, features is a class:`numpy.ndarray` and label is an empty list.\n",
+    "\n",
+    "    :param N_SAMPLES: Length for unlabeled dataset\n",
+    "    :type N_SAMPLES: int\n",
+    "\n",
+    "    :return: A dataset of length N_SAMPLES\n",
+    "    :rtype: list[list[class:`numpy.ndarray`,list[int]]]\n",
+    "    \"\"\"\n",
+    "    # Initialize unlabeled_dataset\n",
+    "    unlabeled_dataset = []\n",
+    "\n",
+    "    # Iterate over N_SAMPLES\n",
+    "    for i in range(N_SAMPLES):\n",
+    "\n",
+    "        # Generate dummy image features\n",
+    "        features, _, _ = features_images()\n",
+    "\n",
+    "        # Define unlabeled sample\n",
+    "        sample = [features, []]\n",
+    "\n",
+    "        # Append to unlabeled_dataset\n",
+    "        unlabeled_dataset.append(sample)\n",
+    "\n",
+    "    return unlabeled_dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(28, 28, 1) []\n",
+      "(28, 28, 1) []\n",
+      "(28, 28, 1) []\n",
+      "(28, 28, 1) []\n",
+      "(28, 28, 1) []\n"
+     ]
+    }
+   ],
+   "source": [
+    "for sample in unlabeled_dataset(N_SAMPLES=5):\n",
+    "    features, label = sample\n",
+    "    print(features.shape, label)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Done."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

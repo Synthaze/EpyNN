@@ -1,0 +1,421 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Dummy string data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Regular Python code located in ..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "... using these data:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Imports."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# EpyNN/nnlive/dummy_strings/prepare_dataset.ipynb\n",
+    "# Standard library imports\n",
+    "import random\n",
+    "\n",
+    "# Local application/library specific imports\n",
+    "from settings import dataset as se_dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Set `random` seed for reproducibility."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "random.seed(1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Dummy string features."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def features_string(N_FEATURES=12):\n",
+    "    \"\"\"Generate dummy string features.\n",
+    "\n",
+    "    :param N_FEATURES: Number of features\n",
+    "    :type N_FEATURES: int\n",
+    "    \n",
+    "    :return: Words that may be contained in features\n",
+    "    :rtype: list[str]\n",
+    "    \n",
+    "    :return: random string features of length N_FEATURES\n",
+    "    :rtype: list[str]\n",
+    "    \"\"\"\n",
+    "    # List of words\n",
+    "    WORDS = ['A', 'T', 'G', 'C']\n",
+    "\n",
+    "    # Random choice of words for N_FEATURES iterations\n",
+    "    features = [random.choice(WORDS) for j in range(N_FEATURES)]\n",
+    "    \n",
+    "    return features, WORDS"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['T', 'A', 'G', 'A', 'C', 'C', 'C', 'C', 'T', 'A', 'C', 'A']\n"
+     ]
+    }
+   ],
+   "source": [
+    "features, WORDS = features_string()\n",
+    "print(features)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Label from features."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def label_features(features, WORDS):\n",
+    "    \"\"\"Prepare label associated with features.\n",
+    "\n",
+    "    :param features: random string features of length N_FEATURES\n",
+    "    :type features: list[str]\n",
+    "\n",
+    "    :param WORDS: Words that may be contained in features\n",
+    "    :type WORDS: list[str]\n",
+    "    \n",
+    "    :return: One-hot encoded label\n",
+    "    :rtype: list[int]\n",
+    "    \"\"\"\n",
+    "    # One-hot encoded positive and negative labels\n",
+    "    p_label = [1, 0]\n",
+    "    n_label = [0, 1]\n",
+    "\n",
+    "    # Number of features\n",
+    "    N_FEATURES = len(features)\n",
+    "    \n",
+    "    # Mean distribution for words in features\n",
+    "    mean_distribution = N_FEATURES // len(WORDS)\n",
+    "    \n",
+    "    # Target word\n",
+    "    adenosine = WORDS[0]\n",
+    "\n",
+    "    # Test if word count deviates from mean (+)\n",
+    "    if features.count(adenosine) == mean_distribution:\n",
+    "            label = p_label\n",
+    "\n",
+    "    # Test if word count does not deviate from mean (-)\n",
+    "    elif features.count(adenosine) != mean_distribution:\n",
+    "            label = n_label\n",
+    "\n",
+    "    return label"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "label = label_features(features, WORDS)\n",
+    "print(label)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "4\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(features.count(WORDS[0]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "False\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(features.count(WORDS[0]) == len(features) // len(WORDS))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Prepare labeled dataset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def labeled_dataset(se_dataset):\n",
+    "    \"\"\"Prepare a dummy dataset of labeled samples.\n",
+    "    \n",
+    "    One sample is a list such as [features, label].\n",
+    "    \n",
+    "    For one sample, features is a list and label is a list.\n",
+    "\n",
+    "    :param se_dataset: Settings for dataset preparation\n",
+    "    :type se_dataset: dict\n",
+    "\n",
+    "    :return: A dataset of length N_SAMPLES\n",
+    "    :rtype: list[list[list[str],list[int]]]\n",
+    "    \"\"\"\n",
+    "    # See ./settings.py\n",
+    "    N_SAMPLES = se_dataset['N_SAMPLES']\n",
+    "\n",
+    "    # Initialize dataset\n",
+    "    dataset = []\n",
+    "\n",
+    "    # Iterate over N_SAMPLES\n",
+    "    for i in range(N_SAMPLES):\n",
+    "\n",
+    "        # Generate dummy string features \n",
+    "        features, WORDS = features_string()\n",
+    "        \n",
+    "        # Retrieve label associated with features\n",
+    "        label = label_features(features, WORDS)\n",
+    "        \n",
+    "        # Define labeled sample\n",
+    "        sample = [features, label]\n",
+    "\n",
+    "        # Append sample to dataset\n",
+    "        dataset.append(sample)\n",
+    "\n",
+    "    # Shuffle dataset\n",
+    "    random.shuffle(dataset)\n",
+    "\n",
+    "    return dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['G', 'T', 'G', 'G', 'C', 'G', 'C', 'C', 'A', 'A', 'G', 'C'] [0, 1]\n",
+      "['G', 'C', 'A', 'T', 'T', 'T', 'A', 'G', 'A', 'A', 'A', 'A'] [0, 1]\n",
+      "['A', 'T', 'C', 'G', 'C', 'A', 'C', 'A', 'G', 'C', 'T', 'T'] [1, 0]\n",
+      "['C', 'T', 'C', 'A', 'T', 'C', 'C', 'T', 'G', 'T', 'T', 'C'] [0, 1]\n",
+      "['C', 'A', 'G', 'T', 'G', 'A', 'T', 'G', 'G', 'A', 'T', 'T'] [1, 0]\n",
+      "['C', 'C', 'A', 'C', 'G', 'T', 'A', 'G', 'A', 'A', 'A', 'A'] [0, 1]\n",
+      "['G', 'A', 'C', 'A', 'T', 'G', 'A', 'G', 'C', 'T', 'G', 'G'] [1, 0]\n",
+      "['C', 'C', 'A', 'C', 'T', 'C', 'C', 'T', 'G', 'G', 'A', 'C'] [0, 1]\n",
+      "['T', 'C', 'A', 'C', 'G', 'T', 'C', 'C', 'G', 'C', 'G', 'A'] [0, 1]\n",
+      "['T', 'A', 'T', 'T', 'C', 'G', 'G', 'C', 'G', 'A', 'C', 'T'] [0, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "se_dataset['N_SAMPLES'] = 10\n",
+    "\n",
+    "for sample in labeled_dataset(se_dataset):\n",
+    "    features, label = sample\n",
+    "    print(features, label)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Prepare unlabeled dataset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def unlabeled_dataset(N_SAMPLES=1):\n",
+    "    \"\"\"Prepare a dummy dataset of unlabeled samples.\n",
+    "    \n",
+    "    One sample is a list such as [features, []].\n",
+    "\n",
+    "    For one sample, features is a list and label is an empty list.\n",
+    "\n",
+    "    :param N_SAMPLES: Length for unlabeled dataset\n",
+    "    :type N_SAMPLES: int\n",
+    "\n",
+    "    :return: A dataset of length N_SAMPLES\n",
+    "    :rtype: list[list[list[str],list]]\n",
+    "    \"\"\"\n",
+    "    # Initialize unlabeled_dataset\n",
+    "    unlabeled_dataset = []\n",
+    "\n",
+    "    # Iterate over N_SAMPLES\n",
+    "    for i in range(N_SAMPLES):\n",
+    "\n",
+    "        # Generate dummy string features\n",
+    "        features, _ = features_string()\n",
+    "        \n",
+    "        # Define unlabeled sample\n",
+    "        sample = [features, []]\n",
+    "\n",
+    "        # Append sample to dataset\n",
+    "        unlabeled_dataset.append(sample)\n",
+    "\n",
+    "    return unlabeled_dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check the function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['A', 'T', 'A', 'C', 'T', 'A', 'T', 'C', 'C', 'T', 'C', 'T'] []\n",
+      "['A', 'C', 'G', 'C', 'A', 'G', 'T', 'T', 'A', 'G', 'A', 'A'] []\n",
+      "['G', 'G', 'T', 'C', 'G', 'T', 'A', 'A', 'T', 'C', 'T', 'A'] []\n",
+      "['C', 'T', 'G', 'A', 'T', 'C', 'T', 'C', 'A', 'C', 'G', 'C'] []\n",
+      "['A', 'G', 'C', 'G', 'A', 'T', 'T', 'G', 'T', 'G', 'C', 'T'] []\n"
+     ]
+    }
+   ],
+   "source": [
+    "for sample in unlabeled_dataset(N_SAMPLES=5):\n",
+    "    features, label = sample\n",
+    "    print(features, label)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Done."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

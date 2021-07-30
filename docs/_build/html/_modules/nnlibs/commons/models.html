@@ -92,7 +92,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -101,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples and data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
@@ -177,12 +176,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.commons.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
+<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Layer.__init__"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.commons.models.Layer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Layer.__init__"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.Layer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize instance variable attributes.</span>
 
 <span class="sd">        Attributes</span>
@@ -223,7 +222,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Layer.update_shapes"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.commons.models.Layer.update_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="viewcode-block" id="Layer.update_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.Layer.update_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update shapes from cache.</span>
 
 <span class="sd">        :param cache: Forward of backward cache as documented above.</span>
@@ -237,9 +236,10 @@
         <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
-<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
+<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Definition of a dataSet object prototype</span>
+<span class="sd">    Definition of a dataSet object prototype.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="dataSet.__init__"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.dataSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
@@ -255,31 +255,31 @@
 <span class="sd">        :type name: string</span>
 
 <span class="sd">        :ivar n:</span>
-<span class="sd">        :vartype n:</span>
+<span class="sd">        :vartype n: str</span>
 
 <span class="sd">        :ivar X:</span>
-<span class="sd">        :vartype X:</span>
+<span class="sd">        :vartype X: :class:`numpy.ndarray`</span>
 
 <span class="sd">        :ivar Y:</span>
-<span class="sd">        :vartype Y:</span>
+<span class="sd">        :vartype Y: class:`numpy.ndarray`</span>
 
 <span class="sd">        :ivar y:</span>
-<span class="sd">        :vartype y:</span>
+<span class="sd">        :vartype y: class:`numpy.ndarray`</span>
 
 <span class="sd">        :ivar b:</span>
-<span class="sd">        :vartype b:</span>
+<span class="sd">        :vartype b: dict</span>
 
 <span class="sd">        :ivar id:</span>
-<span class="sd">        :vartype id:</span>
+<span class="sd">        :vartype id: list</span>
 
 <span class="sd">        :ivar s:</span>
-<span class="sd">        :vartype s:</span>
+<span class="sd">        :vartype s: int</span>
 
 <span class="sd">        :ivar A:</span>
-<span class="sd">        :vartype A:</span>
+<span class="sd">        :vartype A: NoneType</span>
 
 <span class="sd">        :ivar P:</span>
-<span class="sd">        :vartype P:</span>
+<span class="sd">        :vartype P: NoneType</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>
         <span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>

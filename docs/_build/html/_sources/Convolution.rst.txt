@@ -8,82 +8,74 @@
 Convolutional Neural Network (CNN)
 ===================================
 
+Convolution layer
+-----------------------------------
+
 Layer architecture
-------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. image:: _static/RNN/rnn1-01.svg
 
-.. autoclass:: nnlibs.rnn.models.RNN
+
+.. autoclass:: nnlibs.convolution.models.Convolution
     :show-inheritance:
 
-    .. automethod:: nnlibs.rnn.models.RNN.compute_shapes
+    .. automethod:: nnlibs.convolution.models.Convolution.compute_shapes
 
-        .. literalinclude:: ./../nnlibs/rnn/parameters.py
-            :pyobject: rnn_compute_shapes
+        .. literalinclude:: ./../nnlibs/convolution/parameters.py
+            :pyobject: convolution_compute_shapes
             :language: python
 
     .. automethod:: forward
 
-        .. literalinclude:: ./../nnlibs/rnn/forward.py
-            :pyobject: rnn_forward
-
-        .. image:: _static/RNN/rnn2-01.svg
-
-        .. math:: X = A \tag{1}
-
-        .. math:: X_s = X[:, s] \tag{2s}
-
-        .. math:: h_s = h_{act}(W_x \cdot X_s + W_h \cdot h_{s-1} + b_h) \tag{3s}
-
-        .. math:: A_s = A_{act}(W \cdot h_s + b) \tag{4s}
+        .. literalinclude:: ./../nnlibs/convolution/forward.py
+            :pyobject: convolution_forward
 
 
     .. automethod:: backward
 
-        .. literalinclude:: ./../nnlibs/rnn/backward.py
-            :pyobject: rnn_backward
+        .. literalinclude:: ./../nnlibs/convolution/backward.py
+            :pyobject: convolution_backward
 
-        .. image:: _static/RNN/rnn3-01.svg
-
-        .. math:: dX = dA \tag{1}
-
-        .. math:: dX_s = dX[s] \tag{2s}
-
-        .. math:: dh_s = h_{act}'(h_s) \times (W.T \cdot dX_s + dh_{s+1}) \tag{3s}
-
-        .. math:: dh_{s+1} = W_h.T \cdot dh_s \tag{4s}
-
-        .. math:: dA_{s} = W_x.T \cdot dh_s \tag{5s}
 
     .. automethod:: compute_gradients
 
-        .. literalinclude:: ./../nnlibs/rnn/parameters.py
-            :pyobject: rnn_compute_gradients
+        .. literalinclude:: ./../nnlibs/convolution/parameters.py
+            :pyobject: convolution_compute_gradients
 
 
-        .. math::
-          \begin{align}
-            dW_s &= dX_s \cdot h_s  \\
-            db_s &= \sum_{j = 1}^n dX_{s_{ij}}  \tag{A}
-          \end{align}
+Pooling layer
+-----------------------------------
 
-        .. math::
-          \begin{align}
-            dW_{x_s} &= dh_s \cdot X_s  \\
-            dW_{h_s} &= dh_s \cdot h_{s-1} \\
-            db_{h_s} &= \sum_{j = 1}^n dh_{s_{ij}} \tag{B}
-          \end{align}
+Layer architecture
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+.. autoclass:: nnlibs.pooling.models.Pooling
+    :show-inheritance:
+
+    .. automethod:: nnlibs.pooling.models.Convolution.compute_shapes
+
+        .. literalinclude:: ./../nnlibs/pooling/parameters.py
+            :pyobject: pooling_compute_shapes
+            :language: python
+
+    .. automethod:: forward
+
+        .. literalinclude:: ./../nnlibs/pooling/forward.py
+            :pyobject: pooling_forward
+
+
+    .. automethod:: backward
+
+        .. literalinclude:: ./../nnlibs/pooling/backward.py
+            :pyobject: pooling_backward
+
+
+    .. automethod:: compute_gradients
+
+        .. literalinclude:: ./../nnlibs/pooling/parameters.py
+            :pyobject: pooling_compute_gradients
 
 
 Live examples
 ------------------------------
-
-Dummy string data
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-.. toctree::
-    :maxdepth: 1
-
-    RNN_binary.ipynb

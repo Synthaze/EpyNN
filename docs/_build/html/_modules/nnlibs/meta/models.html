@@ -92,7 +92,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -101,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples and data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
@@ -205,12 +204,12 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="EpyNN"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN">[docs]</a><span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
+<div class="viewcode-block" id="EpyNN"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN">[docs]</a><span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of an . prototype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="EpyNN.__init__"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="EpyNN.__init__"><a class="viewcode-back" href="../../../epynn.html#nnlibs.meta.models.EpyNN.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">layers</span><span class="o">=</span><span class="p">[],</span>
                 <span class="n">settings</span><span class="o">=</span><span class="p">[</span><span class="n">se_dataset</span><span class="p">,</span> <span class="n">se_config</span><span class="p">,</span> <span class="n">se_hPars</span><span class="p">],</span>
                 <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -218,31 +217,43 @@
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :ivar ts:</span>
-<span class="sd">        :vartype ts:</span>
+<span class="sd">        :vartype ts: int</span>
+
 <span class="sd">        :ivar layers:</span>
-<span class="sd">        :vartype layers:</span>
+<span class="sd">        :vartype layers: list</span>
+
 <span class="sd">        :ivar embedding:</span>
-<span class="sd">        :vartype embedding:</span>
+<span class="sd">        :vartype embedding: class:`nnlibs.embedding.models.Embedding`</span>
+
 <span class="sd">        :ivar se_dataset:</span>
-<span class="sd">        :vartype se_dataset:</span>
+<span class="sd">        :vartype se_dataset: dict</span>
+
 <span class="sd">        :ivar se_config:</span>
-<span class="sd">        :vartype se_config:</span>
+<span class="sd">        :vartype se_config: dict</span>
+
 <span class="sd">        :ivar se_hPars:</span>
-<span class="sd">        :vartype se_hPars:</span>
+<span class="sd">        :vartype se_hPars: dict</span>
+
 <span class="sd">        :ivar epochs:</span>
-<span class="sd">        :vartype epochs:</span>
+<span class="sd">        :vartype epochs: int</span>
+
 <span class="sd">        :ivar seed:</span>
-<span class="sd">        :vartype seed:</span>
+<span class="sd">        :vartype seed: int</span>
+
 <span class="sd">        :ivar name:</span>
-<span class="sd">        :vartype name:</span>
+<span class="sd">        :vartype name: str</span>
+
 <span class="sd">        :ivar uname:</span>
-<span class="sd">        :vartype uname:</span>
+<span class="sd">        :vartype uname: str</span>
+
 <span class="sd">        :ivar network:</span>
-<span class="sd">        :vartype network:</span>
+<span class="sd">        :vartype network: dict</span>
+
 <span class="sd">        :ivar metrics:</span>
-<span class="sd">        :vartype metrics:</span>
+<span class="sd">        :vartype metrics: dict</span>
+
 <span class="sd">        :ivar saved:</span>
-<span class="sd">        :vartype saved:</span>
+<span class="sd">        :vartype saved: bool</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">se_dataset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span> <span class="o">=</span> <span class="n">settings</span>
@@ -264,7 +275,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.forward"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param A:</span>
@@ -276,7 +287,7 @@
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="EpyNN.backward"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param dA:</span>
@@ -288,7 +299,7 @@
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-<div class="viewcode-block" id="EpyNN.initialize"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.initialize"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">assign_seed_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -304,7 +315,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.train"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.train"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param init:</span>
@@ -320,14 +331,14 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.compute_metrics"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.compute_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.compute_metrics"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.compute_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model_compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.evaluate"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.evaluate"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param write:</span>
@@ -338,14 +349,14 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.logs"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.logs">[docs]</a>    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.logs"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.logs">[docs]</a>    <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.meta.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pyplot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gnuplot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pyplot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gnuplot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param pyplot:</span>
@@ -361,7 +372,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../epynn.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param dataset:</span>

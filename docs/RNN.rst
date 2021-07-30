@@ -82,8 +82,7 @@ Live examples
 Dummy string data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 .. toctree::
     :maxdepth: 1
 
-    RNN_binary.ipynb
+    nnlive/dummy_string/RNN_binary.ipynb

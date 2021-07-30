@@ -40,7 +40,6 @@ Table of Contents
 
    quickstart
    epynn
-   Template
    Embedding
    Dense
    RNN
@@ -49,13 +48,5 @@ Table of Contents
    Convolution
    Dropout
    Flatten
-   dataset
+   examples
    Details
-
-..   quickstart
-..   organization
-..   architectures
-..   workflows
-..   examples
-..   contribute
-..   RNN

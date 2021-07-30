@@ -1,0 +1,409 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Music"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# EpyNN/nnlive/author_music/prepare_dataset.ipynb\n",
+    "# Standard library imports\n",
+    "import tarfile\n",
+    "import random\n",
+    "import glob\n",
+    "import wget\n",
+    "import os\n",
+    "\n",
+    "# Related third party imports\n",
+    "import numpy as np\n",
+    "from scipy.io import wavfile\n",
+    "\n",
+    "# Local application/library specific imports\n",
+    "from settings import dataset as se_dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Retrieve music from the cloud."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def download_music():\n",
+    "    \"\"\"Download some guitar music.\n",
+    "    \"\"\"\n",
+    "    data_path = os.path.join('.', 'data')\n",
+    "    \n",
+    "    if not os.path.exists(data_path):\n",
+    "        \n",
+    "        # Download @url with wget\n",
+    "        url = 'https://synthase.s3.us-west-2.amazonaws.com/music_author_data.tar'\n",
+    "        fname = wget.download(url)\n",
+    "        \n",
+    "        # Extract archive\n",
+    "        tar = tarfile.open(fname).extractall('.')\n",
+    "        process_logs('Make: '+fname, level=1)\n",
+    "        \n",
+    "        # Clean-up\n",
+    "        os.remove(fname)\n",
+    "\n",
+    "    return None\n",
+    "\n",
+    "download_music()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Inspect the directory."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['true', 'false']"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "os.listdir('data')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the `true` subdirectory we find guitar music played by Ewen Lescop (ewen.lescop@cnrs.fr)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['STE-001.wav',\n",
+       " 'STE-003.wav',\n",
+       " 'STE-012.wav',\n",
+       " 'STE-010.wav',\n",
+       " 'STE-004.wav',\n",
+       " 'STE-002.wav',\n",
+       " 'STE-014.wav',\n",
+       " 'STE-007.wav',\n",
+       " 'STE-011.wav',\n",
+       " 'STE-017.wav',\n",
+       " 'STE-015.wav',\n",
+       " 'STE-016.wav',\n",
+       " 'STE-006.wav',\n",
+       " 'STE-020.wav',\n",
+       " 'STE-019.wav',\n",
+       " 'STE-005.wav',\n",
+       " 'STE-018.wav',\n",
+       " 'STE-008.wav']"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "true_dir = os.path.join('data', 'true')\n",
+    "\n",
+    "os.listdir(true_dir)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In the `false` subdirectory we find guitar music played by a random but single guy from youtube (https://www.youtube.com/watch?v=T-U3c1nU3eM&t=141s)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['top_30_songs_acoustic_guitar.wav']"
+      ]
+     },
+     "execution_count": 5,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "false_dir = os.path.join('data', 'false')\n",
+    "\n",
+    "os.listdir(false_dir)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The dataset will contains guitar music by Ewen Lescop (Author A) and the random youtube guy (Author B). This dataset will be used to train Neural Networks in discriminating clips played by one or another author. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "First, make a function to clip the `.wav` files and proceed with some resampling to not overload your computer RAM later on network training."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def clips_music(wav_file, clip_time=4, sampling_step=100, digitize=True):\n",
+    "    \"\"\"Clip music and proceed with resampling and digitalization.\n",
+    "\n",
+    "    :param wav_file: The filename of .wav file which contains the music\n",
+    "    :type wav_file: str\n",
+    "    \n",
+    "    :param clip_time: Duration of one clip\n",
+    "    :type clip_time: int\n",
+    "    \n",
+    "    :param sampling_step: Factor by which the original sampling rate is divided\n",
+    "    :type sampling_step: int\n",
+    "\n",
+    "    :param digitize: Proceed or not with digitalization\n",
+    "    :type digitize: bool\n",
+    "    \n",
+    "    :return: A list of clips of duration equal to CLIP_TIME\n",
+    "    :rtype: list[class:`numpy.ndarray`]\n",
+    "    \"\"\"\n",
+    "    # Number of bins for signal digitalization\n",
+    "    N_BINS = 16 # 4-bits ADC converter\n",
+    "\n",
+    "    # BINS\n",
+    "    BINS = np.linspace(0, 1, N_BINS, endpoint=False)\n",
+    "\n",
+    "    # Retrieve sampling rate (Hz) and data from wav file\n",
+    "    SAMPLING_RATE, data = wavfile.read(wav_file)\n",
+    "\n",
+    "    time = data.shape[0] / SAMPLING_RATE\n",
+    "\n",
+    "    if clip_time != None:\n",
+    "        \n",
+    "        N_CLIPS = int(time / clip_time)\n",
+    "        N_FEATURES = SAMPLING_RATE * clip_time\n",
+    "        \n",
+    "        # Make clips from data\n",
+    "        clips = [data[i*N_FEATURES:(i+1)*N_FEATURES] for i in range(N_CLIPS)]\n",
+    "        \n",
+    "    else:\n",
+    "        clips = [data]\n",
+    "\n",
+    "    for i, clip in enumerate(clips):\n",
+    "\n",
+    "        # Re-sampling to avoid memory allocation errors\n",
+    "        clips[i] = clip[::sampling_step]\n",
+    "\n",
+    "        # Normalize data in 0-1 range\n",
+    "        clip = np.divide(clip, 32768)\n",
+    "\n",
+    "        if digitize:\n",
+    "            # Digitize and normalize digits\n",
+    "            clips[i] = np.digitize(clip, bins=BINS) / BINS.shape[0]\n",
+    "\n",
+    "    return clips"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Give it a try."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "wav_file = os.path.join(true_dir, os.listdir(true_dir)[0])\n",
+    "\n",
+    "clips = clips_music(wav_file)    # This is what we will use\n",
+    "\n",
+    "# This is for fun - We just resample the original music to listen to the difference\n",
+    "original_44100Hz = clips_music(wav_file, clip_time=None, sampling_step=1, digitize=False)\n",
+    "original_4410Hz = clips_music(wav_file, clip_time=None, sampling_step=10, digitize=False)\n",
+    "original_441Hz = clips_music(wav_file, clip_time=None, sampling_step=100, digitize=False)\n",
+    "\n",
+    "# Write on disk\n",
+    "wavfile.write('44100Hz_STE001.wav', 44100, original_44100Hz[0])\n",
+    "wavfile.write('4410Hz_STE001.wav', 4410, original_4410Hz[0])\n",
+    "wavfile.write('4410Hz_STE001.wav', 441, original_441Hz[0])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Prepare labeled dataset."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def labeled_dataset(se_dataset):\n",
+    "    \"\"\"Prepare a dataset of labeled samples.\n",
+    "    \n",
+    "    One sample is a list such as [features, label].\n",
+    "    \n",
+    "    For one sample, features is a class:`numpy.ndarray` and label is a list.\n",
+    "    \n",
+    "    :param se_dataset: Settings for dataset preparation\n",
+    "    :type se_dataset: dict\n",
+    "\n",
+    "    :return: A dataset of length N_SAMPLES\n",
+    "    :rtype: list[list[class:`numpy.ndarray`,list[int]]]\n",
+    "    \"\"\"\n",
+    "    # See ./settings.py\n",
+    "    N_SAMPLES = se_dataset['N_SAMPLES']\n",
+    "\n",
+    "    # Initialize dataset\n",
+    "    dataset = []\n",
+    "\n",
+    "    # One-hot encoded positive and negative labels\n",
+    "    p_label = [1, 0]\n",
+    "    n_label = [0, 1]\n",
+    "\n",
+    "    wav_paths = os.path.join('data', '*', '*wav')\n",
+    "    \n",
+    "    WAV_FILES = glob.glob(wav_paths)\n",
+    "\n",
+    "    # Iterate over WAV_FILES\n",
+    "    for wav_file in WAV_FILES:\n",
+    "\n",
+    "        # Retrieve clips\n",
+    "        clips = clips_music(wav_file)\n",
+    "\n",
+    "        # Iterate over clips\n",
+    "        for features in clips:\n",
+    "\n",
+    "            # Test if features is from author A (+)\n",
+    "            if 'true' in wav_file:\n",
+    "                label = p_label\n",
+    "\n",
+    "            # Test if features is from author B (-)\n",
+    "            elif 'false' in wav_file:\n",
+    "                label = n_label\n",
+    "\n",
+    "            # Define labeled sample\n",
+    "            sample = [features, label]\n",
+    "\n",
+    "            # Append sample to dataset\n",
+    "            dataset.append(sample)\n",
+    "\n",
+    "    # Shuffle dataset before split\n",
+    "    random.shuffle(dataset)\n",
+    "\n",
+    "    # Truncate dataset to N_SAMPLES\n",
+    "    dataset = dataset[:N_SAMPLES]\n",
+    "\n",
+    "    return dataset"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Check function."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "387\n",
+      "(176400,)\n",
+      "[0, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "dataset = labeled_dataset(se_dataset)\n",
+    "\n",
+    "print(len(dataset))\n",
+    "\n",
+    "sample_0 = dataset[0]\n",
+    "features_0 = dataset[0][0]\n",
+    "label_0 = dataset[0][1]\n",
+    "\n",
+    "print(features_0.shape)\n",
+    "print(label_0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Done."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

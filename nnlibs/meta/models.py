@@ -47,31 +47,43 @@ class EpyNN:
         """.
 
         :ivar ts:
-        :vartype ts:
+        :vartype ts: int
+
         :ivar layers:
-        :vartype layers:
+        :vartype layers: list
+
         :ivar embedding:
-        :vartype embedding:
+        :vartype embedding: class:`nnlibs.embedding.models.Embedding`
+
         :ivar se_dataset:
-        :vartype se_dataset:
+        :vartype se_dataset: dict
+
         :ivar se_config:
-        :vartype se_config:
+        :vartype se_config: dict
+
         :ivar se_hPars:
-        :vartype se_hPars:
+        :vartype se_hPars: dict
+
         :ivar epochs:
-        :vartype epochs:
+        :vartype epochs: int
+
         :ivar seed:
-        :vartype seed:
+        :vartype seed: int
+
         :ivar name:
-        :vartype name:
+        :vartype name: str
+
         :ivar uname:
-        :vartype uname:
+        :vartype uname: str
+
         :ivar network:
-        :vartype network:
+        :vartype network: dict
+
         :ivar metrics:
-        :vartype metrics:
+        :vartype metrics: dict
+
         :ivar saved:
-        :vartype saved:
+        :vartype saved: bool
         """
         self.layers = layers
         self.se_dataset, self.se_config, self.se_hPars = settings

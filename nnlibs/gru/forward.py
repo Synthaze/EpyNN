@@ -21,7 +21,8 @@ def initialize_forward(layer, A):
 
 
 def gru_forward(layer, A):
-
+    """Forward propagate signal to next layer.
+    """
     X, hp = initialize_forward(layer, A)
 
     # Loop through steps
@@ -49,15 +50,20 @@ def gru_forward(layer, A):
     # Return layer.fc['A'] if layer.binary else A
     A = terminate_forward(layer)
 
-    return A
+    return A   # To next layer
 
 
 def terminate_forward(layer):
-    """.
+    """Check if many-to-many or many-to-one (binary) mode.
+
+    :param layer: GRU layer object
+    :type layer: class:`nnlibs.gru.models.GRU`
+
+    :return: Output of forward propagation for current layer
+    :rtype: class:`numpy.ndarray`
     """
-    if layer.binary:
-        A = layer.fc['A'] = layer.fc['A'][-1]
-    else:
-        A = layer.fc['A']
+    layer.fc['A'] = layer.fc['A'][-1] if layer.binary else layer.fc['A']
+
+    A = layer.fc['A']
 
     return A

@@ -1,0 +1,1028 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Many-to-one RNN &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Long Short-Term Memory (LSTM)" href="../../LSTM.html" />
+    <link rel="prev" title="Recurrent Neural Network (RNN)" href="../../RNN.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../RNN.html">Recurrent Neural Network (RNN)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../RNN.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../RNN.html#live-examples">Live examples</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../../RNN.html#dummy-string-data">Dummy string data</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Many-to-one RNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../RNN.html">Recurrent Neural Network (RNN)</a> &raquo;</li>
+        
+      <li>Many-to-one RNN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/nnlive/dummy_string/RNN_binary.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Many-to-one-RNN">
+<h1>Many-to-one RNN<a class="headerlink" href="#Many-to-one-RNN" title="Permalink to this headline">¶</a></h1>
+<p>Proceed to full imports.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_string/RNN_binary.ipynb</span>
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Related third party imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Local application/library specific imports</span>
+<span class="kn">import</span> <span class="nn">nnlibs.initialize</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.io</span> <span class="kn">import</span> <span class="n">one_hot_decode_sequence</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.logs</span> <span class="kn">import</span> <span class="n">pretty_json</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.library</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">configure_directory</span><span class="p">,</span>
+    <span class="n">read_dataset</span><span class="p">,</span>
+    <span class="n">read_model</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">relu</span>
+<span class="kn">from</span> <span class="nn">nnlibs.meta.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
+<span class="kn">from</span> <span class="nn">nnlibs.embedding.models</span> <span class="kn">import</span> <span class="n">Embedding</span>
+<span class="kn">from</span> <span class="nn">nnlibs.rnn.models</span> <span class="kn">import</span> <span class="n">RNN</span>
+<span class="c1"># from nnlibs.lstm.models import LSTM</span>
+<span class="c1"># from nnlibs.gru.models import GRU</span>
+<span class="kn">from</span> <span class="nn">nnlibs.flatten.models</span> <span class="kn">import</span> <span class="n">Flatten</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">prepare_dataset</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">labeled_dataset</span><span class="p">,</span>
+    <span class="n">unlabeled_dataset</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span><span class="p">,</span>
+    <span class="n">config</span> <span class="k">as</span> <span class="n">se_config</span><span class="p">,</span>
+    <span class="n">hPars</span> <span class="k">as</span> <span class="n">se_hPars</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s concatenate our settings in a settings list for conveniency.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">se_dataset</span><span class="p">,</span> <span class="n">se_config</span><span class="p">,</span> <span class="n">se_hPars</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Check the <code class="docutils literal notranslate"><span class="pre">se_config</span></code> settings dictionnary.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">pretty_json</span><span class="p">(</span><span class="n">se_config</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{
+    <span class="ansi-blue-intense-fg">&#34;experiment_name&#34;</span>: <span class="ansi-yellow-fg">&#34;DUMMY_STRINGS&#34;</span>,
+    <span class="ansi-blue-intense-fg">&#34;logs_frequency&#34;</span>: <span class="ansi-blue-fg">1</span>,
+    <span class="ansi-blue-intense-fg">&#34;logs_frequency_display&#34;</span>: <span class="ansi-blue-fg">25</span>,
+    <span class="ansi-blue-intense-fg">&#34;model_save&#34;</span>: <span class="ansi-blue-fg">true</span>,
+    <span class="ansi-blue-intense-fg">&#34;plot_display&#34;</span>: <span class="ansi-blue-fg">true</span>,
+    <span class="ansi-blue-intense-fg">&#34;plot_save&#34;</span>: <span class="ansi-blue-fg">false</span>,
+    <span class="ansi-blue-intense-fg">&#34;directory_clear&#34;</span>: <span class="ansi-blue-fg">true</span>,
+    <span class="ansi-blue-intense-fg">&#34;dataset_target&#34;</span>: <span class="ansi-blue-fg">1</span>,
+    <span class="ansi-blue-intense-fg">&#34;metrics_target&#34;</span>: <span class="ansi-yellow-fg">&#34;accuracy&#34;</span>,
+    <span class="ansi-blue-intense-fg">&#34;metrics_list&#34;</span>: [
+        <span class="ansi-yellow-fg">&#34;accuracy&#34;</span>,
+        <span class="ansi-yellow-fg">&#34;recall&#34;</span>,
+        <span class="ansi-yellow-fg">&#34;precision&#34;</span>,
+        <span class="ansi-yellow-fg">&#34;BCE&#34;</span>,
+        <span class="ansi-yellow-fg">&#34;MSE&#34;</span>
+    ],
+    <span class="ansi-blue-intense-fg">&#34;metrics_plot&#34;</span>: [
+        <span class="ansi-yellow-fg">&#34;accuracy&#34;</span>,
+        <span class="ansi-yellow-fg">&#34;BCE&#34;</span>
+    ]
+}
+
+</pre></div></div>
+</div>
+<p>Proceed with local configuration.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>    <span class="c1"># For reproducibility in dummy data generation</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span><span class="p">)</span>    <span class="c1"># To not truncate numpy arrays on print</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">)</span>    <span class="c1"># Show warning upon numpy floating-point errors</span>
+
+<span class="n">configure_directory</span><span class="p">(</span><span class="n">se_config</span><span class="o">=</span><span class="n">se_config</span><span class="p">)</span>    <span class="c1"># Configure working directory according to se_config</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">Remove: /media/synthase/beta/EpyNN/nnlive/dummy_string/datasets</span>
+<span class="ansi-red-intense-fg ansi-bold">Remove: /media/synthase/beta/EpyNN/nnlive/dummy_string/models</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_string/datasets</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_string/models</span>
+</pre></div></div>
+</div>
+<p>Check the <code class="docutils literal notranslate"><span class="pre">se_dataset</span></code> settings dictionnary.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">pretty_json</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{
+    <span class="ansi-blue-intense-fg">&#34;N_SAMPLES&#34;</span>: <span class="ansi-blue-fg">1000</span>,
+    <span class="ansi-blue-intense-fg">&#34;dataset_name&#34;</span>: <span class="ansi-yellow-fg">&#34;dummy_strings&#34;</span>,
+    <span class="ansi-blue-intense-fg">&#34;dataset_save&#34;</span>: <span class="ansi-blue-fg">true</span>,
+    <span class="ansi-blue-intense-fg">&#34;dtrain_relative&#34;</span>: <span class="ansi-blue-fg">2</span>,
+    <span class="ansi-blue-intense-fg">&#34;dtest_relative&#34;</span>: <span class="ansi-blue-fg">1</span>,
+    <span class="ansi-blue-intense-fg">&#34;dval_relative&#34;</span>: <span class="ansi-blue-fg">1</span>,
+    <span class="ansi-blue-intense-fg">&#34;batch_number&#34;</span>: <span class="ansi-blue-fg">5</span>
+}
+
+</pre></div></div>
+</div>
+<p>Prepare a dummy dataset containing samples composed of string features and one-hot encoded label.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">)</span>
+<span class="c1"># dataset = read_dataset(dataset_path=None)    # Read last generated dataset</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s have a look at it.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>     <span class="c1"># Type of object for dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>      <span class="c1"># Number of samples it contains</span>
+
+<span class="n">sample_0</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>    <span class="c1"># Take first sample at index 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">sample_0</span><span class="p">))</span>    <span class="c1"># Type of object for sample_0</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_0</span><span class="p">))</span>     <span class="c1"># Number of elements in sample_0</span>
+
+<span class="n">features_0</span> <span class="o">=</span> <span class="n">sample_0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">label_0</span> <span class="o">=</span> <span class="n">sample_0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features_0</span><span class="p">)</span>        <span class="c1"># Sample_0 features</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">label_0</span><span class="p">)</span>           <span class="c1"># Sample_0 label</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;list&#39;&gt;
+1000
+&lt;class &#39;list&#39;&gt;
+2
+[&#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;]
+[0, 1]
+</pre></div></div>
+</div>
+<p>Proceed with dataset embedding by calling the class constructor <code class="docutils literal notranslate"><span class="pre">Embedding()</span></code> which returns a layer object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(500, 4, 12)
+</pre></div></div>
+</div>
+<p>Embedded X data have 3D shape upon one-hot encoding. Dimensions are such as (n_samples, vocab_size, sequence_length).</p>
+<p>Let’s get into the details of the one-hot encoding operation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">encoded_features_0</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># One-hot encoded features for sample_0</span>
+<span class="n">decoded_features_0</span> <span class="o">=</span> <span class="n">one_hot_decode_sequence</span><span class="p">(</span><span class="n">encoded_features_0</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">embedding</span><span class="o">.</span><span class="n">i2w</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">features_0</span><span class="p">)</span>           <span class="c1"># Features for sample_0 before one-hot encoding</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">w2i</span><span class="p">)</span>        <span class="c1"># word_to_index dictionary for one-hot encoding</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encoded_features_0</span><span class="p">)</span>   <span class="c1"># Features for sample_0 after one-hot encoding</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">i2w</span><span class="p">)</span>        <span class="c1"># index_to_word dictionary for one-hot decoding</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">decoded_features_0</span><span class="p">)</span>   <span class="c1"># Features for sample_0 after one-hot decoding</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;]
+{&#39;A&#39;: 0, &#39;C&#39;: 1, &#39;G&#39;: 2, &#39;T&#39;: 3}
+[[0. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0. 0.]
+ [0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0.]
+ [0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 1. 0.]
+ [1. 0. 1. 1. 1. 0. 1. 1. 1. 0. 0. 1.]]
+{0: &#39;A&#39;, 1: &#39;C&#39;, 2: &#39;G&#39;, 3: &#39;T&#39;}
+[&#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;]
+</pre></div></div>
+</div>
+<p>One-hot encoding is performed here because strings or characters are not a convenient material for a computer. Each individual character (or word) is assigned to an index and is further translated into a 1D zeros array of shape (vocab_size) which takes the value 1 at the index assigned to the character (or word).</p>
+<p>Now we have an embedding layer, also referred to as input layer.</p>
+<p>We will next instantiate a <em>many-to-one</em> type of RNN layer.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnn</span> <span class="o">=</span> <span class="n">RNN</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Embedding_RNN-12-Binary&#39;</span> <span class="c1"># The name of the model</span>
+
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding</span><span class="p">,</span> <span class="n">bin_rnn</span><span class="p">]</span>    <span class="c1"># The architecture of the model</span>
+
+<span class="n">bin_rnnNet</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>    <span class="c1"># The model for a many-to-one network</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s now proceed with this <em>many-to-one</em> model and start the training protocol.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>    <span class="c1"># We will initialize the model first to print the logs</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">----------------------- Embedding_RNN-12-Binary -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++-----------+--------+-------+------+--------+----------+---------+----------+
+| N_SAMPLES | dtrain | dtest | dval | batch  | dtrain/b | dataset | metrics  |
+|           | (0)    | (1)   | (2)  | number |          | target  | target   |
+|           |        |       |      | (b)    |          |         |          |
++-----------+--------+-------+------+--------+----------+---------+----------+
+| 1000      | 500    | 250   | 250  | 5      | 100      | 1       | accuracy |
++-----------+--------+-------+------+--------+----------+---------+----------+
+
++----------+--------+--------+--------+
+| N_LABELS | dtrain | dtest  | dval   |
+|          | (0)    | (1)    | (2)    |
++----------+--------+--------+--------+
+| 2        | 0: 240 | 0: 115 | 0: 109 |
+|          | 1: 260 | 1: 135 | 1: 141 |
++----------+--------+--------+--------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-----------------------+------------------+--------------------+
+| ID | Layer     | Dimensions | Activation            | FW_Shapes        | BW_Shapes          |
++----+-----------+------------+-----------------------+------------------+--------------------+
+| 0  | Embedding | v: 4       |                       | X: (100, 4, 12)  | dX: (12, 4, 100)   |
+|    |           | m: 100     |                       | A: (12, 4, 100)  | dA: (12, 4, 100)   |
+|    |           | n: 4       |                       |                  |                    |
++----+-----------+------------+-----------------------+------------------+--------------------+
+| 1  | RNN       | h: 12      | activate: sigmoid     | Wx: (12, 4)      | dX: (2, 100)       |
+|    |           | s: 12      | activate_hidden: tanh | Wh: (12, 12)     | dh: (12, 12, 100)  |
+|    |           | v: 4       |                       | bh: (12, 1)      | dhn: (12, 12, 100) |
+|    |           | m: 100     |                       | W: (2, 12)       | dA: (12, 4, 100)   |
+|    |           | l: 12      |                       | b: (2, 1)        |                    |
+|    |           | o: 2       |                       | X: (12, 4, 100)  |                    |
+|    |           |            |                       | h: (12, 12, 100) |                    |
+|    |           |            |                       | A: (2, 100)      |                    |
++----+-----------+------------+-----------------------+------------------+--------------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-----------+----------+-----------+---------+-----+-------+---------+-------+-------+--------+
+| Layer     | training | schedule  | cycling | e/n | decay | descent | start | end   | end    |
+|           | epochs   | mode      | (n)     |     | (k)   | (d)     |       |       | (%)    |
+|           | (e)      |           |         |     |       |         |       |       |        |
++-----------+----------+-----------+---------+-----+-------+---------+-------+-------+--------+
+| Embedding | 100      | exp_decay | 1       | 100 | 0.003 | 1       | 0.100 | 0.078 | 78.075 |
++-----------+----------+-----------+---------+-----+-------+---------+-------+-------+--------+
+| RNN       | 100      | exp_decay | 1       | 100 | 0.003 | 1       | 0.100 | 0.078 | 78.075 |
++-----------+----------+-----------+---------+-----+-------+---------+-------+-------+--------+
+
++-----------+-------+-------+-------------+---------+------+------+
+| Layer     | LRELU | ELU   | softmax     | min.    | reg. | reg. |
+|           | alpha | alpha | temperature | epsilon | l1   | l2   |
++-----------+-------+-------+-------------+---------+------+------+
+| Embedding | 1     | 0.010 | 1           | 0.000   | 0    | 0    |
++-----------+-------+-------+-------------+---------+------+------+
+| RNN       | 1     | 0.010 | 1           | 0.000   | 0    | 0    |
++-----------+-------+-------+-------------+---------+------+------+
+
+<span class="ansi-bold">----------------------- Embedding_RNN-12-Binary -------------------------
+</span>
+
+</pre></div></div>
+</div>
+<p>Prior to start the training, we will adapt some settings to print logs in a conveniant way for this notebook.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;logs_frequency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>            <span class="c1"># Will store logs 1 every 50 epochs</span>
+<span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;logs_frequency_display&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>   <span class="c1"># Will display logs every 50*20 = 1000 epochs</span>
+</pre></div>
+</div>
+</div>
+<p>Start the training of our <em>many-to-one</em> RNN network.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    <span class="c1"># The model was already initialized. We only run training here.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
++-------+----------+----------+-------+-------+----------+-------+-------+--------+-------+-------+-----------+-------+-------+-------+-------+-------+-------+------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |          |    <span class="ansi-white-intense-fg ansi-bold">lr</span>    |       |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |       | <span class="ansi-red-intense-fg ansi-bold">recall</span> |       |       | <span class="ansi-magenta-intense-fg ansi-bold">precision</span> |       |       |  <span class="ansi-cyan-intense-fg ansi-bold">BCE</span>  |       |       |  <span class="ansi-yellow-intense-fg ansi-bold">MSE</span>  |                                    |
+|       |   <span class="ansi-white-intense-fg ansi-bold">(0)</span>    |   <span class="ansi-white-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-white-intense-fg ansi-bold">(2)</span>  |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-green-intense-fg ansi-bold">(2)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>   |  <span class="ansi-red-intense-fg ansi-bold">(2)</span>  |  <span class="ansi-magenta-intense-fg ansi-bold">(0)</span>  |    <span class="ansi-magenta-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-magenta-intense-fg ansi-bold">(2)</span>  |  <span class="ansi-cyan-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-cyan-intense-fg ansi-bold">(1)</span>  |  <span class="ansi-cyan-intense-fg ansi-bold">(2)</span>  |  <span class="ansi-yellow-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-yellow-intense-fg ansi-bold">(1)</span>  |                <span class="ansi-yellow-intense-fg ansi-bold">(2)</span>                 |
++-------+----------+----------+-------+-------+----------+-------+-------+--------+-------+-------+-----------+-------+-------+-------+-------+-------+-------+------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">4</span>   | <span class="ansi-white-intense-fg ansi-bold">9.90e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.90e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.608</span> | <span class="ansi-green-intense-fg ansi-bold">0.628</span> |  <span class="ansi-green-intense-fg ansi-bold">0.616</span>   | <span class="ansi-red-intense-fg ansi-bold">0.608</span> | <span class="ansi-red-intense-fg ansi-bold">0.722</span> | <span class="ansi-red-intense-fg ansi-bold">0.633</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.589</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.576</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.552</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.674</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.663</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.655</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.240</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.235</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.232</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|   <span class="ansi-white-intense-fg ansi-bold">9</span>   | <span class="ansi-white-intense-fg ansi-bold">9.78e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.78e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.750</span> | <span class="ansi-green-intense-fg ansi-bold">0.748</span> |  <span class="ansi-green-intense-fg ansi-bold">0.732</span>   | <span class="ansi-red-intense-fg ansi-bold">0.779</span> | <span class="ansi-red-intense-fg ansi-bold">0.783</span> | <span class="ansi-red-intense-fg ansi-bold">0.761</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.722</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.703</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.669</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.569</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.548</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.555</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.192</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.183</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.187</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">14</span>   | <span class="ansi-white-intense-fg ansi-bold">9.66e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.66e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.900</span> | <span class="ansi-green-intense-fg ansi-bold">0.904</span> |  <span class="ansi-green-intense-fg ansi-bold">0.888</span>   | <span class="ansi-red-intense-fg ansi-bold">0.908</span> | <span class="ansi-red-intense-fg ansi-bold">0.870</span> | <span class="ansi-red-intense-fg ansi-bold">0.872</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.886</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.917</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.872</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.348</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.331</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.344</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.099</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.093</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.099</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">19</span>   | <span class="ansi-white-intense-fg ansi-bold">9.54e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.54e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.892</span> | <span class="ansi-green-intense-fg ansi-bold">0.900</span> |  <span class="ansi-green-intense-fg ansi-bold">0.896</span>   | <span class="ansi-red-intense-fg ansi-bold">0.875</span> | <span class="ansi-red-intense-fg ansi-bold">0.870</span> | <span class="ansi-red-intense-fg ansi-bold">0.862</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.897</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.909</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.895</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.275</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.266</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.255</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.079</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.076</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.071</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">24</span>   | <span class="ansi-white-intense-fg ansi-bold">9.42e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.42e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.904</span> | <span class="ansi-green-intense-fg ansi-bold">0.912</span> |  <span class="ansi-green-intense-fg ansi-bold">0.904</span>   | <span class="ansi-red-intense-fg ansi-bold">0.896</span> | <span class="ansi-red-intense-fg ansi-bold">0.887</span> | <span class="ansi-red-intense-fg ansi-bold">0.881</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.903</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.919</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.897</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.234</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.225</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.232</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.068</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.063</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.066</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">29</span>   | <span class="ansi-white-intense-fg ansi-bold">9.30e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.30e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.928</span> | <span class="ansi-green-intense-fg ansi-bold">0.932</span> |  <span class="ansi-green-intense-fg ansi-bold">0.924</span>   | <span class="ansi-red-intense-fg ansi-bold">0.917</span> | <span class="ansi-red-intense-fg ansi-bold">0.904</span> | <span class="ansi-red-intense-fg ansi-bold">0.890</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.932</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.945</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.933</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.186</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.185</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.192</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.051</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.051</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.054</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">34</span>   | <span class="ansi-white-intense-fg ansi-bold">9.19e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.19e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.952</span> | <span class="ansi-green-intense-fg ansi-bold">0.948</span> |  <span class="ansi-green-intense-fg ansi-bold">0.948</span>   | <span class="ansi-red-intense-fg ansi-bold">0.942</span> | <span class="ansi-red-intense-fg ansi-bold">0.939</span> | <span class="ansi-red-intense-fg ansi-bold">0.936</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.958</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.947</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.944</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.144</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.150</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.154</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.038</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.040</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.042</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">39</span>   | <span class="ansi-white-intense-fg ansi-bold">9.07e-02</span> | <span class="ansi-white-intense-fg ansi-bold">9.07e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.964</span> | <span class="ansi-green-intense-fg ansi-bold">0.948</span> |  <span class="ansi-green-intense-fg ansi-bold">0.960</span>   | <span class="ansi-red-intense-fg ansi-bold">0.958</span> | <span class="ansi-red-intense-fg ansi-bold">0.939</span> | <span class="ansi-red-intense-fg ansi-bold">0.945</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.966</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.947</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.963</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.110</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.124</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.120</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.028</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.033</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.033</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">44</span>   | <span class="ansi-white-intense-fg ansi-bold">8.96e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.96e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.974</span> | <span class="ansi-green-intense-fg ansi-bold">0.960</span> |  <span class="ansi-green-intense-fg ansi-bold">0.968</span>   | <span class="ansi-red-intense-fg ansi-bold">0.967</span> | <span class="ansi-red-intense-fg ansi-bold">0.939</span> | <span class="ansi-red-intense-fg ansi-bold">0.963</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.979</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.973</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.963</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.085</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.108</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.099</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.021</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.030</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.027</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">49</span>   | <span class="ansi-white-intense-fg ansi-bold">8.85e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.85e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.980</span> | <span class="ansi-green-intense-fg ansi-bold">0.956</span> |  <span class="ansi-green-intense-fg ansi-bold">0.972</span>   | <span class="ansi-red-intense-fg ansi-bold">0.975</span> | <span class="ansi-red-intense-fg ansi-bold">0.922</span> | <span class="ansi-red-intense-fg ansi-bold">0.963</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.983</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.981</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.972</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.066</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.095</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.082</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.016</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.027</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.021</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">54</span>   | <span class="ansi-white-intense-fg ansi-bold">8.74e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.74e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.984</span> | <span class="ansi-green-intense-fg ansi-bold">0.964</span> |  <span class="ansi-green-intense-fg ansi-bold">0.988</span>   | <span class="ansi-red-intense-fg ansi-bold">0.975</span> | <span class="ansi-red-intense-fg ansi-bold">0.930</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.992</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">1.000</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.056</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.082</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.073</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.013</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.024</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.017</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">59</span>   | <span class="ansi-white-intense-fg ansi-bold">8.63e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.63e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.986</span> | <span class="ansi-green-intense-fg ansi-bold">0.968</span> |  <span class="ansi-green-intense-fg ansi-bold">0.988</span>   | <span class="ansi-red-intense-fg ansi-bold">0.979</span> | <span class="ansi-red-intense-fg ansi-bold">0.939</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.992</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">1.000</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.049</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.077</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.068</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.015</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">64</span>   | <span class="ansi-white-intense-fg ansi-bold">8.52e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.52e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.984</span> | <span class="ansi-green-intense-fg ansi-bold">0.968</span> |  <span class="ansi-green-intense-fg ansi-bold">0.980</span>   | <span class="ansi-red-intense-fg ansi-bold">0.979</span> | <span class="ansi-red-intense-fg ansi-bold">0.939</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.987</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.981</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.049</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.078</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.086</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.012</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.021</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">69</span>   | <span class="ansi-white-intense-fg ansi-bold">8.42e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.42e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.988</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.980</span>   | <span class="ansi-red-intense-fg ansi-bold">0.983</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.992</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.981</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.049</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.074</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.093</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.012</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.021</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">74</span>   | <span class="ansi-white-intense-fg ansi-bold">8.31e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.31e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.990</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.980</span>   | <span class="ansi-red-intense-fg ansi-bold">0.983</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.996</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.981</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.046</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.076</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.093</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">79</span>   | <span class="ansi-white-intense-fg ansi-bold">8.21e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.21e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.990</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.980</span>   | <span class="ansi-red-intense-fg ansi-bold">0.983</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.996</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.981</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.044</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.077</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.095</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.010</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.022</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">84</span>   | <span class="ansi-white-intense-fg ansi-bold">8.11e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.11e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.984</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.968</span>   | <span class="ansi-red-intense-fg ansi-bold">0.983</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.983</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.955</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.046</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.074</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.099</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.021</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.025</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">89</span>   | <span class="ansi-white-intense-fg ansi-bold">8.01e-02</span> | <span class="ansi-white-intense-fg ansi-bold">8.01e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.986</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.968</span>   | <span class="ansi-red-intense-fg ansi-bold">0.987</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.983</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.955</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.046</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.072</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.101</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.020</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.025</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">94</span>   | <span class="ansi-white-intense-fg ansi-bold">7.91e-02</span> | <span class="ansi-white-intense-fg ansi-bold">7.91e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.986</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.968</span>   | <span class="ansi-red-intense-fg ansi-bold">0.987</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.983</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.955</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.045</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.071</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.100</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.020</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.025</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">99</span>   | <span class="ansi-white-intense-fg ansi-bold">7.81e-02</span> | <span class="ansi-white-intense-fg ansi-bold">7.81e-02</span> | <span class="ansi-green-intense-fg ansi-bold">0.984</span> | <span class="ansi-green-intense-fg ansi-bold">0.972</span> |  <span class="ansi-green-intense-fg ansi-bold">0.968</span>   | <span class="ansi-red-intense-fg ansi-bold">0.983</span> | <span class="ansi-red-intense-fg ansi-bold">0.948</span> | <span class="ansi-red-intense-fg ansi-bold">0.972</span>  | <span class="ansi-magenta-intense-fg ansi-bold">0.983</span> | <span class="ansi-magenta-intense-fg ansi-bold">0.991</span> |   <span class="ansi-magenta-intense-fg ansi-bold">0.955</span>   | <span class="ansi-cyan-intense-fg ansi-bold">0.045</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.073</span> | <span class="ansi-cyan-intense-fg ansi-bold">0.100</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.011</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.020</span> | <span class="ansi-yellow-intense-fg ansi-bold">0.025</span> | <span class="ansi-white-fg">1627596534_Embedding_RNN-12-Binary</span> |
++-------+----------+----------+-------+-------+----------+-------+-------+--------+-------+-------+-----------+-------+-------+-------+-------+-------+-------+------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 3.53s RATE: 28.33e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>Plot the metrics along epochs.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_string/../../_build/doctrees/nbsphinx/nnlive_dummy_string_RNN_binary_31_0.png" src="nnlive/dummy_string/../../_build/doctrees/nbsphinx/nnlive_dummy_string_RNN_binary_31_0.png" />
+</div>
+</div>
+<p>Write the model on disk.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">write</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_string/models/1627596534_Embedding_RNN-12-Binary.pickle</span>
+</pre></div></div>
+</div>
+<p>Let’s read our model back to predict on unlabeled data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bin_rnnNet</span> <span class="o">=</span> <span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">unlabeled_one</span> <span class="o">=</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dset</span> <span class="o">=</span> <span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">unlabeled_one</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s print data, output of forward propagation and decision.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">unlabeled_one</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[[&#39;A&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;], []]]
+[[[1. 1. 0. 0. 0. 1. 0. 0. 0. 0. 1. 0.]
+  [0. 0. 1. 0. 0. 0. 0. 0. 0. 0. 0. 0.]
+  [0. 0. 0. 1. 0. 0. 1. 1. 1. 0. 0. 0.]
+  [0. 0. 0. 0. 1. 0. 0. 0. 0. 1. 0. 1.]]]
+[[0.997 0.001]]
+[0]
+</pre></div></div>
+</div>
+<p>Now with more data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">unlabeled_more</span> <span class="o">=</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">dset</span> <span class="o">=</span> <span class="n">bin_rnnNet</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">unlabeled_more</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unlabeled_more</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">unlabeled_more</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">dset</span><span class="o">.</span><span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[&#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;], []] [0.99  0.004] 0
+[[&#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;], []] [0.043 0.935] 1
+[[&#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;], []] [0.001 0.998] 1
+[[&#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;G&#39;, &#39;C&#39;], []] [0.25  0.811] 1
+[[&#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;C&#39;], []] [0.858 0.208] 0
+[[&#39;G&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;], []] [0.171 0.879] 1
+[[&#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;], []] [7.714e-04 9.995e-01] 1
+[[&#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;], []] [9.994e-01 4.002e-04] 0
+[[&#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;T&#39;], []] [4.505e-04 9.995e-01] 1
+[[&#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;], []] [0.008 0.993] 1
+</pre></div></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../../LSTM.html" class="btn btn-neutral float-right" title="Long Short-Term Memory (LSTM)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../RNN.html" class="btn btn-neutral float-left" title="Recurrent Neural Network (RNN)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

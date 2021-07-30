@@ -68,7 +68,8 @@ class Layer:
 
 class dataSet:
     """
-    Definition of a dataSet object prototype
+    Definition of a dataSet object prototype.
+
     """
 
     def __init__(self, dataset, label=True, name='dummy'):
@@ -84,31 +85,31 @@ class dataSet:
         :type name: string
 
         :ivar n:
-        :vartype n:
+        :vartype n: str
 
         :ivar X:
-        :vartype X:
+        :vartype X: :class:`numpy.ndarray`
 
         :ivar Y:
-        :vartype Y:
+        :vartype Y: class:`numpy.ndarray`
 
         :ivar y:
-        :vartype y:
+        :vartype y: class:`numpy.ndarray`
 
         :ivar b:
-        :vartype b:
+        :vartype b: dict
 
         :ivar id:
-        :vartype id:
+        :vartype id: list
 
         :ivar s:
-        :vartype s:
+        :vartype s: int
 
         :ivar A:
-        :vartype A:
+        :vartype A: NoneType
 
         :ivar P:
-        :vartype P:
+        :vartype P: NoneType
         """
         x_data = [ x[0] for x in dataset ]
         y_data = [ x[1] for x in dataset ]

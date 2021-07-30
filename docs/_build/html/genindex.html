@@ -92,7 +92,6 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -101,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
@@ -202,11 +201,11 @@
       <li><a href="epynn.html#nnlibs.commons.models.dataSet.__init__">__init__() (nnlibs.commons.models.dataSet method)</a>
 
       <ul>
-        <li><a href="epynn.html#nnlibs.commons.models.Layer.__init__">(nnlibs.commons.models.Layer method)</a>, <a href="old/architectures.html#nnlibs.commons.models.Layer.__init__">[1]</a>
+        <li><a href="epynn.html#nnlibs.commons.models.Layer.__init__">(nnlibs.commons.models.Layer method)</a>
 </li>
-        <li><a href="epynn.html#nnlibs.meta.models.EpyNN.__init__">(nnlibs.meta.models.EpyNN method)</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.__init__">[1]</a>
+        <li><a href="epynn.html#nnlibs.meta.models.EpyNN.__init__">(nnlibs.meta.models.EpyNN method)</a>
 </li>
-        <li><a href="epynn.html#nnlibs.template.models.Template.__init__">(nnlibs.template.models.Template method)</a>, <a href="old/architectures.html#nnlibs.template.models.Template.__init__">[1]</a>
+        <li><a href="epynn.html#nnlibs.template.models.Template.__init__">(nnlibs.template.models.Template method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -227,12 +226,28 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.backward">backward() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id0">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.backward">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.backward">[3]</a>
+      <li><a href="Convolution.html#nnlibs.convolution.models.Convolution.backward">backward() (nnlibs.convolution.models.Convolution method)</a>
 
       <ul>
-        <li><a href="Convolution.html#nnlibs.rnn.models.RNN.backward">(nnlibs.rnn.models.RNN method)</a>, <a href="Dense.html#nnlibs.rnn.models.RNN.backward">[1]</a>, <a href="Details.html#nnlibs.rnn.models.RNN.backward">[2]</a>, <a href="Dropout.html#nnlibs.rnn.models.RNN.backward">[3]</a>, <a href="Embedding.html#nnlibs.rnn.models.RNN.backward">[4]</a>, <a href="Flatten.html#nnlibs.rnn.models.RNN.backward">[5]</a>, <a href="LSTM.html#nnlibs.rnn.models.RNN.backward">[6]</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.backward">[7]</a>, <a href="Template.html#nnlibs.rnn.models.RNN.backward">[8]</a>
+        <li><a href="Dense.html#nnlibs.dense.models.Dense.backward">(nnlibs.dense.models.Dense method)</a>
 </li>
-        <li><a href="Details.html#nnlibs.template.models.Template.backward">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.backward">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template.backward">[2]</a>
+        <li><a href="Dropout.html#nnlibs.dropout.models.Dropout.backward">(nnlibs.dropout.models.Dropout method)</a>
+</li>
+        <li><a href="Embedding.html#nnlibs.embedding.models.Embedding.backward">(nnlibs.embedding.models.Embedding method)</a>
+</li>
+        <li><a href="Flatten.html#nnlibs.flatten.models.Flatten.backward">(nnlibs.flatten.models.Flatten method)</a>
+</li>
+        <li><a href="GRU.html#nnlibs.gru.models.GRU.backward">(nnlibs.gru.models.GRU method)</a>
+</li>
+        <li><a href="LSTM.html#nnlibs.lstm.models.LSTM.backward">(nnlibs.lstm.models.LSTM method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.meta.models.EpyNN.backward">(nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id0">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.backward">[2]</a>
+</li>
+        <li><a href="Convolution.html#nnlibs.pooling.models.Pooling.backward">(nnlibs.pooling.models.Pooling method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.rnn.models.RNN.backward">(nnlibs.rnn.models.RNN method)</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.backward">[1]</a>
+</li>
+        <li><a href="Details.html#nnlibs.template.models.Template.backward">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.backward">[1]</a>
 </li>
       </ul></li>
   </ul></td>
@@ -253,27 +268,57 @@
 </li>
       <li><a href="Details.html#nnlibs.commons.maths.clip_gradient">clip_gradient() (in module nnlibs.commons.maths)</a>
 </li>
-      <li><a href="Convolution.html#nnlibs.rnn.models.RNN.compute_gradients">compute_gradients() (nnlibs.rnn.models.RNN method)</a>, <a href="Dense.html#nnlibs.rnn.models.RNN.compute_gradients">[1]</a>, <a href="Details.html#nnlibs.rnn.models.RNN.compute_gradients">[2]</a>, <a href="Dropout.html#nnlibs.rnn.models.RNN.compute_gradients">[3]</a>, <a href="Embedding.html#nnlibs.rnn.models.RNN.compute_gradients">[4]</a>, <a href="Flatten.html#nnlibs.rnn.models.RNN.compute_gradients">[5]</a>, <a href="LSTM.html#nnlibs.rnn.models.RNN.compute_gradients">[6]</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.compute_gradients">[7]</a>, <a href="Template.html#nnlibs.rnn.models.RNN.compute_gradients">[8]</a>
+      <li><a href="Convolution.html#nnlibs.convolution.models.Convolution.compute_gradients">compute_gradients() (nnlibs.convolution.models.Convolution method)</a>
 
       <ul>
+        <li><a href="Dense.html#nnlibs.dense.models.Dense.compute_gradients">(nnlibs.dense.models.Dense method)</a>
+</li>
+        <li><a href="Dropout.html#nnlibs.dropout.models.Dropout.compute_gradients">(nnlibs.dropout.models.Dropout method)</a>
+</li>
+        <li><a href="Embedding.html#nnlibs.embedding.models.Embedding.compute_gradients">(nnlibs.embedding.models.Embedding method)</a>
+</li>
+        <li><a href="Flatten.html#nnlibs.flatten.models.Flatten.compute_gradients">(nnlibs.flatten.models.Flatten method)</a>
+</li>
+        <li><a href="GRU.html#nnlibs.gru.models.GRU.compute_gradients">(nnlibs.gru.models.GRU method)</a>
+</li>
+        <li><a href="LSTM.html#nnlibs.lstm.models.LSTM.compute_gradients">(nnlibs.lstm.models.LSTM method)</a>
+</li>
+        <li><a href="Convolution.html#nnlibs.pooling.models.Pooling.compute_gradients">(nnlibs.pooling.models.Pooling method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.rnn.models.RNN.compute_gradients">(nnlibs.rnn.models.RNN method)</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.compute_gradients">[1]</a>
+</li>
         <li><a href="Details.html#nnlibs.template.models.Template.compute_gradients">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.compute_gradients">[1]</a>
 </li>
       </ul></li>
       <li><a href="Details.html#nnlibs.meta.parameters.compute_learning_rate">compute_learning_rate() (in module nnlibs.meta.parameters)</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.compute_metrics">compute_metrics() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id1">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.compute_metrics">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.compute_metrics">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.compute_metrics">compute_metrics() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id1">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.compute_metrics">[2]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Convolution.html#nnlibs.rnn.models.RNN.compute_shapes">compute_shapes() (nnlibs.rnn.models.RNN method)</a>, <a href="Dense.html#nnlibs.rnn.models.RNN.compute_shapes">[1]</a>, <a href="Details.html#nnlibs.rnn.models.RNN.compute_shapes">[2]</a>, <a href="Dropout.html#nnlibs.rnn.models.RNN.compute_shapes">[3]</a>, <a href="Embedding.html#nnlibs.rnn.models.RNN.compute_shapes">[4]</a>, <a href="Flatten.html#nnlibs.rnn.models.RNN.compute_shapes">[5]</a>, <a href="LSTM.html#nnlibs.rnn.models.RNN.compute_shapes">[6]</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.compute_shapes">[7]</a>, <a href="Template.html#nnlibs.rnn.models.RNN.compute_shapes">[8]</a>
+      <li><a href="Convolution.html#nnlibs.convolution.models.Convolution.compute_shapes">compute_shapes() (nnlibs.convolution.models.Convolution method)</a>
 
       <ul>
-        <li><a href="Details.html#nnlibs.template.models.Template.compute_shapes">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.compute_shapes">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template.compute_shapes">[2]</a>
+        <li><a href="Dense.html#nnlibs.dense.models.Dense.compute_shapes">(nnlibs.dense.models.Dense method)</a>
+</li>
+        <li><a href="Dropout.html#nnlibs.dropout.models.Dropout.compute_shapes">(nnlibs.dropout.models.Dropout method)</a>
+</li>
+        <li><a href="Embedding.html#nnlibs.embedding.models.Embedding.compute_shapes">(nnlibs.embedding.models.Embedding method)</a>
+</li>
+        <li><a href="Flatten.html#nnlibs.flatten.models.Flatten.compute_shapes">(nnlibs.flatten.models.Flatten method)</a>
+</li>
+        <li><a href="GRU.html#nnlibs.gru.models.GRU.compute_shapes">(nnlibs.gru.models.GRU method)</a>
+</li>
+        <li><a href="LSTM.html#nnlibs.lstm.models.LSTM.compute_shapes">(nnlibs.lstm.models.LSTM method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.rnn.models.RNN.compute_shapes">(nnlibs.rnn.models.RNN method)</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.compute_shapes">[1]</a>
+</li>
+        <li><a href="Details.html#nnlibs.template.models.Template.compute_shapes">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.compute_shapes">[1]</a>
 </li>
       </ul></li>
       <li><a href="Details.html#nnlibs.commons.library.configure_directory">configure_directory() (in module nnlibs.commons.library)</a>
 </li>
-      <li><a href="Details.html#nnlibs.convolution.models.Convolution">Convolution (class in nnlibs.convolution.models)</a>, <a href="old/architectures.html#nnlibs.convolution.models.Convolution">[1]</a>
+      <li><a href="Convolution.html#nnlibs.convolution.models.Convolution">Convolution (class in nnlibs.convolution.models)</a>, <a href="Details.html#nnlibs.convolution.models.Convolution">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.convolution.parameters.convolution_compute_gradients">convolution_compute_gradients() (in module nnlibs.convolution.parameters)</a>
 </li>
@@ -291,9 +336,9 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.commons.models.dataSet">dataSet (class in nnlibs.commons.models)</a>, <a href="epynn.html#nnlibs.commons.models.dataSet">[1]</a>, <a href="old/architectures.html#nnlibs.commons.models.dataSet">[2]</a>
+      <li><a href="Details.html#nnlibs.commons.models.dataSet">dataSet (class in nnlibs.commons.models)</a>, <a href="epynn.html#nnlibs.commons.models.dataSet">[1]</a>
 </li>
-      <li><a href="Details.html#nnlibs.dense.models.Dense">Dense (class in nnlibs.dense.models)</a>, <a href="old/architectures.html#nnlibs.dense.models.Dense">[1]</a>
+      <li><a href="Dense.html#nnlibs.dense.models.Dense">Dense (class in nnlibs.dense.models)</a>, <a href="Details.html#nnlibs.dense.models.Dense">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.dense.backward.dense_backward">dense_backward() (in module nnlibs.dense.backward)</a>
 </li>
@@ -309,7 +354,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.dense.parameters.dense_update_parameters">dense_update_parameters() (in module nnlibs.dense.parameters)</a>
 </li>
-      <li><a href="Details.html#nnlibs.dropout.models.Dropout">Dropout (class in nnlibs.dropout.models)</a>, <a href="old/architectures.html#nnlibs.dropout.models.Dropout">[1]</a>
+      <li><a href="Details.html#nnlibs.dropout.models.Dropout">Dropout (class in nnlibs.dropout.models)</a>, <a href="Dropout.html#nnlibs.dropout.models.Dropout">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.dropout.parameters.dropout_compute_gradients">dropout_compute_gradients() (in module nnlibs.dropout.parameters)</a>
 </li>
@@ -331,7 +376,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.commons.maths.elu">elu() (in module nnlibs.commons.maths)</a>
 </li>
-      <li><a href="Details.html#nnlibs.embedding.models.Embedding">Embedding (class in nnlibs.embedding.models)</a>, <a href="old/architectures.html#nnlibs.embedding.models.Embedding">[1]</a>
+      <li><a href="Details.html#nnlibs.embedding.models.Embedding">Embedding (class in nnlibs.embedding.models)</a>, <a href="Embedding.html#nnlibs.embedding.models.Embedding">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.embedding.backward.embedding_backward">embedding_backward() (in module nnlibs.embedding.backward)</a>
 </li>
@@ -339,19 +384,21 @@
 </li>
       <li><a href="Details.html#nnlibs.embedding.parameters.embedding_compute_shapes">embedding_compute_shapes() (in module nnlibs.embedding.parameters)</a>
 </li>
-      <li><a href="Details.html#nnlibs.embedding.parameters.embedding_initialize_parameters">embedding_initialize_parameters() (in module nnlibs.embedding.parameters)</a>
+      <li><a href="Details.html#nnlibs.embedding.forward.embedding_forward">embedding_forward() (in module nnlibs.embedding.forward)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Details.html#nnlibs.embedding.parameters.embedding_initialize_parameters">embedding_initialize_parameters() (in module nnlibs.embedding.parameters)</a>
+</li>
       <li><a href="Details.html#nnlibs.embedding.dataset.embedding_prepare">embedding_prepare() (in module nnlibs.embedding.dataset)</a>
 </li>
       <li><a href="Details.html#nnlibs.embedding.parameters.embedding_update_parameters">embedding_update_parameters() (in module nnlibs.embedding.parameters)</a>
 </li>
       <li><a href="Details.html#nnlibs.commons.io.encode_dataset">encode_dataset() (in module nnlibs.commons.io)</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN">EpyNN (class in nnlibs.meta.models)</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN">[1]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN">[2]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN">EpyNN (class in nnlibs.meta.models)</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN">[1]</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.evaluate">evaluate() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id2">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.evaluate">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.evaluate">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.evaluate">evaluate() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id2">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.evaluate">[2]</a>
 </li>
       <li><a href="Details.html#nnlibs.commons.schedule.exp_decay">exp_decay() (in module nnlibs.commons.schedule)</a>
 </li>
@@ -361,7 +408,7 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.flatten.models.Flatten">Flatten (class in nnlibs.flatten.models)</a>, <a href="old/architectures.html#nnlibs.flatten.models.Flatten">[1]</a>
+      <li><a href="Details.html#nnlibs.flatten.models.Flatten">Flatten (class in nnlibs.flatten.models)</a>, <a href="Flatten.html#nnlibs.flatten.models.Flatten">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.flatten.backward.flatten_backward">flatten_backward() (in module nnlibs.flatten.backward)</a>
 </li>
@@ -369,18 +416,34 @@
 </li>
       <li><a href="Details.html#nnlibs.flatten.parameters.flatten_compute_shapes">flatten_compute_shapes() (in module nnlibs.flatten.parameters)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="Details.html#nnlibs.flatten.forward.flatten_forward">flatten_forward() (in module nnlibs.flatten.forward)</a>
+</li>
       <li><a href="Details.html#nnlibs.flatten.parameters.flatten_initialize_parameters">flatten_initialize_parameters() (in module nnlibs.flatten.parameters)</a>
 </li>
       <li><a href="Details.html#nnlibs.flatten.parameters.flatten_update_parameters">flatten_update_parameters() (in module nnlibs.flatten.parameters)</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.forward">forward() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id3">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.forward">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.forward">[3]</a>
+      <li><a href="Convolution.html#nnlibs.convolution.models.Convolution.forward">forward() (nnlibs.convolution.models.Convolution method)</a>
 
       <ul>
-        <li><a href="Convolution.html#nnlibs.rnn.models.RNN.forward">(nnlibs.rnn.models.RNN method)</a>, <a href="Dense.html#nnlibs.rnn.models.RNN.forward">[1]</a>, <a href="Details.html#nnlibs.rnn.models.RNN.forward">[2]</a>, <a href="Dropout.html#nnlibs.rnn.models.RNN.forward">[3]</a>, <a href="Embedding.html#nnlibs.rnn.models.RNN.forward">[4]</a>, <a href="Flatten.html#nnlibs.rnn.models.RNN.forward">[5]</a>, <a href="LSTM.html#nnlibs.rnn.models.RNN.forward">[6]</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.forward">[7]</a>, <a href="Template.html#nnlibs.rnn.models.RNN.forward">[8]</a>
+        <li><a href="Dense.html#nnlibs.dense.models.Dense.forward">(nnlibs.dense.models.Dense method)</a>
 </li>
-        <li><a href="Details.html#nnlibs.template.models.Template.forward">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.forward">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template.forward">[2]</a>
+        <li><a href="Dropout.html#nnlibs.dropout.models.Dropout.forward">(nnlibs.dropout.models.Dropout method)</a>
+</li>
+        <li><a href="Embedding.html#nnlibs.embedding.models.Embedding.forward">(nnlibs.embedding.models.Embedding method)</a>
+</li>
+        <li><a href="Flatten.html#nnlibs.flatten.models.Flatten.forward">(nnlibs.flatten.models.Flatten method)</a>
+</li>
+        <li><a href="GRU.html#nnlibs.gru.models.GRU.forward">(nnlibs.gru.models.GRU method)</a>
+</li>
+        <li><a href="LSTM.html#nnlibs.lstm.models.LSTM.forward">(nnlibs.lstm.models.LSTM method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.meta.models.EpyNN.forward">(nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id3">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.forward">[2]</a>
+</li>
+        <li><a href="Convolution.html#nnlibs.pooling.models.Pooling.forward">(nnlibs.pooling.models.Pooling method)</a>
+</li>
+        <li><a href="Details.html#nnlibs.rnn.models.RNN.forward">(nnlibs.rnn.models.RNN method)</a>, <a href="RNN.html#nnlibs.rnn.models.RNN.forward">[1]</a>
+</li>
+        <li><a href="Details.html#nnlibs.template.models.Template.forward">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.forward">[1]</a>
 </li>
       </ul></li>
   </ul></td>
@@ -391,13 +454,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.commons.plot.gnuplot_accuracy">gnuplot_accuracy() (in module nnlibs.commons.plot)</a>
 </li>
-      <li><a href="Details.html#nnlibs.gru.models.GRU">GRU (class in nnlibs.gru.models)</a>, <a href="old/architectures.html#nnlibs.gru.models.GRU">[1]</a>
+      <li><a href="Details.html#nnlibs.gru.models.GRU">GRU (class in nnlibs.gru.models)</a>, <a href="GRU.html#nnlibs.gru.models.GRU">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.gru.parameters.gru_compute_gradients">gru_compute_gradients() (in module nnlibs.gru.parameters)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.gru.parameters.gru_compute_shapes">gru_compute_shapes() (in module nnlibs.gru.parameters)</a>
+</li>
+      <li><a href="Details.html#nnlibs.gru.forward.gru_forward">gru_forward() (in module nnlibs.gru.forward)</a>
 </li>
       <li><a href="Details.html#nnlibs.gru.parameters.gru_initialize_parameters">gru_initialize_parameters() (in module nnlibs.gru.parameters)</a>
 </li>
@@ -419,7 +484,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.embedding.dataset.index_vocabulary_auto">index_vocabulary_auto() (in module nnlibs.embedding.dataset)</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.initialize">initialize() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id4">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.initialize">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.initialize">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.initialize">initialize() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id4">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.initialize">[2]</a>
 </li>
       <li><a href="Details.html#nnlibs.dense.backward.initialize_backward">initialize_backward() (in module nnlibs.dense.backward)</a>
 
@@ -429,10 +494,18 @@
       </ul></li>
       <li><a href="Details.html#nnlibs.meta.initialize.initialize_exceptions">initialize_exceptions() (in module nnlibs.meta.initialize)</a>
 </li>
+      <li><a href="Details.html#nnlibs.dense.forward.initialize_forward">initialize_forward() (in module nnlibs.dense.forward)</a>
+
+      <ul>
+        <li><a href="Details.html#nnlibs.embedding.forward.initialize_forward">(in module nnlibs.embedding.forward)</a>
+</li>
+        <li><a href="Details.html#nnlibs.flatten.forward.initialize_forward">(in module nnlibs.flatten.forward)</a>
+</li>
+        <li><a href="Details.html#nnlibs.rnn.forward.initialize_forward">(in module nnlibs.rnn.forward)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.rnn.forward.initialize_forward">initialize_forward() (in module nnlibs.rnn.forward)</a>
-</li>
       <li><a href="Details.html#nnlibs.commons.logs.initialize_logs_print">initialize_logs_print() (in module nnlibs.commons.logs)</a>
 </li>
       <li><a href="Details.html#nnlibs.meta.initialize.initialize_model_layers">initialize_model_layers() (in module nnlibs.meta.initialize)</a>
@@ -442,7 +515,7 @@
       <li><a href="Details.html#nnlibs.rnn.models.RNN.initialize_parameters">initialize_parameters() (nnlibs.rnn.models.RNN method)</a>
 
       <ul>
-        <li><a href="Details.html#nnlibs.template.models.Template.initialize_parameters">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.initialize_parameters">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template.initialize_parameters">[2]</a>
+        <li><a href="Details.html#nnlibs.template.models.Template.initialize_parameters">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.initialize_parameters">[1]</a>
 </li>
       </ul></li>
   </ul></td>
@@ -459,7 +532,7 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.commons.models.Layer">Layer (class in nnlibs.commons.models)</a>, <a href="epynn.html#nnlibs.commons.models.Layer">[1]</a>, <a href="old/architectures.html#nnlibs.commons.models.Layer">[2]</a>
+      <li><a href="Details.html#nnlibs.commons.models.Layer">Layer (class in nnlibs.commons.models)</a>, <a href="epynn.html#nnlibs.commons.models.Layer">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.commons.logs.layers_lrate_logs">layers_lrate_logs() (in module nnlibs.commons.logs)</a>
 </li>
@@ -467,13 +540,13 @@
 </li>
       <li><a href="Details.html#nnlibs.commons.schedule.lin_decay">lin_decay() (in module nnlibs.commons.schedule)</a>
 </li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.logs">logs() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id5">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.logs">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.logs">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.logs">logs() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id5">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.logs">[2]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.commons.maths.lrelu">lrelu() (in module nnlibs.commons.maths)</a>
 </li>
-      <li><a href="Details.html#nnlibs.lstm.models.LSTM">LSTM (class in nnlibs.lstm.models)</a>, <a href="old/architectures.html#nnlibs.lstm.models.LSTM">[1]</a>
+      <li><a href="Details.html#nnlibs.lstm.models.LSTM">LSTM (class in nnlibs.lstm.models)</a>, <a href="LSTM.html#nnlibs.lstm.models.LSTM">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.lstm.parameters.lstm_compute_gradients">lstm_compute_gradients() (in module nnlibs.lstm.parameters)</a>
 </li>
@@ -1037,9 +1110,9 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.plot">plot() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id6">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.plot">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.plot">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.plot">plot() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id6">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.plot">[2]</a>
 </li>
-      <li><a href="Details.html#nnlibs.pooling.models.Pooling">Pooling (class in nnlibs.pooling.models)</a>, <a href="old/architectures.html#nnlibs.pooling.models.Pooling">[1]</a>
+      <li><a href="Convolution.html#nnlibs.pooling.models.Pooling">Pooling (class in nnlibs.pooling.models)</a>, <a href="Details.html#nnlibs.pooling.models.Pooling">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.pooling.parameters.pooling_compute_gradients">pooling_compute_gradients() (in module nnlibs.pooling.parameters)</a>
 </li>
@@ -1085,7 +1158,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.commons.metrics.RMSLE">RMSLE() (in module nnlibs.commons.metrics)</a>
 </li>
-      <li><a href="Convolution.html#nnlibs.rnn.models.RNN">RNN (class in nnlibs.rnn.models)</a>, <a href="Dense.html#nnlibs.rnn.models.RNN">[1]</a>, <a href="Details.html#nnlibs.rnn.models.RNN">[2]</a>, <a href="Dropout.html#nnlibs.rnn.models.RNN">[3]</a>, <a href="Embedding.html#nnlibs.rnn.models.RNN">[4]</a>, <a href="Flatten.html#nnlibs.rnn.models.RNN">[5]</a>, <a href="LSTM.html#nnlibs.rnn.models.RNN">[6]</a>, <a href="RNN.html#nnlibs.rnn.models.RNN">[7]</a>, <a href="Template.html#nnlibs.rnn.models.RNN">[8]</a>, <a href="old/architectures.html#nnlibs.rnn.models.RNN">[9]</a>
+      <li><a href="Details.html#nnlibs.rnn.models.RNN">RNN (class in nnlibs.rnn.models)</a>, <a href="RNN.html#nnlibs.rnn.models.RNN">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.rnn.backward.rnn_backward">rnn_backward() (in module nnlibs.rnn.backward)</a>
 </li>
@@ -1129,7 +1202,7 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="Details.html#nnlibs.commons.maths.tanh">tanh() (in module nnlibs.commons.maths)</a>
 </li>
-      <li><a href="Details.html#nnlibs.template.models.Template">Template (class in nnlibs.template.models)</a>, <a href="epynn.html#nnlibs.template.models.Template">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template">[2]</a>
+      <li><a href="Details.html#nnlibs.template.models.Template">Template (class in nnlibs.template.models)</a>, <a href="epynn.html#nnlibs.template.models.Template">[1]</a>
 </li>
       <li><a href="Details.html#nnlibs.template.backward.template_backward">template_backward() (in module nnlibs.template.backward)</a>
 </li>
@@ -1151,7 +1224,7 @@
         <li><a href="Details.html#nnlibs.rnn.forward.terminate_forward">(in module nnlibs.rnn.forward)</a>
 </li>
       </ul></li>
-      <li><a href="Details.html#nnlibs.meta.models.EpyNN.train">train() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id8">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.train">[2]</a>, <a href="old/architectures.html#nnlibs.meta.models.EpyNN.train">[3]</a>
+      <li><a href="Details.html#nnlibs.meta.models.EpyNN.train">train() (nnlibs.meta.models.EpyNN method)</a>, <a href="epynn.html#id8">[1]</a>, <a href="epynn.html#nnlibs.meta.models.EpyNN.train">[2]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1162,12 +1235,12 @@
       <li><a href="Details.html#nnlibs.rnn.models.RNN.update_parameters">update_parameters() (nnlibs.rnn.models.RNN method)</a>
 
       <ul>
-        <li><a href="Details.html#nnlibs.template.models.Template.update_parameters">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.update_parameters">[1]</a>, <a href="old/architectures.html#nnlibs.template.models.Template.update_parameters">[2]</a>
+        <li><a href="Details.html#nnlibs.template.models.Template.update_parameters">(nnlibs.template.models.Template method)</a>, <a href="epynn.html#nnlibs.template.models.Template.update_parameters">[1]</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="Details.html#nnlibs.commons.models.Layer.update_shapes">update_shapes() (nnlibs.commons.models.Layer method)</a>, <a href="epynn.html#nnlibs.commons.models.Layer.update_shapes">[1]</a>, <a href="old/architectures.html#nnlibs.commons.models.Layer.update_shapes">[2]</a>
+      <li><a href="Details.html#nnlibs.commons.models.Layer.update_shapes">update_shapes() (nnlibs.commons.models.Layer method)</a>, <a href="epynn.html#nnlibs.commons.models.Layer.update_shapes">[1]</a>
 </li>
   </ul></td>
 </tr></table>

@@ -1,24 +1,36 @@
-#EpyNN/nnlive/dummy_image/prepare_dataset.py
-import nnlibs.commons.library as cli
-
-import matplotlib.pyplot as plt
-import numpy as np
+# EpyNN/nnlive/dummy_image/prepare_dataset.py
+# Standard library imports
 import random
-import glob
 import os
 
+# Related third party imports
+import matplotlib.pyplot as plt
+import numpy as np
 
-def features_images():
+# Local application/library specific imports
+from nnlibs.commons.library import write_pickle
+
+
+def features_images(WIDTH=28, HEIGHT=28):
+    """Generate dummy image features.
+
+    :param WIDTH: Image width
+    :type WIDTH: int
+
+    :param HEIGHT: Image height
+    :type HEIGHT: int
+
+    :return: alterated random image features of length N_FEATURES
+    :rtype: int
+
+    :return: Value of tone used to alterate random image features
+    :rtype: int
+
+    :return: original random image features of length N_FEATURES
+    :rtype: list[int]
     """
-
-    """
-
     # Number of distinct tones in features
     N_TONES = 16
-
-    # Image dimensions
-    WIDTH = 28
-    HEIGHT = 28
 
     # Number of channels is one for greyscale images
     DEPTH = 1
@@ -26,98 +38,133 @@ def features_images():
     # Number of features describing a sample
     N_FEATURES = WIDTH * HEIGHT
 
+    # Number of channels is one for greyscale images
+    DEPTH = 1
+
     # Shade of greys color palette
-    GSCALE = [ i for i in range(N_TONES) ]
+    GSCALE = [i for i in range(N_TONES)]
 
     # Random choice of shade of greys for N_FEATURES iterations
-    features = [ random.choice(GSCALE) for j in range(N_FEATURES) ]
+    features = [random.choice(GSCALE) for j in range(N_FEATURES)]
+    o_features = features.copy()
 
     # Random choice darkest or lightest shade in GSCALE
-    tone = random.choice([0,N_TONES-1])
+    tone = random.choice([0, N_TONES-1])
+
     # Random choice of features indexes for 5% of N_FEATURES iterations
-    idxs = [ random.choice(range(N_FEATURES)) for j in range(N_FEATURES//20) ]
+    idxs = [random.choice(range(N_FEATURES)) for j in range(N_FEATURES // 20)]
 
     # Alteration of features with darkest or lightest tone
     for idx in idxs:
         features[idx] = tone
 
     # Vectorization of features to image and scaling
-    features = np.array(features).reshape(HEIGHT,WIDTH,DEPTH) / ( N_TONES - 1 )
+    features = np.array(features).reshape(HEIGHT, WIDTH, DEPTH) / (N_TONES-1)
+    o_features = np.array(o_features).reshape(features.shape) / (N_TONES-1)
 
-    return features, tone, N_TONES
+    return features, tone, o_features
 
 
-def prepare_dataset(se_dataset):
+def label_features(features, tone):
+    """Prepare label associated with features.
+
+    :param features: random image features of length N_FEATURES
+    :type features: list[int]
+
+    :param tone: Darker or lighter tone used to alterate image features
+    :type tone: int
+
+    :return: One-hot encoded label
+    :rtype: list[int]
     """
-    Prepare dummy dataset with Boolean sample features
+    # One-hot encoded positive and negative labels
+    p_label = [1, 0]
+    n_label = [0, 1]
 
-    sample = [features,label]
+    # Test if image was alterated with lighest tone (+)
+    if tone == 0:
+        label = p_label
 
-    features is a list of sample features with length N_FEATURES
-    label is a one-hot encoded label with length N_LABELS
+    # Test if features associates with darkest tone (-)
+    else:
+        label = n_label
 
-    dataset = [sample_0,sample_1,...,sample_N]
+    return label
+
+
+def labeled_dataset(se_dataset):
+    """Prepare a dummy dataset of labeled samples.
+
+    One sample is a list such as [features, label].
+
+    For one sample, features is a class:`numpy.ndarray` and label is a list.
+
+    :param se_dataset: Settings for dataset preparation
+    :type se_dataset: dict
+
+    :return: A dataset of length N_SAMPLES
+    :rtype: list[list[class:`numpy.ndarray`,list[int]]]
     """
-
     # See ./settings.py
     N_SAMPLES = se_dataset['N_SAMPLES']
 
     # See ./settings.py
     dataset_name = se_dataset['dataset_name']
     dataset_save = se_dataset['dataset_save']
-
+    
     # Initialize dataset
     dataset = []
-
-    # One-hot encoded positive and negative labels
-    p_label = [1,0]
-    n_label = [0,1]
 
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        features, tone, N_TONES = features_images()
+        # Generate dummy string features
+        features, tone, _ = features_images()
 
-        # Test if features associates with p_label (+)
-        if tone == 0:
-            sample = [features,p_label]
+        # Retrieve label associated with features
+        label = label_features(features, tone)
 
-        # Test if features associates with n_label (-)
-        elif tone == N_TONES - 1:
-            sample = [features,n_label]
+        # Define labeled sample
+        sample = [features, label]
 
         # Append sample to dataset
         dataset.append(sample)
 
-    # Plot last features for axis 0 (HEIGHT) and 1 (WIDTH)
-    plt.imshow(features[:,:,0], cmap='gray', vmin=0, vmax=1)
-    # Display last features
-    plt.show()
+    # Shuffle dataset
+    random.shuffle(dataset)
 
     # Write dataset on disk
     if dataset_save:
-        dataset_path = './datasets/'+dataset_name+'.pickle'
-        cli.write_pickle(dataset_path,dataset)
+        dataset_path = os.path.join(os.getcwd(), 'dataset', dataset_name+'.pickle')
+        write_pickle(dataset_path, dataset)
 
     return dataset
-# DOCS_END
 
 
-def prepare_unlabeled(N_SAMPLES=1):
+def unlabeled_dataset(N_SAMPLES=1):
+    """Prepare a dummy dataset of unlabeled samples.
+
+    One sample is a list such as [features, []].
+
+    For one sample, features is a class:`numpy.ndarray` and label is an empty list.
+
+    :param N_SAMPLES: Length for unlabeled dataset
+    :type N_SAMPLES: int
+
+    :return: A dataset of length N_SAMPLES
+    :rtype: list[list[class:`numpy.ndarray`,list[int]]]
     """
-
-    """
-
     # Initialize unlabeled_dataset
     unlabeled_dataset = []
 
     # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
+        # Generate dummy image features
         features, _, _ = features_images()
 
-        # Unlabeled sample
-        sample = [ features, None ]
+        # Define unlabeled sample
+        sample = [features, []]
 
         # Append to unlabeled_dataset
         unlabeled_dataset.append(sample)
