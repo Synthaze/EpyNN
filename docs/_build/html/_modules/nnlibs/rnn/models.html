@@ -228,7 +228,7 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="RNN.compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.compute_shapes"><a class="viewcode-back" href="../../../Template.html#nnlibs.rnn.models.RNN.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for ``nnlibs.rnn.parameters.rnn_compute_shapes()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rnn_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
@@ -241,7 +241,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="RNN.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.forward"><a class="viewcode-back" href="../../../Template.html#nnlibs.rnn.models.RNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for ``nnlibs.rnn.forward.rnn_forward()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -250,7 +250,7 @@
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="RNN.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.backward"><a class="viewcode-back" href="../../../Template.html#nnlibs.rnn.models.RNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for ``nnlibs.rnn.backward.rnn_backward()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">rnn_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
@@ -258,7 +258,7 @@
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-<div class="viewcode-block" id="RNN.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.compute_gradients"><a class="viewcode-back" href="../../../Template.html#nnlibs.rnn.models.RNN.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for ``nnlibs.rnn.parameters.rnn_compute_gradients()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rnn_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
