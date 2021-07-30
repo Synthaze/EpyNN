@@ -3,3 +3,4 @@
 *.wav
 *.pickle
 *data*dat
+*.ipynb_checkpoints
