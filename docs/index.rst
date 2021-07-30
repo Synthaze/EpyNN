@@ -38,11 +38,24 @@ Table of Contents
 .. toctree::
    :maxdepth: 3
 
-
    quickstart
-   organization
-   architectures
-   workflows
-   examples
-   contribute
-   test
+   epynn
+   Template
+   Embedding
+   Dense
+   RNN
+   LSTM
+   GRU
+   Convolution
+   Dropout
+   Flatten
+   dataset
+   Details
+
+..   quickstart
+..   organization
+..   architectures
+..   workflows
+..   examples
+..   contribute
+..   RNN

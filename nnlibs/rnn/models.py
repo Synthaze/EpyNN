@@ -1,7 +1,7 @@
 # EpyNN/nnlibs/rnn/models.py
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.commons.maths import tanh, sigmoid, xavier
+from nnlibs.commons.maths import tanh, sigmoid, xavier, clip_gradient
 from nnlibs.rnn.forward import rnn_forward
 from nnlibs.rnn.backward import rnn_backward
 from nnlibs.rnn.parameters import (
@@ -17,7 +17,7 @@ class RNN(Layer):
     Definition of a RNN layer prototype.
 
     :param hidden_size: Number of RNN cells in one RNN layer.
-    :type nodes: int
+    :type hidden_size: int
 
     :param activate: Activation function for output of RNN cells.
     :type activate: function
@@ -91,6 +91,7 @@ class RNN(Layer):
         """Wrapper for ``nnlibs.rnn.parameters.rnn_compute_gradients()``.
         """
         rnn_compute_gradients(self)
+        clip_gradient(self)
 
         return None
 

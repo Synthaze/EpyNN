@@ -12,16 +12,12 @@ def gru_compute_shapes(layer, A):
 
     X = A
 
-    layer.fs['X'] = X.shape
-
-    layer.d['v'] = layer.fs['X'][0]
-    layer.d['t'] = layer.fs['X'][1]
-    layer.d['m'] = layer.fs['X'][2]
-
-    if layer.binary == False:
-        layer.d['o'] = layer.d['v']
-    else:
-        layer.d['o'] = 2
+     # (s, v, m)
+    layer.d['s'] = X.shape[0]    # Length of sequence
+    layer.d['v'] = X.shape[1]    # Vocabulary size
+    layer.d['m'] = X.shape[2]    # Number of samples
+    # Output length
+    layer.d['o'] = 2 if layer.binary else layer.d['v']
 
     hv = (layer.d['h'], layer.d['v'])
     hh = (layer.d['h'], layer.d['h'])
@@ -36,11 +32,11 @@ def gru_compute_shapes(layer, A):
     layer.fs['W'] = oh
     layer.fs['b'] = o1
 
-    tvm = layer.fs['Xt'] = (layer.d['t'], layer.d['v'], layer.d['m'])
-    thm = layer.fs['h'] = layer.fs['C'] = (layer.d['t'], layer.d['h'], layer.d['m'])
-    tom = layer.fs['A'] = (layer.d['t'], layer.d['o'], layer.d['m'])
+    hhm = layer.fs['h'] = layer.fs['C'] = (layer.d['h'], layer.d['h'], layer.d['m'])
+    hom = layer.fs['A'] = (layer.d['h'], layer.d['o'], layer.d['m'])
 
-    hm = layer.fs['ht'] = (layer.d['h'], layer.d['m'])
+    # Shapes to initialize backward cache
+    hvm = layer.fs['X'] = layer.bs['dA'] = (max(layer.d['h'],layer.d['s']), layer.d['v'], layer.d['m'])
 
     return None
 
@@ -82,35 +78,32 @@ def gru_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    for t in reversed(range(layer.d['t'])):
+    for s in reversed(range(layer.d['h'])):
 
-        h = layer.fc['h'][t]
-        hp = layer.fc['h'][t-1]
+        h = layer.fc['h'][s]
+        hp = layer.fc['h'][s-1]
 
-        Xt = layer.fc['X'][:,t]
+        X = layer.fc['X'][s]
 
-        if layer.binary == False:
-            dXt = layer.bc['dXt'][t]
-        else:
-            dXt = layer.bc['dXt']
+        dX = layer.bc['dX'][s] if not layer.binary else layer.bc['dX']
 
         # Retrieve dv and update dWv and dbv
-        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXt, h.T)
-        layer.g['db'] += 1./ layer.d['m'] * np.sum(dXt, axis=1, keepdims=True)
+        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dX, h.T)
+        layer.g['db'] += 1./ layer.d['m'] * np.sum(dX, axis=1, keepdims=True)
 
         # Retrieve dv and update dWv and dbv
-        dhh = layer.bc['dhh'][t]
-        layer.g['dWh'] += 1./ layer.d['m'] * np.dot(dhh, Xt.T)
-        layer.g['dUh'] += 1./ layer.d['m'] * np.dot(dhh, (layer.fc['r'][t] * hp).T)
+        dhh = layer.bc['dhh'][s]
+        layer.g['dWh'] += 1./ layer.d['m'] * np.dot(dhh, X.T)
+        layer.g['dUh'] += 1./ layer.d['m'] * np.dot(dhh, (layer.fc['r'][s] * hp).T)
         layer.g['dbh'] += 1./ layer.d['m'] * np.sum(dhh, axis=1, keepdims=True)
         # Retrieve dv and update dWv and dbv
-        dr = layer.bc['dr'][t]
-        layer.g['dWr'] += 1./ layer.d['m'] * np.dot(dr, Xt.T)
+        dr = layer.bc['dr'][s]
+        layer.g['dWr'] += 1./ layer.d['m'] * np.dot(dr, X.T)
         layer.g['dUr'] += 1./ layer.d['m'] * np.dot(dr, hp.T)
         layer.g['dbr'] += 1./ layer.d['m'] * np.sum(dr, axis=1, keepdims=True)
         # Retrieve dv and update dWv and dbv
-        dz = layer.bc['dz'][t]
-        layer.g['dWz'] += 1./ layer.d['m'] * np.dot(dz, Xt.T)
+        dz = layer.bc['dz'][s]
+        layer.g['dWz'] += 1./ layer.d['m'] * np.dot(dz, X.T)
         layer.g['dUz'] += 1./ layer.d['m'] * np.dot(dz, hp.T)
         layer.g['dbz'] += 1./ layer.d['m'] * np.sum(dz, axis=1, keepdims=True)
 

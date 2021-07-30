@@ -1,6 +1,7 @@
 # EpyNN/nnlibs/conv/parameters.py
 # Standard library imports
 import math
+
 # Related third party imports
 import numpy as np
 

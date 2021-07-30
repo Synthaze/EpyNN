@@ -33,8 +33,9 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -90,12 +91,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
             
@@ -167,58 +174,12 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="lstm_forward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.lstm.forward.lstm_forward">[docs]</a><span class="k">def</span> <span class="nf">lstm_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-
-    <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-
-    <span class="c1"># Loop through time steps</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]):</span>
-
-        <span class="c1"># Xt (X at current t) from X</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][:,</span> <span class="n">t</span><span class="p">]</span>
-
-        <span class="c1"># Concatenate input and hidden state</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">hp</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
-
-        <span class="c1"># Calculate forget gate</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wf&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">]</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_forget</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-
-        <span class="c1"># Calculate input gate</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wi&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bi&#39;</span><span class="p">]</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_input</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-
-        <span class="c1"># Calculate candidate</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wg&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bg&#39;</span><span class="p">]</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_candidate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
-
-        <span class="c1"># Calculate output gate</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">]</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_output</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-
-        <span class="c1"># Calculate memory state (prev)</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">*</span><span class="n">C</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">g</span>
-
-        <span class="c1"># Calculate hidden state</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">o</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_hidden</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
-
-        <span class="c1"># Calculate logits</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">A</span></div>
-
-
 <span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
 
-    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">])</span>
+    <span class="n">X</span><span class="p">[:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span>
+
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
@@ -229,10 +190,66 @@
 
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
 
-    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;ht&#39;</span><span class="p">])</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Ct&#39;</span><span class="p">])</span>
+    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span>
+
+
+<span class="k">def</span> <span class="nf">lstm_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+
+    <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># Loop through time steps</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]):</span>
+
+        <span class="c1"># Xt (X at current t) from X</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
+
+        <span class="c1"># Concatenate input and hidden state</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span><span class="n">hp</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+
+        <span class="c1"># Calculate forget gate</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wf&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bf&#39;</span><span class="p">]</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_forget</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="c1"># Calculate input gate</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wi&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bi&#39;</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_input</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># Calculate candidate</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wg&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bg&#39;</span><span class="p">]</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_candidate</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+
+        <span class="c1"># Calculate output gate</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">],</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bo&#39;</span><span class="p">]</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_output</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+
+        <span class="c1"># Calculate memory state (prev)</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">*</span><span class="n">C</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">g</span>
+
+        <span class="c1"># Calculate hidden state</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">o</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_hidden</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+        <span class="c1"># Calculate logits</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># Return layer.fc[&#39;A&#39;] if layer.binary else A</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">A</span>
+
+
+<div class="viewcode-block" id="terminate_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.lstm.forward.terminate_forward">[docs]</a><span class="k">def</span> <span class="nf">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">A</span></div>
 </pre></div>
 
            </div>

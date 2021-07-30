@@ -8,7 +8,6 @@ import numpy as np
 
 ### Activation functions and derivatives
 
-
 # Rectifier Linear Unit (ReLU)
 
 def relu(x, deriv=False):
@@ -153,11 +152,13 @@ def tanh(x, deriv=False):
     :rtype: class:`numpy.ndarray`
     """
 
+    x = (2 / (1+np.exp(-2*x))) - 1
+
     if deriv == False:
-        x = (2 / (1+np.exp(-2*x))) - 1
+        pass
 
     elif deriv == True:
-        x = 1 - tanh(x)**2
+        x = 1 - x**2
 
     return x
 
@@ -195,16 +196,18 @@ def softmax(x, deriv=False):
     return x
 
 
-
 # Weights initialization
 def xavier(shape, rng=np.random):
+    """.
+    """
     x = rng.standard_normal(shape)
     x /= np.sqrt(shape[1])
     return x
 
 
 def orthogonal(shape, rng=np.random):
-
+    """.
+    """
     p = rng.standard_normal(shape)
 
     if shape[0] < shape[1]:
@@ -222,3 +225,28 @@ def orthogonal(shape, rng=np.random):
     p = q
 
     return p
+
+
+def clip_gradient(layer,max_norm=0.25):
+    """.
+    """
+    # Set the maximum of the norm to be of type float
+    max_norm = float(max_norm)
+    total_norm = 0
+
+    # Calculate the L2 norm squared for each gradient and add them to the total norm
+    for grad in layer.g.values():
+        grad_norm = np.sum(np.power(grad, 2))
+        total_norm += grad_norm
+
+    total_norm = np.sqrt(total_norm)
+
+    # Calculate clipping coeficient
+    clip_coef = max_norm / (total_norm + 1e-6)
+
+    # If the total norm is larger than the maximum allowable norm, then clip the gradient
+    if clip_coef < 1:
+        for g in layer.g.keys():
+            layer.g[g] *= clip_coef
+
+    return None

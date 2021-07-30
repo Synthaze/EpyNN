@@ -33,6 +33,9 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -91,11 +94,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
             
@@ -179,17 +189,277 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="architectures.html#module-nnlibs.dropout.models"><code class="xref">nnlibs.dropout.models</code></a></td><td>
+       <a href="Details.html#module-nnlibs.commons.decorators"><code class="xref">nnlibs.commons.decorators</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="architectures.html#module-nnlibs.flatten.models"><code class="xref">nnlibs.flatten.models</code></a></td><td>
+       <a href="Details.html#module-nnlibs.commons.io"><code class="xref">nnlibs.commons.io</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="architectures.html#module-nnlibs.lstm.models"><code class="xref">nnlibs.lstm.models</code></a></td><td>
+       <a href="Details.html#module-nnlibs.commons.library"><code class="xref">nnlibs.commons.library</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.logs"><code class="xref">nnlibs.commons.logs</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.maths"><code class="xref">nnlibs.commons.maths</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.metrics"><code class="xref">nnlibs.commons.metrics</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.models"><code class="xref">nnlibs.commons.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.plot"><code class="xref">nnlibs.commons.plot</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.commons.schedule"><code class="xref">nnlibs.commons.schedule</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.convolution.backward"><code class="xref">nnlibs.convolution.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.convolution.forward"><code class="xref">nnlibs.convolution.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.convolution.models"><code class="xref">nnlibs.convolution.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.convolution.parameters"><code class="xref">nnlibs.convolution.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dense.backward"><code class="xref">nnlibs.dense.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dense.forward"><code class="xref">nnlibs.dense.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dense.models"><code class="xref">nnlibs.dense.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dense.parameters"><code class="xref">nnlibs.dense.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dropout.backward"><code class="xref">nnlibs.dropout.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dropout.forward"><code class="xref">nnlibs.dropout.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dropout.models"><code class="xref">nnlibs.dropout.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.dropout.parameters"><code class="xref">nnlibs.dropout.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.embedding.backward"><code class="xref">nnlibs.embedding.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.embedding.dataset"><code class="xref">nnlibs.embedding.dataset</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.embedding.forward"><code class="xref">nnlibs.embedding.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.embedding.models"><code class="xref">nnlibs.embedding.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.embedding.parameters"><code class="xref">nnlibs.embedding.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.flatten.backward"><code class="xref">nnlibs.flatten.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.flatten.forward"><code class="xref">nnlibs.flatten.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.flatten.models"><code class="xref">nnlibs.flatten.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.flatten.parameters"><code class="xref">nnlibs.flatten.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.gru.backward"><code class="xref">nnlibs.gru.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.gru.forward"><code class="xref">nnlibs.gru.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.gru.models"><code class="xref">nnlibs.gru.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.gru.parameters"><code class="xref">nnlibs.gru.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.lstm.backward"><code class="xref">nnlibs.lstm.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.lstm.forward"><code class="xref">nnlibs.lstm.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.lstm.models"><code class="xref">nnlibs.lstm.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.lstm.parameters"><code class="xref">nnlibs.lstm.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.meta.backward"><code class="xref">nnlibs.meta.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.meta.forward"><code class="xref">nnlibs.meta.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.meta.initialize"><code class="xref">nnlibs.meta.initialize</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.meta.models"><code class="xref">nnlibs.meta.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.meta.parameters"><code class="xref">nnlibs.meta.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.pooling.backward"><code class="xref">nnlibs.pooling.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.pooling.forward"><code class="xref">nnlibs.pooling.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.pooling.models"><code class="xref">nnlibs.pooling.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.pooling.parameters"><code class="xref">nnlibs.pooling.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.rnn.backward"><code class="xref">nnlibs.rnn.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.rnn.forward"><code class="xref">nnlibs.rnn.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.rnn.models"><code class="xref">nnlibs.rnn.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.rnn.parameters"><code class="xref">nnlibs.rnn.parameters</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.template.backward"><code class="xref">nnlibs.template.backward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.template.forward"><code class="xref">nnlibs.template.forward</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.template.models"><code class="xref">nnlibs.template.models</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="Details.html#module-nnlibs.template.parameters"><code class="xref">nnlibs.template.parameters</code></a></td><td>
        <em></em></td></tr>
    </table>
 

@@ -41,9 +41,7 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Architectures" href="architectures.html" />
-    <link rel="prev" title="Quick Start" href="quickstart.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,49 +89,20 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Organization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#guidelines">Guidelines</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pure-python-numpy">Pure Python/NumPy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions-over-class-methods">Functions over Class Methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#less-intricate-code">Less intricate code</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#layers">Layers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#models">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#forward">forward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#backward">backward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#parameters">parameters</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#meta">Meta</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">forward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">backward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#train">train</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#commons">Commons</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#decorators">decorators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#io">io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#library">library</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#logs">logs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#maths">maths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#metrics">metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#plot">plot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#schedule">schedule</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
             
@@ -470,60 +439,122 @@
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="c1"># Local application/library specific imports</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">dataSet</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.io</span> <span class="kn">import</span> <span class="n">encode_dataset</span>
 <span class="kn">from</span> <span class="nn">nnlibs.commons.metrics</span> <span class="kn">import</span> <span class="n">model_compute_metrics</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.logs</span> <span class="kn">import</span> <span class="n">model_logs</span><span class="p">,</span> <span class="n">initialize_model_logs</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.plot</span> <span class="kn">import</span> <span class="n">pyplot_metrics</span><span class="p">,</span> <span class="n">gnuplot_accuracy</span>
-<span class="kn">from</span> <span class="nn">nnlibs.meta.initialize</span> <span class="kn">import</span> <span class="n">initialize_model_layers</span><span class="p">,</span> <span class="n">initialize_exceptions</span>
-<span class="kn">from</span> <span class="nn">nnlibs.meta.parameters</span> <span class="kn">import</span> <span class="n">assign_seed_layers</span><span class="p">,</span> <span class="n">compute_learning_rate</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.library</span> <span class="kn">import</span> <span class="n">write_model</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.logs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">model_logs</span><span class="p">,</span>
+    <span class="n">initialize_model_logs</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.plot</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">pyplot_metrics</span><span class="p">,</span>
+    <span class="n">gnuplot_accuracy</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nnlibs.meta.initialize</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">initialize_model_layers</span><span class="p">,</span>
+    <span class="n">initialize_exceptions</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nnlibs.meta.parameters</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">assign_seed_layers</span><span class="p">,</span>
+    <span class="n">compute_learning_rate</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">nnlibs.meta.forward</span> <span class="kn">import</span> <span class="n">model_forward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.meta.backward</span> <span class="kn">import</span> <span class="n">model_backward</span>
-<span class="kn">from</span> <span class="nn">nnlibs.meta.train</span> <span class="kn">import</span> <span class="n">model_training</span>
-<span class="kn">import</span> <span class="nn">nnlibs.settings</span> <span class="k">as</span> <span class="nn">se</span>
+<span class="kn">from</span> <span class="nn">nnlibs.meta.training</span> <span class="kn">import</span> <span class="n">model_training</span>
+<span class="kn">from</span> <span class="nn">nnlibs.settings</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span><span class="p">,</span>
+    <span class="n">config</span> <span class="k">as</span> <span class="n">se_config</span><span class="p">,</span>
+    <span class="n">hPars</span> <span class="k">as</span> <span class="n">se_hPars</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">EpyNN</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Definition of an . prototype</span>
+<span class="sd">    Definition of an . prototype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">layers</span><span class="o">=</span><span class="p">[],</span>
-                <span class="n">settings</span><span class="o">=</span><span class="p">[</span><span class="n">se</span><span class="o">.</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">se</span><span class="o">.</span><span class="n">hPars</span><span class="p">],</span>
+                <span class="n">settings</span><span class="o">=</span><span class="p">[</span><span class="n">se_dataset</span><span class="p">,</span> <span class="n">se_config</span><span class="p">,</span> <span class="n">se_hPars</span><span class="p">],</span>
                 <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Model&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
+
+<span class="sd">        :ivar ts:</span>
+<span class="sd">        :vartype ts:</span>
+<span class="sd">        :ivar layers:</span>
+<span class="sd">        :vartype layers:</span>
+<span class="sd">        :ivar embedding:</span>
+<span class="sd">        :vartype embedding:</span>
+<span class="sd">        :ivar se_dataset:</span>
+<span class="sd">        :vartype se_dataset:</span>
+<span class="sd">        :ivar se_config:</span>
+<span class="sd">        :vartype se_config:</span>
+<span class="sd">        :ivar se_hPars:</span>
+<span class="sd">        :vartype se_hPars:</span>
+<span class="sd">        :ivar epochs:</span>
+<span class="sd">        :vartype epochs:</span>
+<span class="sd">        :ivar seed:</span>
+<span class="sd">        :vartype seed:</span>
+<span class="sd">        :ivar name:</span>
+<span class="sd">        :vartype name:</span>
+<span class="sd">        :ivar uname:</span>
+<span class="sd">        :vartype uname:</span>
+<span class="sd">        :ivar network:</span>
+<span class="sd">        :vartype network:</span>
+<span class="sd">        :ivar metrics:</span>
+<span class="sd">        :vartype metrics:</span>
+<span class="sd">        :ivar saved:</span>
+<span class="sd">        :vartype saved:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">se_dataset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span> <span class="o">=</span> <span class="n">settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ts</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">se_dataset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span> <span class="o">=</span> <span class="n">settings</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">])</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uname</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">id</span><span class="p">(</span><span class="n">layer</span><span class="p">):{}</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span> <span class="n">m</span><span class="p">:[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;metrics_list&#39;</span><span class="p">]</span> <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">(</span><span class="n">layer</span><span class="p">):{}</span> <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="p">:[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;metrics_list&#39;</span><span class="p">]}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">saved</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">        :param A:</span>
+<span class="sd">        :type A:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">model_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">A</span>
 
     <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">        :param dA:</span>
+<span class="sd">        :type dA:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">model_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">dA</span>
 
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">assign_seed_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">compute_learning_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -537,48 +568,85 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">run</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
 
-        <span class="n">model_training</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="sd">        :param init:</span>
+<span class="sd">        :type init:</span>
+<span class="sd">        :param run:</span>
+<span class="sd">        :type run:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">init</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">run</span><span class="p">:</span>
+            <span class="n">model_training</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
+        <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model_compute_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
 
-        <span class="k">pass</span>
+<span class="sd">        :param write:</span>
+<span class="sd">        :type write:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
+            <span class="n">write_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">logs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
+        <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">model_logs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pyplot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gnuplot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
 
-        <span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">gnuplot_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="sd">        :param pyplot:</span>
+<span class="sd">        :type pyplot:</span>
+<span class="sd">        :param gnuplot:</span>
+<span class="sd">        :type gnuplot:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pyplot</span><span class="p">:</span>
+            <span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gnuplot</span><span class="p">:</span>
+            <span class="n">gnuplot_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="c1"># def embedding_unlabeled(self,X,encode=False):</span>
-    <span class="c1">#</span>
-    <span class="c1">#     if encode == True:</span>
-    <span class="c1">#         embedding = self.l[0]</span>
-    <span class="c1">#         X = ep.encode_dataset(embedding,X,unlabeled=True)</span>
-    <span class="c1">#     else:</span>
-    <span class="c1">#         X = [ x[0] for x in X ]</span>
-    <span class="c1">#</span>
-    <span class="c1">#     X = np.array(X)</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return X</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;.</span>
+
+<span class="sd">        :param dataset:</span>
+<span class="sd">        :type dataset:</span>
+<span class="sd">        :param encode:</span>
+<span class="sd">        :type encode:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        :rtype:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">encode</span><span class="p">:</span>
+            <span class="n">word_to_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">w2i</span>
+            <span class="n">vocab_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+
+        <span class="n">dset</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span>
+
+        <span class="n">dset</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="k">return</span> <span class="n">dset</span>
 </pre></div>
 </div>
 </div>
@@ -588,11 +656,17 @@
 
 
 <span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">    :param A:</span>
+<span class="sd">    :type A:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
 
         <span class="n">layer</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span>
-        
+
         <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">A</span>
@@ -605,7 +679,13 @@
 
 
 <span class="k">def</span> <span class="nf">model_backward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">    :param A:</span>
+<span class="sd">    :type A:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
 
         <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dA</span><span class="p">)</span>
@@ -628,7 +708,8 @@
 
 
 <span class="k">def</span> <span class="nf">assign_seed_layers</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">seed</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">seed</span>
 
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
@@ -646,7 +727,8 @@
 
 
 <span class="k">def</span> <span class="nf">compute_learning_rate</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">se_hPars</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -657,63 +739,11 @@
         <span class="n">layer</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">lrate</span> <span class="o">=</span> <span class="n">schedulers</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
-
-<span class="c1">#</span>
-<span class="c1"># def clip_gradient(layer,max_norm=0.25):</span>
-<span class="c1">#</span>
-<span class="c1">#     # Set the maximum of the norm to be of type float</span>
-<span class="c1">#     max_norm = float(max_norm)</span>
-<span class="c1">#     total_norm = 0</span>
-<span class="c1">#</span>
-<span class="c1">#     # Calculate the L2 norm squared for each gradient and add them to the total norm</span>
-<span class="c1">#     for grad in layer.g.values():</span>
-<span class="c1">#         grad_norm = np.sum(np.power(grad, 2))</span>
-<span class="c1">#         total_norm += grad_norm</span>
-<span class="c1">#</span>
-<span class="c1">#     total_norm = np.sqrt(total_norm)</span>
-<span class="c1">#</span>
-<span class="c1">#     # Calculate clipping coeficient</span>
-<span class="c1">#     clip_coef = max_norm / (total_norm + 1e-6)</span>
-<span class="c1">#</span>
-<span class="c1">#     # If the total norm is larger than the maximum allowable norm, then clip the gradient</span>
-<span class="c1">#     if clip_coef &lt; 1:</span>
-<span class="c1">#         for g in layer.g.keys():</span>
-<span class="c1">#             layer.g[g] *= clip_coef</span>
-<span class="c1">#</span>
-<span class="c1">#     return None</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="train">
 <h3>train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># EpyNN/nnlibs/meta/train.py</span>
-
-
-<span class="k">def</span> <span class="nf">model_training</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-
-    <span class="n">model</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-
-    <span class="k">for</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
-
-        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">batch_dtrain</span><span class="p">:</span>
-
-            <span class="n">A</span> <span class="o">=</span> <span class="n">X</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">X</span>
-
-            <span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-
-            <span class="n">dA</span> <span class="o">=</span> <span class="n">dX</span> <span class="o">=</span> <span class="n">A</span> <span class="o">-</span> <span class="n">batch</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">T</span>
-
-            <span class="n">dA</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dA</span><span class="p">)</span>
-
-        <span class="n">model</span><span class="o">.</span><span class="n">compute_metrics</span><span class="p">()</span>
-
-        <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
-
-        <span class="n">model</span><span class="o">.</span><span class="n">logs</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="kc">None</span>
-</pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="commons">
@@ -723,12 +753,23 @@
 </div>
 <div class="section" id="io">
 <h3>io<a class="headerlink" href="#io" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/io.py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># EpyNN/nnlibs/commons/io.py</span>
+<span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">one_hot_encode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">vocab_size</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">one_hot_encode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">    :param i:</span>
+<span class="sd">    :type i:</span>
+
+<span class="sd">    :param vocab_size:</span>
+<span class="sd">    :type vocab_size:</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">)</span>
 
     <span class="n">one_hot</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -736,33 +777,75 @@
     <span class="k">return</span> <span class="n">one_hot</span>
 
 
-<span class="k">def</span> <span class="nf">one_hot_encode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span><span class="n">word_to_idx</span><span class="p">,</span><span class="n">vocab_size</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">one_hot_encode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
+<span class="sd">    :param sequence:</span>
+<span class="sd">    :type sequence:</span>
+
+<span class="sd">    :param word_to_idx:</span>
+<span class="sd">    :type word_to_idx:</span>
+
+<span class="sd">    :param vocab_size:</span>
+<span class="sd">    :type vocab_size:</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">one_hot_encode</span><span class="p">(</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">])</span>
+
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span><span class="o">.</span><span class="n">T</span>
 
     <span class="k">return</span> <span class="n">encoding</span>
 
 
-<span class="k">def</span> <span class="nf">one_hot_decode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">one_hot_decode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">idx_to_word</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
-    <span class="n">decoding</span> <span class="o">=</span> <span class="p">[</span> <span class="n">runData</span><span class="o">.</span><span class="n">e</span><span class="p">[</span><span class="s1">&#39;i2w&#39;</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">encoded</span><span class="p">)]</span> <span class="k">for</span> <span class="n">encoded</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
+<span class="sd">    :param sequence:</span>
+<span class="sd">    :type sequence:</span>
 
-    <span class="n">decoding</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decoding</span><span class="p">)</span>
+<span class="sd">    :param idx_to_word:</span>
+<span class="sd">    :type idx_to_word:</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">decoding</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx_to_word</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">encoded</span><span class="p">)]</span> <span class="k">for</span> <span class="n">encoded</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">decoding</span>
 
 
-<span class="k">def</span> <span class="nf">dsets_padding</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
 
-    <span class="k">for</span> <span class="n">dset</span> <span class="ow">in</span> <span class="n">dsets</span><span class="p">:</span>
+<span class="sd">    :param dataset:</span>
+<span class="sd">    :type dataset:</span>
 
-        <span class="n">dset</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span>
+<span class="sd">    :param word_to_idx:</span>
+<span class="sd">    :type word_to_idx:</span>
 
-        <span class="n">shape</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">),</span> <span class="p">(</span><span class="n">padding</span><span class="p">,</span> <span class="n">padding</span><span class="p">))</span>
+<span class="sd">    :param vocab_size:</span>
+<span class="sd">    :type vocab_size:</span>
 
-        <span class="n">dset</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">encoded_dataset</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">return</span> <span class="n">dsets</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)):</span>
+
+        <span class="n">features</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">encoded_features</span> <span class="o">=</span> <span class="n">one_hot_encode_sequence</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">encoded_features</span><span class="p">,</span><span class="n">label</span><span class="p">]</span>
+
+        <span class="n">encoded_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">encoded_dataset</span>
 </pre></div>
 </div>
 </div>
@@ -959,11 +1042,13 @@
 <span class="sd">    :rtype: class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span>
+
     <span class="k">if</span> <span class="n">deriv</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">pass</span>
 
     <span class="k">elif</span> <span class="n">deriv</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
 
     <span class="k">return</span> <span class="n">x</span>
 </pre></div>
@@ -1051,47 +1136,68 @@
 <span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="c1"># Local application/library specific imports</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.schedule</span> <span class="k">as</span> <span class="nn">cs</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.maths</span> <span class="k">as</span> <span class="nn">cm</span>
+
+<span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
+    <span class="s2">&quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a dataSet object prototype</span>
-
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    . : .</span>
-<span class="sd">        .</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">        :param dataset: .</span>
 <span class="sd">        :type dataset: list</span>
 
+<span class="sd">        :param label: .</span>
+<span class="sd">        :type label: bool</span>
+
 <span class="sd">        :param name: .</span>
 <span class="sd">        :type name: string</span>
+
+<span class="sd">        :ivar n:</span>
+<span class="sd">        :vartype n:</span>
+
+<span class="sd">        :ivar X:</span>
+<span class="sd">        :vartype X:</span>
+
+<span class="sd">        :ivar Y:</span>
+<span class="sd">        :vartype Y:</span>
+
+<span class="sd">        :ivar y:</span>
+<span class="sd">        :vartype y:</span>
+
+<span class="sd">        :ivar b:</span>
+<span class="sd">        :vartype b:</span>
+
+<span class="sd">        :ivar id:</span>
+<span class="sd">        :vartype id:</span>
+
+<span class="sd">        :ivar s:</span>
+<span class="sd">        :vartype s:</span>
+
+<span class="sd">        :ivar A:</span>
+<span class="sd">        :vartype A:</span>
+
+<span class="sd">        :ivar P:</span>
+<span class="sd">        :vartype P:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Prepare X data</span>
         <span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>
-        <span class="c1"># Prepare Y data</span>
         <span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>
 
-        <span class="c1"># Identifier</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">name</span>
 
-        <span class="c1"># Set X and Y data for training in corresponding uppercase attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
 
-        <span class="c1"># Restore Y data as single digit labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># Labels balance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
+            <span class="c1"># Labels balance</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
 
         <span class="c1"># Set numerical id for each sample</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span> <span class="p">])</span>
@@ -1099,10 +1205,7 @@
         <span class="c1"># Number of samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
-        <span class="c1">## Predicted data</span>
-        <span class="c1"># Output of forward propagation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="c1"># Predicted labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="kc">None</span>
@@ -1114,34 +1217,38 @@
 </div>
 <div class="section" id="schedule">
 <h3>schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#EpyNN/nnlibs/commons/schedule.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.commons.logs</span> <span class="k">as</span> <span class="nn">clo</span>
-
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># EpyNN/nnlibs/commons/schedule.py</span>
+<span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <span class="k">def</span> <span class="nf">exp_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
 
     <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d</span><span class="o">**</span><span class="p">(</span><span class="n">x</span><span class="o">//</span><span class="n">epc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="n">epc</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">lin_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
 
     <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">steady</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
 
     <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">schedulers</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">]</span>
     <span class="n">lr</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;cycling_n&#39;</span><span class="p">]</span>
@@ -1178,10 +1285,6 @@
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="architectures.html" class="btn btn-neutral float-right" title="Architectures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

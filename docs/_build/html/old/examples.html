@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Live examples &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Details.html">Details</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Live examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/old/examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="live-examples">
+<h1>Live examples<a class="headerlink" href="#live-examples" title="Permalink to this headline">¶</a></h1>
+<p>Live examples in <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive</span></code> are directories each containing the required codes to run dummy and real world examples.</p>
+<p>Examples are intended to introduce different input data types, processing schemes and appropriate architecture layers to build Neural Networks with EpyNN.</p>
+<p>In the philosophy or EpyNN, example directories are specific templates with respect to the nature of input data. Thus, users can adapt relevant directories for their own situation, with minimal code modification.</p>
+<div class="section" id="dummy">
+<h2>Dummy<a class="headerlink" href="#dummy" title="Permalink to this headline">¶</a></h2>
+<p>Dummy examples are intended to help in understanding processing schemes for input data of diverse natures.</p>
+<p>During development or for educational purpose, these examples can also be used for debugging because dummy data are generated from models known <em>a priori</em>.</p>
+<div class="section" id="boolean">
+<h3>Boolean<a class="headerlink" href="#boolean" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="numerical">
+<h3>Numerical<a class="headerlink" href="#numerical" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="strings">
+<h3>Strings<a class="headerlink" href="#strings" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_strings</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="time-series">
+<h3>Time series<a class="headerlink" href="#time-series" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="images">
+<h3>Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_images</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+</div>
+<div class="section" id="real">
+<h2>Real<a class="headerlink" href="#real" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="disease">
+<span id="id1"></span><h3>Disease<a class="headerlink" href="#disease" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="id2">
+<h3>Numerical?<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/to_be_done</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="ptms">
+<h3>PTMs<a class="headerlink" href="#ptms" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/ptm_prediction</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="music">
+<h3>Music<a class="headerlink" href="#music" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/music_author</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+<div class="section" id="mnist">
+<h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/mnist_database</span></code></p>
+<p><em>Data preparation, structure and shape</em></p>
+<p><em>Architecture layers, training and prediction</em></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -41,9 +41,7 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Workflows" href="workflows.html" />
-    <link rel="prev" title="Organization" href="organization.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,47 +89,20 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Architectures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#layer">Layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#template">Template</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#feed-forward">Feed-forward</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#dense">Dense</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#recurrent">Recurrent</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#rnn">RNN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gru">GRU</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#lstm">LSTM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#convolutional">Convolutional</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#convolution">Convolution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pooling">Pooling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#adapter">Adapter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#flatten">Flatten</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#embedding">Embedding</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#regularization">Regularization</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#dropout">Dropout</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#alt">Alt</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#epynn">EpyNN</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
             
@@ -256,7 +227,7 @@
 </dd>
 <dt>activation<span class="classifier">dict</span></dt><dd><p>Activation functions for layer. This conveniency attribute stores key:value pairs for activation gates and name of the corresponding function.</p>
 </dd>
-<dt>se_hPars: NoneType</dt><dd><p>Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the <a class="reference internal" href="#nnlibs.meta.models.EpyNN" title="nnlibs.meta.models.EpyNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.meta.models.EpyNN</span></code></a> meta-model.</p>
+<dt>se_hPars: NoneType</dt><dd><p>Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the <a class="reference internal" href="epynn.html#nnlibs.meta.models.EpyNN" title="nnlibs.meta.models.EpyNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.meta.models.EpyNN</span></code></a> meta-model.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,7 +237,7 @@
 <dl class="simple">
 <dt>:py:mod:``</dt><dd><p>Documentation of …</p>
 </dd>
-<dt>:py:mod:``</dt><dd><p>Documentation of the <a class="reference internal" href="#nnlibs.meta.models.EpyNN" title="nnlibs.meta.models.EpyNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.meta.models.EpyNN</span></code></a> meta-model.</p>
+<dt>:py:mod:``</dt><dd><p>Documentation of the <a class="reference internal" href="epynn.html#nnlibs.meta.models.EpyNN" title="nnlibs.meta.models.EpyNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.meta.models.EpyNN</span></code></a> meta-model.</p>
 </dd>
 </dl>
 </div>
@@ -292,7 +263,7 @@
 <dl class="py class">
 <dt id="nnlibs.template.models.Template">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.template.models.</code><code class="sig-name descname">Template</code><a class="reference internal" href="_modules/nnlibs/template/models.html#Template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a template layer prototype. This is a pass-through or inactive layer prototype which contains method definitions used for all active layers. For all layer prototypes, methods are wrappers of functions which contain the specific implementations.</p>
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.__init__">
@@ -368,7 +339,7 @@
 <dl class="py class">
 <dt id="nnlibs.dense.models.Dense">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.dense.models.</code><code class="sig-name descname">Dense</code><span class="sig-paren">(</span><em class="sig-param">nodes=2</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a dense layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -390,12 +361,12 @@
 <dl class="py class">
 <dt id="nnlibs.rnn.models.RNN">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.rnn.models.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a RNN layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hidden_size</strong> – Number of RNN cells in one RNN layer.</p></li>
+<li><p><strong>hidden_size</strong> (<em>int</em>) – Number of RNN cells in one RNN layer.</p></li>
 <li><p><strong>activate</strong> (<em>function</em>) – Activation function for output of RNN cells.</p></li>
 <li><p><strong>activate_hidden</strong> (<em>function</em>) – Activation function for hidden state of RNN cells.</p></li>
 <li><p><strong>initialization</strong> (<em>function</em>) – Weight initialization function for RNN layer.</p></li>
@@ -411,7 +382,7 @@
 <dl class="py class">
 <dt id="nnlibs.gru.models.GRU">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.gru.models.</code><code class="sig-name descname">GRU</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">activate_update=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_reset=&lt;function sigmoid&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/gru/models.html#GRU"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.gru.models.GRU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a GRU layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -434,7 +405,7 @@
 <dl class="py class">
 <dt id="nnlibs.lstm.models.LSTM">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.lstm.models.</code><code class="sig-name descname">LSTM</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">activate_output=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_candidate=&lt;function tanh&gt;</em>, <em class="sig-param">activate_input=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_forget=&lt;function sigmoid&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/lstm/models.html#LSTM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.lstm.models.LSTM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a LSTM layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -462,7 +433,7 @@
 <dl class="py class">
 <dt id="nnlibs.convolution.models.Convolution">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.convolution.models.</code><code class="sig-name descname">Convolution</code><span class="sig-paren">(</span><em class="sig-param">n_filters=1</em>, <em class="sig-param">f_width=3</em>, <em class="sig-param">depth=1</em>, <em class="sig-param">stride=1</em>, <em class="sig-param">padding=0</em>, <em class="sig-param">activate=&lt;function relu&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/convolution/models.html#Convolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.convolution.models.Convolution" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a convolution layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -486,7 +457,7 @@
 <dl class="py class">
 <dt id="nnlibs.pooling.models.Pooling">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.pooling.models.</code><code class="sig-name descname">Pooling</code><span class="sig-paren">(</span><em class="sig-param">f_width=2</em>, <em class="sig-param">stride=1</em>, <em class="sig-param">pool=&lt;function amax&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/pooling/models.html#Pooling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.pooling.models.Pooling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a pooling layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -508,7 +479,7 @@
 <dl class="py class">
 <dt id="nnlibs.flatten.models.Flatten">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.flatten.models.</code><code class="sig-name descname">Flatten</code><a class="reference internal" href="_modules/nnlibs/flatten/models.html#Flatten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.flatten.models.Flatten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a flatten layer prototype.</p>
 </dd></dl>
 
@@ -518,7 +489,7 @@
 <dl class="py class">
 <dt id="nnlibs.embedding.models.Embedding">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.embedding.models.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">se_dataset</span><span class="o">=</span><span class="default_value">{'N_SAMPLES': 1000, 'batch_number': 5, 'dataset_name': 'dummy', 'dataset_save': False, 'dtest_relative': 1, 'dtrain_relative': 2, 'dval_relative': 1}</span></em>, <em class="sig-param"><span class="n">encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/models.html#Embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.models.Embedding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of an embedding layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -540,7 +511,7 @@
 <dl class="py class">
 <dt id="nnlibs.dropout.models.Dropout">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.dropout.models.</code><code class="sig-name descname">Dropout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keep_prob</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a dropout layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -557,12 +528,8 @@
 <h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="nnlibs.commons.models.dataSet">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">dataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">dataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of a dataSet object prototype</p>
-<dl class="simple">
-<dt>.<span class="classifier">.</span></dt><dd><p>.</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>
@@ -572,52 +539,122 @@
 <dt id="nnlibs.meta.models.EpyNN">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.meta.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">settings</span><span class="o">=</span><span class="default_value">[{'N_SAMPLES': 1000, 'dataset_name': 'dummy', 'dataset_save': False, 'dtrain_relative': 2, 'dtest_relative': 1, 'dval_relative': 1, 'batch_number': 5}, {'experiment_name': 'DUMMY', 'logs_frequency': 1, 'logs_frequency_display': 25, 'model_save': False, 'plot_display': True, 'plot_save': False, 'directory_clear': False, 'dataset_target': 1, 'metrics_target': 'accuracy', 'metrics_list': ['accuracy', 'recall', 'precision', 'BCE', 'MSE', 'MAE', 'RMSLE', 'KLD'], 'metrics_plot': ['accuracy', 'BCE']}, {'training_epochs': 1000, 'learning_rate': 0.1, 'schedule_mode': 'exp_decay', 'decay_k': 0.001, 'cycling_n': 1, 'descent_d': 1, 'regularization_l2': 0, 'regularization_l1': 0, 'softmax_temperature': 1, 'ELU_alpha': 0.01, 'LRELU_alpha': 1, 'min_epsilon': 1e-09}]</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Model'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Definition of an . prototype</p>
+<p>Definition of an . prototype.</p>
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">settings</span><span class="o">=</span><span class="default_value">[{'N_SAMPLES': 1000, 'dataset_name': 'dummy', 'dataset_save': False, 'dtrain_relative': 2, 'dtest_relative': 1, 'dval_relative': 1, 'batch_number': 5}, {'experiment_name': 'DUMMY', 'logs_frequency': 1, 'logs_frequency_display': 25, 'model_save': False, 'plot_display': True, 'plot_save': False, 'directory_clear': False, 'dataset_target': 1, 'metrics_target': 'accuracy', 'metrics_list': ['accuracy', 'recall', 'precision', 'BCE', 'MSE', 'MAE', 'RMSLE', 'KLD'], 'metrics_plot': ['accuracy', 'BCE']}, {'training_epochs': 1000, 'learning_rate': 0.1, 'schedule_mode': 'exp_decay', 'decay_k': 0.001, 'cycling_n': 1, 'descent_d': 1, 'regularization_l2': 0, 'regularization_l1': 0, 'softmax_temperature': 1, 'ELU_alpha': 0.01, 'LRELU_alpha': 1, 'min_epsilon': 1e-09}]</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Model'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ts</strong> – </p></li>
+<li><p><strong>layers</strong> – </p></li>
+<li><p><strong>embedding</strong> – </p></li>
+<li><p><strong>se_dataset</strong> – </p></li>
+<li><p><strong>se_config</strong> – </p></li>
+<li><p><strong>se_hPars</strong> – </p></li>
+<li><p><strong>epochs</strong> – </p></li>
+<li><p><strong>seed</strong> – </p></li>
+<li><p><strong>name</strong> – </p></li>
+<li><p><strong>uname</strong> – </p></li>
+<li><p><strong>network</strong> – </p></li>
+<li><p><a class="reference internal" href="Details.html#module-nnlibs.commons.metrics" title="nnlibs.commons.metrics"><strong>metrics</strong></a> – </p></li>
+<li><p><strong>saved</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>A</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.backward">
 <code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.backward" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dA</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.initialize">
 <code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>init</strong> – </p></li>
+<li><p><strong>run</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.compute_metrics">
 <code class="sig-name descname">compute_metrics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.compute_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.compute_metrics" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>write</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.logs">
 <code class="sig-name descname">logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.logs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pyplot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">gnuplot</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pyplot</strong> – </p></li>
+<li><p><strong>gnuplot</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -629,10 +666,6 @@
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="workflows.html" class="btn btn-neutral float-right" title="Workflows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="organization.html" class="btn btn-neutral float-left" title="Organization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

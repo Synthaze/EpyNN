@@ -9,24 +9,20 @@ def lstm_compute_shapes(layer, A):
     :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`
     :type layer: class:`nnlibs.lstm.models.LSTM`
     """
+    X = A    # Input of current layer
 
-    X = A
-
-    layer.fs['X'] = X.shape
-
-    layer.d['v'] = layer.fs['X'][0]
-    layer.d['t'] = layer.fs['X'][1]
-    layer.d['m'] = layer.fs['X'][2]
+     # (s, v, m)
+    layer.d['s'] = X.shape[0]    # Length of sequence
+    layer.d['v'] = X.shape[1]    # Vocabulary size
+    layer.d['m'] = X.shape[2]    # Number of samples
+    # Output length
+    layer.d['o'] = 2 if layer.binary else layer.d['v']
 
     layer.d['z'] = layer.d['h'] + layer.d['v']
 
-    if layer.binary == False:
-        layer.d['o'] = layer.d['v']
-    else:
-        layer.d['o'] = 2
-
-    h1 = (layer.d['h'], 1)
     hz = (layer.d['h'], layer.d['z'])
+    h1 = (layer.d['h'], 1)
+
     oh = (layer.d['o'], layer.d['h'])
     o1 = (layer.d['o'], 1)
 
@@ -36,13 +32,13 @@ def lstm_compute_shapes(layer, A):
     layer.fs['W'] = oh
     layer.fs['b'] = o1
 
-    tvm = layer.fs['Xt'] = (layer.d['t'], layer.d['v'], layer.d['m'])
-    thm = layer.fs['h'] = layer.fs['C'] = (layer.d['t'], layer.d['h'], layer.d['m'])
-    tom = layer.fs['A'] = (layer.d['t'], layer.d['o'], layer.d['m'])
+    # Shapes to initialize forward cache
+    hhm = layer.fs['h'] = layer.fs['C'] = (layer.d['h'], layer.d['h'], layer.d['m'])
+    ohm = layer.fs['A'] = (layer.d['h'], layer.d['o'], layer.d['m'])
+    # Shapes to initialize backward cache
+    hvm = layer.fs['X'] = layer.bs['dA'] = (max(layer.d['h'],layer.d['s']), layer.d['v'], layer.d['m'])
+    hzm = layer.fs['z'] = (layer.d['h'], layer.d['z'], layer.d['m'])
 
-    tzm = layer.fs['z'] = (layer.d['t'], layer.d['z'], layer.d['m'])
-
-    hm = layer.fs['Ct'] = layer.fs['ht'] = (layer.d['h'], layer.d['m'])
 
     return None
 
@@ -85,34 +81,29 @@ def lstm_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    for t in reversed(range(layer.d['t'])):
+    for s in reversed(range(layer.d['h'])):
 
-        h = layer.fc['h'][t]
+        h = layer.fc['h'][s]
+        z = layer.fc['z'][s]
 
-        z = layer.fc['z'][t]
-
-        if layer.binary == False:
-            dXt = layer.bc['dXt'][t]
-        else:
-            dXt = layer.bc['dXt']
-
-        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dXt, h.T)
-        layer.g['db'] += 1./ layer.d['m'] * np.sum(dXt, axis=1, keepdims=True)
+        dX = layer.bc['dX'][s] if not layer.binary else layer.bc['dX']
+        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dX, h.T)
+        layer.g['db'] += 1./ layer.d['m'] * np.sum(dX, axis=1, keepdims=True)
 
         # Retrieve do and update dWo and dbo
-        do = layer.bc['do'][t]
+        do = layer.bc['do'][s]
         layer.g['dWo'] += 1./ layer.d['m'] * np.dot(do, z.T)
         layer.g['dbo'] += 1./ layer.d['m'] * np.sum(do, axis=1, keepdims=True)
         # Retrieve dg and update dWg and dbg
-        dg = layer.bc['dg'][t]
+        dg = layer.bc['dg'][s]
         layer.g['dWg'] += 1./ layer.d['m'] * np.dot(dg, z.T)
         layer.g['dbg'] += 1./ layer.d['m'] * np.sum(dg, axis=1, keepdims=True)
         # Retrieve di and update dWi and dbi
-        di = layer.bc['di'][t]
+        di = layer.bc['di'][s]
         layer.g['dWi'] += 1./ layer.d['m'] * np.dot(di, z.T)
         layer.g['dbi'] += 1./ layer.d['m'] * np.sum(di, axis=1, keepdims=True)
         # Retrieve df and update dWf and dbf
-        df = layer.bc['df'][t]
+        df = layer.bc['df'][s]
         layer.g['dWf'] += 1./ layer.d['m'] * np.dot(df, z.T)
         layer.g['dbf'] += 1./ layer.d['m'] * np.sum(df, axis=1, keepdims=True)
 

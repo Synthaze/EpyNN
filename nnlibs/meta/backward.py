@@ -2,7 +2,13 @@
 
 
 def model_backward(model, dA):
+    """.
 
+    :param A:
+    :type A:
+    :return:
+    :rtype:
+    """
     for layer in reversed(model.layers):
 
         dA = layer.backward(dA)

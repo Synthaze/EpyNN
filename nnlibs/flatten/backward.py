@@ -1,4 +1,5 @@
-#EpyNN/nnlibs/flatten/backward.py
+# EpyNN/nnlibs/flatten/backward.py
+# Related third party imports
 import numpy as np
 
 

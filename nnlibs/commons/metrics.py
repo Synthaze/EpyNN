@@ -1,9 +1,11 @@
-#EpyNN/nnlibs/commons/metrics.py
+# EpyNN/nnlibs/commons/metrics.py
+# Related third party imports
 import numpy as np
 
 
 def model_compute_metrics(model):
-
+    """.
+    """
     metrics = {
         'accuracy': accuracy,
         'recall': recall,
@@ -40,12 +42,15 @@ def model_compute_metrics(model):
 
 
 def accuracy(dset,hPars):
+    """.
+    """
     accuracy = np.mean(dset.P - dset.y == 0)
     return accuracy
 
 
 def recall(dset,hPars):
-
+    """.
+    """
     oy = dset.P + dset.y
 
     tp = np.sum(np.where(oy == 0,1,0))
@@ -59,7 +64,8 @@ def recall(dset,hPars):
 
 
 def precision(dset,hPars):
-
+    """.
+    """
     oy = dset.P + dset.y
 
     tp = np.sum(np.where(oy == 0,1,0))
@@ -73,36 +79,50 @@ def precision(dset,hPars):
 
 
 def CCE(dset,hPars):
+    """.
+    """
     CCE = - 1 * np.mean(dset.Y * np.log(dset.A + hPars['min_epsilon']))
     return CCE
 
 
 def CE(dset,hPars):
+    """.
+    """
     B = np.array(list(1.0 * (dset.A[i] == np.max(dset.A[i])) for i in range(dset.A.shape[0])))
     CE = np.sum(np.abs(B - dset.Y)) / len(dset.Y) / 2.0
     return CE
 
 
 def BCE(dset,hPars):
+    """.
+    """
     BCE = - np.mean(np.multiply(dset.Y, np.log(dset.A+hPars['min_epsilon'])) + np.multiply((1-dset.Y), np.log(1-dset.A+hPars['min_epsilon'])))
     return BCE
 
 
 def MSE(dset,hPars):
+    """.
+    """
     MSE = np.mean(np.square(np.subtract(dset.Y,dset.A)+hPars['min_epsilon']))
     return MSE
 
 
 def MAE(dset,hPars):
+    """.
+    """
     MAE = np.mean(np.abs(dset.Y-dset.A))
     return MAE
 
 
 def RMSLE(dset,hPars):
+    """.
+    """
     RMSLE = np.sqrt(np.mean(np.square(np.log1p(dset.Y+hPars['min_epsilon']) - np.log1p(dset.A+hPars['min_epsilon']))))
     return RMSLE
 
 
 def KLD(dset,hPars):
+    """.
+    """
     KLD = np.mean(dset.A * np.log(((dset.A+hPars['min_epsilon']) / (dset.Y+hPars['min_epsilon']))))
     return KLD

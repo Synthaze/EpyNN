@@ -93,13 +93,13 @@ class LSTM(Layer):
         # Forward pass
         self.compute_shapes(A)
         A = lstm_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
         return A
 
     def backward(self, dA):
         # Backward pass
         dA = lstm_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
         return dA
 
     def compute_gradients(self):

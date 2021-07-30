@@ -22,13 +22,13 @@ config = {
     'directory_clear': True,
     'dataset_target': 1,
     'metrics_target': 'accuracy',
-    'metrics_list': ['accuracy','recall','precision','BCE','MSE','MAE','RMSLE','KLD'],
+    'metrics_list': ['accuracy','recall','precision','BCE','MSE'],
     'metrics_plot': ['accuracy','BCE']
 }
 
 
 hPars = {
-    'training_epochs': 1000,
+    'training_epochs': 100,
     'learning_rate': 0.1,
     'schedule_mode': 'exp_decay',
     'decay_k': 0.0025,

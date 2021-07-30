@@ -6,8 +6,8 @@ import time
 import sys
 
 # Related third party imports
-from pygments.formatters import TerminalTrueColorFormatter
 from pygments import highlight, lexers, formatters
+from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import get_lexer_by_name
 from termcolor import cprint, colored
 from texttable import Texttable
@@ -16,7 +16,11 @@ from tabulate import tabulate
 
 
 def model_logs(model):
-
+    """.
+    
+    :param model:
+    :type model:
+    """
     colors = [
         'white',
         'green',
@@ -31,10 +35,10 @@ def model_logs(model):
     logs_freq = model.se_config['logs_frequency']
     logs_freq_disp = model.se_config['logs_frequency_display']
 
-    if model.e == 0:
+    if model.e == 1:
         model.current_logs = [headers_logs(model.metrics, colors)]
 
-    if model.e % logs_freq == 0:
+    if (model.e + 1) % logs_freq == 0:
         model.current_logs.append(current_logs(model, colors))
 
     if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
@@ -52,14 +56,21 @@ def model_logs(model):
 
         model.current_logs = [headers_logs(model.metrics, colors)]
 
-    if model.e + 1 == model.epochs:
-        initialize_logs_print(model)
-
     return None
 
 
 def current_logs(model, colors):
+    """.
 
+    :param model:
+    :type model:
+
+    :param colors:
+    :type colors:
+
+    :return:
+    :rtype:
+    """
     metrics = model.metrics
     dsets = model.embedding.dsets
 
@@ -90,7 +101,11 @@ def current_logs(model, colors):
 
 
 def remaining_time_logs(model):
+    """.
 
+    :param model:
+    :type model:
+    """
     elapsed_time = round(time.time() - int(model.ts), 2)
 
     rate = round((model.e+1) / elapsed_time, 2)
@@ -103,7 +118,11 @@ def remaining_time_logs(model):
 
 
 def initialize_model_logs(model):
+    """.
 
+    :param model:
+    :type model:
+    """
     model.current_logs = []
 
     model.init_logs = []
@@ -133,11 +152,16 @@ def initialize_model_logs(model):
 
 
 def initialize_logs_print(model):
+    """.
+
+    :param model:
+    :type model:
+    """
+    cprint ('----------------------- %s -------------------------\n' % model.name, attrs=['bold'], end='\n\n')
 
     cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
 
     print (model.init_logs[0].draw(), end='\n\n')
-
     print (model.init_logs[1].draw(), end='\n\n')
 
 
@@ -149,7 +173,6 @@ def initialize_logs_print(model):
     cprint ('------------------------------------------- Layers ---------------------------------------------\n',attrs=['bold'])
 
     print (model.init_logs[3].draw(), end='\n\n')
-
     print (model.init_logs[4].draw(), end='\n\n')
 
 
@@ -159,7 +182,14 @@ def initialize_logs_print(model):
 
 
 def network_logs(network):
+    """.
 
+    :param network:
+    :type network:
+
+    :return:
+    :rtype:
+    """
     headers = [
         'ID',
         'Layer',
@@ -191,7 +221,14 @@ def network_logs(network):
 
 
 def layers_lrate_logs(layers):
+    """.
 
+    :param layers:
+    :type layers:
+
+    :return:
+    :rtype:
+    """
     headers = [
         'Layer',
         'training\nepochs\n(e)',
@@ -239,7 +276,14 @@ def layers_lrate_logs(layers):
 
 
 def layers_others_logs(layers):
+    """.
 
+    :param layers:
+    :type layers:
+
+    :return:
+    :rtype:
+    """
     headers = [
         'Layer',
         'LRELU\nalpha',
@@ -276,7 +320,20 @@ def layers_others_logs(layers):
 
 
 def dsets_samples_logs(dsets, se_dataset, se_config):
+    """.
 
+    :param dsets:
+    :type dsets:
+
+    :param se_dataset:
+    :type se_dataset:
+
+    :param se_config:
+    :type se_config:
+
+    :return:
+    :rtype:
+    """
     headers = [
         'N_SAMPLES',
         'dtrain\n(0)',
@@ -315,7 +372,11 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
 
 
 def dsets_labels_logs(dsets):
+    """.
 
+    :return:
+    :rtype:
+    """
     headers = [
         'N_LABELS',
         'dtrain\n(0)',
@@ -340,7 +401,11 @@ def dsets_labels_logs(dsets):
 
 
 def headers_logs(metrics,colors):
+    """.
 
+    :return:
+    :rtype:
+    """
     headers = [
         colored('epoch', 'white', attrs=['bold']) + '\n',
     ]
@@ -365,7 +430,8 @@ def headers_logs(metrics,colors):
 
 
 def set_highlighted_excepthook():
-
+    """.
+    """
     lexer = get_lexer_by_name('pytb' if sys.version_info.major < 3 else 'py3tb')
 
     formatter = TerminalTrueColorFormatter(bg='dark', style='fruity')
@@ -374,15 +440,49 @@ def set_highlighted_excepthook():
         tbtext = ''.join(traceback.format_exception(type, value, tb))
         sys.stderr.write(highlight(tbtext, lexer, formatter))
 
+        return None
+
     sys.excepthook = myexcepthook
+
+    return None
+
+
+def process_logs(msg, level=0):
+    """.
+
+    :param msg:
+    :type msg:
+
+    :param level:
+    :type level:
+    """
+    colors = [
+        'white',
+        'green',
+        'red',
+        'magenta',
+        'cyan',
+        'yellow',
+        'blue',
+        'grey',
+    ]
+
+    cprint(msg, colors[level],  attrs=['bold'])
+
+    return None
 
 
 def pretty_json(data):
+    """.
 
+    :param data:
+    :type data:
+
+    :return:
+    :rtype:
+    """
     data = json.dumps(data, sort_keys=False, indent=4)
 
     data = highlight(data, lexers.JsonLexer(), formatters.TerminalFormatter())
 
-    print (data)
-
-    return None
+    return data

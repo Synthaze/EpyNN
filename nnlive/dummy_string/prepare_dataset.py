@@ -1,4 +1,4 @@
-#EpyNN/nnlive/dummy_strings/prepare_dataset.py
+# EpyNN/nnlive/dummy_strings/prepare_dataset.py
 import nnlibs.commons.library as cli
 
 import random
@@ -10,7 +10,7 @@ def features_string():
     """
 
     """
-    
+
     # Number of features describing a sample
     N_FEATURES = 12
 
@@ -23,7 +23,7 @@ def features_string():
     return features
 
 
-def prepare_dataset(se_dataset):
+def labeled_dataset(se_dataset):
     """
     Prepare dummy dataset with Boolean sample features
 
@@ -77,7 +77,7 @@ def prepare_dataset(se_dataset):
 # DOCS_END
 
 
-def prepare_unlabeled(N_SAMPLES=1):
+def unlabeled_dataset(N_SAMPLES=1):
     """
 
     """
@@ -90,7 +90,7 @@ def prepare_unlabeled(N_SAMPLES=1):
 
         features = features_string()
 
-        sample = [ features, None ]
+        sample = [ features, [] ]
 
         # Append sample to dataset
         unlabeled_dataset.append(sample)

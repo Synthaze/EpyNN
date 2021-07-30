@@ -11,49 +11,51 @@ from nnlibs.commons.logs import pretty_json
 
 
 def initialize_model_layers(model):
+    """.
+    """
+    batch_dtrain = model.embedding.batch_dtrain
 
-        batch_dtrain = model.embedding.batch_dtrain
+    sample = batch_dtrain[0]
 
-        sample = batch_dtrain[0]
+    A = X = sample.X
+    Y = sample.Y
 
-        A = X = sample.X
-        Y = sample.Y
+    for layer in model.layers:
 
-        for layer in model.layers:
+        layer.name = layer.__class__.__name__
 
-            layer.name = layer.__class__.__name__
+        model.network[id(layer)]['Layer'] = layer.name
+        model.network[id(layer)]['Activation'] = layer.activation
+        model.network[id(layer)]['Dimensions'] = layer.d
 
-            model.network[id(layer)]['Layer'] = layer.name
-            model.network[id(layer)]['Activation'] = layer.activation
-            model.network[id(layer)]['Dimensions'] = layer.d
+        layer.compute_shapes(A)
 
-            layer.compute_shapes(A)
+        model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-            model.network[id(layer)]['FW_Shapes'] = layer.fs
+        layer.initialize_parameters()
 
-            layer.initialize_parameters()
+        A = layer.forward(A)
 
-            A = layer.forward(A)
+        model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-            model.network[id(layer)]['FW_Shapes'] = layer.fs
+    dA = A - sample.Y.T
 
-        dA = A - sample.Y.T
+    for layer in reversed(model.layers):
 
-        for layer in reversed(model.layers):
+        dA = layer.backward(dA)
 
-            dA = layer.backward(dA)
+        model.network[id(layer)]['BW_Shapes'] = layer.bs
 
-            model.network[id(layer)]['BW_Shapes'] = layer.bs
+        layer.compute_gradients()
 
-            layer.compute_gradients()
-
-        return None
+    return None
 
 
 def initialize_exceptions(model,trace):
-
-    #for layer in model.network.keys():
-    #    pretty_json(model.network[layer])
+    """.
+    """
+    for layer in model.network.keys():
+        pretty_json(model.network[layer])
 
     cprint('/!\\ Initialization of EpyNN model failed','red',attrs=['bold'])
 

@@ -4,9 +4,9 @@ import termplotlib
 from matplotlib import pyplot as plt
 
 
-
 def pyplot_metrics(model):
-
+    """.
+    """
     se_config = model.se_config
 
     set_names = [
@@ -50,7 +50,8 @@ def pyplot_metrics(model):
 
 
 def gnuplot_accuracy(model):
-
+    """.
+    """
     se_config = model.se_config
 
     set_names = [

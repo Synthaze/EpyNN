@@ -1,6 +1,4 @@
 # EpyNN/nnlibs/flatten/parameters.py
-# Related third party imports
-import numpy as np
 
 
 def flatten_compute_shapes(layer, A):

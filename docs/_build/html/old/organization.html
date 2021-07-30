@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Organization &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Details.html">Details</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Organization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/old/organization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="organization">
+<h1>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="guidelines">
+<h2>Guidelines<a class="headerlink" href="#guidelines" title="Permalink to this headline">¶</a></h2>
+<p>Although EpyNN can be used for production, it is meant to be a library of homogeneous architecture templates and practical examples which is expected to save an important amount of time for people who wish to learn, teach or develop from scratch, by themselves.</p>
+<div class="section" id="pure-python-numpy">
+<h3>Pure Python/NumPy<a class="headerlink" href="#pure-python-numpy" title="Permalink to this headline">¶</a></h3>
+<p>EpyNN in written in pure Python/NumPy without a single import from AI librairies.</p>
+<p>By focusing on readability, the source code of EpyNN thus directly reflects the mathematics underlying the diverse architectures provided with EpyNN.</p>
+</div>
+<div class="section" id="functions-over-class-methods">
+<h3>Functions over Class Methods<a class="headerlink" href="#functions-over-class-methods" title="Permalink to this headline">¶</a></h3>
+<p>Although Python is well suited - if not designed - for extensive use of Class and Method attributes, we choose to favor Functions as much as possible, consistently with directory structures.</p>
+</div>
+<div class="section" id="less-intricate-code">
+<h3>Less intricate code<a class="headerlink" href="#less-intricate-code" title="Permalink to this headline">¶</a></h3>
+<p>The root <code class="docutils literal notranslate"><span class="pre">EpyNN/</span></code> directory contains the <code class="docutils literal notranslate"><span class="pre">nnlibs</span></code> sub-directory which includes commons, the EpyNN meta-model, and each layer architectures used to build Neural Networks.</p>
+<p>Consequently, a single level of recursion from <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlibs</span></code> is required to explore all content and associated python sources.</p>
+</div>
+</div>
+<div class="section" id="layers">
+<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
+<p>Neural Networks are made of architecture layers, implemented in EpyNN as <strong>models</strong>.</p>
+<p>A single layer contains nodes - often refereed to as neurons - and architecture-specific <strong>forward</strong> and <strong>backward</strong> schemes for <em>signal</em> and <em>error</em> propagation, respectively.</p>
+<p>Whereas a forward-propagated signal yields a result, a backward-propagated error enables the Neural Network to learn by computing <em>gradients</em> used to alter architecture-specific <strong>parameters</strong>.</p>
+<div class="section" id="models">
+<h3>models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">models.py</span></code> file.</p>
+</div>
+<div class="section" id="forward">
+<h3>forward<a class="headerlink" href="#forward" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">forward.py</span></code> file.</p>
+</div>
+<div class="section" id="backward">
+<h3>backward<a class="headerlink" href="#backward" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">backward.py</span></code> file.</p>
+</div>
+<div class="section" id="parameters">
+<h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
+<p>Each layer directory contains a <code class="docutils literal notranslate"><span class="pre">parameters.py</span></code> file.</p>
+</div>
+</div>
+<div class="section" id="meta">
+<h2>Meta<a class="headerlink" href="#meta" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>models<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id2">
+<h3>forward<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id3">
+<h3>backward<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id4">
+<h3>parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="train">
+<h3>train<a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="commons">
+<h2>Commons<a class="headerlink" href="#commons" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="decorators">
+<h3>decorators<a class="headerlink" href="#decorators" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="io">
+<h3>io<a class="headerlink" href="#io" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="library">
+<h3>library<a class="headerlink" href="#library" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="logs">
+<h3>logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="maths">
+<h3>maths<a class="headerlink" href="#maths" title="Permalink to this headline">¶</a></h3>
+<p><strong>Weights initialization</strong></p>
+<ul class="simple">
+<li><p>Xavier</p></li>
+</ul>
+<ul class="simple">
+<li><p>Orthogonal</p></li>
+</ul>
+<p><strong>Activation functions and derivatives</strong></p>
+<p><em>Rectifier Linear Unit (ReLU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Leaky ReLu (LReLU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Exponential Linear Unit (ELU)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Sigmoid</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Hyperbolic tangent (tanh)</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Swish</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+<p><em>Softmax</em></p>
+<ul class="simple">
+<li><p>Primary</p></li>
+</ul>
+<ul class="simple">
+<li><p>Derivative</p></li>
+</ul>
+</div>
+<div class="section" id="metrics">
+<h3>metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id5">
+<h3>models<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="plot">
+<h3>plot<a class="headerlink" href="#plot" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="schedule">
+<h3>schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

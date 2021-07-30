@@ -3,44 +3,9 @@
 import numpy as np
 
 
-def gru_backward(layer, dA):
-
-    dX, dhn, dXt, dh, dhh = initialize_backward(layer, dA)
-
-    # Loop through time steps
-    for t in reversed(range(layer.d['t'])):
-
-        if layer.binary == False:
-
-            dXt = layer.bc['dXt'][t] = dX[t]
-
-            dh = layer.bc['dh'][t] = np.dot(layer.p['W'].T, dXt) + dhn
-
-            dhh = dh * (1-layer.fc['z'][t])
-            dhh = layer.bc['dhh'][t] = dhh * layer.activate_hidden(layer.fc['hh'][t], deriv=True)
-
-        dr = np.dot(layer.p['Uh'].T, dhh)
-        dr = dr * layer.fc['h'][t-1]
-        dr = layer.bc['dr'][t] = dr * layer.activate_reset(layer.fc['r'][t], deriv=True)
-
-        dz = np.multiply(dh, layer.fc['h'][t-1] - layer.fc['hh'][t])
-        dz = layer.bc['dz'][t] = dz * layer.activate_update(layer.fc['z'][t], deriv=True)
-
-        dhfhh = np.dot(layer.p['Uh'].T, dhh)
-        dhfhh = layer.bc['dhfhh'][t] = dhfhh * layer.fc['r'][t]
-        dhfr = layer.bc['dhfr'][t] = np.dot(layer.p['Ur'].T, dr)
-        dhfzi = layer.bc['dhfzi'][t] = np.dot(layer.p['Uz'].T, dz)
-        dhfz = layer.bc['dhfz'][t] = dh * layer.fc['z'][t]
-        dhn = layer.bc['dhn'][t] = dhfhh + dhfr + dhfzi + dhfz
-
-    return dA
-
-
 def initialize_backward(layer, dA):
 
     dX = layer.bc['dX'] = dA
-
-    dXt = layer.bc['dXt'] = layer.bc['dX']
 
     layer.bc['dh'] = np.zeros(layer.fs['h'])
     layer.bc['dhh'] = np.zeros(layer.fs['h'])
@@ -53,11 +18,43 @@ def initialize_backward(layer, dA):
     layer.bc['dhfz'] = np.zeros_like(layer.bc['dh'])
     layer.bc['dhn'] = np.zeros(layer.fs['h'])
 
-    dh = layer.bc['dh'] = np.dot(layer.p['W'].T, dXt)
+    dhn = np.zeros_like(layer.bc['dh'][0])
 
-    dhh = dh * (1-layer.fc['z'][-1])
-    dhh = dhh * layer.activate_input(layer.fc['hh'][-1], deriv=True)
+    return dX, dhn
 
-    dhn = np.zeros(layer.fs['ht'])
 
-    return dX, dhn, dXt, dh, dhh
+def gru_backward(layer, dA):
+
+    dX, dhn = initialize_backward(layer, dA)
+
+    # Loop through steps
+    for s in reversed(range(layer.d['h'])):
+
+        dX = dX if layer.binary else layer.bc['dX'][s]
+
+        dh = np.zeros_like(dhn) if layer.binary else dhn
+
+        dh += np.dot(layer.p['W'].T, dX)
+
+        if layer.binary == False:
+
+            dhh = dh * (1-layer.fc['z'][s])
+            dhh = layer.bc['dhh'][s] = dhh * layer.activate_hidden(layer.fc['hh'][s], deriv=True)
+
+        dr = np.dot(layer.p['Uh'].T, dhh)
+        dr = dr * layer.fc['h'][s - 1]
+        dr = layer.bc['dr'][s] = dr * layer.activate_reset(layer.fc['r'][s], deriv=True)
+
+        dz = np.multiply(dh, layer.fc['h'][s - 1] - layer.fc['hh'][s])
+        dz = layer.bc['dz'][s] = dz * layer.activate_update(layer.fc['z'][s], deriv=True)
+
+        dhfhh = np.dot(layer.p['Uh'].T, dhh)
+        dhfhh = layer.bc['dhfhh'][s] = dhfhh * layer.fc['r'][s]
+        dhfr = layer.bc['dhfr'][s] = np.dot(layer.p['Ur'].T, dr)
+        dhfzi = layer.bc['dhfzi'][s] = np.dot(layer.p['Uz'].T, dz)
+        dhfz = layer.bc['dhfz'][s] = dh * layer.fc['z'][s]
+        dhn = layer.bc['dhn'][s] = dhfhh + dhfr + dhfzi + dhfz
+
+        dA[s] = layer.fc['X'][s] * dX
+
+    return dA

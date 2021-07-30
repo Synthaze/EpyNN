@@ -92,12 +92,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 
             
@@ -224,126 +230,95 @@
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#test-run">Test run</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="organization.html">Organization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="organization.html#guidelines">Guidelines</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#pure-python-numpy">Pure Python/NumPy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#functions-over-class-methods">Functions over Class Methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#less-intricate-code">Less intricate code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="epynn.html#network-model">Network model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epynn.html#layer-model">Layer model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="epynn.html#base-layer">Base layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="epynn.html#template-layer">Template layer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="organization.html#layers">Layers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#models">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#forward">forward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#backward">backward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#parameters">parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epynn.html#data-model">Data model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epynn.html#settings">Settings</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="organization.html#meta">Meta</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#id1">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#id2">forward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#id3">backward</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#id4">parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#train">train</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="organization.html#commons">Commons</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#decorators">decorators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#io">io</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#library">library</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#logs">logs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#maths">maths</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#metrics">metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#id5">models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#plot">plot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="organization.html#schedule">schedule</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Template.html">Template layer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Template.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Template.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Template.html#dummy-string-data">Dummy string data</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="architectures.html">Architectures</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#layer">Layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#template">Template</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#feed-forward">Feed-forward</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#dense">Dense</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#recurrent">Recurrent</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#rnn">RNN</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#gru">GRU</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#lstm">LSTM</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#convolutional">Convolutional</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#convolution">Convolution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#pooling">Pooling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#adapter">Adapter</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#flatten">Flatten</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#embedding">Embedding</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#regularization">Regularization</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#dropout">Dropout</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="architectures.html#alt">Alt</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#dataset">Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="architectures.html#epynn">EpyNN</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#initialization">Initialization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#full-imports">Full imports</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#headers">Headers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#settings">Settings</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#datasets">Datasets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#preparation">Preparation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#import">Import</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#model-builder">Model Builder</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#stack-layers">Stack layers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#initialize-your-network">Initialize your network</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#model-training">Model training</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#train">Train</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#plot-results">Plot results</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="workflows.html#use-your-model">Use your model</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#prepare-data">Prepare data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="workflows.html#predict">Predict</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Embedding.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Embedding.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Embedding.html#dummy-string-data">Dummy string data</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Live examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#dummy">Dummy</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#boolean">Boolean</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#numerical">Numerical</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#strings">Strings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#time-series">Time series</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#images">Images</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="examples.html#real">Real</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#disease">Disease</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#id2">Numerical?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#ptms">PTMs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#music">Music</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples.html#mnist">MNIST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Dense.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dense.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Dense.html#dummy-string-data">Dummy string data</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RNN.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RNN.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RNN.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LSTM.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LSTM.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="LSTM.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="GRU.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="GRU.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="GRU.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Convolution.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Convolution.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Convolution.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Dropout.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dropout.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Dropout.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Flatten.html#layer-architecture">Layer architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Flatten.html#live-examples">Live examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Flatten.html#dummy-string-data">Dummy string data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Examples and data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#dummy">Dummy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataset.html#real">Real</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
 </ul>
 </div>
 </div>

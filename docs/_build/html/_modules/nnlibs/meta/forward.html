@@ -33,8 +33,9 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -90,12 +91,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
             
@@ -162,16 +169,22 @@
            <div itemprop="articleBody">
             
   <h1>Source code for nnlibs.meta.forward</h1><div class="highlight"><pre>
-<span></span><span class="c1">#EpyNN/nnlibs/meta/forward.py</span>
-<span class="kn">import</span> <span class="nn">nnlibs.meta.parameters</span> <span class="k">as</span> <span class="nn">mp</span>
+<span></span><span class="c1"># EpyNN/nnlibs/meta/forward.py</span>
 
-<div class="viewcode-block" id="forward"><a class="viewcode-back" href="../../../philosophy.html#nnlibs.meta.forward.forward">[docs]</a><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An example docstring for a function definition.&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">l</span><span class="p">:</span>
+
+<div class="viewcode-block" id="model_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.forward.model_forward">[docs]</a><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;.</span>
+
+<span class="sd">    :param A:</span>
+<span class="sd">    :type A:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+
+        <span class="n">layer</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span>
 
         <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-        <span class="c1"># Update shapes</span>
-        <span class="n">mp</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">A</span></div>
 </pre></div>

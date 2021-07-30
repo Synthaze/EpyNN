@@ -1,4 +1,4 @@
-#EpyNN/nnlibs/flatten/models.py
+# EpyNN/nnlibs/flatten/models.py
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.flatten.forward import flatten_forward

@@ -53,12 +53,14 @@ class GRU(Layer):
 
         self.activation = {
             'activate': activate.__name__,
+            'activate_hidden': activate_hidden.__name__,
             'activate_input': activate_hidden.__name__,
             'activate_update': activate_update.__name__,
             'activate_reset': activate_reset.__name__,
         }
 
         self.activate = activate
+        self.activate_hidden = activate_hidden
         self.activate_update = activate_update
         self.activate_reset = activate_reset
         self.activate_input = activate_hidden
@@ -81,13 +83,13 @@ class GRU(Layer):
         # Forward pass
         self.compute_shapes(A)
         A = gru_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
         return A
 
     def backward(self, dA):
         # Backward pass
         dA = gru_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
         return dA
 
     def compute_gradients(self):

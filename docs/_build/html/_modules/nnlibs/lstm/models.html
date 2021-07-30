@@ -91,12 +91,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
             
@@ -177,7 +183,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="LSTM"><a class="viewcode-back" href="../../../architectures.html#nnlibs.lstm.models.LSTM">[docs]</a><span class="k">class</span> <span class="nc">LSTM</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="LSTM"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.lstm.models.LSTM">[docs]</a><span class="k">class</span> <span class="nc">LSTM</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a LSTM layer prototype.</span>
 
@@ -258,13 +264,13 @@
         <span class="c1"># Forward pass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">lstm_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">A</span>
 
     <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="c1"># Backward pass</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">lstm_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dA</span>
 
     <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

@@ -3,7 +3,7 @@
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.io import one_hot_encode_sequence
+from nnlibs.commons.io import encode_dataset
 from nnlibs.commons.models import dataSet
 
 
@@ -25,10 +25,9 @@ def embedding_prepare(layer, dataset, se_dataset, encode):
     :return:
     :rtype : tuple
     """
-
     if encode == True:
         index_vocabulary_auto(layer, dataset)
-        dataset = encoded_dataset = encode_dataset(layer, dataset)
+        dataset = encoded_dataset = encode_dataset(dataset, layer.w2i, layer.d['v'])
 
     dtrain, dtest, dval = split_dataset(dataset,se_dataset)
 
@@ -64,48 +63,14 @@ def index_vocabulary_auto(layer, dataset):
     :rtype: [ReturnType]
     """
 
-    words = set([ w for x in dataset for w in x[0] ])
+    words = sorted(list(set([w for x in dataset for w in x[0]])))
 
-    word_to_idx = layer.w2i = { k:i for i,k in enumerate(list(words)) }
+    word_to_idx = layer.w2i = { k:i for i,k in enumerate(words) }
     idx_to_word = layer.i2w = { v:k for k,v in layer.w2i.items() }
 
     vocab_size = layer.d['v'] = len(layer.w2i.keys())
 
     return None
-
-
-def encode_dataset(layer, dataset):
-    """[Summary]
-
-    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
-    :type layer: class:`nnlibs.embedding.models.Embedding`
-
-    :param dataset: [ParamDescription], defaults to [DefaultParamVal]
-    :type [ParamName]: list
-
-    :return: [ReturnDescription]
-    :rtype: list
-    """
-
-    word_to_idx = layer.w2i
-
-    vocab_size = layer.d['v']
-
-    encoded_dataset = []
-
-    for i in range(len(dataset)):
-
-        features = dataset[i][0]
-
-        label = dataset[i][1].copy()
-
-        encoded_features = one_hot_encode_sequence(features,word_to_idx,vocab_size)
-
-        sample = [encoded_features,label]
-
-        encoded_dataset.append(sample)
-
-    return encoded_dataset
 
 
 def split_dataset(dataset, se_dataset):

@@ -33,8 +33,9 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -90,12 +91,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
             
@@ -167,42 +174,69 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="initialize_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.initialize_forward">[docs]</a><span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward cache initialization.</span>
 
-    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
+<span class="sd">    :param layer: RNN layer object</span>
+<span class="sd">    :type layer: class:`nnlibs.rnn.models.RNN`</span>
+<span class="sd">    :param A: Output of forward propagation from previous layer</span>
+<span class="sd">    :type A: class:`numpy.ndarray`</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">])</span>
+<span class="sd">    :return: Input of forward propagation for current layer</span>
+<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :return: Previous cell state initialized with zeros.</span>
+<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
+    <span class="n">X</span><span class="p">[:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span>
+
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
 
-    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;ht&#39;</span><span class="p">])</span>
+    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span></div>
 
 
-<div class="viewcode-block" id="rnn_forward"><a class="viewcode-back" href="../../../test.html#nnlibs.rnn.forward.rnn_forward">[docs]</a><span class="k">def</span> <span class="nf">rnn_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-
+<div class="viewcode-block" id="rnn_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.rnn_forward">[docs]</a><span class="k">def</span> <span class="nf">rnn_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># (1) Initialize cache and cell state</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 
-    <span class="c1"># Loop through time steps</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]):</span>
+    <span class="c1"># Iterate through sequence to next cell</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]):</span>
 
-        <span class="c1"># Xt (X at current t) from X</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Xt&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][:,</span> <span class="n">t</span><span class="p">]</span>
+        <span class="c1"># (2s) Slice sequence (l, v, m) with respect to step</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
 
-        <span class="c1"># Calculate input gate</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Uh&#39;</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
-        <span class="n">h</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Vh&#39;</span><span class="p">],</span> <span class="n">hp</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">]</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_hidden</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="c1"># (3s) Compute cell state</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wx&#39;</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wh&#39;</span><span class="p">],</span> <span class="n">hp</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_hidden</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
-        <span class="c1"># Calculate output gate</span>
+        <span class="c1"># (4s) Compute cell output to next layer</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+    <span class="c1"># Return layer.fc[&#39;A&#39;] if many-to-many mode</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span></div>
+
+
+<div class="viewcode-block" id="terminate_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.terminate_forward">[docs]</a><span class="k">def</span> <span class="nf">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if many-to-many or many-to-one (binary) mode.</span>
+
+<span class="sd">    :param layer: RNN layer object</span>
+<span class="sd">    :type layer: class:`nnlibs.rnn.models.RNN`</span>
+
+<span class="sd">    :return: Output of forward propagation for current layer</span>
+<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="k">else</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">A</span></div>
 </pre></div>

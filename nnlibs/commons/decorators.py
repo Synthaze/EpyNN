@@ -1,4 +1,4 @@
-#EpyNN/nnlibs/commons/decorators.py
+# EpyNN/nnlibs/commons/decorators.py
 from termcolor import colored, cprint
 
 

@@ -5,10 +5,6 @@ import time
 # Related third party imports
 import numpy as np
 
-# Local application/library specific imports
-import nnlibs.commons.schedule as cs
-import nnlibs.commons.maths as cm
-
 
 class Layer:
     """
@@ -41,7 +37,6 @@ class Layer:
         se_hPars: NoneType
             Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the :class:`nnlibs.meta.models.EpyNN` meta-model.
         """
-
         self.d = {}
         self.fs = {}
         self.p = {}
@@ -66,7 +61,6 @@ class Layer:
         :param shapes: Corresponding forward or backward shapes as documented above.
         :type shapes: dict
         """
-
         shapes.update({k:v.shape for k,v in cache.items()})
 
         return None
@@ -75,39 +69,60 @@ class Layer:
 class dataSet:
     """
     Definition of a dataSet object prototype
-
-    Attributes
-    ----------
-    . : .
-        .
     """
 
-    def __init__(self, dataset, name='dummy'):
+    def __init__(self, dataset, label=True, name='dummy'):
         """.
 
         :param dataset: .
         :type dataset: list
 
+        :param label: .
+        :type label: bool
+
         :param name: .
         :type name: string
+
+        :ivar n:
+        :vartype n:
+
+        :ivar X:
+        :vartype X:
+
+        :ivar Y:
+        :vartype Y:
+
+        :ivar y:
+        :vartype y:
+
+        :ivar b:
+        :vartype b:
+
+        :ivar id:
+        :vartype id:
+
+        :ivar s:
+        :vartype s:
+
+        :ivar A:
+        :vartype A:
+
+        :ivar P:
+        :vartype P:
         """
-        # Prepare X data
         x_data = [ x[0] for x in dataset ]
-        # Prepare Y data
         y_data = [ x[1] for x in dataset ]
 
-        # Identifier
         self.n = name
 
-        # Set X and Y data for training in corresponding uppercase attributes
         self.X = np.array(x_data)
         self.Y = np.array(y_data)
 
-        # Restore Y data as single digit labels
-        self.y = np.argmax(self.Y,axis=1)
+        if label:
+            self.y = np.argmax(self.Y,axis=1)
 
-        # Labels balance
-        self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
+            # Labels balance
+            self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
 
         # Set numerical id for each sample
         self.id = np.array([ i for i in range(len(dataset)) ])
@@ -115,10 +130,7 @@ class dataSet:
         # Number of samples
         self.s = str(len(self.id))
 
-        ## Predicted data
-        # Output of forward propagation
         self.A = None
-        # Predicted labels
         self.P = None
 
         return None

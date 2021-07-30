@@ -91,12 +91,18 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../organization.html">Organization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../architectures.html">Architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Live examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contribute</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../test.html">RNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Template.html">Template layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Details.html">Details</a></li>
 </ul>
 
             
@@ -176,12 +182,12 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a template layer prototype. This is a pass-through or inactive layer prototype which contains method definitions used for all active layers. For all layer prototypes, methods are wrappers of functions which contain the specific implementations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Template.__init__"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.__init__"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize instance variable attributes. Extended with ``super().__init__()`` which calls ``nnlibs.commons.models.Layer.__init__()`` defined in the parent class.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -190,7 +196,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.compute_shapes"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.compute_shapes"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute **shapes** and set dependent **dimensions**. Is a wrapper for ``nnlibs.template.parameters.template_compute_shapes()``.</span>
 
 <span class="sd">        :param A: Output of forward propagation from *previous* layer.</span>
@@ -201,7 +207,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.initialize_parameters"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.initialize_parameters"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize **weight** and **bias** parameters from shapes. Is a wrapper for ``nnlibs.template.parameters.template_initialize_parameters()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -209,7 +215,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.forward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.forward"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Forward propagation of signal through **current** layer. Is a wrapper for ``nnlibs.template.forward.template_forward()``.</span>
 
 <span class="sd">        :param A: Output of forward propagation from *previous* layer.</span>
@@ -225,7 +231,7 @@
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="Template.backward"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.backward"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Backward propagation of error through **current** layer. Is a wrapper for ``nnlibs.template.backward.template_backward()``.</span>
 
 <span class="sd">        :param dA: Output of backward propagation from *next* layer.</span>
@@ -240,15 +246,15 @@
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute **gradients** with respect to **weight** and **bias** parameters for current layer. Is a wrapper for ``nnlibs.template.parameters.template_compute_gradients()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">template_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.update_parameters"><a class="viewcode-back" href="../../../architectures.html#nnlibs.template.models.Template.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Template.update_parameters"><a class="viewcode-back" href="../../../old/architectures.html#nnlibs.template.models.Template.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update **weight** and **bias** parameters with respect to **gradients** for current layer. Is a wrapper for ``nnlibs.template.parameters.template_update_parameters()``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 

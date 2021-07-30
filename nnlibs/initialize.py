@@ -1,16 +1,14 @@
-#EpyNN/nnlibs/initialize.py
-import nnlibs.commons.logs as clo
-
+# EpyNN/nnlibs/initialize.py
+# Standard library imports
 import pathlib
 import shutil
-import sys
 import os
 
-
-init_path = str(pathlib.Path(__file__).parent.absolute())
-
-if not os.path.exists('./settings.py'):
-    shutil.copy(init_path+'/settings.py','./settings.py')
+# Local application/library specific imports
+from nnlibs.commons.logs import set_highlighted_excepthook
+from nnlibs.commons.library import settings_verification
 
 
-clo.set_highlighted_excepthook()
+settings_verification()
+
+set_highlighted_excepthook()
