@@ -2,16 +2,16 @@
 
 
 def initialize_forward(layer, A):
-    """
+    """Forward cache initialization.
 
-    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
-    :type layer: class:`nnlibs.embedding.models.Embedding`
+    :param layer: An instance of embedding layer.
+    :type layer: :class:`nnlibs.embedding.models.Embedding`
 
     :param A: Output of forward propagation from previous layer
-    :type A: class:`numpy.ndarray`
+    :type A: :class:`numpy.ndarray`
 
     :return: Input of forward propagation for current layer
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A
 
@@ -19,19 +19,12 @@ def initialize_forward(layer, A):
 
 
 def embedding_forward(layer, A):
+    """Forward propagate signal to next layer.
     """
-
-    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
-    :type layer: class:`nnlibs.embedding.models.Embedding`
-
-    :param A: Output of forward propagation from previous layer
-    :type A: class:`numpy.ndarray`
-
-    :return: Output of forward propagation for current layer
-    :rtype: class:`numpy.ndarray`
-    """
+    # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    A = layer.fc['A'] = X.T
+#    A = layer.fc['A'] = X.T
+    A = layer.fc['A'] = X
 
     return A   # To next layer

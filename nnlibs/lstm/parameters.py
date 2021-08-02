@@ -4,123 +4,107 @@ import numpy as np
 
 
 def lstm_compute_shapes(layer, A):
-    """Compute shapes for LSTM layer object
-
-    :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`
-    :type layer: class:`nnlibs.lstm.models.LSTM`
+    """Compute forward shapes and dimensions for cells and layer.
     """
-    X = A    # Input of current layer
+    X = A    # Input of current layer of shape (m, s, v)
 
-     # (s, v, m)
-    layer.d['s'] = X.shape[0]    # Length of sequence
-    layer.d['v'] = X.shape[1]    # Vocabulary size
-    layer.d['m'] = X.shape[2]    # Number of samples
-    # Output length
-    layer.d['o'] = 2 if layer.binary else layer.d['v']
+    layer.d['m'] = X.shape[0]    # Number of samples (m)
+    layer.d['s'] = X.shape[1]    # Length of sequence (s)
+    layer.d['v'] = X.shape[2]    # Vocabulary size (v)
 
-    layer.d['z'] = layer.d['h'] + layer.d['v']
-
-    hz = (layer.d['h'], layer.d['z'])
+    # Parameter Shapes
+    vh = (layer.d['v'], layer.d['h'])
+    hh = (layer.d['h'], layer.d['h'])
     h1 = (layer.d['h'], 1)
 
-    oh = (layer.d['o'], layer.d['h'])
-    o1 = (layer.d['o'], 1)
-
-    layer.fs['Wf'] = layer.fs['Wi'] = layer.fs['Wg'] = layer.fs['Wo'] = hz
+    #
+    layer.fs['Uf'] = layer.fs['Ui'] = layer.fs['Ug'] = layer.fs['Uo'] = vh
+    #
+    layer.fs['Wf'] = layer.fs['Wi'] = layer.fs['Wg'] = layer.fs['Wo'] = hh
+    #
     layer.fs['bf'] = layer.fs['bi'] = layer.fs['bg'] = layer.fs['bo'] = h1
 
-    layer.fs['W'] = oh
-    layer.fs['b'] = o1
-
-    # Shapes to initialize forward cache
-    hhm = layer.fs['h'] = layer.fs['C'] = (layer.d['h'], layer.d['h'], layer.d['m'])
-    ohm = layer.fs['A'] = (layer.d['h'], layer.d['o'], layer.d['m'])
-    # Shapes to initialize backward cache
-    hvm = layer.fs['X'] = layer.bs['dA'] = (max(layer.d['h'],layer.d['s']), layer.d['v'], layer.d['m'])
-    hzm = layer.fs['z'] = (layer.d['h'], layer.d['z'], layer.d['m'])
+    # Cache shapes
+    msh = layer.fs['h'] = layer.fs['C'] = (layer.d['m'], layer.d['s'], layer.d['h'])
 
 
     return None
 
 
 def lstm_initialize_parameters(layer):
-    """Dummy function - Initialize parameters for LSTM layer object
-
-    :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`
-    :type layer: class:`nnlibs.lstm.models.LSTM`
+    """Initialize parameters for layer.
     """
-
-    # Init W, b - Forget gate
+    #
+    layer.p['Uf'] = layer.initialization(layer.fs['Uf'], rng=layer.np_rng)
     layer.p['Wf'] = layer.initialization(layer.fs['Wf'], rng=layer.np_rng)
     layer.p['bf'] = np.zeros(layer.fs['bf'])
-    # Init W, b - Forget gate
+
+    #
+    layer.p['Ui'] = layer.initialization(layer.fs['Ui'], rng=layer.np_rng)
     layer.p['Wi'] = layer.initialization(layer.fs['Wi'], rng=layer.np_rng)
     layer.p['bi'] = np.zeros(layer.fs['bi'])
-    # Init W, b - Forget gate
+
+    #
+    layer.p['Ug'] = layer.initialization(layer.fs['Ug'], rng=layer.np_rng)
     layer.p['Wg'] = layer.initialization(layer.fs['Wg'], rng=layer.np_rng)
     layer.p['bg'] = np.zeros(layer.fs['bg'])
-    # Init W, b - Forget gate
+
+    #
+    layer.p['Uo'] = layer.initialization(layer.fs['Uo'], rng=layer.np_rng)
     layer.p['Wo'] = layer.initialization(layer.fs['Wo'], rng=layer.np_rng)
     layer.p['bo'] = np.zeros(layer.fs['bo'])
-
-    # W, U, b - _ gate
-    layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
-    layer.p['b'] = np.zeros(layer.fs['b'])
 
     return None
 
 
 def lstm_compute_gradients(layer):
-    """Dummy function - Update weight and bias gradients for LSTM layer object
-
-    :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`
-    :type layer: class:`nnlibs.lstm.models.LSTM`
+    """Compute gradients with respect to weight and bias for cells and layer.
     """
-
+    # Gradients initialization with respect to parameters
     for parameter in layer.p.keys():
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    for s in reversed(range(layer.d['h'])):
+    # Iterate through reversed sequence
+    for s in reversed(range(layer.d['s'])):
 
-        h = layer.fc['h'][s]
-        z = layer.fc['z'][s]
+        #
+        X = layer.fc['X'][:, s]
+        hp = layer.fc['h'][:, s - 1]
 
-        dX = layer.bc['dX'][s] if not layer.binary else layer.bc['dX']
-        layer.g['dW'] += 1./ layer.d['m'] * np.dot(dX, h.T)
-        layer.g['db'] += 1./ layer.d['m'] * np.sum(dX, axis=1, keepdims=True)
+        #
+        do = layer.bc['do'][:, s]
+        layer.g['dUo'] += np.dot(X.T, do)
+        layer.g['dWo'] += np.dot(hp.T, do)
+        layer.g['dbo'] += np.sum(do, axis=0)
 
-        # Retrieve do and update dWo and dbo
-        do = layer.bc['do'][s]
-        layer.g['dWo'] += 1./ layer.d['m'] * np.dot(do, z.T)
-        layer.g['dbo'] += 1./ layer.d['m'] * np.sum(do, axis=1, keepdims=True)
-        # Retrieve dg and update dWg and dbg
-        dg = layer.bc['dg'][s]
-        layer.g['dWg'] += 1./ layer.d['m'] * np.dot(dg, z.T)
-        layer.g['dbg'] += 1./ layer.d['m'] * np.sum(dg, axis=1, keepdims=True)
-        # Retrieve di and update dWi and dbi
-        di = layer.bc['di'][s]
-        layer.g['dWi'] += 1./ layer.d['m'] * np.dot(di, z.T)
-        layer.g['dbi'] += 1./ layer.d['m'] * np.sum(di, axis=1, keepdims=True)
-        # Retrieve df and update dWf and dbf
-        df = layer.bc['df'][s]
-        layer.g['dWf'] += 1./ layer.d['m'] * np.dot(df, z.T)
-        layer.g['dbf'] += 1./ layer.d['m'] * np.sum(df, axis=1, keepdims=True)
+        #
+        dg = layer.bc['dg'][:, s]
+        layer.g['dUg'] += np.dot(X.T, dg)
+        layer.g['dWg'] += np.dot(hp.T, dg)
+        layer.g['dbg'] += np.sum(dg, axis=0)
+
+        #
+        di = layer.bc['di'][:, s]
+        layer.g['dUi'] += np.dot(X.T, di)
+        layer.g['dWi'] += np.dot(hp.T, di)
+        layer.g['dbi'] += np.sum(di, axis=0)
+
+        #
+        df = layer.bc['df'][:, s]
+        layer.g['dUf'] += np.dot(X.T, df)
+        layer.g['dWf'] += np.dot(hp.T, df)
+        layer.g['dbf'] += np.sum(df, axis=0)
 
     return None
 
 
 def lstm_update_parameters(layer):
-    """Dummy function - Update parameters for LSTM layer object
-
-    :param layer: An instance of the :class:`nnlibs.lstm.models.LSTM`
-    :type layer: class:`nnlibs.lstm.models.LSTM`
+    """Update parameters for layer.
     """
-
     for gradient in layer.g.keys():
-
         parameter = gradient[1:]
-
+        #
         layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

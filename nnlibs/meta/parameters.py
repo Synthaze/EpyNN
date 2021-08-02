@@ -7,7 +7,10 @@ from nnlibs.commons.schedule import schedulers
 
 
 def assign_seed_layers(model):
-    """.
+    """Assign seed and independant pseudo-random generators for each layer in model.
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.meta.models.EpyNN`
     """
     seed = model.seed
 
@@ -26,7 +29,10 @@ def assign_seed_layers(model):
 
 
 def compute_learning_rate(model):
-    """.
+    """Schedule learning rate for each layer in model.
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.meta.models.EpyNN`
     """
     for layer in model.layers:
 
@@ -35,6 +41,6 @@ def compute_learning_rate(model):
         else:
             se_hPars = layer.se_hPars
 
-        layer.se_hPars, layer.lrate = schedulers(se_hPars)
+        layer.se_hPars, layer.lrate = schedulers(se_hPars, model.epochs)
 
     return None

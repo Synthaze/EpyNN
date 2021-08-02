@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -173,8 +173,24 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="initialize_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.lstm.forward.initialize_forward">[docs]</a><span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward cache initialization.</span>
 
+<span class="sd">    :param layer: An instance of LSTM layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.lstm.models.LSTM`</span>
+
+<span class="sd">    :param A: Output of forward propagation from previous layer</span>
+<span class="sd">    :type A: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Input of forward propagation for current layer</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Previous cell state initialized with zeros.</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Previous memory state initialized with zeros.</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
 
     <span class="n">X</span><span class="p">[:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span>
@@ -192,11 +208,13 @@
     <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span></div>
 
 
-<span class="k">def</span> <span class="nf">lstm_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-
+<div class="viewcode-block" id="lstm_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.lstm.forward.lstm_forward">[docs]</a><span class="k">def</span> <span class="nf">lstm_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal through LSTM cells to next layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># (1) Initialize cache and cell states</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">hp</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 
     <span class="c1"># Loop through time steps</span>
@@ -237,16 +255,21 @@
     <span class="c1"># Return layer.fc[&#39;A&#39;] if layer.binary else A</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">A</span>
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span></div>
 
 
 <div class="viewcode-block" id="terminate_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.lstm.forward.terminate_forward">[docs]</a><span class="k">def</span> <span class="nf">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Check if many-to-many or many-to-one (binary) mode.</span>
+
+<span class="sd">    :param layer: An instance of LSTM layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.lstm.models.LSTM`</span>
+
+<span class="sd">    :return: Output of forward propagation for current layer</span>
+<span class="sd">    :rtype: class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="k">else</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">A</span></div>
 </pre></div>

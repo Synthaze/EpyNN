@@ -4,16 +4,16 @@ import numpy as np
 
 
 def initialize_forward(layer, A):
-    """
+    """Forward cache initialization.
 
-    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
-    :type layer: class:`nnlibs.dense.models.Dense`
+    :param layer: An instance of dense layer.
+    :type layer: :class:`nnlibs.dense.models.Dense`
 
     :param A: Output of forward propagation from previous layer
-    :type A: class:`numpy.ndarray`
+    :type A: :class:`numpy.ndarray`
 
     :return: Input of forward propagation for current layer
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A
 
@@ -21,21 +21,12 @@ def initialize_forward(layer, A):
 
 
 def dense_forward(layer, A):
+    """Forward propagate signal to next layer.
     """
-
-    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`
-    :type layer: class:`nnlibs.dense.models.Dense`
-
-    :param A: Output of forward propagation from previous layer
-    :type A: class:`numpy.ndarray`
-
-    :return: Output of forward propagation for current layer
-    :rtype: class:`numpy.ndarray`
-    """
-
+    # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    Z = layer.fc['Z'] = np.dot(layer.p['W'], X) + layer.p['b']
+    Z = layer.fc['Z'] = np.dot(X, layer.p['W']) + layer.p['b']
 
     A = layer.fc['A'] = layer.activate(Z)
 

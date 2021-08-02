@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -185,7 +185,13 @@
 
 
 <div class="viewcode-block" id="read_pickle"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.read_pickle">[docs]</a><span class="k">def</span> <span class="nf">read_pickle</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Read pickle binary file.</span>
+
+<span class="sd">    :param f: Filename</span>
+<span class="sd">    :type f: str</span>
+
+<span class="sd">    :return: File content</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -194,7 +200,13 @@
 
 
 <div class="viewcode-block" id="read_file"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.read_file">[docs]</a><span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Read text file.</span>
+
+<span class="sd">    :param f: Filename</span>
+<span class="sd">    :type f: str</span>
+
+<span class="sd">    :return: File content</span>
+<span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
@@ -203,7 +215,13 @@
 
 
 <div class="viewcode-block" id="write_pickle"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.write_pickle">[docs]</a><span class="k">def</span> <span class="nf">write_pickle</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Write pickle binary file.</span>
+
+<span class="sd">    :param f: Filename</span>
+<span class="sd">    :type f: str</span>
+
+<span class="sd">    :param c: Content to write</span>
+<span class="sd">    :type c: object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">msg</span><span class="p">:</span>
         <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">msg</span><span class="p">)</span>
@@ -212,75 +230,85 @@
 
 
 <div class="viewcode-block" id="configure_directory"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.configure_directory">[docs]</a><span class="k">def</span> <span class="nf">configure_directory</span><span class="p">(</span><span class="n">se_config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Configure working directory.</span>
+
+<span class="sd">    :param se_config: Settings for general configuration</span>
+<span class="sd">    :type se_config: dict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">datasets_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;datasets&#39;</span><span class="p">)</span>
     <span class="n">models_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;models&#39;</span><span class="p">)</span>
+    <span class="n">plots_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;plots&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">se_config</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">[</span><span class="n">datasets_path</span><span class="p">,</span> <span class="n">models_path</span><span class="p">,</span> <span class="n">plots_path</span><span class="p">]:</span>
 
-        <span class="k">if</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;directory_clear&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;directory_clear&#39;</span><span class="p">]:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Remove: &#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">datasets_path</span><span class="p">)</span>
-            <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Remove: &#39;</span><span class="o">+</span><span class="n">datasets_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">models_path</span><span class="p">)</span>
-            <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Remove: &#39;</span><span class="o">+</span><span class="n">models_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;datasets&#39;</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">datasets_path</span><span class="p">)</span>
-        <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span><span class="o">+</span><span class="n">datasets_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;models&#39;</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">models_path</span><span class="p">)</span>
-        <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span><span class="o">+</span><span class="n">models_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<span class="k">def</span> <span class="nf">write_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="viewcode-block" id="write_model"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.write_model">[docs]</a><span class="k">def</span> <span class="nf">write_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">model_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write EpyNN model on disk.</span>
 
-    <span class="n">models_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">)</span>
+<span class="sd">    :param model: An instance of EpyNN network.</span>
+<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
 
+<span class="sd">    :param model_path: Location to write model</span>
+<span class="sd">    :type model_path: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
             <span class="p">}</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">models_path</span><span class="o">+</span><span class="s1">&#39;.pickle&#39;</span>
+    <span class="k">if</span> <span class="n">model_path</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">)</span>
+        <span class="n">model_path</span> <span class="o">=</span> <span class="n">model_path</span><span class="o">+</span><span class="s1">&#39;.pickle&#39;</span>
 
-    <span class="n">write_pickle</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-    <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span><span class="o">+</span><span class="n">path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">None</span>
-
-
-<div class="viewcode-block" id="check_and_write"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.check_and_write">[docs]</a><span class="k">def</span> <span class="nf">check_and_write</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">hPars</span><span class="p">,</span><span class="n">runData</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Load metrics for target dataset (see ./metrics.py)</span>
-    <span class="n">metrics</span> <span class="o">=</span> <span class="n">runData</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">runData</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]][</span><span class="n">runData</span><span class="o">.</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;d&#39;</span><span class="p">]]</span>
-
-    <span class="c1"># Evaluate metrics</span>
-    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="o">==</span> <span class="n">metrics</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">metrics</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">metrics</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">runData</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">]:</span>
-
-        <span class="k">if</span> <span class="n">runData</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-
-            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-                        <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
-                    <span class="p">}</span>
-
-            <span class="n">write_pickle</span><span class="p">(</span><span class="n">runData</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;ms&#39;</span><span class="p">],</span><span class="n">data</span><span class="p">)</span>
-
-            <span class="n">runData</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">write_pickle</span><span class="p">(</span><span class="n">model_path</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span> <span class="o">+</span> <span class="n">model_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
+<span class="c1"># def check_and_write(model,hPars,runData):</span>
+<span class="c1">#     &quot;&quot;&quot;.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     # Load metrics for target dataset (see ./metrics.py)</span>
+<span class="c1">#     metrics = runData.s[runData.m[&#39;m&#39;]][runData.m[&#39;d&#39;]]</span>
+<span class="c1">#</span>
+<span class="c1">#     # Evaluate metrics</span>
+<span class="c1">#     if max(metrics) == metrics[-1] and metrics.count(metrics[-1]) == 1 and runData.b[&#39;ms&#39;]:</span>
+<span class="c1">#</span>
+<span class="c1">#         if runData.b[&#39;ms&#39;] == True:</span>
+<span class="c1">#</span>
+<span class="c1">#             data = {</span>
+<span class="c1">#                         &#39;model&#39;: model,</span>
+<span class="c1">#                     }</span>
+<span class="c1">#</span>
+<span class="c1">#             write_pickle(runData.p[&#39;ms&#39;],data)</span>
+<span class="c1">#</span>
+<span class="c1">#             runData.b[&#39;s&#39;] = True</span>
+<span class="c1">#</span>
+<span class="c1">#     return None</span>
+
+
 <div class="viewcode-block" id="read_model"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.read_model">[docs]</a><span class="k">def</span> <span class="nf">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Read EpyNN model from disk.</span>
+
+<span class="sd">    :param model_path: Model location.</span>
+<span class="sd">    :type model_path: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">models_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">model_path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model_path</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">models_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;models&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
         <span class="n">model_path</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">models_path</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">)</span>
 
     <span class="n">model</span> <span class="o">=</span> <span class="n">read_pickle</span><span class="p">(</span><span class="n">model_path</span><span class="p">)[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
@@ -289,27 +317,32 @@
 
 
 <div class="viewcode-block" id="read_dataset"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.read_dataset">[docs]</a><span class="k">def</span> <span class="nf">read_dataset</span><span class="p">(</span><span class="n">dataset_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Get path most recent dataset</span>
-    <span class="k">if</span> <span class="n">dataset_path</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dataset_path</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;./datasets/*&#39;</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Read dataset from disk.</span>
 
-    <span class="c1"># Read dataset</span>
+<span class="sd">    :param dataset_path: Dataset location.</span>
+<span class="sd">    :type dataset_path: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dataset_path</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataset_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;datasets&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">dataset_path</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getctime</span><span class="p">)</span>
+
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">read_pickle</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dataset</span></div>
 
 
-<span class="k">def</span> <span class="nf">settings_verification</span><span class="p">():</span>
-
+<div class="viewcode-block" id="settings_verification"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.library.settings_verification">[docs]</a><span class="k">def</span> <span class="nf">settings_verification</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Import default settings if not present in working directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">init_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;settings.py&#39;</span><span class="p">):</span>
         <span class="n">se_default_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">init_path</span><span class="p">,</span> <span class="s1">&#39;settings.py&#39;</span><span class="p">)</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">se_default_path</span><span class="p">,</span><span class="s1">&#39;settings.py&#39;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>

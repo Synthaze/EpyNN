@@ -46,7 +46,7 @@ def label_features(features):
     return label
 
 
-def prepare_dataset(se_dataset):
+def labeled_dataset(se_dataset):
     """Prepare a dummy dataset of labeled samples.
 
     One sample is a list such as [features, label].

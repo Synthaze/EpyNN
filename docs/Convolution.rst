@@ -14,7 +14,7 @@ Convolution layer
 Layer architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
+.. image:: _static/Convolution/conv-01.svg
 
 .. autoclass:: nnlibs.convolution.models.Convolution
     :show-inheritance:
@@ -48,6 +48,7 @@ Pooling layer
 
 Layer architecture
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 
 .. autoclass:: nnlibs.pooling.models.Pooling

@@ -17,7 +17,7 @@ from tabulate import tabulate
 
 def model_logs(model):
     """.
-    
+
     :param model:
     :type model:
     """
@@ -32,13 +32,15 @@ def model_logs(model):
         'grey',
     ]
 
-    logs_freq = model.se_config['logs_frequency']
-    logs_freq_disp = model.se_config['logs_frequency_display']
+    se_config = model.se_config
 
-    if model.e == 1:
-        model.current_logs = [headers_logs(model.metrics, colors)]
+    logs_freq = se_config['logs_frequency']
+    logs_freq_disp = se_config['logs_frequency_display']
 
-    if (model.e + 1) % logs_freq == 0:
+    if model.e == 0:
+        model.current_logs = [headers_logs(model, colors)]
+
+    if model.e % logs_freq == 0:
         model.current_logs.append(current_logs(model, colors))
 
     if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
@@ -50,13 +52,61 @@ def model_logs(model):
                         tablefmt="pretty",
                         )
 
-        print (logs, flush=True)
+        if se_config['print_over']:
+            print (logs, flush=True)
+        else:
+            print (logs, flush=True)
 
         remaining_time_logs(model)
 
-        model.current_logs = [headers_logs(model.metrics, colors)]
+        model.current_logs = [headers_logs(model, colors)]
 
     return None
+
+
+def headers_logs(model, colors):
+    """.
+
+    :return:
+    :rtype:
+    """
+    metrics = model.metrics
+
+    single = model.embedding.single
+
+    headers = [
+        colored('epoch', 'white', attrs=['bold']) + '\n',
+    ]
+
+    for layer in model.layers:
+
+        if layer.p != {}:
+
+            headers.append(
+                colored('lrate', colors[0], attrs=['bold'])
+                + '\n'
+                + colored(layer.name, colors[0], attrs=[])
+            )
+
+    for i, s in enumerate(list(metrics.keys())):
+
+        i = (i+1) % len(colors)
+
+        if not single:
+            headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
+
+        headers.append(
+            colored('%s' % s, colors[i], attrs=['bold'])
+            + '\n'
+            + colored('(1)', colors[i], attrs=['bold'])
+        )
+
+        if not single:
+            headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
+
+    headers.append(colored('Experiment', 'white', attrs=[]) + '\n')
+
+    return headers
 
 
 def current_logs(model, colors):
@@ -79,7 +129,8 @@ def current_logs(model, colors):
     log.append(colored(model.e, 'white', attrs=['bold']))
 
     for layer in model.layers:
-        log.append(colored("{:.2e}".format(layer.lrate[model.e]), 'white', attrs=['bold']))
+        if layer.p != {}:
+            log.append(colored("{:.2e}".format(layer.lrate[model.e]), 'white', attrs=['bold']))
 
     for i, s in enumerate(metrics.keys()):
 
@@ -112,7 +163,7 @@ def remaining_time_logs(model):
 
     ttc = round((model.epochs - model.e + 1) / rate)
 
-    cprint ('TIME: %ss RATE: %se/s TTC: %ss' % (elapsed_time, rate, ttc), 'white', attrs=['bold'])
+    cprint('TIME: %ss RATE: %se/s TTC: %ss' % (elapsed_time, rate, ttc), 'white', attrs=['bold'])
 
     return None
 
@@ -255,7 +306,7 @@ def layers_lrate_logs(layers):
         lr_ori = layer.lrate[0]
         lr_end = layer.lrate[-1]
 
-        pc_end = round(lr_end / lr_ori * 100,3)
+        pc_end = round(lr_end / lr_ori * 100,3) if lr_ori != 0 else 0
 
         log.append(layer.name)
         log.append(se_hPars['training_epochs'])
@@ -356,9 +407,13 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
     log = []
 
     log.append(se_dataset['N_SAMPLES'])
-    log.append(dsets[0].s)
-    log.append(dsets[1].s)
-    log.append(dsets[2].s)
+
+    for dset in dsets:
+        log.append(dset.s)
+
+    for i in range(3 - len(dsets)):
+        log.append('None')
+
     log.append(batch_number)
     log.append(sample_per_batch)
     log.append(se_config['dataset_target'])
@@ -395,38 +450,12 @@ def dsets_labels_logs(dsets):
     for dset in dsets:
         log.append('\n'.join([str(k) + ': ' + str(v) for k,v in sorted(dset.b.items())]))
 
+    for i in range(3 - len(dsets)):
+        log.append('None')
+
     logs.add_row(log)
 
     return logs
-
-
-def headers_logs(metrics,colors):
-    """.
-
-    :return:
-    :rtype:
-    """
-    headers = [
-        colored('epoch', 'white', attrs=['bold']) + '\n',
-    ]
-
-    for i, s in enumerate(['lr']+list(metrics.keys())):
-
-        i = i % len(colors)
-
-        headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
-
-        headers.append(
-            colored('%s' % s, colors[i], attrs=['bold'])
-            + '\n'
-            + colored('(1)', colors[i], attrs=['bold'])
-        )
-
-        headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
-
-    headers.append(colored('Experiment', 'white', attrs=[]) + '\n')
-
-    return headers
 
 
 def set_highlighted_excepthook():
@@ -468,6 +497,15 @@ def process_logs(msg, level=0):
     ]
 
     cprint(msg, colors[level],  attrs=['bold'])
+
+    return None
+
+
+def start_counter(timeout=3):
+
+    for i in reversed(range(timeout + 1)):
+        cprint('Start in %ss' % str(i), attrs=['bold'], end='\r')
+        time.sleep(1)
 
     return None
 

@@ -3,9 +3,36 @@
 import numpy as np
 
 
-def convolution_backward(layer, dA):
+def initialize_backward(layer, dA):
+    """Backward cache initialization.
 
+    :param layer: An instance of convolution layer.
+    :type layer: :class:`nnlibs.convolution.models.Convolution`
+
+    :param dA: Output of backward propagation from next layer
+    :type dA: :class:`numpy.ndarray`
+
+    :return: Input of backward propagation for current layer
+    :rtype: :class:`numpy.ndarray`
+
+    :return: Zeros-output of backward propagation for current layer
+    :rtype: :class:`numpy.ndarray`
+    """
+    dX = layer.bc['dX'] = dA
+
+    layer.bc['dXb'] = [ [[] for t in range(layer.d['R'])] for l in range(layer.d['C'])]
+
+    dA = np.zeros(layer.fs['X'])
+
+    return dX, dA
+
+
+def convolution_backward(layer, dA):
+    """Backward propagate signal to previous layer.
+    """
     dX, im, ih, iw, id, dA = initialize_backward(layer, dA)
+
+    im, ih, iw, id = layer.fs['X']
 
     # Loop through image rows
     for t in range(layer.d['R']):
@@ -37,20 +64,10 @@ def convolution_backward(layer, dA):
 
     #dA = layer.bc['dA'] = restore_padding(layer,dA)
 
-    return dA
+    return dA    # To previous layer
 
 
-def initialize_backward(layer, dA):
 
-    dX = layer.bc['dX'] = dA
-
-    layer.bc['dXb'] = [ [[] for t in range(layer.d['R'])] for l in range(layer.d['C'])]
-
-    im, ih, iw, id = layer.fs['X']
-
-    dA = np.zeros(layer.fs['X'])
-
-    return dX, im, ih, iw, id, dA
 
 #
 #

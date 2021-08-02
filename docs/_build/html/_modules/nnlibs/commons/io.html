@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -174,16 +174,16 @@
 
 
 <div class="viewcode-block" id="one_hot_encode"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.one_hot_encode">[docs]</a><span class="k">def</span> <span class="nf">one_hot_encode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Generate one-hot encoding array.</span>
 
-<span class="sd">    :param i:</span>
-<span class="sd">    :type i:</span>
+<span class="sd">    :param i: One-hot index</span>
+<span class="sd">    :type i: int</span>
 
-<span class="sd">    :param vocab_size:</span>
-<span class="sd">    :type vocab_size:</span>
+<span class="sd">    :param vocab_size: Size of array</span>
+<span class="sd">    :type vocab_size: int</span>
 
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :return: One-hot encoded array</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">)</span>
 
@@ -193,19 +193,19 @@
 
 
 <div class="viewcode-block" id="one_hot_encode_sequence"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.one_hot_encode_sequence">[docs]</a><span class="k">def</span> <span class="nf">one_hot_encode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;One-hot encode sequence.</span>
 
-<span class="sd">    :param sequence:</span>
-<span class="sd">    :type sequence:</span>
+<span class="sd">    :param sequence: Sequential data</span>
+<span class="sd">    :type sequence: list</span>
 
-<span class="sd">    :param word_to_idx:</span>
-<span class="sd">    :type word_to_idx:</span>
+<span class="sd">    :param word_to_idx: Converter with word as key and index as value</span>
+<span class="sd">    :type word_to_idx: dict</span>
 
-<span class="sd">    :param vocab_size:</span>
-<span class="sd">    :type vocab_size:</span>
+<span class="sd">    :param vocab_size: Number of keys in converter</span>
+<span class="sd">    :type vocab_size: int</span>
 
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :return: One-hot encoded sequence</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">one_hot_encode</span><span class="p">(</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">])</span>
 
@@ -215,16 +215,16 @@
 
 
 <div class="viewcode-block" id="one_hot_decode_sequence"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.one_hot_decode_sequence">[docs]</a><span class="k">def</span> <span class="nf">one_hot_decode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">idx_to_word</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;One-hot decode sequence.</span>
 
-<span class="sd">    :param sequence:</span>
-<span class="sd">    :type sequence:</span>
+<span class="sd">    :param sequence: One-hot encoded sequence</span>
+<span class="sd">    :type sequence: :class:`numpy.ndarray`</span>
 
-<span class="sd">    :param idx_to_word:</span>
+<span class="sd">    :param idx_to_word: Converter with index as key and word as value</span>
 <span class="sd">    :type idx_to_word:</span>
 
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :return: One-hot decoded sequence</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">decoding</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx_to_word</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">encoded</span><span class="p">)]</span> <span class="k">for</span> <span class="n">encoded</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
 
@@ -232,18 +232,18 @@
 
 
 <div class="viewcode-block" id="encode_dataset"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.encode_dataset">[docs]</a><span class="k">def</span> <span class="nf">encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;One-hot encode features from samples in dataset.</span>
 
-<span class="sd">    :param dataset:</span>
-<span class="sd">    :type dataset:</span>
+<span class="sd">    :param dataset: Contains samples</span>
+<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
 
-<span class="sd">    :param word_to_idx:</span>
-<span class="sd">    :type word_to_idx:</span>
+<span class="sd">    :param word_to_idx: Converter with word as key and index as value</span>
+<span class="sd">    :type word_to_idx: dict</span>
 
-<span class="sd">    :param vocab_size:</span>
-<span class="sd">    :type vocab_size:</span>
+<span class="sd">    :param vocab_size: Number of keys in converter</span>
+<span class="sd">    :type vocab_size: int</span>
 
-<span class="sd">    :return:</span>
+<span class="sd">    :return: One-hot encoded dataset</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">encoded_dataset</span> <span class="o">=</span> <span class="p">[]</span>
@@ -256,7 +256,7 @@
 
         <span class="n">encoded_features</span> <span class="o">=</span> <span class="n">one_hot_encode_sequence</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
 
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">encoded_features</span><span class="p">,</span><span class="n">label</span><span class="p">]</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">encoded_features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
 
         <span class="n">encoded_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
 

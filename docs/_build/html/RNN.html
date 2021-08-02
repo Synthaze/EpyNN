@@ -93,7 +93,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Recurrent Neural Network (RNN)</a><ul>
@@ -213,8 +213,8 @@
 <h2>Layer architecture<a class="headerlink" href="#layer-architecture" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/rnn1-01.svg" src="_images/rnn1-01.svg" /><dl class="py class">
 <dt id="nnlibs.rnn.models.RNN">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.rnn.models.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Details.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.rnn.models.</code><code class="sig-name descname">RNN</code><span class="sig-paren">(</span><em class="sig-param">hidden_size=10</em>, <em class="sig-param">activate=&lt;function softmax&gt;</em>, <em class="sig-param">activate_hidden=&lt;function tanh&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em>, <em class="sig-param">binary=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a RNN layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -230,9 +230,9 @@
 <dl class="py method">
 <dt id="nnlibs.rnn.models.RNN.compute_shapes">
 <code class="sig-name descname">compute_shapes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN.compute_shapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN.compute_shapes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="docutils literal notranslate"><span class="pre">nnlibs.rnn.parameters.rnn_compute_shapes()</span></code>.</p>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.rnn.parameters.rnn_compute_shapes" title="nnlibs.rnn.parameters.rnn_compute_shapes"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.rnn.parameters.rnn_compute_shapes()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rnn_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for RNN cell and layer.</span>
+    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for cells and layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>    <span class="c1"># Input of current layer of shape (s, v, m)</span>
 
@@ -265,9 +265,9 @@
 <dl class="py method">
 <dt id="nnlibs.rnn.models.RNN.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="docutils literal notranslate"><span class="pre">nnlibs.rnn.forward.rnn_forward()</span></code>.</p>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.rnn.forward.rnn_forward" title="nnlibs.rnn.forward.rnn_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.rnn.forward.rnn_forward()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rnn_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal through RNN cells to next layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># (1) Initialize cache and cell state</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
@@ -306,7 +306,7 @@
 <dl class="py method">
 <dt id="nnlibs.rnn.models.RNN.backward">
 <code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN.backward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="docutils literal notranslate"><span class="pre">nnlibs.rnn.backward.rnn_backward()</span></code>.</p>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.rnn.backward.rnn_backward" title="nnlibs.rnn.backward.rnn_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.rnn.backward.rnn_backward()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rnn_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Backward propagate signal through RNN cells to previous layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -350,9 +350,9 @@
 <dl class="py method">
 <dt id="nnlibs.rnn.models.RNN.compute_gradients">
 <code class="sig-name descname">compute_gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/rnn/models.html#RNN.compute_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.rnn.models.RNN.compute_gradients" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="docutils literal notranslate"><span class="pre">nnlibs.rnn.parameters.rnn_compute_gradients()</span></code>.</p>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.rnn.parameters.rnn_compute_gradients" title="nnlibs.rnn.parameters.rnn_compute_gradients"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.rnn.parameters.rnn_compute_gradients()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rnn_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Update gradients with respect to weight and bias from RNN cells in layer.</span>
+    <span class="sd">&quot;&quot;&quot;Compute gradients with respect to weight and bias for cells and layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Gradients initialization with respect to parameters</span>
     <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -362,16 +362,18 @@
     <span class="c1"># Iterate through reversed sequence</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])):</span>
 
-        <span class="n">h</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>    <span class="c1"># Current cell state</span>
+        <span class="c1">#</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>   <span class="c1"># Current cell state</span>
         <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="k">else</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
-        <span class="c1"># Gradients with respect to layer output</span>
+        <span class="c1"># Gradients</span>
         <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dW&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">h</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
         <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dX</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>       <span class="c1"># Current cell input</span>
+        <span class="c1">#</span>
         <span class="n">dh</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dh&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>     <span class="c1"># Current cell state error</span>
         <span class="n">hp</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Previous cell state</span>
-        <span class="c1"># Gradients with respect to cell output</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>       <span class="c1"># Current cell input</span>
+        <span class="c1"># Gradients</span>
         <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dWx&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
         <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dWh&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span> <span class="n">hp</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
         <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dbh&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -176,7 +176,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
+<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -222,7 +222,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Layer.update_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.Layer.update_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="viewcode-block" id="Layer.update_shapes"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.Layer.update_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update shapes from cache.</span>
 
 <span class="sd">        :param cache: Forward of backward cache as documented above.</span>
@@ -236,53 +236,52 @@
         <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
-<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
+<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a dataSet object prototype.</span>
 
+<span class="sd">    :param dataset: Contains samples</span>
+<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
+
+<span class="sd">    :param label: Set to False if dataset contains unlabeled samples</span>
+<span class="sd">    :type label: bool</span>
+
+<span class="sd">    :param name: For model seeding</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="dataSet.__init__"><a class="viewcode-back" href="../../../epynn.html#nnlibs.commons.models.dataSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;.</span>
+        <span class="sd">&quot;&quot;&quot;Initialize dataSet object.</span>
 
-<span class="sd">        :param dataset: .</span>
-<span class="sd">        :type dataset: list</span>
-
-<span class="sd">        :param label: .</span>
-<span class="sd">        :type label: bool</span>
-
-<span class="sd">        :param name: .</span>
-<span class="sd">        :type name: string</span>
-
-<span class="sd">        :ivar n:</span>
+<span class="sd">        :ivar n: Name of dataset</span>
 <span class="sd">        :vartype n: str</span>
 
-<span class="sd">        :ivar X:</span>
+<span class="sd">        :ivar X: Features for samples</span>
 <span class="sd">        :vartype X: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar Y:</span>
-<span class="sd">        :vartype Y: class:`numpy.ndarray`</span>
+<span class="sd">        :ivar Y: One-hot encoded labels for samples</span>
+<span class="sd">        :vartype Y: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar y:</span>
-<span class="sd">        :vartype y: class:`numpy.ndarray`</span>
+<span class="sd">        :ivar y: Single-digit labels for samples</span>
+<span class="sd">        :vartype y: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar b:</span>
+<span class="sd">        :ivar b: Labels balance in dataset</span>
 <span class="sd">        :vartype b: dict</span>
 
-<span class="sd">        :ivar id:</span>
-<span class="sd">        :vartype id: list</span>
+<span class="sd">        :ivar ids: Numerical identifiers for samples</span>
+<span class="sd">        :vartype ids: list</span>
 
-<span class="sd">        :ivar s:</span>
+<span class="sd">        :ivar s: Total number of samples</span>
 <span class="sd">        :vartype s: int</span>
 
-<span class="sd">        :ivar A:</span>
-<span class="sd">        :vartype A: NoneType</span>
+<span class="sd">        :ivar A: Output of forward propagation for dataset</span>
+<span class="sd">        :vartype A: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar P:</span>
-<span class="sd">        :vartype P: NoneType</span>
+<span class="sd">        :ivar P: Predictions for dataset</span>
+<span class="sd">        :vartype P: :class:`numpy.ndarray`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>
-        <span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="p">]</span>
+        <span class="n">x_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
+        <span class="n">y_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">name</span>
 
@@ -290,19 +289,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+            <span class="c1"># Single-digit labels</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
             <span class="c1"># Labels balance</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
 
         <span class="c1"># Set numerical id for each sample</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span> <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))])</span>
 
         <span class="c1"># Number of samples</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
 
         <span class="k">return</span> <span class="kc">None</span></div></div>
 </pre></div>

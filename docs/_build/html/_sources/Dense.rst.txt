@@ -11,7 +11,7 @@ Fully Connected (Dense)
 Layer architecture
 ------------------------------
 
-.. image::
+.. image:: _static/Dense/Dense-01.svg
 
 .. autoclass:: nnlibs.dense.models.Dense
     :show-inheritance:

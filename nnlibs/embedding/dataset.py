@@ -7,7 +7,7 @@ from nnlibs.commons.io import encode_dataset
 from nnlibs.commons.models import dataSet
 
 
-def embedding_prepare(layer, dataset, se_dataset, encode):
+def embedding_prepare(layer, dataset, se_dataset, encode, single):
     """Prepare dataset for Embedding layer object
 
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
@@ -22,6 +22,9 @@ def embedding_prepare(layer, dataset, se_dataset, encode):
     :param encode:
     :type encode: bool
 
+    :param single:
+    :type single: bool
+
     :return:
     :rtype : tuple
     """
@@ -29,7 +32,10 @@ def embedding_prepare(layer, dataset, se_dataset, encode):
         index_vocabulary_auto(layer, dataset)
         dataset = encoded_dataset = encode_dataset(dataset, layer.w2i, layer.d['v'])
 
-    dtrain, dtest, dval = split_dataset(dataset,se_dataset)
+    dtrain, dtest, dval = split_dataset(dataset, se_dataset)
+
+    if single:
+        dtrain = dataset
 
     batch_dtrain = mini_batches(dtrain, se_dataset)
 

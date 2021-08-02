@@ -93,7 +93,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -218,19 +218,16 @@
 <dl class="py method">
 <dt id="nnlibs.dropout.models.Dropout.compute_shapes">
 <code class="sig-name descname">compute_shapes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout.compute_shapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout.compute_shapes" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute shapes for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.dropout.parameters.dropout_compute_shapes" title="nnlibs.dropout.parameters.dropout_compute_shapes"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.dropout.parameters.dropout_compute_shapes()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>    <span class="c1"># Input of current layer of shape (n .. m)</span>
 
     <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>   <span class="c1">#</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>        <span class="c1">#</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
@@ -240,9 +237,13 @@
 <dl class="py method">
 <dt id="nnlibs.dropout.models.Dropout.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout.forward" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.dropout.forward.dropout_forward" title="nnlibs.dropout.forward.dropout_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.dropout.forward.dropout_forward()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># (1) Initialize cache</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
 
     <span class="n">D</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">np_rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">])</span>
 
@@ -254,7 +255,7 @@
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
 
-    <span class="k">return</span> <span class="n">A</span>
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -262,8 +263,10 @@
 <dl class="py method">
 <dt id="nnlibs.dropout.models.Dropout.backward">
 <code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout.backward" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.dropout.backward.dropout_backward" title="nnlibs.dropout.backward.dropout_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.dropout.backward.dropout_backward()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
 
     <span class="n">dA</span> <span class="o">=</span> <span class="n">dX</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span>
@@ -272,7 +275,7 @@
 
     <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
 
-    <span class="k">return</span> <span class="n">dA</span>
+    <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -280,13 +283,10 @@
 <dl class="py method">
 <dt id="nnlibs.dropout.models.Dropout.compute_gradients">
 <code class="sig-name descname">compute_gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dropout/models.html#Dropout.compute_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dropout.models.Dropout.compute_gradients" title="Permalink to this definition">¶</a></dt>
-<dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Dummy function - Update weight and bias gradients for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.dropout.parameters.dropout_compute_gradients" title="nnlibs.dropout.parameters.dropout_compute_gradients"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.dropout.parameters.dropout_compute_gradients()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">dropout_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute gradients with respect to weight and bias for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># No gradients to update for Dropout layer</span>
 
     <span class="k">return</span> <span class="kc">None</span>

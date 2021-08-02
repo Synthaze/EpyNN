@@ -11,7 +11,7 @@ Long Short-Term Memory (LSTM)
 Layer architecture
 ------------------------------
 
-.. image::
+.. image:: _static/LSTM/lstm-01.svg
 
 .. autoclass:: nnlibs.lstm.models.LSTM
     :show-inheritance:

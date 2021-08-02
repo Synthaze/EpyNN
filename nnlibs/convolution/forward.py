@@ -1,10 +1,33 @@
-# EpyNN/nnlibs/conv/forward.py
+# EpyNN/nnlibs/convolution/forward.py
 # Related third party imports
 import numpy as np
 
 
-def convolution_forward(layer, A):
+def initialize_forward(layer, A):
+    """Forward cache initialization.
 
+    :param layer: An instance of convolution layer.
+    :type layer: :class:`nnlibs.convolution.models.Convolution`
+
+    :param A: Output of forward propagation from previous layer
+    :type A: :class:`numpy.ndarray`
+
+    :return: Input of forward propagation for current layer
+    :rtype: :class:`numpy.ndarray`
+    """
+    X = layer.fc['X'] = A
+
+    Z = np.empty(layer.fs['Z'])
+
+    layer.fc['Xb'] = []
+
+    return X, Z
+
+
+def convolution_forward(layer, A):
+    """Forward propagate signal to next layer.
+    """
+    # (1) Initialize cache
     X, Z = initialize_forward(layer, A)
 
     # Loop through image rows
@@ -62,15 +85,4 @@ def convolution_forward(layer, A):
     # _
     A = layer.fc['A'] = layer.activate(Z)
 
-    return A
-
-
-def initialize_forward(layer, A):
-
-    X = layer.fc['X'] = A.T
-
-    Z = np.empty(layer.fs['Z'])
-
-    layer.fc['Xb'] = []
-
-    return X, Z
+    return A    # To next layer

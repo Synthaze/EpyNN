@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -214,36 +214,52 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lrate</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Pooling.compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_shapes()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pooling_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">pooling_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="Pooling.forward"><a class="viewcode-back" href="../../../Convolution.html#nnlibs.pooling.models.Pooling.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-        <span class="c1"># Forward pass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">pooling_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">A</span></div>
-
-<div class="viewcode-block" id="Pooling.backward"><a class="viewcode-back" href="../../../Convolution.html#nnlibs.pooling.models.Pooling.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-        <span class="c1"># Backward pass</span>
-        <span class="n">dA</span> <span class="o">=</span> <span class="n">pooling_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;backward&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">dA</span></div>
-
-<div class="viewcode-block" id="Pooling.compute_gradients"><a class="viewcode-back" href="../../../Convolution.html#nnlibs.pooling.models.Pooling.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Backward pass</span>
-        <span class="n">pooling_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Update parameters</span>
+<div class="viewcode-block" id="Pooling.initialize_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.parameters.initialize_parameters()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pooling_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Pooling.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.forward.pooling_forward()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">pooling_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">A</span></div>
+
+<div class="viewcode-block" id="Pooling.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.backward.pooling_backward()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dA</span> <span class="o">=</span> <span class="n">pooling_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dA</span></div>
+
+<div class="viewcode-block" id="Pooling.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_gradients()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">pooling_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Pooling.update_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.pooling.models.Pooling.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.pooling.parameters.pooling_update_parameters()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pooling_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
 
 
     <span class="k">def</span> <span class="nf">assemble_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>

@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -176,15 +176,17 @@
 <div class="viewcode-block" id="initialize_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.initialize_forward">[docs]</a><span class="k">def</span> <span class="nf">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Forward cache initialization.</span>
 
-<span class="sd">    :param layer: RNN layer object</span>
-<span class="sd">    :type layer: class:`nnlibs.rnn.models.RNN`</span>
+<span class="sd">    :param layer: An instance of RNN layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.rnn.models.RNN`</span>
+
 <span class="sd">    :param A: Output of forward propagation from previous layer</span>
-<span class="sd">    :type A: class:`numpy.ndarray`</span>
+<span class="sd">    :type A: :class:`numpy.ndarray`</span>
 
 <span class="sd">    :return: Input of forward propagation for current layer</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
 <span class="sd">    :return: Previous cell state initialized with zeros.</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
     <span class="n">X</span><span class="p">[:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span>
@@ -198,7 +200,7 @@
 
 
 <div class="viewcode-block" id="rnn_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.rnn_forward">[docs]</a><span class="k">def</span> <span class="nf">rnn_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal through RNN cells to next layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># (1) Initialize cache and cell state</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
@@ -227,8 +229,8 @@
 <div class="viewcode-block" id="terminate_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.terminate_forward">[docs]</a><span class="k">def</span> <span class="nf">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Check if many-to-many or many-to-one (binary) mode.</span>
 
-<span class="sd">    :param layer: RNN layer object</span>
-<span class="sd">    :type layer: class:`nnlibs.rnn.models.RNN`</span>
+<span class="sd">    :param layer: An instance of RNN layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.rnn.models.RNN`</span>
 
 <span class="sd">    :return: Output of forward propagation for current layer</span>
 <span class="sd">    :rtype: class:`numpy.ndarray`</span>

@@ -2,55 +2,44 @@
 
 
 def flatten_compute_shapes(layer, A):
-    """Compute shapes for Flatten layer object
-
-    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
-    :type layer: class:`nnlibs.flatten.models.Flatten`
+    """Compute forward shapes and dimensions for layer.
     """
-
-    X = A
+    X = A    # Input of current layer of shape (m .. n)
 
     layer.fs['X'] = X.shape
 
-    layer.d['m'] = layer.fs['X'][-1]
-    layer.d['n'] = layer.fs['X'][0] * layer.fs['X'][1]
+    #
+    layer.d['m'] = layer.fs['X'][0]
+    layer.d['n'] = layer.fs['X'][1]
 
-    layer.fs['A'] = (int(X.size / X.shape[-1]), X.shape[-1])
+    if X.ndim == 3:
+        layer.d['n'] = layer.fs['X'][1] * layer.fs['X'][2]
+
+    #
+    layer.fs['A'] = (layer.d['m'], int(X.size / layer.d['m']))
 
     return None
 
 
 def flatten_initialize_parameters(layer):
-    """Dummy function - Initialize parameters for Flatten layer object
-
-    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
-    :type layer: class:`nnlibs.flatten.models.Flatten`
+    """Initialize parameters for layer.
     """
-
     # No parameters to initialize for Flatten layer
 
     return None
 
 
 def flatten_compute_gradients(layer):
-    """Dummy function - Update weight and bias gradients for Flatten layer object
-
-    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
-    :type layer: class:`nnlibs.flatten.models.Flatten`
+    """Compute gradients with respect to weight and bias for layer.
     """
-
     # No gradients to update for Flatten layer
 
     return None
 
 
 def flatten_update_parameters(layer):
-    """Dummy function - Update parameters for Flatten layer object
-
-    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
-    :type layer: class:`nnlibs.flatten.models.Flatten`
+    """Update parameters for layer.
     """
-
     # No parameters to update for Flatten layer
 
     return None

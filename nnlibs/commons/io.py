@@ -4,16 +4,16 @@ import numpy as np
 
 
 def one_hot_encode(i, vocab_size):
-    """
+    """Generate one-hot encoding array.
 
-    :param i:
-    :type i:
+    :param i: One-hot index
+    :type i: int
 
-    :param vocab_size:
-    :type vocab_size:
+    :param vocab_size: Size of array
+    :type vocab_size: int
 
-    :return:
-    :rtype:
+    :return: One-hot encoded array
+    :rtype: :class:`numpy.ndarray`
     """
     one_hot = np.zeros(vocab_size)
 
@@ -23,38 +23,38 @@ def one_hot_encode(i, vocab_size):
 
 
 def one_hot_encode_sequence(sequence, word_to_idx, vocab_size):
-    """.
+    """One-hot encode sequence.
 
-    :param sequence:
-    :type sequence:
+    :param sequence: Sequential data
+    :type sequence: list
 
-    :param word_to_idx:
-    :type word_to_idx:
+    :param word_to_idx: Converter with word as key and index as value
+    :type word_to_idx: dict
 
-    :param vocab_size:
-    :type vocab_size:
+    :param vocab_size: Number of keys in converter
+    :type vocab_size: int
 
-    :return:
-    :rtype:
+    :return: One-hot encoded sequence
+    :rtype: :class:`numpy.ndarray`
     """
     encoding = np.array([one_hot_encode(word_to_idx[word], vocab_size) for word in sequence])
 
-    encoding = encoding.T
+    encoding = encoding
 
     return encoding
 
 
 def one_hot_decode_sequence(sequence, idx_to_word):
-    """.
+    """One-hot decode sequence.
 
-    :param sequence:
-    :type sequence:
+    :param sequence: One-hot encoded sequence
+    :type sequence: :class:`numpy.ndarray`
 
-    :param idx_to_word:
+    :param idx_to_word: Converter with index as key and word as value
     :type idx_to_word:
 
-    :return:
-    :rtype:
+    :return: One-hot decoded sequence
+    :rtype: :class:`numpy.ndarray`
     """
     decoding = [idx_to_word[np.argmax(encoded)] for encoded in sequence]
 
@@ -62,18 +62,18 @@ def one_hot_decode_sequence(sequence, idx_to_word):
 
 
 def encode_dataset(dataset, word_to_idx, vocab_size):
-    """.
+    """One-hot encode features from samples in dataset.
 
-    :param dataset:
-    :type dataset:
+    :param dataset: Contains samples
+    :type dataset: list[list[list,list[int]]]
 
-    :param word_to_idx:
-    :type word_to_idx:
+    :param word_to_idx: Converter with word as key and index as value
+    :type word_to_idx: dict
 
-    :param vocab_size:
-    :type vocab_size:
+    :param vocab_size: Number of keys in converter
+    :type vocab_size: int
 
-    :return:
+    :return: One-hot encoded dataset
     :rtype:
     """
     encoded_dataset = []
@@ -86,7 +86,7 @@ def encode_dataset(dataset, word_to_idx, vocab_size):
 
         encoded_features = one_hot_encode_sequence(features, word_to_idx, vocab_size)
 
-        sample = [encoded_features,label]
+        sample = [encoded_features, label]
 
         encoded_dataset.append(sample)
 

@@ -25,33 +25,49 @@ class Dropout(Layer):
 
         self.d['k'] = keep_prob
 
+        return None
+
     def compute_shapes(self, A):
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_shapes()`.
+        """
         dropout_compute_shapes(self, A)
+
         return None
 
     def initialize_parameters(self):
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_initialize_parameters()`.
+        """
         dropout_initialize_parameters(self)
+
         return None
 
     def forward(self, A):
-        # Forward pass
+        """Wrapper for :func:`nnlibs.dropout.forward.dropout_forward()`.
+        """
         self.compute_shapes(A)
         A = dropout_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
+
         return A
 
     def backward(self, dA):
-        # Backward pass
+        """Wrapper for :func:`nnlibs.dropout.backward.dropout_backward()`.
+        """
         dA = dropout_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
+
         return dA
 
     def compute_gradients(self):
-        # Backward pass
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_gradients()`.
+        """
         dropout_compute_gradients(self)
+
         return None
 
     def update_parameters(self):
-        # Update parameters
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_update_parameters()`.
+        """
         dropout_update_parameters(self)
+
         return None

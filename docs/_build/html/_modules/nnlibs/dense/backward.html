@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -174,31 +174,32 @@
 
 
 <div class="viewcode-block" id="initialize_backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.dense.backward.initialize_backward">[docs]</a><span class="k">def</span> <span class="nf">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute shapes for Dense layer object</span>
+    <span class="sd">&quot;&quot;&quot;Backward cache initialization.</span>
 
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`</span>
-<span class="sd">    :type layer: class:`nnlibs.dense.models.Dense`</span>
+<span class="sd">    :param layer: An instance of dense layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.dense.models.Dense`</span>
+
+<span class="sd">    :param dA: Output of backward propagation from next layer</span>
+<span class="sd">    :type dA: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Input of backward propagation for current layer</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
 
     <span class="k">return</span> <span class="n">dX</span></div>
 
 
 <div class="viewcode-block" id="dense_backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.dense.backward.dense_backward">[docs]</a><span class="k">def</span> <span class="nf">dense_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute shapes for Dense layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dense.models.Dense`</span>
-<span class="sd">    :type layer: class:`nnlibs.dense.models.Dense`</span>
+    <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
 
     <span class="n">dZ</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dZ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">],</span> <span class="n">deriv</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dZ</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dA</span></div>
+    <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span></div>
 </pre></div>
 
            </div>

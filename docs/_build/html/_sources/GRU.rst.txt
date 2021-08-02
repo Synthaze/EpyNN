@@ -11,7 +11,7 @@ Gated Recurrent Unit (GRU)
 Layer architecture
 ------------------------------
 
-.. image::
+.. image:: _static/GRU/gru-01.svg
 
 .. autoclass:: nnlibs.gru.models.GRU
     :show-inheritance:

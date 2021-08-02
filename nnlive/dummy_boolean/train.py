@@ -1,65 +1,81 @@
 # EpyNN/nnlive/dummy_boolean/train.py
 # Standard library imports
 import random
+import sys
+
 # Related third party imports
 import numpy as np
+
 # Local application/library specific imports
-from nnlibs.initialize import *
+import nnlibs.initialize
+from nnlibs.commons.logs import pretty_json
+from nnlibs.commons.library import (
+    configure_directory,
+    read_dataset,
+    read_model,
+)
+from nnlibs.commons.maths import relu
 from nnlibs.meta.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.dense.models import Dense
-import nnlibs.commons.library as cl
-import nnlibs.commons.maths as cm
-import prepare_dataset as pd
-import settings as se
+from prepare_dataset import (
+    labeled_dataset,
+    unlabeled_dataset,
+)
+from settings import (
+    dataset as se_dataset,
+    config as se_config,
+    hPars as se_hPars,
+)
 
 
-
-
-################################## HEADERS ################################
-
+############################ HEADERS ##########################
 random.seed(1)
 
-np.set_printoptions(precision=3, threshold=sys.maxsize)
+np.set_printoptions(precision=3,threshold=sys.maxsize)
 
-np.seterr(all='warn')
+np.seterr(all='raise')
 
-cl.init_dir(se.config)
+configure_directory(se_config=se_config)
 
-# DOCS_HEADERS
-################################## DATASETS ################################
-dataset = pd.prepare_dataset(se.dataset) # See "Data preparation, structure and shape"
-#dataset = cl.read_dataset()
+settings = [se_dataset, se_config, se_hPars]
 
-################################ BUILD MODEL ###############################
-name = 'Embedding_Dense-2-Softmax' # (1)
-layers = [Embedding(dataset, se.dataset), Dense(2)] # Dense() same as Dense(nodes=2,activate=cm.softmax)
+############################ DATASET ##########################
+dataset = labeled_dataset(se_dataset)
 
-#name = 'Dense-2-Sigmoid' # (2)
-#layers = [Dense(nodes=2,activate=cm.sigmoid)]
-
-#name = 'Dense-8-ReLU_Dense-2-Softmax' # (3)
-#layers = [Dense(8,activate=cm.relu),Dense(2)]
-
-model = EpyNN(layers=layers, settings=[se.dataset, se.config, se.hPars], seed=1, name=name)
+embedding = Embedding(dataset, se_dataset)
 
 
-################################ TRAIN MODEL ################################
+############################ MODEL ############################
+# Single-layer perceptron
+dense = Dense()
+name = 'Embedding_Dense'
+model = EpyNN(layers=[embedding, dense], settings=settings, seed=1, name=name)
+
+# Feed-forward Neural Network (Multi-layer perceptron)
+#hidden_dense = Dense(nodes=4, activate=relu)
+#name = 'Embedding_Dense-4-ReLU_Dense'
+#model = EpyNN(layers=[embedding, hidden_dense, dense], settings=settings, seed=1, name=name)
+
+# Feed-forward Neural Network (Deep Learning)
+#more_hidden_dense = Dense(nodes=8, activate=relu)
+#name = 'Embedding_Dense-8-ReLU_Dense-4-ReLU_Dense'
+#model = EpyNN(layers=[embedding, more_hidden_dense, hidden_dense, dense], settings=settings, seed=1, name=name)
+
+########################### TRAINING ###########################
 model.train()
-
 model.plot()
+model.evaluate(write=True)
 
 
-################################# USE MODEL #################################
-model = cl.read_model()
+######################### PREDICTION ###########################
+model = read_model()
 
-unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
+unlabeled_more = unlabeled_dataset(N_SAMPLES=10)
 
-X = model.embedding_unlabeled(unlabeled_dataset)
-# [[ True  True  True False  True False False False  True False  True]]
+dset = model.predict(unlabeled_more)
 
-A = model.predict(X)
-# [[0.714 0.286]]
+dset.P = np.argmax(dset.A, axis=1)
 
-P = np.argmax(A, axis=1)
-# [0]
+for i in range(len(unlabeled_more)):
+    print(unlabeled_more[i], dset.A[i], dset.P[i])

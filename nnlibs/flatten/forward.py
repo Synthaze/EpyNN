@@ -1,10 +1,8 @@
 # EpyNN/nnlibs/flatten/forward.py
-# Related third party imports
-import numpy as np
 
 
 def initialize_forward(layer, A):
-    """
+    """Forward cache initialization.
 
     :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
     :type layer: class:`nnlibs.flatten.models.Flatten`
@@ -21,19 +19,12 @@ def initialize_forward(layer, A):
 
 
 def flatten_forward(layer,A):
+    """Forward propagate signal to next layer.
     """
-
-    :param layer: An instance of the :class:`nnlibs.flatten.models.Flatten`
-    :type layer: class:`nnlibs.flatten.models.Flatten`
-
-    :param A: Output of forward propagation from previous layer
-    :type A: class:`numpy.ndarray`
-
-    :return: Output of forward propagation for current layer
-    :rtype: class:`numpy.ndarray`
-    """
+    # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    A = layer.fc['A'] = np.reshape(X, layer.fs['A'])
+    # (2) Reshape (m, s, v) to (m, sv)
+    A = layer.fc['A'] = X.reshape(layer.fs['A'])
 
     return A   # To next layer

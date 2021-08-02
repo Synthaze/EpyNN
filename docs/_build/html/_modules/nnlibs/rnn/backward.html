@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -176,15 +176,17 @@
 <div class="viewcode-block" id="initialize_backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.backward.initialize_backward">[docs]</a><span class="k">def</span> <span class="nf">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Backward cache initialization.</span>
 
-<span class="sd">    :param layer: RNN layer object</span>
-<span class="sd">    :type layer: class:`nnlibs.rnn.models.RNN`</span>
+<span class="sd">    :param layer: An instance of RNN layer.</span>
+<span class="sd">    :type layer: :class:`nnlibs.rnn.models.RNN`</span>
+
 <span class="sd">    :param dA: Output of backward propagation from next layer</span>
-<span class="sd">    :type dA: class:`numpy.ndarray`</span>
+<span class="sd">    :type dA: :class:`numpy.ndarray`</span>
 
 <span class="sd">    :return: Input of backward propagation for current layer</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
 <span class="sd">    :return: Next cell state initialized with zeros.</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
 

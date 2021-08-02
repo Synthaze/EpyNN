@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -169,13 +169,22 @@
             
   <h1>Source code for nnlibs.commons.plot</h1><div class="highlight"><pre>
 <span></span><span class="c1"># EpyNN/nnlibs/commons/plot.py</span>
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
 <span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">termplotlib</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 
+<span class="c1"># Local application/library specific imports</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.logs</span> <span class="kn">import</span> <span class="n">process_logs</span>
+
 
 <div class="viewcode-block" id="pyplot_metrics"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.plot.pyplot_metrics">[docs]</a><span class="k">def</span> <span class="nf">pyplot_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Plot metrics from training with matplotlib</span>
+
+<span class="sd">    :param model: An instance of EpyNN network.</span>
+<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">se_config</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">se_config</span>
 
@@ -209,18 +218,22 @@
 
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;plot_display&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;plot_save&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">pass</span>
-        <span class="c1">#plt.savefig()</span>
+    <span class="n">plot_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s1">&#39;plots&#39;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">)</span>  <span class="o">+</span> <span class="s1">&#39;.png&#39;</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">plot_path</span><span class="p">)</span>
+
+    <span class="n">process_logs</span><span class="p">(</span><span class="s1">&#39;Make: &#39;</span> <span class="o">+</span> <span class="n">plot_path</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="gnuplot_accuracy"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.plot.gnuplot_accuracy">[docs]</a><span class="k">def</span> <span class="nf">gnuplot_accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Plot metrics from training with gnuplot</span>
+
+<span class="sd">    :param model: An instance of EpyNN network.</span>
+<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">se_config</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">se_config</span>
 

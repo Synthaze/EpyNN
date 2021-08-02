@@ -46,8 +46,7 @@ class LSTM(Layer):
 
     def __init__(self,
                 hidden_size=10,
-                activate=sigmoid,
-                activate_hidden=tanh,
+                activate=tanh,
                 activate_output=sigmoid,
                 activate_candidate=tanh,
                 activate_input=sigmoid,
@@ -64,7 +63,6 @@ class LSTM(Layer):
             'activate_input': activate_input.__name__,
             'activate_candidate': activate_candidate.__name__,
             'activate_forget': activate_forget.__name__,
-            'activate_hidden': activate_hidden.__name__,
             'activate_output': activate_output.__name__,
         }
 
@@ -73,41 +71,52 @@ class LSTM(Layer):
         self.activate_candidate = activate_candidate
         self.activate_forget = activate_forget
         self.activate_output = activate_output
-        self.activate_hidden = activate_hidden
 
         self.d['h'] = hidden_size
-
-        self.binary = binary
 
         self.lrate = []
 
     def compute_shapes(self, A):
+        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_shapes()`.
+        """
         lstm_compute_shapes(self, A)
+
         return None
 
     def initialize_parameters(self):
+        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_initialize_parameters()`.
+        """
         lstm_initialize_parameters(self)
+
         return None
 
     def forward(self, A):
-        # Forward pass
+        """Is a wrapper for :func:`nlibs.lstm.forward.lstm_forward()`.
+        """
         self.compute_shapes(A)
         A = lstm_forward(self, A)
         self.update_shapes(self.fc, self.fs)
+
         return A
 
     def backward(self, dA):
-        # Backward pass
+        """Is a wrapper for :func:`nlibs.lstm.backward.lstm_backward()`.
+        """
         dA = lstm_backward(self, dA)
         self.update_shapes(self.bc, self.bs)
+
         return dA
 
     def compute_gradients(self):
-        # Backward pass
+        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_gradients()`.
+        """
         lstm_compute_gradients(self)
+
         return None
 
     def update_parameters(self):
-        # Update parameters
+        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_update_parameters()`.
+        """
         lstm_update_parameters(self)
+
         return None

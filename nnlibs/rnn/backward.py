@@ -6,15 +6,17 @@ import numpy as np
 def initialize_backward(layer, dA):
     """Backward cache initialization.
 
-    :param layer: RNN layer object
-    :type layer: class:`nnlibs.rnn.models.RNN`
+    :param layer: An instance of RNN layer.
+    :type layer: :class:`nnlibs.rnn.models.RNN`
+
     :param dA: Output of backward propagation from next layer
-    :type dA: class:`numpy.ndarray`
+    :type dA: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
+
     :return: Next cell state initialized with zeros.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     dX = layer.bc['dX'] = dA
 
@@ -22,7 +24,7 @@ def initialize_backward(layer, dA):
     layer.bc['dhn'] = np.zeros_like(layer.bc['dh'])
     layer.bc['dA'] = np.zeros(layer.fs['X'])
 
-    dhn = layer.bc['dhn'][0]
+    dhn = layer.bc['dhn'][:, 0]
 
     return dX, dhn
 
@@ -34,21 +36,18 @@ def rnn_backward(layer, dA):
     dX, dhn = initialize_backward(layer, dA)
 
     # Iterate through reversed sequence to previous cell
-    for s in reversed(range(layer.d['h'])):
+    for s in reversed(range(layer.d['s'])):
 
-        # (2s) Slice sequence (l, v, m) with respect to step
-        dX = dX if layer.binary else layer.bc['dX'][s]
+        # (2s) Slice sequence (m, s, v) with respect to step
+        dX = layer.bc['dX'][:, s]
 
-        # (3s) Compute partial derivative of cell state error
-        dh = np.zeros_like(dhn) if layer.binary else dhn
-        dh += np.dot(layer.p['W'].T, dX)
-        dh = layer.bc['dh'][s] = dh * layer.activate_hidden(layer.fc['h'][s], deriv=True)
+        dh = dX + dhn
 
-        # (4s) With respect to cell state
-        dhn = layer.bc['dhn'][s] = np.dot(layer.p['Wh'].T, dh)
+        dh = layer.bc['dh'][:, s] = layer.activate(layer.fc['h'][:, s]**2, deriv=True) * dh
 
-        # (5s) With respect to cell input
-        dA = layer.bc['dA'][s] = np.dot(layer.p['Wx'].T, dh)
+        dhn = np.dot(dh, layer.p['W'].T)
+
+        layer.bc['dA'][:, s] = np.dot(dh, layer.p['U'].T)
 
     dA = layer.bc['dA']
 

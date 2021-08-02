@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -172,12 +172,16 @@
 
 
 <div class="viewcode-block" id="model_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.forward.model_forward">[docs]</a><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate input data from input to output layer.</span>
 
-<span class="sd">    :param A:</span>
-<span class="sd">    :type A:</span>
-<span class="sd">    :return:</span>
-<span class="sd">    :rtype:</span>
+<span class="sd">    :param model: An instance of EpyNN network.</span>
+<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
+
+<span class="sd">    :param A: Input of forward propagation for embedding layer</span>
+<span class="sd">    :type A: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Output of forward propagation for output layer</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
 

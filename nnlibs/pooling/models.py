@@ -44,35 +44,51 @@ class Pooling(Layer):
 
         self.lrate = []
 
+        return None
+
     def compute_shapes(self, A):
+        """Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_shapes()`.
+        """
         pooling_compute_shapes(self, A)
+
         return None
 
     def initialize_parameters(self):
+        """Wrapper for :func:`nnlibs.pooling.parameters.initialize_parameters()`.
+        """
         pooling_initialize_parameters(self)
+
         return None
 
     def forward(self, A):
-        # Forward pass
+        """Wrapper for :func:`nnlibs.pooling.forward.pooling_forward()`.
+        """
         self.compute_shapes(A)
         A = pooling_forward(self, A)
-        self.update_shapes(mode='forward')
+        self.update_shapes(self.fc, self.fs)
+
         return A
 
     def backward(self, dA):
-        # Backward pass
+        """Wrapper for :func:`nnlibs.pooling.backward.pooling_backward()`.
+        """
         dA = pooling_backward(self, dA)
-        self.update_shapes(mode='backward')
+        self.update_shapes(self.bc, self.bs)
+
         return dA
 
     def compute_gradients(self):
-        # Backward pass
+        """Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_gradients()`.
+        """
         pooling_compute_gradients(self)
+
         return None
 
     def update_parameters(self):
-        # Update parameters
+        """Wrapper for :func:`nnlibs.pooling.parameters.pooling_update_parameters()`.
+        """
         pooling_update_parameters(self)
+
         return None
 
 

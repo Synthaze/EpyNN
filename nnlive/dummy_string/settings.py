@@ -1,45 +1,74 @@
-#EpyNN/nnlive/dummy_strings/settings.py
+# EpyNN/nnlive/dummy_strings/settings.py
 
 
+# DATASET SETTINGS
 dataset = {
+    # Settings for preparation
     'N_SAMPLES': 1000,
-    'dataset_name': 'dummy_strings',
+    'dataset_name': 'dummy',
     'dataset_save': False,
+    # Settings for embedding
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
     'batch_number': 5,
 }
+"""Dictionary settings for dataset preparation.
+"""
 
 
+# GENERAL CONFIGURATION SETTINGS
 config = {
-    'experiment_name': 'DUMMY_STRINGS',
+    # Globals for model training
+    'training_epochs': 1000,
+    'training_loss': 'BCE',
+    'metrics_target': 'accuracy',
+    'dataset_target': 1,
+    # Logs behavior
     'logs_frequency': 1,
     'logs_frequency_display': 25,
-    'model_save': True,
-    'plot_display': True,
-    'plot_save': False,
-    'directory_clear': True,
-    'dataset_target': 1,
-    'metrics_target': 'accuracy',
-    'metrics_list': ['accuracy','recall','precision','BCE','MSE'],
-    'metrics_plot': ['accuracy','BCE']
+    'metrics_list': ['accuracy', 'BCE', 'MSE'],
+    'print_over': True,
+    # Plot behavior
+    'metrics_plot': ['accuracy', 'BCE'],
+    'pyplot': True,
+    'gnuplot': False,
+    # Make and remove on disk
+    'model_save': False,
+    'directory_clear': False,
 }
+"""General configuration dictionary settings.
+
+Target dataset can be picked in:
+[0, 1, 2]    # [dtrain, dtest, dval]
+
+Metrics can be picked in:
+['accuracy', 'CCE', 'MSE', 'MAE', 'RMSLE']
+
+For binary classification, extra-metrics can be picked in:
+['precision', 'recall', 'BCE']
+"""
 
 
+# HYPERPARAMETERS SETTINGS
 hPars = {
-    'training_epochs': 100,
+    # Schedule learning rate
     'learning_rate': 0.1,
     'schedule_mode': 'exp_decay',
-    'decay_k': 0.0025,
+    'decay_k': 0.001,
     'cycling_n': 1,
     'descent_d': 1,
-
+    # Regularization
     'regularization_l2': 0,
     'regularization_l1': 0,
-
-    'softmax_temperature': 1,
+    # Tune activation function
     'ELU_alpha': 0.01,
-    'LRELU_alpha': 1,
+    'LRELU_alpha': 0.01,
+    'softmax_temperature': 1,
+    # May prevent from floating point error
     'min_epsilon': 1e-9,
 }
+"""Hyperparameters dictionary settings.
+
+Set hyperparameters for model and layer.
+"""

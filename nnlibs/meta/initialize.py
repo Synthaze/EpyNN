@@ -10,8 +10,14 @@ from termcolor import cprint
 from nnlibs.commons.logs import pretty_json
 
 
-def initialize_model_layers(model):
-    """.
+def model_initialize(model, init_params=True):
+    """Initialize Neural Network.
+
+    :param init_params:
+    :type init_params: bool
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.meta.models.EpyNN`
     """
     batch_dtrain = model.embedding.batch_dtrain
 
@@ -32,13 +38,14 @@ def initialize_model_layers(model):
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-        layer.initialize_parameters()
+        if init_params:
+            layer.initialize_parameters()
 
         A = layer.forward(A)
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-    dA = A - sample.Y.T
+    dA = model.training_loss(Y, A, deriv=True) / A.shape[1]
 
     for layer in reversed(model.layers):
 
@@ -51,8 +58,8 @@ def initialize_model_layers(model):
     return None
 
 
-def initialize_exceptions(model,trace):
-    """.
+def model_initialize_exceptions(model,trace):
+    """Handle error in model initialization and show logs.
     """
     for layer in model.network.keys():
         pretty_json(model.network[layer])

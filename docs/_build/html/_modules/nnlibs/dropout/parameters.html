@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -174,53 +174,37 @@
 
 
 <div class="viewcode-block" id="dropout_compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.dropout.parameters.dropout_compute_shapes">[docs]</a><span class="k">def</span> <span class="nf">dropout_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute shapes for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>    <span class="c1"># Input of current layer of shape (n .. m)</span>
 
     <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;D&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span>   <span class="c1">#</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>        <span class="c1">#</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="dropout_initialize_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.dropout.parameters.dropout_initialize_parameters">[docs]</a><span class="k">def</span> <span class="nf">dropout_initialize_parameters</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Dummy function - Initialize parameters for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+    <span class="sd">&quot;&quot;&quot;Initialize parameters for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># No parameters to initialize for Dropout layer</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="dropout_compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.dropout.parameters.dropout_compute_gradients">[docs]</a><span class="k">def</span> <span class="nf">dropout_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Dummy function - Update weight and bias gradients for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+    <span class="sd">&quot;&quot;&quot;Compute gradients with respect to weight and bias for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># No gradients to update for Dropout layer</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="dropout_update_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.dropout.parameters.dropout_update_parameters">[docs]</a><span class="k">def</span> <span class="nf">dropout_update_parameters</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Dummy function - Update parameters for Dropout layer object</span>
-
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.dropout.models.Dropout`</span>
-<span class="sd">    :type layer: class:`nnlibs.dropout.models.Dropout`</span>
+    <span class="sd">&quot;&quot;&quot;Update parameters for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># No parameters to update for Dropout layer</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>

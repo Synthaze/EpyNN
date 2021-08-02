@@ -5,24 +5,35 @@
 
 .. toctree::
 
-EpyNN Model
+EpyNN Objects
 ===============================
 
-Network model
+Neural Network
 ------------------------------
 
+EpyNN model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 .. autoclass:: nnlibs.meta.models.EpyNN
-    :members:
 
     .. automethod:: __init__
 
     .. automethod:: forward
 
+        .. literalinclude:: ./../nnlibs/meta/forward.py
+            :pyobject: model_forward
+
     .. automethod:: backward
 
-    .. automethod:: initialize
+        .. literalinclude:: ./../nnlibs/meta/backward.py
+            :pyobject: model_backward
 
     .. automethod:: train
+
+        .. literalinclude:: ./../nnlibs/meta/train.py
+            :pyobject: model_training
+
+    .. automethod:: initialize
 
     .. automethod:: compute_metrics
 
@@ -35,10 +46,29 @@ Network model
     .. automethod:: predict
 
 
-Layer model
+Model settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: nnlibs.settings.config
+
+.. literalinclude:: ../nnlibs/settings.py
+    :language: python
+    :start-after: GENERAL CONFIGURATION SETTINGS
+    :lines: 1-30
+
+
+.. autoclass:: nnlibs.settings.hPars
+
+
+.. literalinclude:: ../nnlibs/settings.py
+    :language: python
+    :start-after: HYPERPARAMETERS SETTINGS
+    :lines: 1-22
+
+Layers
 ------------------------------
 
-Base layer
+Base Layer
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: nnlibs.commons.models.Layer
@@ -47,7 +77,7 @@ Base layer
 
     .. automethod:: update_shapes
 
-Template layer
+Layer Model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: nnlibs.template.models.Template
@@ -68,15 +98,30 @@ Template layer
     .. automethod:: update_parameters
 
 
+Layer settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Data model
+Data
 ------------------------------
 
+Dataset Model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: nnlibs.commons.models.dataSet
     :members:
 
     .. automethod:: __init__
 
-Settings
-------------------------------
+Data embedding
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Data settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: nnlibs.settings.dataset
+
+
+.. literalinclude:: ../nnlibs/settings.py
+    :language: python
+    :start-after: DATASET SETTINGS
+    :lines: 1-22

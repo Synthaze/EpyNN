@@ -43,6 +43,7 @@ np.seterr(all='warn')
 
 configure_directory(se_config=se_config)
 
+settings = [se_dataset, se_config, se_hPars]
 
 ############################ DATASET ##########################
 dataset = labeled_dataset(se_dataset)
@@ -55,6 +56,13 @@ embedding = Embedding(dataset, se_dataset, encode=True)
 bin_rnn = RNN(12, binary=True)
 name = 'Embedding_RNN-12-Binary'
 model = EpyNN(layers=[embedding, bin_rnn], settings=settings, seed=1, name=name)
+
+# Many-to-many RNN network
+#rnn = RNN(12)
+#flatten = Flatten()
+#dense = Dense()
+#name = 'Embedding_RNN-12_Flatten_Dense'
+#model = EpyNN(layers=[embedding, rnn, flatten, dense], settings=settings, seed=1, name=name)
 
 
 ########################### TRAINING ###########################

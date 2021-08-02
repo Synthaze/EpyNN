@@ -91,7 +91,7 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -173,34 +173,22 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="exp_decay"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.exp_decay">[docs]</a><span class="k">def</span> <span class="nf">exp_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+<div class="viewcode-block" id="schedulers"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.schedulers">[docs]</a><span class="k">def</span> <span class="nf">schedulers</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">,</span> <span class="n">training_epochs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Learning rate schedule.</span>
+
+<span class="sd">    :param se_hPars: Hyperparameters settings for layer</span>
+<span class="sd">    :type se_hPars: dict</span>
+
+<span class="sd">    :param training_epochs: Number of training epochs for model</span>
+<span class="sd">    :type training_epochs: int</span>
+
+<span class="sd">    :return: Updated settings for layer hyperparameters</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :return: Scheduled learning rate for layer</span>
+<span class="sd">    :rtype: list</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
-
-    <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">d</span><span class="o">**</span><span class="p">(</span><span class="n">x</span><span class="o">//</span><span class="n">epc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="n">epc</span><span class="p">)</span><span class="o">*</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="lin_decay"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.lin_decay">[docs]</a><span class="k">def</span> <span class="nf">lin_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
-
-    <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="steady"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.steady">[docs]</a><span class="k">def</span> <span class="nf">steady</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
-
-    <span class="k">return</span> <span class="p">[</span> <span class="n">lr</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="schedulers"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.schedulers">[docs]</a><span class="k">def</span> <span class="nf">schedulers</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">]</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;training_epochs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">training_epochs</span>
     <span class="n">lr</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;cycling_n&#39;</span><span class="p">]</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;descent_d&#39;</span><span class="p">]</span>
@@ -213,7 +201,6 @@
         <span class="c1"># 0.005% of initial lr for last epoch in cycle</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;decay_k&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">/</span> <span class="n">epc</span>
 
-
     <span class="n">schedulers</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;steady&#39;</span><span class="p">:</span> <span class="n">steady</span><span class="p">,</span>
     <span class="s1">&#39;exp_decay&#39;</span><span class="p">:</span> <span class="n">exp_decay</span><span class="p">,</span>
@@ -225,6 +212,54 @@
     <span class="n">lrate</span> <span class="o">=</span> <span class="n">schedulers</span><span class="p">[</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;schedule_mode&#39;</span><span class="p">]](</span><span class="n">hPars</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">se_hPars</span><span class="p">,</span> <span class="n">lrate</span></div>
+
+
+<div class="viewcode-block" id="exp_decay"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.exp_decay">[docs]</a><span class="k">def</span> <span class="nf">exp_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Exponential decay schedule for learning rate.</span>
+
+<span class="sd">    :param hPars: Contains hyperparameters.</span>
+<span class="sd">    :type hPars: tuple</span>
+
+<span class="sd">    :return: Scheduled learning rate</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
+
+    <span class="n">lrate</span> <span class="o">=</span> <span class="p">[</span><span class="n">lr</span> <span class="o">*</span> <span class="n">d</span><span class="o">**</span><span class="p">(</span><span class="n">x</span><span class="o">//</span><span class="n">epc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">%</span><span class="n">epc</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">lrate</span></div>
+
+
+<div class="viewcode-block" id="lin_decay"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.lin_decay">[docs]</a><span class="k">def</span> <span class="nf">lin_decay</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Linear decay schedule for learning rate.</span>
+
+<span class="sd">    :param hPars: Contains hyperparameters.</span>
+<span class="sd">    :type hPars: tuple</span>
+
+<span class="sd">    :return: Scheduled learning rate</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
+
+    <span class="n">lrate</span> <span class="o">=</span> <span class="p">[</span><span class="n">lr</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="mi">100</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">lrate</span></div>
+
+
+<div class="viewcode-block" id="steady"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.schedule.steady">[docs]</a><span class="k">def</span> <span class="nf">steady</span><span class="p">(</span><span class="n">hPars</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Steady schedule for learning rate.</span>
+
+<span class="sd">    :param hPars: Contains hyperparameters.</span>
+<span class="sd">    :type hPars: tuple</span>
+
+<span class="sd">    :return: Scheduled learning rate</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">epc</span> <span class="o">=</span> <span class="n">hPars</span>
+
+    <span class="n">lrate</span> <span class="o">=</span> <span class="p">[</span><span class="n">lr</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">lrate</span></div>
 </pre></div>
 
            </div>

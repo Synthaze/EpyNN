@@ -70,68 +70,70 @@ class dataSet:
     """
     Definition of a dataSet object prototype.
 
+    :param dataset: Contains samples
+    :type dataset: list[list[list,list[int]]]
+
+    :param label: Set to False if dataset contains unlabeled samples
+    :type label: bool
+
+    :param name: For model seeding
+    :type name: str
     """
 
     def __init__(self, dataset, label=True, name='dummy'):
-        """.
+        """Initialize dataSet object.
 
-        :param dataset: .
-        :type dataset: list
-
-        :param label: .
-        :type label: bool
-
-        :param name: .
-        :type name: string
-
-        :ivar n:
+        :ivar n: Name of dataset
         :vartype n: str
 
-        :ivar X:
+        :ivar X: Features for samples
         :vartype X: :class:`numpy.ndarray`
 
-        :ivar Y:
-        :vartype Y: class:`numpy.ndarray`
+        :ivar Y: One-hot encoded labels for samples
+        :vartype Y: :class:`numpy.ndarray`
 
-        :ivar y:
-        :vartype y: class:`numpy.ndarray`
+        :ivar y: Single-digit labels for samples
+        :vartype y: :class:`numpy.ndarray`
 
-        :ivar b:
+        :ivar b: Labels balance in dataset
         :vartype b: dict
 
-        :ivar id:
-        :vartype id: list
+        :ivar ids: Numerical identifiers for samples
+        :vartype ids: list
 
-        :ivar s:
+        :ivar s: Total number of samples
         :vartype s: int
 
-        :ivar A:
-        :vartype A: NoneType
+        :ivar A: Output of forward propagation for dataset
+        :vartype A: :class:`numpy.ndarray`
 
-        :ivar P:
-        :vartype P: NoneType
+        :ivar P: Predictions for dataset
+        :vartype P: :class:`numpy.ndarray`
         """
-        x_data = [ x[0] for x in dataset ]
-        y_data = [ x[1] for x in dataset ]
+        x_data = [x[0] for x in dataset]
+        y_data = [x[1] for x in dataset]
 
         self.n = name
 
         self.X = np.array(x_data)
         self.Y = np.array(y_data)
 
-        if label:
-            self.y = np.argmax(self.Y,axis=1)
+        if self.Y.ndim == 1:
+            self.Y = np.expand_dims(self.Y, axis=1)
 
+        if label:
+            # Single-digit labels
+            self.y = np.argmax(self.Y,axis=1)
             # Labels balance
             self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
 
         # Set numerical id for each sample
-        self.id = np.array([ i for i in range(len(dataset)) ])
+        self.ids = np.array([i for i in range(len(dataset))])
 
         # Number of samples
-        self.s = str(len(self.id))
+        self.s = str(len(self.ids))
 
-        self.A = None
-        self.P = None
+        self.A = np.array([])
+        self.P = np.array([])
 
         return None
