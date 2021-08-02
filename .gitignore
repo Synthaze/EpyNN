@@ -5,3 +5,6 @@
 *data*dat
 *.ipynb_checkpoints
 *.ipynb_checkpoints*
+*plot*png
+*pdf
+*eps
