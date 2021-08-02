@@ -28,10 +28,10 @@ def CCE(Y, A, deriv=False):
     http://machinelearningmechanic.com/deep_learning/2019/09/04/cross-entropy-loss-derivative.html
     """
     if not deriv:
-        loss = -(Y * np.log(A.T))
+        loss = -(Y * np.log(A + E_SAFE))
 
     elif deriv:
-        loss = A - Y.T
+        loss = -(Y - A + E_SAFE)
 
     return loss
 
@@ -53,10 +53,10 @@ def MAE(Y, A, deriv=False):
     """Mean Absolute Error.
     """
     if not deriv:
-        loss = np.abs(Y - A.T)
+        loss = np.abs(Y - A)
 
     elif deriv:
-        loss = -((Y.T-A) / np.abs(Y.T-A))
+        loss = -((Y-A) / np.abs(Y-A))
 
     return loss
 
@@ -65,10 +65,10 @@ def MSE(Y, A, deriv=False):
     """Mean Square Error.
     """
     if not deriv:
-        loss = np.square(Y - A.T)
+        loss = np.square(Y - A)
 
     elif deriv:
-        loss = -2 * (Y.T-A)
+        loss = -2 * (Y-A)
 
     return loss
 
@@ -77,12 +77,12 @@ def RMSLE(Y, A, deriv=False):
     """Root Mean Square Logarythmic Error.
     """
     if not deriv:
-        loss = np.sqrt(np.square(np.log1p(Y) - np.log1p(A.T)))
+        loss = np.sqrt(np.square(np.log1p(Y) - np.log1p(A)))
 
     elif deriv:
         loss = -(
-                (np.log1p(Y.T) - np.log1p(A))
-                / ((A+1) * np.sqrt(np.square(np.log1p(Y.T) - np.log1p(A))))
+                (np.log1p(Y) - np.log1p(A))
+                / ((A+1) * np.sqrt(np.square(np.log1p(Y) - np.log1p(A))))
                 )
 
     return loss

@@ -20,8 +20,6 @@ def initialize_backward(layer, dA):
     """
     dX = layer.bc['dX'] = dA
 
-    layer.bc['dXb'] = [ [[] for t in range(layer.d['R'])] for l in range(layer.d['C'])]
-
     dA = np.zeros(layer.fs['X'])
 
     return dX, dA
@@ -30,41 +28,25 @@ def initialize_backward(layer, dA):
 def convolution_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
-    dX, im, ih, iw, id, dA = initialize_backward(layer, dA)
+    dX, dA = initialize_backward(layer, dA)
 
-    im, ih, iw, id = layer.fs['X']
+    #
+    for m in range(layer.d['m']):
+        #
+        for h in range(layer.d['oh']):
+            ih1 = h * layer.d['s']
+            ih2 = ih1 + layer.d['w']
+            #
+            for w in range(layer.d['ow']):
+                iw1 = w * layer.d['s']
+                iw2 = iw1 + layer.d['w']
+            #
+            for n in range(layer.d['n']):
+                dA[m, ih1:ih2, iw1:iw2, :] +=  layer.p['W'][:, :, :, n] * dX[m, h, w, n]
 
-    # Loop through image rows
-    for t in range(layer.d['R']):
+    layer.bc['dA'] = dA
 
-        row = dX[:, t::layer.d['R'], :, :]
-
-        # Loop through row columns
-        for l in range(layer.d['C']):
-
-            # region of X and dZ for this block
-            b = (ih - t * layer.d['s']) % layer.d['w']
-            # region of X and dZ for this block
-            r = (iw - l * layer.d['s']) % layer.d['w']
-
-            # block = corresponding region of dA
-            block = row[:, :, l * layer.d['s']::layer.d['C'], :]
-            # Axis for channels, rows, columns
-            block = np.expand_dims(block, 3)
-            block = np.expand_dims(block, 3)
-            block = np.expand_dims(block, 3)
-
-            layer.bc['dXb'][t][l] = block
-
-            dA_block = block * layer.p['W']
-            dA_block = np.sum(dA_block, 6)
-            dA_block = np.reshape(dA_block, (im, ih - b - t, iw - r - l, id))
-
-            dA[:, t:ih - b, l:iw - r, :] += dA_block
-
-    #dA = layer.bc['dA'] = restore_padding(layer,dA)
-
-    return dA    # To previous layer
+    return dA
 
 
 

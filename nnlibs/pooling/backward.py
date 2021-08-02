@@ -32,31 +32,21 @@ def pooling_backward(layer, dA):
     # (1) Initialize cache
     dX, dA = initialize_backward(layer, dA)
 
-    # Loop through image rows
-    for t in range(layer.d['R']):
+    #
+    for m in range(layer.d['m']):
+        #
+        for h in range(layer.d['oh']):
+            ih1 = h * layer.d['s']
+            ih2 = ih1 + layer.d['w']
+            #
+            for w in range(layer.d['ow']):
+                iw1 = w * layer.d['s']
+                iw2 = iw1 + layer.d['w']
+            #
+            for n in range(layer.d['n']):
+                X = layer.fc['X'][m, ih1:ih2, iw1:iw2, n]
+                dA[m, ih1:ih2, iw1:iw2, n] += np.sum(dX[m , h, w, n] * (X == np.max(X)))
 
-        mask_row = layer.fc['Z'][:, t::layer.d['R'], :, :]
+    layer.bc['dA'] = dA
 
-        row = dX[:, t::layer.d['R'], :, :]
-
-        # Loop through row columns
-        for l in range(layer.d['C']):
-
-            # region of X and dZ for this block
-            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
-            # region of X and dZ for this block
-            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
-            # _
-            mask = mask_row[:, :, l * layer.d['s']::layer.d['C'], :]
-            mask = layer.assemble_block(mask, t, b, l, r)
-            # _
-            block = row[:, :, l * layer.d['s']::layer.d['C'], :]
-            block = layer.assemble_block(block, t, b, l, r)
-            # _
-            mask = (layer.fc['X'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] == mask)
-            # _
-            dA[:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += block * mask
-
-    dA = layer.bc['dA'] = dA
-
-    return dA    # To previous layer
+    return dA

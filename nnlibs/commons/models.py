@@ -11,7 +11,7 @@ class Layer:
     Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.
     """
 
-    def __init__(self):
+    def __init__(self, se_hPars=None):
         """Initialize instance variable attributes.
 
         Attributes
@@ -48,7 +48,7 @@ class Layer:
 
         self.activation = {}
 
-        self.se_hPars = None
+        self.se_hPars = se_hPars
 
         return None
 
@@ -80,7 +80,12 @@ class dataSet:
     :type name: str
     """
 
-    def __init__(self, dataset, label=True, name='dummy'):
+    def __init__(self,
+                dataset=None,
+                X_dataset=None,
+                Y_dataset=None,
+                label=True,
+                name='dummy'):
         """Initialize dataSet object.
 
         :ivar n: Name of dataset
@@ -110,8 +115,16 @@ class dataSet:
         :ivar P: Predictions for dataset
         :vartype P: :class:`numpy.ndarray`
         """
-        x_data = [x[0] for x in dataset]
-        y_data = [x[1] for x in dataset]
+        if not (dataset and X_data and Y_data):
+            return None
+
+        if dataset and X_data and Y_data:
+            raise ValueError('Normal use: dataSet(dataset=XY_data) \
+            OR dataSet(X_dataset=X_data, Y_dataset=Y_data)')
+
+        if dataset:
+            x_data = [x[0] for x in dataset]
+            y_data = [x[1] for x in dataset]
 
         self.n = name
 

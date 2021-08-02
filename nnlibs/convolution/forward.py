@@ -19,8 +19,6 @@ def initialize_forward(layer, A):
 
     Z = np.empty(layer.fs['Z'])
 
-    layer.fc['Xb'] = []
-
     return X, Z
 
 
@@ -30,59 +28,23 @@ def convolution_forward(layer, A):
     # (1) Initialize cache
     X, Z = initialize_forward(layer, A)
 
-    # Loop through image rows
-    for t in range(layer.d['R']):
+    #
+    for m in range(layer.d['m']):
+        # Loop through image rows
+        for h in range(layer.d['oh']):
+            ih1 = h * layer.d['s']
+            ih2 = ih1 + layer.d['w']
+            # Loop through row columns
+            for w in range(layer.d['ow']):
+                iw1 = w * layer.d['s']
+                iw2 = iw1 + layer.d['w']
+                #
+                for n in range(layer.d['n']):
+                    X = layer.fc['X'][m, ih1:ih2, iw1:iw2, :]
+                    #
+                    Z[m, h, w, n] = np.sum(X * layer.p['W'][:, :, :, n])
+                    Z += layer.p['b'][:, :, :, n]
 
-        layer.fc['Xb'].append([])
-
-        b = layer.d['ih'] - (layer.d['ih'] - t) % layer.d['w']
-
-        ax1 = int((b - t) / layer.d['w'])
-
-        c_shape = (layer.d['im'], ax1, layer.d['zh'], layer.d['n'])
-
-        cols = np.empty(c_shape)
-
-        # Loop through row columns
-        for i in range(layer.d['C']):
-
-            # _
-            l = i * layer.d['s']
-
-            r = layer.d['iw'] - (layer.d['iw'] - l) % layer.d['w']
-
-            # _
-            Xb = X[:, t:b, l:r, :]
-
-            # _
-            Xb = np.array(np.split(Xb, (r - l) / layer.d['w'], 2))
-            Xb = np.array(np.split(Xb, (b - t) / layer.d['w'], 2))
-
-            # _
-            Xb = np.moveaxis(Xb, 2, 0)
-
-            # _
-            Xb = np.expand_dims(Xb, 6)
-
-            # _
-            layer.fc['Xb'][t].append(Xb)
-
-            # _
-            Xb *= layer.p['W']
-
-            # _
-            Xb = np.sum(Xb, axis=(5, 4, 3))
-
-            # _
-            cols[:, :, i::layer.d['C'], :] = Xb
-
-        # _
-        Z[:, t * layer.d['s'] ::layer.d['R'], :, :] = cols
-
-    # _
-    Z = layer.fc['Z'] = Z + layer.p['b']
-
-    # _
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer

@@ -30,12 +30,15 @@ class Embedding(Layer):
     """
 
     def __init__(self,
-                dataset,
+                dataset=None,
                 se_dataset=None,
                 encode=False,
                 single=False):
 
         super().__init__()
+
+        if not dataset:
+            return None
 
         embedded_data = embedding_prepare(self, dataset, se_dataset, encode, single)
 

@@ -25,9 +25,6 @@ class Convolution(Layer):
     :param activate: Activation function for convolution layer.
     :type activate: function
 
-    :param depth: Depth or number of channels for input.
-    :type depth: int
-
     :param stride: Walking step for filters.
     :type stride: int
 
@@ -41,7 +38,6 @@ class Convolution(Layer):
     def __init__(self,
                 n_filters=1,
                 f_width=3,
-                depth=1,
                 stride=1,
                 padding=0,
                 activate=relu,
@@ -50,12 +46,6 @@ class Convolution(Layer):
         super().__init__()
 
         ### Init shapes
-        self.n_filters = n_filters
-        self.f_width = f_width
-        self.depth = depth
-        self.stride = stride
-        self.padding = padding
-
         self.initialization = initialization
 
         self.activation = { 'activate': activate.__name__ }
@@ -64,7 +54,6 @@ class Convolution(Layer):
 
         self.d['n'] = n_filters
         self.d['w'] = f_width
-        self.d['d'] = depth
         self.d['s'] = stride
         self.d['p'] = padding
 

@@ -33,7 +33,7 @@ class Dense(Layer):
 
     def __init__(self,
                 nodes=2,
-                activate=softmax,
+                activate=sigmoid,
                 initialization=xavier):
 
         super().__init__()

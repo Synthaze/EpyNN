@@ -122,16 +122,18 @@ def mini_batches(dataset, se_dataset):
     :rtype: list
     """
 
-    n_batch = se_dataset['batch_number']
+    batch_size = se_dataset['batch_size']
+
+    n_batch = len(dataset) // batch_size
+
+    if not n_batch:
+        n_batch = 1
 
     batch_dataset = []
 
     for i in range(n_batch):
 
-        start = len(dataset) * i // n_batch
-        stop = len(dataset) * (i+1) // n_batch
-
-        batch = dataset[start:stop]
+        batch = dataset[i * batch_size:(i+1) * batch_size]
 
         batch_dataset.append(batch)
 

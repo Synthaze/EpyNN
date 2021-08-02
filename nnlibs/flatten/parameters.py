@@ -12,8 +12,8 @@ def flatten_compute_shapes(layer, A):
     layer.d['m'] = layer.fs['X'][0]
     layer.d['n'] = layer.fs['X'][1]
 
-    if X.ndim == 3:
-        layer.d['n'] = layer.fs['X'][1] * layer.fs['X'][2]
+    for i in range(2, X.ndim):
+        layer.d['n'] *= layer.fs['X'][i]
 
     #
     layer.fs['A'] = (layer.d['m'], int(X.size / layer.d['m']))

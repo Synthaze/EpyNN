@@ -11,7 +11,7 @@ dataset = {
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
-    'batch_number': 5,
+    'batch_size': 32,
 }
 """Dictionary settings for dataset preparation.
 """
@@ -27,10 +27,9 @@ config = {
     # Logs behavior
     'logs_frequency': 1,
     'logs_frequency_display': 25,
-    'metrics_list': ['accuracy', 'CCE', 'MSE'],
-    'print_over': True,
+    'metrics_list': ['accuracy', 'BCE', 'MSE'],
     # Plot behavior
-    'metrics_plot': ['accuracy', 'CCE'],
+    'metrics_plot': ['accuracy', 'BCE'],
     # Make and remove on disk
     'model_save': False,
     'directory_clear': False,
@@ -63,8 +62,6 @@ hPars = {
     'ELU_alpha': 0.01,
     'LRELU_alpha': 0.01,
     'softmax_temperature': 1,
-    # May prevent from floating point error
-    'min_epsilon': 1e-9,
 }
 """Hyperparameters dictionary settings.
 

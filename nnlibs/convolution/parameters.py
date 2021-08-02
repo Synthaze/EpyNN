@@ -9,35 +9,21 @@ import numpy as np
 def convolution_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m .. n)
+    X = A    # Input of current layer of shape (m , h, w, d)
 
     layer.fs['X'] = X.shape
 
-    dims = ['id', 'iw', 'ih','im']
+    dims = ['m', 'ih', 'iw', 'd']
 
-    layer.d.update({d:i for d,i in zip(dims, layer.fs['X']})
+    layer.d.update({d:i for d,i in zip(dims, layer.fs['X'])})
 
     layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['d'], layer.d['n'])
     layer.fs['b'] = (1, 1, 1, layer.d['n'])
 
-    n_rows = layer.d['ih'] - layer.d['w'] + 1
-    # n_rows = min(layer.d['w'], n_rows)
-    # n_rows /= layer.d['s']
+    oh = layer.d['oh'] = math.floor((layer.d['ih'] - layer.d['w'] + 2 * layer.d['p']) / layer.d['s']) + 1
+    ow = layer.d['ow'] = math.floor((layer.d['iw'] - layer.d['w'] + 2 * layer.d['p']) / layer.d['s']) + 1
 
-    n_cols = layer.d['ih'] - layer.d['w'] + 1
-    n_cols = min(layer.d['w'], n_cols)
-    n_cols /= layer.d['s']
-
-    layer.d['R'] = math.ceil(n_rows)
-    layer.d['C'] = math.ceil(n_cols)
-
-    z_height = ((layer.d['ih']-layer.d['w']) / layer.d['s']) + 1
-    z_width = ((layer.d['iw']-layer.d['w']) / layer.d['s']) + 1
-
-    layer.d['zh'] = int(z_height)
-    layer.d['zw'] = int(z_width)
-
-    layer.fs['Z'] = (layer.d['im'], layer.d['zh'], layer.d['zw'], layer.d['n'])
+    layer.fs['Z'] = (layer.d['m'], layer.d['oh'], layer.d['ow'], layer.d['n'])
 
     return None
 
@@ -59,19 +45,22 @@ def convolution_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    for t in range(layer.d['R']):
+    X = layer.fc['X']
+    dX = layer.bc['dX']
 
-        for l in range(layer.d['C']):
+    for i in range(layer.d['m']):
 
-            dW_block = layer.bc['dXb'][t][l] * layer.fc['Xb'][t][l]
+        for h in range(layer.d['oh']):
+            ih1 = h * layer.d['s']
+            ih2 = ih1 + layer.d['w']
 
-            dW_block = np.sum(dW_block,axis=(2,1,0))
+            for w in range(layer.d['ow']):
+                iw1 = w * layer.d['s']
+                iw2 = iw1 + layer.d['w']
 
-            layer.g['dW'] += dW_block
-
-            db_block = np.sum(dW_block,axis=(2,1,0),keepdims=True)
-
-            layer.g['db'] += db_block
+                for n in range(layer.d['n']):
+                    layer.g['dW'][:, :, :, n] += X[i, ih1:ih2, iw1:iw2, :] * dX[i, h, w, n]
+                    layer.g['db'][:, :, :, n] += dX[i, h, w, n]
 
     return None
 

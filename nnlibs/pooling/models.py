@@ -90,18 +90,3 @@ class Pooling(Layer):
         pooling_update_parameters(self)
 
         return None
-
-
-    def assemble_block(self, block, t, b, l, r):
-
-        im, ih, iw, id = self.fs['X']
-
-        block = np.repeat(block, self.d['w'] ** 2, 2)
-
-        block = np.array(np.split(block, block.shape[2] / self.d['w'], 2))
-        block = np.moveaxis(block, 0, 2)
-
-        block = np.array(np.split(block, block.shape[2] / self.d['w'], 2))
-        block = np.moveaxis(block, 0, 3)
-
-        return np.reshape(block, ( im, ih - t - b, iw - l - r,  id))

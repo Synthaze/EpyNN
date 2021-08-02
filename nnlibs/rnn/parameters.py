@@ -18,9 +18,7 @@ def rnn_compute_shapes(layer, A):
     h1 = layer.fs['b'] = (layer.d['h'], 1)
 
     # Shapes to initialize caches
-    msh = (layer.d['m'], layer.d['s'], layer.d['h'])
-
-    layer.fs['h'] = layer.fs['A'] = msh
+    msh = layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['h'])
 
     return None
 

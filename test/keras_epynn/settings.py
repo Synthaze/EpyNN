@@ -26,7 +26,7 @@ config = {
     'dataset_target': 1,
     # Logs behavior
     'logs_frequency': 1,
-    'logs_frequency_display': 25,
+    'logs_frequency_display': 1,
     'metrics_list': ['accuracy', 'BCE'],
     'print_over': True,
     # Plot behavior

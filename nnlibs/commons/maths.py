@@ -130,8 +130,9 @@ def sigmoid(x, deriv=False):
     :return: Output array passed in function
     :rtype: class:`numpy.ndarray`
     """
-
+    x = np.clip(x, -500, 500)
     if not deriv:
+
         x = np.where(
                     x >= 0, # condition
                     1 / (1+np.exp(-x)), # For positive values
@@ -211,10 +212,10 @@ def softmax(x, deriv=False):
     T = layer_hPars['softmax_temperature']
 
     if not deriv:
-        x_safe = x - np.max(x, axis=0, keepdims=True)
+        x_safe = x - np.max(x, axis=1, keepdims=True)
 
         x_exp = np.exp(x_safe / T)
-        x_sum = np.sum(x_exp, axis=0, keepdims=True)
+        x_sum = np.sum(x_exp, axis=1, keepdims=True)
 
         x = x_exp / x_sum
 

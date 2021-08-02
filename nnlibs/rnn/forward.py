@@ -21,7 +21,7 @@ def initialize_forward(layer, A):
     X = layer.fc['X'] = A
 
     layer.fc['h'] = np.zeros(layer.fs['h'])
-
+    
     hp = np.zeros_like(layer.fc['h'][:, 0])
 
     return X, hp

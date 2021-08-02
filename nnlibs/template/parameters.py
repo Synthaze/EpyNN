@@ -6,8 +6,8 @@ def template_compute_shapes(layer, A):
     """
     X = A    # Input of current layer of shape (m .. n)
 
-    layer.d['n'] = X.shape[1:]    # Features
     layer.d['m'] = X.shape[0]     # Number of samples (m)
+    layer.d['n'] = X.shape[1:]    # Features
 
     return None
 

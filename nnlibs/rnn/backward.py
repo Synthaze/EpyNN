@@ -45,7 +45,7 @@ def rnn_backward(layer, dA):
 
         dh = layer.bc['dh'][:, s] = layer.activate(layer.fc['h'][:, s]**2, deriv=True) * dh
 
-        dhn = np.dot(dh, layer.p['W'].T)
+        dhn = layer.bc['dhn'][:, s] = np.dot(dh, layer.p['W'].T)
 
         layer.bc['dA'][:, s] = np.dot(dh, layer.p['U'].T)
 

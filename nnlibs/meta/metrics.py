@@ -40,7 +40,7 @@ def model_compute_metrics(model):
             if m.ndim == 1:
                 m = np.sum(m) / len(dset.ids)
             else:
-                m = np.sum(m.mean(axis=1)) / len(dset.ids)
+                m = np.mean(m.mean(axis=1))
 
             model.metrics[s][len(dsets) - 1 - k].append(m)
 
