@@ -130,9 +130,8 @@ def sigmoid(x, deriv=False):
     :return: Output array passed in function
     :rtype: class:`numpy.ndarray`
     """
-    x = np.clip(x, -500, 500)
-    if not deriv:
 
+    if not deriv:
         x = np.where(
                     x >= 0, # condition
                     1 / (1+np.exp(-x)), # For positive values
@@ -186,7 +185,7 @@ def tanh(x, deriv=False):
     """
 
     if not deriv:
-        x = (np.exp(2 * x)-1) / (np.exp(2 * x)+1)
+        x = (np.exp(2*x) - 1) / (np.exp(2*x) + 1)
 
     elif deriv:
         x = 1 - x**2
@@ -288,7 +287,7 @@ def clip_gradient(layer, max_norm=0.25):
 
     # Calculate the L2 norm squared for each gradient and add them to the total norm
     for grad in layer.g.values():
-        grad_norm = np.sum(np.power(grad, 2))
+        grad_norm = np.sum(np.power(grad + E_SAFE, 2))
         total_norm += grad_norm
 
     total_norm = np.sqrt(total_norm)

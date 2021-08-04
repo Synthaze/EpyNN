@@ -13,17 +13,20 @@ def convolution_compute_shapes(layer, A):
 
     layer.fs['X'] = X.shape
 
-    dims = ['m', 'ih', 'iw', 'd']
+    dims = ['m', 'ih', 'iw', 'id']
 
     layer.d.update({d:i for d,i in zip(dims, layer.fs['X'])})
 
-    layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['d'], layer.d['n'])
+    layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['id'], layer.d['n'])
     layer.fs['b'] = (1, 1, 1, layer.d['n'])
 
-    oh = layer.d['oh'] = math.floor((layer.d['ih'] - layer.d['w'] + 2 * layer.d['p']) / layer.d['s']) + 1
-    ow = layer.d['ow'] = math.floor((layer.d['iw'] - layer.d['w'] + 2 * layer.d['p']) / layer.d['s']) + 1
+    layer.d['oh'] = math.ceil(min(layer.d['w'], layer.d['ih'] - layer.d['w'] + 1) / layer.d['s'])
+    layer.d['ow'] = math.ceil(min(layer.d['w'], layer.d['iw'] - layer.d['w'] + 1) / layer.d['s'])
 
-    layer.fs['Z'] = (layer.d['m'], layer.d['oh'], layer.d['ow'], layer.d['n'])
+    layer.d['zh'] = int(((layer.d['ih'] - layer.d['w']) / layer.d['s']) + 1)
+    layer.d['zw'] = int(((layer.d['iw'] - layer.d['w']) / layer.d['s']) + 1)
+
+    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['n'])
 
     return None
 
@@ -45,22 +48,34 @@ def convolution_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    X = layer.fc['X']
     dX = layer.bc['dX']
 
-    for i in range(layer.d['m']):
+    for t in range(layer.d['oh']):
+        row = dX[:, t::layer.d['oh'], :, :]
 
-        for h in range(layer.d['oh']):
-            ih1 = h * layer.d['s']
-            ih2 = ih1 + layer.d['w']
+        for l in range(layer.d['ow']):
+            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
+            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
 
-            for w in range(layer.d['ow']):
-                iw1 = w * layer.d['s']
-                iw2 = iw1 + layer.d['w']
+            block = row[:, :, l * layer.d['s']::layer.d['oh'], :]
 
-                for n in range(layer.d['n']):
-                    layer.g['dW'][:, :, :, n] += X[i, ih1:ih2, iw1:iw2, :] * dX[i, h, w, n]
-                    layer.g['db'][:, :, :, n] += dX[i, h, w, n]
+            block = np.expand_dims(block, axis=3)
+            block = np.expand_dims(block, axis=3)
+            block = np.expand_dims(block, axis=3)
+
+            dW = block * layer.Xb[t][l]
+
+            dW = np.sum(dW, axis=2)
+            dW = np.sum(dW, axis=1)
+            dW = np.sum(dW, axis=0)
+
+            layer.g['dW'] += dW
+
+            db = np.sum(dW, axis=2, keepdims=True)
+            db = np.sum(db, axis=1, keepdims=True)
+            db = np.sum(db, axis=0, keepdims=True)
+
+            layer.g['db'] += db
 
     return None
 

@@ -1,5 +1,8 @@
 # EpyNN/nnlibs/embedding/forward.py
 
+# Related third party imports
+import numpy as np
+
 
 def initialize_forward(layer, A):
     """Forward cache initialization.
@@ -24,6 +27,6 @@ def embedding_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    A = layer.fc['A'] = X
+    layer.fc['A'] = A
 
     return A   # To next layer

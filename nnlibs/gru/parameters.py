@@ -12,11 +12,11 @@ def gru_compute_shapes(layer, A):
     layer.d['s'] = X.shape[1]    # Length of sequence (s)
     layer.d['v'] = X.shape[2]    # Vocabulary size (v)
 
-    hv = (layer.d['h'], layer.d['v'])
+    vh = (layer.d['v'], layer.d['h'])
     hh = (layer.d['h'], layer.d['h'])
-    h1 = (layer.d['h'], 1)
+    h1 = (layer.d['h'],)
 
-    layer.fs['Uz'] = layer.fs['Ur'] = layer.fs['Uh'] = hv
+    layer.fs['Uz'] = layer.fs['Ur'] = layer.fs['Uh'] = vh
     layer.fs['Wz'] = layer.fs['Wr'] = layer.fs['Wh'] = hh
     layer.fs['bz'] = layer.fs['br'] = layer.fs['bh'] = h1
 
@@ -31,17 +31,17 @@ def gru_initialize_parameters(layer):
     """
     #
     layer.p['Uz'] = layer.initialization(layer.fs['Uz'], rng=layer.np_rng)
-    layer.p['Wz'] = layer.initialization(layer.fs['Uz'], rng=layer.np_rng)
+    layer.p['Wz'] = layer.initialization(layer.fs['Wz'], rng=layer.np_rng)
     layer.p['bz'] = np.zeros(layer.fs['bz'])
     #
     layer.p['Ur'] = layer.initialization(layer.fs['Ur'], rng=layer.np_rng)
-    layer.p['Wr'] = layer.initialization(layer.fs['Ur'], rng=layer.np_rng)
+    layer.p['Wr'] = layer.initialization(layer.fs['Wr'], rng=layer.np_rng)
     layer.p['br'] = np.zeros(layer.fs['br'])
     #
     layer.p['Uh'] = layer.initialization(layer.fs['Uh'], rng=layer.np_rng)
     layer.p['Wh'] = layer.initialization(layer.fs['Wh'], rng=layer.np_rng)
     layer.p['bh'] = np.zeros(layer.fs['bh'])
-
+    print(layer.p['Uz'])
     return None
 
 

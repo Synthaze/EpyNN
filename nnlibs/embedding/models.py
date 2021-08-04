@@ -1,4 +1,7 @@
 # EpyNN/nnlibs/embedding/parameters.py
+# Related third party imports
+import numpy as np
+
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.embedding.dataset import embedding_prepare
@@ -32,13 +35,24 @@ class Embedding(Layer):
     def __init__(self,
                 dataset=None,
                 se_dataset=None,
+                batch_size=None,
                 encode=False,
-                single=False):
+                single=False,
+                scale=False):
 
         super().__init__()
 
         if not dataset:
             return None
+
+        if batch_size:
+            se_dataset['batch_size'] = batch_size
+
+        if scale:
+            x_data = np.array([x[0] for x in dataset])
+            x_data = (x_data-np.min(x_data)) / (np.max(x_data)-np.min(x_data))
+            y_data = [x[1] for x in dataset]
+            dataset = [[x, y] for x,y in zip(x_data, y_data)]
 
         embedded_data = embedding_prepare(self, dataset, se_dataset, encode, single)
 

@@ -29,8 +29,8 @@ class Pooling(Layer):
     """
 
     def __init__(self,
-                f_width=2,
-                stride=1,
+                pool_size=(2, 2),
+                stride=2,
                 pool=np.max):
 
         super().__init__()
@@ -39,10 +39,9 @@ class Pooling(Layer):
 
         self.pool = pool
 
-        self.d['w'] = f_width
+        self.d['w'] = pool_size[0]
+        self.d['h'] = pool_size[1]
         self.d['s'] = stride
-
-        self.lrate = []
 
         return None
 

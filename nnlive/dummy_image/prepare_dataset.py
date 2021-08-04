@@ -111,7 +111,7 @@ def labeled_dataset(se_dataset):
     # See ./settings.py
     dataset_name = se_dataset['dataset_name']
     dataset_save = se_dataset['dataset_save']
-    
+
     # Initialize dataset
     dataset = []
 
@@ -135,7 +135,7 @@ def labeled_dataset(se_dataset):
 
     # Write dataset on disk
     if dataset_save:
-        dataset_path = os.path.join(os.getcwd(), 'dataset', dataset_name+'.pickle')
+        dataset_path = os.path.join(os.getcwd(), 'datasets', dataset_name+'.pickle')
         write_pickle(dataset_path, dataset)
 
     return dataset

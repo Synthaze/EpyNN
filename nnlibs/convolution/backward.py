@@ -20,44 +20,45 @@ def initialize_backward(layer, dA):
     """
     dX = layer.bc['dX'] = dA
 
-    dA = np.zeros(layer.fs['X'])
+    layer.bc['dA'] = np.zeros(layer.fs['X'])
 
-    return dX, dA
+    return dX
 
 
 def convolution_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
-    dX, dA = initialize_backward(layer, dA)
+    dX = initialize_backward(layer, dA)
 
-    #
-    for m in range(layer.d['m']):
-        #
-        for h in range(layer.d['oh']):
-            ih1 = h * layer.d['s']
-            ih2 = ih1 + layer.d['w']
-            #
-            for w in range(layer.d['ow']):
-                iw1 = w * layer.d['s']
-                iw2 = iw1 + layer.d['w']
-            #
-            for n in range(layer.d['n']):
-                dA[m, ih1:ih2, iw1:iw2, :] +=  layer.p['W'][:, :, :, n] * dX[m, h, w, n]
+    for t in range(layer.d['oh']):
 
-    layer.bc['dA'] = dA
+        row = layer.bc['dX'][:, t::layer.d['oh'], :, :]
+
+        for l in range(layer.d['ow']):
+
+            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
+            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
+
+            block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
+
+            block = np.expand_dims(block, axis=3)
+            block = np.expand_dims(block, axis=3)
+            block = np.expand_dims(block, axis=3)
+
+            dA = block * layer.p['W']
+
+            dA = np.sum(dA, axis=6)
+
+            dA = np.reshape(dA, (
+                                layer.d['m'],
+                                layer.d['ih'] - b - t,
+                                layer.d['iw'] - r - l,
+                                layer.d['id']
+                                )
+                            )
+
+            layer.bc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += dA
+
+    dA = layer.bc['dA']
 
     return dA
-
-
-
-
-#
-#
-#
-# def restore_padding(layer,dA):
-#
-#     if layer.d['p'] > 0:
-#         p = layer.d['p']
-#         dA = dA[:, p:-p, p:-p, :]
-#
-#     return dA

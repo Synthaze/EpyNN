@@ -11,7 +11,7 @@ dataset = {
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
-    'batch_number': 1,
+    'batch_size': 32,
 }
 """Dictionary settings for dataset preparation.
 """

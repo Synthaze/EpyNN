@@ -15,7 +15,7 @@ def lstm_compute_shapes(layer, A):
     # Parameter Shapes
     vh = (layer.d['v'], layer.d['h'])
     hh = (layer.d['h'], layer.d['h'])
-    h1 = (layer.d['h'], 1)
+    h1 = (layer.d['h'],)
 
     #
     layer.fs['Uf'] = layer.fs['Ui'] = layer.fs['Ug'] = layer.fs['Uo'] = vh

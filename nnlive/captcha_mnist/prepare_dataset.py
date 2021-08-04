@@ -34,7 +34,7 @@ def download_mnist():
     return None
 
 
-def prepare_dataset(se_dataset):
+def labeled_dataset(se_dataset):
     """Prepare a dataset of labeled samples.
 
     One sample is a list such as [features, label].

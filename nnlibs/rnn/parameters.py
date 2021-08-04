@@ -13,9 +13,9 @@ def rnn_compute_shapes(layer, A):
     layer.d['v'] = X.shape[2]    # Vocabulary size (v)
 
     # Shapes for parameters to compute hidden cell state
-    hv = layer.fs['U'] = (layer.d['h'], layer.d['v'])
+    vh = layer.fs['U'] = (layer.d['v'], layer.d['h'])
     hh = layer.fs['W'] = (layer.d['h'], layer.d['h'])
-    h1 = layer.fs['b'] = (layer.d['h'], 1)
+    h1 = layer.fs['b'] = (layer.d['h'],)
 
     # Shapes to initialize caches
     msh = layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['h'])

@@ -44,12 +44,12 @@ def embedding_prepare(layer, dataset, se_dataset, encode, single):
     else:
         pass
 
-    dtrain = dataSet(dtrain, name='dtrain'+suffix)
-    dtest = dataSet(dtest, name='dtest'+suffix)
-    dval = dataSet(dval, name='dval'+suffix)
+    dtrain = dataSet(dataset=dtrain, name='dtrain'+suffix)
+    dtest = dataSet(dataset=dtest, name='dtest'+suffix)
+    dval = dataSet(dataset=dval, name='dval'+suffix)
 
     for i, batch in enumerate(batch_dtrain):
-        batch = dataSet(batch, name='dtrain_'+str(i)+suffix)
+        batch = dataSet(dataset=batch, name='dtrain_'+str(i)+suffix)
         batch_dtrain[i] = batch
 
     embedded_data = (dtrain, dtest, dval, batch_dtrain)

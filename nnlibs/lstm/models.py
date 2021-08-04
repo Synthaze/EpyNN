@@ -1,7 +1,12 @@
 # EpyNN/nnlibs/lstm/models.py
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.commons.maths import tanh, sigmoid, xavier
+from nnlibs.commons.maths import (
+    tanh,
+    sigmoid,
+    orthogonal,
+    clip_gradient,
+)
 from nnlibs.lstm.forward import lstm_forward
 from nnlibs.lstm.backward import lstm_backward
 from nnlibs.lstm.parameters import (
@@ -51,8 +56,8 @@ class LSTM(Layer):
                 activate_candidate=tanh,
                 activate_input=sigmoid,
                 activate_forget=sigmoid,
-                initialization=xavier,
-                binary=False):
+                initialization=orthogonal,
+                clip_gradients=True):
 
         super().__init__()
 
@@ -74,7 +79,9 @@ class LSTM(Layer):
 
         self.d['h'] = hidden_size
 
-        self.lrate = []
+        self.clip_gradients = clip_gradients
+
+        return None
 
     def compute_shapes(self, A):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_shapes()`.
@@ -111,6 +118,9 @@ class LSTM(Layer):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_gradients()`.
         """
         lstm_compute_gradients(self)
+
+        if self.clip_gradients:
+            clip_gradient(self)
 
         return None
 

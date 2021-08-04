@@ -31,7 +31,7 @@ np.seterr(all='warn')
 
 # Dataset and samples
 N_SAMPLES = 32      # m
-LEN_SEQ = 20       # s
+LEN_SEQ = 18       # s
 V_SIZE = 150        # v Null
 
 N_CELLS = 20

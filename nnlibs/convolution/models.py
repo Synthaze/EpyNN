@@ -1,4 +1,7 @@
 # EpyNN/nnlibs/conv/models.py
+# Related third party imports
+import numpy as np
+
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.commons.maths import relu, xavier
@@ -40,7 +43,7 @@ class Convolution(Layer):
                 f_width=3,
                 stride=1,
                 padding=0,
-                activate=relu,
+                activate=np.abs,
                 initialization=xavier):
 
         super().__init__()

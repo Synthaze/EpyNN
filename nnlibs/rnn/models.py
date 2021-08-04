@@ -37,19 +37,22 @@ class RNN(Layer):
     def __init__(self,
                 hidden_size=10,
                 activate=tanh,
-                initialization=xavier):
+                initialization=xavier,
+                clip_gradients=True):
 
         super().__init__()
 
-        self.initialization = initialization
+        self.d['h'] = hidden_size
+
+        self.activate = activate
 
         self.activation = {
             'activate': activate.__name__,
         }
 
-        self.activate = activate
+        self.initialization = initialization
 
-        self.d['h'] = hidden_size
+        self.clip_gradients = clip_gradients
 
         return None
 
@@ -90,7 +93,9 @@ class RNN(Layer):
         """Wrapper for :func:`nnlibs.rnn.parameters.rnn_compute_gradients()`.
         """
         rnn_compute_gradients(self)
-        #clip_gradient(self)
+        
+        if self.clip_gradients:
+            clip_gradient(self)
 
         return None
 

@@ -115,21 +115,21 @@ class dataSet:
         :ivar P: Predictions for dataset
         :vartype P: :class:`numpy.ndarray`
         """
-        if not (dataset and X_data and Y_data):
+        if type(dataset) == type(X_dataset) == type(Y_dataset) == None:
             return None
 
-        if dataset and X_data and Y_data:
+        if dataset and X_dataset and Y_dataset:
             raise ValueError('Normal use: dataSet(dataset=XY_data) \
             OR dataSet(X_dataset=X_data, Y_dataset=Y_data)')
 
         if dataset:
-            x_data = [x[0] for x in dataset]
-            y_data = [x[1] for x in dataset]
+            X_dataset = [x[0] for x in dataset]
+            Y_dataset = [x[1] for x in dataset]
 
         self.n = name
 
-        self.X = np.array(x_data)
-        self.Y = np.array(y_data)
+        self.X = np.array(X_dataset)
+        self.Y = np.array(Y_dataset)
 
         if self.Y.ndim == 1:
             self.Y = np.expand_dims(self.Y, axis=1)
@@ -141,7 +141,7 @@ class dataSet:
             self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
 
         # Set numerical id for each sample
-        self.ids = np.array([i for i in range(len(dataset))])
+        self.ids = np.array([i for i in range(self.X.shape[0])])
 
         # Number of samples
         self.s = str(len(self.ids))

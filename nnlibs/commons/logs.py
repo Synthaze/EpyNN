@@ -52,10 +52,7 @@ def model_logs(model):
                         tablefmt="pretty",
                         )
 
-        if se_config['print_over']:
-            print (logs, flush=True)
-        else:
-            print (logs, flush=True)
+        print (logs, flush=True)
 
         remaining_time_logs(model)
 
@@ -319,7 +316,8 @@ def layers_lrate_logs(layers):
         log.append("{:.2e}".format(lr_end))
         log.append(pc_end)
 
-        logs.add_row(log)
+        if layer.p != {}:
+            logs.add_row(log)
 
     logs.set_max_width(0)
 
@@ -340,7 +338,6 @@ def layers_others_logs(layers):
         'LRELU\nalpha',
         'ELU\nalpha',
         'softmax\ntemperature',
-        'min.\nepsilon',
         'reg.\nl1',
         'reg.\nl2',
     ]
@@ -359,11 +356,11 @@ def layers_others_logs(layers):
         log.append(se_hPars['LRELU_alpha'])
         log.append(se_hPars['ELU_alpha'])
         log.append(se_hPars['softmax_temperature'])
-        log.append(se_hPars['min_epsilon'])
         log.append(se_hPars['regularization_l1'])
         log.append(se_hPars['regularization_l2'])
 
-        logs.add_row(log)
+        if layer.p != {}:
+            logs.add_row(log)
 
     logs.set_max_width(0)
 
@@ -390,8 +387,8 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
         'dtrain\n(0)',
         'dtest\n(1)',
         'dval\n(2)',
-        'batch\nnumber\n(b)',
-        'dtrain/b',
+        'batch\nnumber',
+        'batch\nsize',
         'dataset\ntarget',
         'metrics\ntarget',
     ]
@@ -400,9 +397,12 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
 
     logs.add_row(headers)
 
-    batch_number = se_dataset['batch_number']
+    batch_size = se_dataset['batch_size']
 
-    sample_per_batch = int(dsets[0].s) // int(batch_number)
+    batch_number = se_dataset['N_SAMPLES'] // se_dataset['batch_size']
+
+    if not batch_number:
+        batch_number = 1
 
     log = []
 
@@ -415,7 +415,7 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
         log.append('None')
 
     log.append(batch_number)
-    log.append(sample_per_batch)
+    log.append(batch_size)
     log.append(se_config['dataset_target'])
     log.append(se_config['metrics_target'])
 

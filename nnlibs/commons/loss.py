@@ -41,10 +41,10 @@ def BCE(Y, A, deriv=False):
     https://towardsdatascience.com/nothing-but-numpy-understanding-creating-binary-classification-neural-networks-with-e746423c8d5c
     """
     if not deriv:
-        loss = -(Y*np.log(A + E_SAFE) + (1 - Y)*np.log((1-A) + E_SAFE))
+        loss = -(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE))
 
     elif deriv:
-        loss = -(Y/A - (1 - Y)/((1-A) + E_SAFE))
+        loss = -(Y/(A+E_SAFE) - (1-Y)/((1-A)+E_SAFE))
 
     return loss
 
@@ -65,7 +65,7 @@ def MSE(Y, A, deriv=False):
     """Mean Square Error.
     """
     if not deriv:
-        loss = np.square(Y - A)
+        loss = np.square(Y - A + E_SAFE)
 
     elif deriv:
         loss = -2 * (Y-A)

@@ -21,32 +21,52 @@ def initialize_backward(layer, dA):
     # Cache X (current) from A (prev)
     dX = layer.bc['dX'] = dA
 
-    dA = np.zeros(layer.fs['X'])
+    layer.fc['dA'] = np.zeros(layer.fs['X'])
 
-    return dX, dA
+    return dX
 
 
 def pooling_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
     # (1) Initialize cache
-    dX, dA = initialize_backward(layer, dA)
+    dX = initialize_backward(layer, dA)
 
-    #
-    for m in range(layer.d['m']):
-        #
-        for h in range(layer.d['oh']):
-            ih1 = h * layer.d['s']
-            ih2 = ih1 + layer.d['w']
-            #
-            for w in range(layer.d['ow']):
-                iw1 = w * layer.d['s']
-                iw2 = iw1 + layer.d['w']
-            #
-            for n in range(layer.d['n']):
-                X = layer.fc['X'][m, ih1:ih2, iw1:iw2, n]
-                dA[m, ih1:ih2, iw1:iw2, n] += np.sum(dX[m , h, w, n] * (X == np.max(X)))
+    dA_prev = np.zeros(layer.fs['X'])
 
-    layer.bc['dA'] = dA
+    for t in range(layer.d['oh']):
+
+        mask_row = layer.fc['Z'][:, t::layer.d['oh'], :, :]
+        row = dX[:, t::layer.d['oh'], :, :]
+
+        for l in range(layer.d['ow']):
+            
+            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
+            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
+
+            mask = mask_row[:, :, l * layer.d['s']::layer.d['ow'], :]
+
+            mask = assemble_block(layer, mask, t, b, l, r)
+
+            block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
+
+            block = assemble_block(layer, block, t, b, l, r)
+
+            mask = (layer.fc['X'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] == mask)
+
+            layer.fc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += block * mask
+
+    dA = layer.fc['dA']
 
     return dA
+
+
+
+def assemble_block(layer, block, t, b, l, r):
+    block = np.repeat(block, layer.d['w'] ** 2, 2)
+    block = np.array(np.split(block, block.shape[2] / layer.d['w'], 2))
+    block = np.moveaxis(block, 0, 2)
+    block = np.array(np.split(block, block.shape[2] / layer.d['w'], 2))
+    block = np.moveaxis(block, 0, 3)
+    block = np.reshape(block, (layer.d['m'], layer.d['ih'] - t - b, layer.d['iw'] - l - r, layer.d['id']))
+    return block

@@ -1,14 +1,19 @@
 # EpyNN/nnlibs/gru/models.py
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.commons.maths import tanh, sigmoid, xavier
+from nnlibs.commons.maths import (
+    tanh,
+    sigmoid,
+    orthogonal,
+    clip_gradient,
+)
 from nnlibs.gru.forward import gru_forward
 from nnlibs.gru.backward import gru_backward
 from nnlibs.gru.parameters import (
     gru_compute_shapes,
     gru_initialize_parameters,
     gru_compute_gradients,
-    gru_update_parameters
+    gru_update_parameters,
 )
 
 
@@ -37,7 +42,8 @@ class GRU(Layer):
                 activate=tanh,
                 activate_update=sigmoid,
                 activate_reset=sigmoid,
-                initialization=xavier):
+                initialization=orthogonal,
+                clip_gradients=True):
 
         super().__init__()
 
@@ -55,7 +61,7 @@ class GRU(Layer):
 
         self.d['h'] = hidden_size
 
-        self.lrate = []
+        self.clip_gradients = clip_gradients
 
         return None
 
@@ -94,6 +100,9 @@ class GRU(Layer):
         """Wrapper for :func:`nnlibs.gru.parameters.gru_compute_gradients()`.
         """
         gru_compute_gradients(self)
+
+        if self.clip_gradients:
+            clip_gradient(self)
 
         return None
 
