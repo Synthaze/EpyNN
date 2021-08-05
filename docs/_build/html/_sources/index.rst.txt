@@ -43,6 +43,7 @@ Table of Contents
    Introduction
    EpyNN_Model
    Layer_Model
+   Data_Model
    Embedding
    Dense
    RNN

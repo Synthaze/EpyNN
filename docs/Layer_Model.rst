@@ -8,11 +8,9 @@
 Architecture Layers (Model)
 ===============================
 
-Layers
+Base Layer
 ------------------------------
 
-Base Layer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: nnlibs.commons.models.Layer
 
@@ -20,8 +18,8 @@ Base Layer
 
     .. automethod:: update_shapes
 
-Layer Model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Template Layer
+------------------------------
 
 .. autoclass:: nnlibs.template.models.Template
     :show-inheritance:
@@ -30,41 +28,34 @@ Layer Model
 
     .. automethod:: compute_shapes
 
+        .. literalinclude:: ./../nnlibs/template/parameters.py
+            :pyobject: template_compute_shapes
+
     .. automethod:: initialize_parameters
+
+        .. literalinclude:: ./../nnlibs/template/parameters.py
+            :pyobject: initialize_parameters
 
     .. automethod:: forward
 
+        .. literalinclude:: ./../nnlibs/template/forward.py
+            :pyobject: template_forward
+
     .. automethod:: backward
+
+        .. literalinclude:: ./../nnlibs/template/backward.py
+            :pyobject: template_backward
 
     .. automethod:: compute_gradients
 
+        .. literalinclude:: ./../nnlibs/template/parameters.py
+            :pyobject: template_compute_gradients
+
     .. automethod:: update_parameters
 
+        .. literalinclude:: ./../nnlibs/template/parameters.py
+            :pyobject: template_update_parameters
+            
 
-Layer settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Data
+Layer Settings
 ------------------------------
-
-Dataset Model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: nnlibs.commons.models.dataSet
-    :members:
-
-    .. automethod:: __init__
-
-Data embedding
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Data settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: nnlibs.settings.dataset
-
-
-.. literalinclude:: ../nnlibs/settings.py
-    :language: python
-    :start-after: DATASET SETTINGS
-    :lines: 1-22

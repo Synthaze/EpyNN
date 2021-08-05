@@ -10,11 +10,9 @@
 Neural Network (Model)
 ===============================
 
-Neural Network
+EpyNN model
 ------------------------------
 
-EpyNN model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: nnlibs.meta.models.EpyNN
 
@@ -48,8 +46,8 @@ EpyNN model
     .. automethod:: predict
 
 
-Model settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+EpyNN settings
+------------------------------
 
 .. autoclass:: nnlibs.settings.config
 

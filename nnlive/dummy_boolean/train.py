@@ -38,18 +38,17 @@ settings = [se_config, se_hPars]
 ############################ DATASET ##########################
 X_features, Y_label = prepare_dataset(N_SAMPLES=50)
 
-embedding = Embedding(X_dataset=X_features,
-                      Y_dataset=Y_label,
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
                       Y_encode=True,
                       relative_size=(2, 0, 0))
 
 ############################ MODEL ############################
 # Single-layer perceptron
 dense = Dense()
-h_dense = Dense(48, relu)
 
 name = 'Embedding_Dense'
-model = EpyNN(layers=[embedding, h_dense, dense], settings=settings, seed=1, name=name)
+model = EpyNN(layers=[embedding, dense], settings=settings, seed=1, name=name)
 
 # Feed-forward Neural Network (Multi-layer perceptron)
 #hidden_dense = Dense(nodes=4, activate=relu)

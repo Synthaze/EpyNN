@@ -7,40 +7,40 @@ from nnlibs.commons.io import encode_dataset
 from nnlibs.commons.models import dataSet
 
 
-def embedding_check(X_dataset, Y_dataset, X_scale=False):
+def embedding_check(X_data, Y_data, X_scale=False):
     """Check validity of user input and apply pre-processing.
 
-    :param X_dataset: Dataset containing samples features
+    :param X_data: Dataset containing samples features
     :type encode: list[list[list]]
 
-    :param Y_dataset: Dataset containing samples label
+    :param Y_data: Dataset containing samples label
     :type encode: list[list[list[int]]]
 
     :param X_scale: Set to True to normalize sample features within [0, 1]
     :type X_scale: bool
     """
-    if type(X_dataset) == type(Y_dataset) == None:
+    if type(X_data) == type(Y_data) == None:
         return None
 
-    X_dataset = np.array(X_dataset)
-    Y_dataset = np.array(Y_dataset)
+    X_data = np.array(X_data)
+    Y_data = np.array(Y_data)
 
     if X_scale:
-        X_dataset = (X_dataset-np.min(X_dataset)) / (np.max(X_dataset)-np.min(X_dataset))
+        X_data = (X_data-np.min(X_data)) / (np.max(X_data)-np.min(X_data))
 
-    return X_dataset, Y_dataset
+    return X_data, Y_data
 
 
-def embedding_encode(layer, X_dataset, Y_dataset, X_encode, Y_encode):
+def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     """One-hot encoding for samples features and label.
 
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
     :type layer: :class:`nnlibs.embedding.models.Embedding`
 
-    :param X_dataset: Dataset containing samples features
+    :param X_data: Dataset containing samples features
     :type encode: list[list[list]]
 
-    :param Y_dataset: Dataset containing samples label
+    :param Y_data: Dataset containing samples label
     :type encode: list[list[list[int]]]
 
     :param X_encode: Set to True to one-hot encode features
@@ -54,26 +54,26 @@ def embedding_encode(layer, X_dataset, Y_dataset, X_encode, Y_encode):
     """
     # Features one-hot encoding
     if X_encode:
-        layer.w2i, layer.i2w, layer.d['v'] = index_vocabulary_auto(X_dataset)
-        X_dataset = X_encoded_dataset = encode_dataset(X_dataset, layer.w2i, layer.d['v'])
+        layer.w2i, layer.i2w, layer.d['v'] = index_vocabulary_auto(X_data)
+        X_data = X_encoded_dataset = encode_dataset(X_data, layer.w2i, layer.d['v'])
     # Label one-hot encoding
     if Y_encode:
-        num_classes = len(list(set(Y_dataset.flatten())))
-        Y_dataset = np.eye(num_classes)[Y_dataset]
+        num_classes = len(list(set(Y_data.flatten())))
+        Y_data = np.eye(num_classes)[Y_data]
 
-    return X_dataset, Y_dataset
+    return X_data, Y_data
 
 
-def embedding_prepare(layer, X_dataset, Y_dataset):
+def embedding_prepare(layer, X_data, Y_data):
     """Prepare dataset for Embedding layer object.
 
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
     :type layer: :class:`nnlibs.embedding.models.Embedding`
 
-    :param X_dataset: Dataset containing samples features
+    :param X_data: Dataset containing samples features
     :type encode: list[list[list]]
 
-    :param Y_dataset: Dataset containing samples label
+    :param Y_data: Dataset containing samples label
     :type encode: list[list[list[int]]]
 
     :return: All training, testing and validations sets along with batched training set
@@ -81,7 +81,7 @@ def embedding_prepare(layer, X_dataset, Y_dataset):
     """
     se_dataset = layer.se_dataset
 
-    dataset = [[x, y] for x,y in zip(X_dataset, Y_dataset)]
+    dataset = list(zip(X_data, Y_data))
 
     dtrain, dtest, dval = split_dataset(dataset, se_dataset)
 
@@ -92,12 +92,17 @@ def embedding_prepare(layer, X_dataset, Y_dataset):
     else:
         pass
 
-    dtrain = dataSet(dataset=dtrain, name='dtrain'+suffix)
-    dtest = dataSet(dataset=dtest, name='dtest'+suffix)
-    dval = dataSet(dataset=dval, name='dval'+suffix)
+    X_train, Y_train = zip(*dtrain)
+    X_test, Y_test = zip(*dtest) if dtest else [(), ()]
+    X_val, Y_val = zip(*dval) if dval else [(), ()]
+
+    dtrain = dataSet(X_data=X_train, Y_data=Y_train, name='dtrain' + suffix)
+    dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest' + suffix)
+    dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval' + suffix)
 
     for i, batch in enumerate(batch_dtrain):
-        batch = dataSet(dataset=batch, name='dtrain_'+str(i)+suffix)
+        X_batch, Y_batch = zip(*batch)
+        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name='dtrain_' + str(i) + suffix)
         batch_dtrain[i] = batch
 
     embedded_data = (dtrain, dtest, dval, batch_dtrain)
@@ -105,10 +110,10 @@ def embedding_prepare(layer, X_dataset, Y_dataset):
     return embedded_data
 
 
-def index_vocabulary_auto(X_or_Y_dataset):
+def index_vocabulary_auto(X_or_Y_data):
     """Determine vocabulary size and generate dictionnary for one-hot encoding or features or label
 
-    :param X_or_Y_dataset: Dataset containing samples features or samples label
+    :param X_or_Y_data: Dataset containing samples features or samples label
     :type encode: list[list[list]]
 
     :return: One-hot encoding converter
@@ -120,7 +125,7 @@ def index_vocabulary_auto(X_or_Y_dataset):
     :return: Vocabulary size
     :rtype: int
     """
-    words = sorted(list(set(X_or_Y_dataset.flatten())))
+    words = sorted(list(set(X_or_Y_data.flatten())))
 
     word_to_idx = {w:i for i,w in enumerate(words)}
     idx_to_word = {i:w for w,i in word_to_idx.items()}
@@ -152,7 +157,7 @@ def split_dataset(dataset, se_dataset):
     dtrain_length = round(dtrain_relative / sum_relative * len(dataset))
     dtest_length = round(dtest_relative / sum_relative * len(dataset))
     dval_length = round(dval_relative / sum_relative * len(dataset))
-    print(dtrain_length)
+
     dtrain = dataset[:dtrain_length]
     dtest = dataset[dtrain_length:dtrain_length + dtest_length]
     dval = dataset[dtrain_length + dtest_length:]

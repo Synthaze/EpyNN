@@ -8,34 +8,41 @@ import numpy as np
 
 class Layer:
     """
-    Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.
+    Definition of a parent **base layer** prototype. Any given **layer** prototype inherit from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution...). The **parent** base layer defines instance attributes common to any **child** layer prototype.
     """
 
     def __init__(self, se_hPars=None):
         """Initialize instance variable attributes.
 
-        Attributes
-        ----------
-        d : dict
-            Instance attribute for layer **dimensions**. It contains **scalar quantities** such as the number of nodes, hidden units, filters or samples with respect to a given layer prototype and instantiated object.
-        fs : dict
-            Instance attribute for **forward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to forward propagation. This includes shapes for parameters (weight, bias) and for layer input, output, as well as processing intermediates.
-        p : dict
-            Instance attribute for **parameters**. It contains independant :class:`numpy.ndarray` associated with **weight** and **bias** with respect to a given layer architecture. Shapes for parameters initialization are retrieved from the *fs* attribute described above.
-        fc : dict
-            Instance attribute for **forward cache**. It contains independant :class:`numpy.ndarray` associated with **forward propagation processing** which includes input, output and intermediates.
-        bs : dict
-            Instance attribute for **backward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to backward propagation. This includes shapes for gradients (weight, bias) and for layer input, output, as well as processing intermediates.
-        g : dict
-            Instance attribute for **gradients**. It contains independant :class:`numpy.ndarray` associated with **weight and bias gradients** with respect to parameters from the *p* attribute described above. Shapes for gradients are identical to the corresponding parameters.
-        bc : dict
-            Instance attribute for **backward cache**. It contains independant :class:`numpy.ndarray` associated with **backward propagation processing** which includes input, output and intermediates.
-        o : dict
-            Instance attribute for other information. Rarely used. It may contain scalar quantities that do not fit within the above-described dictionary attributes.
-        activation : dict
-            Activation functions for layer. This conveniency attribute stores key:value pairs for activation gates and name of the corresponding function.
-        se_hPars: NoneType
-            Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the :class:`nnlibs.meta.models.EpyNN` meta-model.
+        :ivar d: Layer **dimensions** containing scalar quantities such as the number of nodes, hidden units, filters or samples.
+        :vartype d: dict[str: int]
+
+        :ivar fs: Layer **forward shapes** for parameters, input, output and processing intermediates.
+        :vartype fs: dict[str: tuple[int]]
+
+        :ivar p: Layer weight and bias **parameters**. These are the trainable parameters.
+        :vartype p: dict[str: :class:`numpy.ndarray`]
+
+        :ivar fc: Layer **forward cache** related for input, output and processing intermediates.
+        :vartype fc: dict[str: :class:`numpy.ndarray`]
+
+        :ivar bs: Layer **backward shapes** for gradients, input, output and processing intermediates.
+        :vartype bs: dict[str: tuple[int]]
+
+        :ivar g: Layer **gradients** used to update the trainable parameters.
+        :vartype g: dict[str: :class:`numpy.ndarray`]
+
+        :ivar bc: Layer **backward cache** for input, output and processing intermediates.
+        :vartype bc: dict[str: :class:`numpy.ndarray`]
+
+        :ivar o: Other scalar quantities that do not fit within the above-described attributes (rarely used).
+        :vartype o: dict[str: int]
+
+        :ivar activation: Conveniency attribute containing names of activation gates and corresponding activation functions.
+        :vartype activation: dict[str: str]
+
+        :ivar se_hPars: Layer **hyper-parameters**.
+        :vartype se_hPars: dict[str: str or int]
         """
         self.d = {}
         self.fs = {}
@@ -55,11 +62,11 @@ class Layer:
     def update_shapes(self, cache, shapes):
         """Update shapes from cache.
 
-        :param cache: Forward of backward cache as documented above.
-        :type cache: dict
+        :param cache: Cache from forward or backward propagation.
+        :type cache: dict[str: :class:`numpy.ndarray`]
 
-        :param shapes: Corresponding forward or backward shapes as documented above.
-        :type shapes: dict
+        :param shapes: Corresponding shapes.
+        :type shapes: dict[str: tuple[int]]
         """
         shapes.update({k:v.shape for k,v in cache.items()})
 
@@ -70,87 +77,82 @@ class dataSet:
     """
     Definition of a dataSet object prototype.
 
-    :param dataset: Contains samples
-    :type dataset: list[list[list,list[int]]]
+    :param X_data: Set of sample features.
+    :type X_data: list[list[int or float]]
 
-    :param label: Set to False if dataset contains unlabeled samples
-    :type label: bool
+    :param Y_data: Set of sample label, defaults to None.
+    :type Y_data: list[list[int] or int], optional
 
-    :param name: For model seeding
-    :type name: str
+    :param name: Name of set, defaults to 'dummy'.
+    :type name: str, optional
     """
 
     def __init__(self,
-                dataset,
-                label=True,
+                X_data,
+                Y_data=None,
                 name='dummy'):
         """Initialize dataSet object.
 
-        :ivar n: Name of dataset
-        :vartype n: str
+        :ivar active: `True` if X_data is not empty.
+        :vartype active: bool
 
-        :ivar X: Features for samples
+        :ivar X: Set of sample features.
         :vartype X: :class:`numpy.ndarray`
 
-        :ivar Y: One-hot encoded labels for samples
+        :ivar Y: Set of sample label.
         :vartype Y: :class:`numpy.ndarray`
 
-        :ivar y: Single-digit labels for samples
+        :ivar y: Set of single-digit sample label.
         :vartype y: :class:`numpy.ndarray`
 
-        :ivar b: Labels balance in dataset
-        :vartype b: dict
+        :ivar b: Balance of labels in set.
+        :vartype b: dict[int: int]
 
-        :ivar ids: Numerical identifiers for samples
-        :vartype ids: list
+        :ivar ids: Sample identifiers.
+        :vartype ids: list[int]
 
-        :ivar s: Total number of samples
-        :vartype s: int
-
-        :ivar A: Output of forward propagation for dataset
+        :ivar A: Output of forward propagation.
         :vartype A: :class:`numpy.ndarray`
 
-        :ivar P: Predictions for dataset
+        :ivar P: Label predictions.
         :vartype P: :class:`numpy.ndarray`
+
+        :ivar name: Name of dataset.
+        :vartype name: str
         """
-        if len(dataset) == 0:
-            self.active = False
-
-            return None
-
-        self.active = True
-
         self.name = name
 
-        if label:
-            X_dataset = [x[0] for x in dataset]
-        else:
-            X_dataset = dataset
+        self.active = True if len(X_data) > 0 else False
 
-        self.X = np.array(X_dataset)
+        # Set of sample features
+        if self.active:
 
-        # Set numerical id for each sample
-        self.ids = np.array([i for i in range(self.X.shape[0])])
-        # Number of samples
-        self.s = str(len(self.ids))
+            # Vectorize X_data in NumPy array
+            self.X = np.array(X_data)
 
+            # Set sample identifiers
+            self.ids = np.array([i for i in range(len(X_data))])
+
+        # Set of sample label
+        if Y_data and self.active:
+
+            # Vectorize Y_data in NumPy array
+            Y_data = np.array(Y_data)
+
+            # Check if labels are one-hot encoded or not
+            is_encoded = True if Y_data.ndim == 2 else False
+
+            # If not encoded, reshape from (N_SAMPLES,) to (N_SAMPLES, 1)
+            self.Y = Y_data if is_encoded else np.expand_dims(Y_data, 1)
+
+            # Retrieve single-digit label w. r. t. one-hot encoding
+            self.y = np.argmax(Y_data, axis=1) if is_encoded else Y_data
+
+            # Map single-digit label with representation in dataset
+            self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
+
+        # Initialize empty arrays
         self.A = np.array([])
         self.P = np.array([])
-
-        if not label:
-
-            return None
-
-        Y_dataset = [x[1] for x in dataset]
-
-        self.Y = np.array(Y_dataset)
-
-        if self.Y.ndim == 1:
-            self.Y = np.expand_dims(self.Y, 1)
-
-        # Single-digit labels
-        self.y = np.argmax(self.Y, axis=1)
-        # Labels balance
-        self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
 
         return None

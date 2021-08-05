@@ -223,7 +223,7 @@ class EpyNN:
 
         return None
 
-    def predict(self, X_dataset, X_encode=False):
+    def predict(self, X_data, X_encode=False):
         """Perform prediction of label from unlabeled samples in dataset.
 
         :param dataset: Unlabeled samples in dataset
@@ -239,9 +239,9 @@ class EpyNN:
         if X_encode:
             word_to_idx = self.embedding.w2i
             vocab_size = self.embedding.d['v']
-            X_dataset = encode_dataset(X_dataset, word_to_idx, vocab_size)
+            X_data = encode_dataset(X_data, word_to_idx, vocab_size)
 
-        dset = dataSet(X_dataset, label=False)
+        dset = dataSet(X_data)
 
         X = dset.X
 

@@ -400,7 +400,7 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
     log = []
 
     for dset in dsets:
-        log.append(dset.s)
+        log.append(len(dset.ids))
 
     for i in range(3 - len(dsets)):
         log.append('None')

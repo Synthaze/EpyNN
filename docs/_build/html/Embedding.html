@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Fully Connected (Dense)" href="Dense.html" />
-    <link rel="prev" title="Architecture Layers" href="Layer_Model.html" /> 
+    <link rel="prev" title="Dataset (Model)" href="Data_Model.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,8 +94,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Embedding (Input)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#layer-architecture">Layer architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#live-examples">Live examples</a></li>
@@ -209,7 +210,7 @@
 <h2>Layer architecture<a class="headerlink" href="#layer-architecture" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="nnlibs.embedding.models.Embedding">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.embedding.models.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Y_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">relative_size</span><span class="o">=</span><span class="default_value">(2, 1, 1)</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Y_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/models.html#Embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.models.Embedding" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.embedding.models.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Y_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">relative_size</span><span class="o">=</span><span class="default_value">(2, 1, 1)</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Y_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/models.html#Embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.models.Embedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Layer_Model.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of an embedding layer prototype.</p>
 <dl class="field-list simple">
@@ -308,7 +309,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="Dense.html" class="btn btn-neutral float-right" title="Fully Connected (Dense)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Layer_Model.html" class="btn btn-neutral float-left" title="Architecture Layers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Data_Model.html" class="btn btn-neutral float-left" title="Dataset (Model)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

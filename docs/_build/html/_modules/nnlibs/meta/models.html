@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -395,7 +396,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../EpyNN_Model.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">X_encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.predict"><a class="viewcode-back" href="../../../EpyNN_Model.html#nnlibs.meta.models.EpyNN.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">X_encode</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform prediction of label from unlabeled samples in dataset.</span>
 
 <span class="sd">        :param dataset: Unlabeled samples in dataset</span>
@@ -411,9 +412,9 @@
         <span class="k">if</span> <span class="n">X_encode</span><span class="p">:</span>
             <span class="n">word_to_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">w2i</span>
             <span class="n">vocab_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
-            <span class="n">X_dataset</span> <span class="o">=</span> <span class="n">encode_dataset</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+            <span class="n">X_data</span> <span class="o">=</span> <span class="n">encode_dataset</span><span class="p">(</span><span class="n">X_data</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
 
-        <span class="n">dset</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">dset</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">X_data</span><span class="p">)</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span>
 

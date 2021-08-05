@@ -19,12 +19,12 @@ def initialize_backward(layer, dA):
 
 
 def template_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagation of error to previous layer.
     """
     # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    # (1) Pass backward
+    # (2) Pass backward
     dA = layer.bc['dA'] = dX
 
     return dA    # To previous layer

@@ -95,6 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -807,7 +808,7 @@
 <span class="target" id="module-nnlibs.commons.models"></span><dl class="py class">
 <dt id="nnlibs.commons.models.Layer">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">Layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution…) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</p>
+<dd><p>Definition of a parent <strong>base layer</strong> prototype. Any given <strong>layer</strong> prototype inherit from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution…). The <strong>parent</strong> base layer defines instance attributes common to any <strong>child</strong> layer prototype.</p>
 <dl class="py method">
 <dt id="nnlibs.commons.models.Layer.update_shapes">
 <code class="sig-name descname">update_shapes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em>, <em class="sig-param"><span class="n">shapes</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer.update_shapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer.update_shapes" title="Permalink to this definition">¶</a></dt>
@@ -815,8 +816,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Forward of backward cache as documented above.</p></li>
-<li><p><strong>shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Corresponding forward or backward shapes as documented above.</p></li>
+<li><p><strong>cache</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Cache from forward or backward propagation.</p></li>
+<li><p><strong>shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em>) – Corresponding shapes.</p></li>
 </ul>
 </dd>
 </dl>
@@ -826,14 +827,14 @@
 
 <dl class="py class">
 <dt id="nnlibs.commons.models.dataSet">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">dataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">dataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">Y_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of a dataSet object prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em>) – Contains samples</p></li>
-<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Set to False if dataset contains unlabeled samples</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – For model seeding</p></li>
+<li><p><strong>X_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>]</em><em>]</em>) – Set of sample features.</p></li>
+<li><p><strong>Y_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>, </em><em>optional</em>) – Set of sample label, defaults to None.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Name of set, defaults to ‘dummy’.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1353,13 +1354,13 @@
 
 <span class="target" id="module-nnlibs.embedding.dataset"></span><dl class="py function">
 <dt id="nnlibs.embedding.dataset.embedding_check">
-<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_dataset</span></em>, <em class="sig-param"><span class="n">Y_dataset</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_check" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">Y_data</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check validity of user input and apply pre-processing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X_dataset</strong> – Dataset containing samples features</p></li>
-<li><p><strong>Y_dataset</strong> – Dataset containing samples label</p></li>
+<li><p><strong>X_data</strong> – Dataset containing samples features</p></li>
+<li><p><strong>Y_data</strong> – Dataset containing samples label</p></li>
 <li><p><strong>X_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Set to True to normalize sample features within [0, 1]</p></li>
 </ul>
 </dd>
@@ -1368,14 +1369,14 @@
 
 <dl class="py function">
 <dt id="nnlibs.embedding.dataset.embedding_encode">
-<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_encode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">X_dataset</span></em>, <em class="sig-param"><span class="n">Y_dataset</span></em>, <em class="sig-param"><span class="n">X_encode</span></em>, <em class="sig-param"><span class="n">Y_encode</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_encode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_encode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">Y_data</span></em>, <em class="sig-param"><span class="n">X_encode</span></em>, <em class="sig-param"><span class="n">Y_encode</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>One-hot encoding for samples features and label.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>layer</strong> (<a class="reference internal" href="#nnlibs.embedding.models.Embedding" title="nnlibs.embedding.models.Embedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code></a>) – An instance of the <a class="reference internal" href="#nnlibs.embedding.models.Embedding" title="nnlibs.embedding.models.Embedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code></a></p></li>
-<li><p><strong>X_dataset</strong> – Dataset containing samples features</p></li>
-<li><p><strong>Y_dataset</strong> – Dataset containing samples label</p></li>
+<li><p><strong>X_data</strong> – Dataset containing samples features</p></li>
+<li><p><strong>Y_data</strong> – Dataset containing samples label</p></li>
 <li><p><strong>X_encode</strong> – Set to True to one-hot encode features</p></li>
 <li><p><strong>Y_encode</strong> – Set to True to one-hot encode labels</p></li>
 </ul>
@@ -1389,30 +1390,30 @@
 
 <dl class="py function">
 <dt id="nnlibs.embedding.dataset.embedding_prepare">
-<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">X_dataset</span></em>, <em class="sig-param"><span class="n">Y_dataset</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_prepare" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">embedding_prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layer</span></em>, <em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">Y_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#embedding_prepare"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.embedding_prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepare dataset for Embedding layer object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>layer</strong> (<a class="reference internal" href="#nnlibs.embedding.models.Embedding" title="nnlibs.embedding.models.Embedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code></a>) – An instance of the <a class="reference internal" href="#nnlibs.embedding.models.Embedding" title="nnlibs.embedding.models.Embedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code></a></p></li>
-<li><p><strong>X_dataset</strong> – Dataset containing samples features</p></li>
-<li><p><strong>Y_dataset</strong> – Dataset containing samples label</p></li>
+<li><p><strong>X_data</strong> – Dataset containing samples features</p></li>
+<li><p><strong>Y_data</strong> – Dataset containing samples label</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>All training, testing and validations sets along with batched training set</p>
 </dd>
 </dl>
-<p>:rtype : tuple[<a class="reference internal" href="Layer_Model.html#nnlibs.commons.models.dataSet" title="nnlibs.commons.models.dataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code></a>]</p>
+<p>:rtype : tuple[<a class="reference internal" href="#nnlibs.commons.models.dataSet" title="nnlibs.commons.models.dataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code></a>]</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="nnlibs.embedding.dataset.index_vocabulary_auto">
-<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">index_vocabulary_auto</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_or_Y_dataset</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#index_vocabulary_auto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.index_vocabulary_auto" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nnlibs.embedding.dataset.</code><code class="sig-name descname">index_vocabulary_auto</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_or_Y_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/dataset.html#index_vocabulary_auto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.dataset.index_vocabulary_auto" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine vocabulary size and generate dictionnary for one-hot encoding or features or label</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>X_or_Y_dataset</strong> – Dataset containing samples features or samples label</p>
+<dd class="field-odd"><p><strong>X_or_Y_data</strong> – Dataset containing samples features or samples label</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>One-hot encoding converter</p>
@@ -1503,7 +1504,7 @@
 
 <span class="target" id="module-nnlibs.embedding.models"></span><dl class="py class">
 <dt id="nnlibs.embedding.models.Embedding">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.embedding.models.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Y_dataset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">relative_size</span><span class="o">=</span><span class="default_value">(2, 1, 1)</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Y_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/models.html#Embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.models.Embedding" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.embedding.models.</code><code class="sig-name descname">Embedding</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Y_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">relative_size</span><span class="o">=</span><span class="default_value">(2, 1, 1)</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">Y_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/embedding/models.html#Embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.embedding.models.Embedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of an embedding layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2122,7 +2123,7 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_dataset</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform prediction of label from unlabeled samples in dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2135,7 +2136,7 @@
 <dd class="field-even"><p>Data embedding and output of forward propagation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="Layer_Model.html#nnlibs.commons.models.dataSet" title="nnlibs.commons.models.dataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#nnlibs.commons.models.dataSet" title="nnlibs.commons.models.dataSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>

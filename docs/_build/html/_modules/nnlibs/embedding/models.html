@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -217,8 +218,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                <span class="n">X_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">Y_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">X_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">Y_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">relative_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">X_encode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -239,11 +240,11 @@
             <span class="s1">&#39;dataset_name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span> <span class="o">=</span> <span class="n">embedding_check</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">,</span> <span class="n">X_scale</span><span class="p">)</span>
+        <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span> <span class="o">=</span> <span class="n">embedding_check</span><span class="p">(</span><span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">X_scale</span><span class="p">)</span>
 
-        <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span> <span class="o">=</span> <span class="n">embedding_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">,</span> <span class="n">X_encode</span><span class="p">,</span> <span class="n">Y_encode</span><span class="p">)</span>
+        <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span> <span class="o">=</span> <span class="n">embedding_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">X_encode</span><span class="p">,</span> <span class="n">Y_encode</span><span class="p">)</span>
 
-        <span class="n">embedded_data</span> <span class="o">=</span> <span class="n">embedding_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">)</span>
+        <span class="n">embedded_data</span> <span class="o">=</span> <span class="n">embedding_prepare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dtrain</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_dtrain</span> <span class="o">=</span> <span class="n">embedded_data</span>
 

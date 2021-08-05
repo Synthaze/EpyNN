@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Data Embedding (Input)" href="Embedding.html" />
+    <link rel="next" title="Dataset (Model)" href="Data_Model.html" />
     <link rel="prev" title="Neural Network (Model)" href="EpyNN_Model.html" /> 
 </head>
 
@@ -96,20 +96,12 @@
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network (Model)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Layers (Model)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#layers">Layers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#base-layer">Base Layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#layer-model">Layer Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#layer-settings">Layer settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#base-layer">Base Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-layer">Template Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-settings">Layer Settings</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#data">Data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#dataset-model">Dataset Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#data-embedding">Data embedding</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#data-settings">Data settings</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -215,38 +207,30 @@
 </div>
 <div class="section" id="architecture-layers-model">
 <h1>Architecture Layers (Model)<a class="headerlink" href="#architecture-layers-model" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="layers">
-<h2>Layers<a class="headerlink" href="#layers" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="base-layer">
-<h3>Base Layer<a class="headerlink" href="#base-layer" title="Permalink to this headline">¶</a></h3>
+<h2>Base Layer<a class="headerlink" href="#base-layer" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="nnlibs.commons.models.Layer">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">Layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution…) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</p>
+<dd><p>Definition of a parent <strong>base layer</strong> prototype. Any given <strong>layer</strong> prototype inherit from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution…). The <strong>parent</strong> base layer defines instance attributes common to any <strong>child</strong> layer prototype.</p>
 <dl class="py method">
 <dt id="nnlibs.commons.models.Layer.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize instance variable attributes.</p>
-<dl class="simple">
-<dt>d<span class="classifier">dict</span></dt><dd><p>Instance attribute for layer <strong>dimensions</strong>. It contains <strong>scalar quantities</strong> such as the number of nodes, hidden units, filters or samples with respect to a given layer prototype and instantiated object.</p>
-</dd>
-<dt>fs<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>forward shapes</strong>. It contains <strong>tuples of integers</strong> defining multi-dimensional shapes related to forward propagation. This includes shapes for parameters (weight, bias) and for layer input, output, as well as processing intermediates.</p>
-</dd>
-<dt>p<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>parameters</strong>. It contains independant <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> associated with <strong>weight</strong> and <strong>bias</strong> with respect to a given layer architecture. Shapes for parameters initialization are retrieved from the <em>fs</em> attribute described above.</p>
-</dd>
-<dt>fc<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>forward cache</strong>. It contains independant <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> associated with <strong>forward propagation processing</strong> which includes input, output and intermediates.</p>
-</dd>
-<dt>bs<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>backward shapes</strong>. It contains <strong>tuples of integers</strong> defining multi-dimensional shapes related to backward propagation. This includes shapes for gradients (weight, bias) and for layer input, output, as well as processing intermediates.</p>
-</dd>
-<dt>g<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>gradients</strong>. It contains independant <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> associated with <strong>weight and bias gradients</strong> with respect to parameters from the <em>p</em> attribute described above. Shapes for gradients are identical to the corresponding parameters.</p>
-</dd>
-<dt>bc<span class="classifier">dict</span></dt><dd><p>Instance attribute for <strong>backward cache</strong>. It contains independant <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> associated with <strong>backward propagation processing</strong> which includes input, output and intermediates.</p>
-</dd>
-<dt>o<span class="classifier">dict</span></dt><dd><p>Instance attribute for other information. Rarely used. It may contain scalar quantities that do not fit within the above-described dictionary attributes.</p>
-</dd>
-<dt>activation<span class="classifier">dict</span></dt><dd><p>Activation functions for layer. This conveniency attribute stores key:value pairs for activation gates and name of the corresponding function.</p>
-</dd>
-<dt>se_hPars: NoneType</dt><dd><p>Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the <a class="reference internal" href="EpyNN_Model.html#nnlibs.meta.models.EpyNN" title="nnlibs.meta.models.EpyNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.meta.models.EpyNN</span></code></a> meta-model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>d</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: int</em><em>]</em>) – Layer <strong>dimensions</strong> containing scalar quantities such as the number of nodes, hidden units, filters or samples.</p></li>
+<li><p><strong>fs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em>) – Layer <strong>forward shapes</strong> for parameters, input, output and processing intermediates.</p></li>
+<li><p><strong>p</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Layer weight and bias <strong>parameters</strong>. These are the trainable parameters.</p></li>
+<li><p><strong>fc</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Layer <strong>forward cache</strong> related for input, output and processing intermediates.</p></li>
+<li><p><strong>bs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em>) – Layer <strong>backward shapes</strong> for gradients, input, output and processing intermediates.</p></li>
+<li><p><strong>g</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Layer <strong>gradients</strong> used to update the trainable parameters.</p></li>
+<li><p><strong>bc</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Layer <strong>backward cache</strong> for input, output and processing intermediates.</p></li>
+<li><p><strong>o</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: int</em><em>]</em>) – Other scalar quantities that do not fit within the above-described attributes (rarely used).</p></li>
+<li><p><strong>activation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: str</em><em>]</em>) – Conveniency attribute containing names of activation gates and corresponding activation functions.</p></li>
+<li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: str</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em>) – Layer <strong>hyper-parameters</strong>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -258,8 +242,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cache</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Forward of backward cache as documented above.</p></li>
-<li><p><strong>shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Corresponding forward or backward shapes as documented above.</p></li>
+<li><p><strong>cache</strong> (dict[str: <code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>]) – Cache from forward or backward propagation.</p></li>
+<li><p><strong>shapes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: tuple</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em>) – Corresponding shapes.</p></li>
 </ul>
 </dd>
 </dl>
@@ -268,8 +252,8 @@
 </dd></dl>
 
 </div>
-<div class="section" id="layer-model">
-<h3>Layer Model<a class="headerlink" href="#layer-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="template-layer">
+<h2>Template Layer<a class="headerlink" href="#template-layer" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="nnlibs.template.models.Template">
 <em class="property">class </em><code class="sig-prename descclassname">nnlibs.template.models.</code><code class="sig-name descname">Template</code><a class="reference internal" href="_modules/nnlibs/template/models.html#Template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template" title="Permalink to this definition">¶</a></dt>
@@ -290,6 +274,17 @@
 <dd class="field-odd"><p><strong>A</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Output of forward propagation from <em>previous</em> layer.</p>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for cells and layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>    <span class="c1"># Input of current layer of shape (m .. n)</span>
+
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>     <span class="c1"># Number of samples (m)</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>    <span class="c1"># Features</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -313,6 +308,18 @@
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># (1) Initialize cache</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
+    <span class="c1"># (2) Pass forward</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span>
+
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -330,74 +337,53 @@
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
 </dd>
 </dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># (1) Initialize cache</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+
+    <span class="c1"># (1) Pass backward</span>
+    <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span>
+
+    <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.compute_gradients">
 <code class="sig-name descname">compute_gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.compute_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.compute_gradients" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <strong>gradients</strong> with respect to <strong>weight</strong> and <strong>bias</strong> parameters for current layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_compute_gradients" title="nnlibs.template.parameters.template_compute_gradients"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_compute_gradients()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute gradients with respect to weight and bias for layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No gradients to update for Template layer</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.update_parameters">
 <code class="sig-name descname">update_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.update_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.update_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update <strong>weight</strong> and <strong>bias</strong> parameters with respect to <strong>gradients</strong> for current layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_update_parameters" title="nnlibs.template.parameters.template_update_parameters"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_update_parameters()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_update_parameters</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update parameters for layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No parameters to update for Template layer</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="layer-settings">
-<h3>Layer settings<a class="headerlink" href="#layer-settings" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
-<div class="section" id="data">
-<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="dataset-model">
-<h3>Dataset Model<a class="headerlink" href="#dataset-model" title="Permalink to this headline">¶</a></h3>
-<dl class="py class">
-<dt id="nnlibs.commons.models.dataSet">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">dataSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Definition of a dataSet object prototype.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em>) – Contains samples</p></li>
-<li><p><strong>label</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Set to False if dataset contains unlabeled samples</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – For model seeding</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="nnlibs.commons.models.dataSet.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'dummy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#dataSet.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.dataSet.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize dataSet object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Variables</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of dataset</p></li>
-<li><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Features for samples</p></li>
-<li><p><strong>Y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – One-hot encoded labels for samples</p></li>
-<li><p><strong>y</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Single-digit labels for samples</p></li>
-<li><p><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Labels balance in dataset</p></li>
-<li><p><strong>ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Numerical identifiers for samples</p></li>
-<li><p><strong>s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Total number of samples</p></li>
-<li><p><strong>A</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Output of forward propagation for dataset</p></li>
-<li><p><strong>P</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Predictions for dataset</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="data-embedding">
-<h3>Data embedding<a class="headerlink" href="#data-embedding" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="data-settings">
-<h3>Data settings<a class="headerlink" href="#data-settings" title="Permalink to this headline">¶</a></h3>
-</div>
+<h2>Layer Settings<a class="headerlink" href="#layer-settings" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -407,7 +393,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Embedding.html" class="btn btn-neutral float-right" title="Data Embedding (Input)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Data_Model.html" class="btn btn-neutral float-right" title="Dataset (Model)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="EpyNN_Model.html" class="btn btn-neutral float-left" title="Neural Network (Model)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

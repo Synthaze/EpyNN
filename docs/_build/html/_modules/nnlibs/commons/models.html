@@ -94,6 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -180,34 +181,41 @@
 
 <div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.commons.models.Layer">[docs]</a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution...) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</span>
+<span class="sd">    Definition of a parent **base layer** prototype. Any given **layer** prototype inherit from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution...). The **parent** base layer defines instance attributes common to any **child** layer prototype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Layer.__init__"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.commons.models.Layer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">se_hPars</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize instance variable attributes.</span>
 
-<span class="sd">        Attributes</span>
-<span class="sd">        ----------</span>
-<span class="sd">        d : dict</span>
-<span class="sd">            Instance attribute for layer **dimensions**. It contains **scalar quantities** such as the number of nodes, hidden units, filters or samples with respect to a given layer prototype and instantiated object.</span>
-<span class="sd">        fs : dict</span>
-<span class="sd">            Instance attribute for **forward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to forward propagation. This includes shapes for parameters (weight, bias) and for layer input, output, as well as processing intermediates.</span>
-<span class="sd">        p : dict</span>
-<span class="sd">            Instance attribute for **parameters**. It contains independant :class:`numpy.ndarray` associated with **weight** and **bias** with respect to a given layer architecture. Shapes for parameters initialization are retrieved from the *fs* attribute described above.</span>
-<span class="sd">        fc : dict</span>
-<span class="sd">            Instance attribute for **forward cache**. It contains independant :class:`numpy.ndarray` associated with **forward propagation processing** which includes input, output and intermediates.</span>
-<span class="sd">        bs : dict</span>
-<span class="sd">            Instance attribute for **backward shapes**. It contains **tuples of integers** defining multi-dimensional shapes related to backward propagation. This includes shapes for gradients (weight, bias) and for layer input, output, as well as processing intermediates.</span>
-<span class="sd">        g : dict</span>
-<span class="sd">            Instance attribute for **gradients**. It contains independant :class:`numpy.ndarray` associated with **weight and bias gradients** with respect to parameters from the *p* attribute described above. Shapes for gradients are identical to the corresponding parameters.</span>
-<span class="sd">        bc : dict</span>
-<span class="sd">            Instance attribute for **backward cache**. It contains independant :class:`numpy.ndarray` associated with **backward propagation processing** which includes input, output and intermediates.</span>
-<span class="sd">        o : dict</span>
-<span class="sd">            Instance attribute for other information. Rarely used. It may contain scalar quantities that do not fit within the above-described dictionary attributes.</span>
-<span class="sd">        activation : dict</span>
-<span class="sd">            Activation functions for layer. This conveniency attribute stores key:value pairs for activation gates and name of the corresponding function.</span>
-<span class="sd">        se_hPars: NoneType</span>
-<span class="sd">            Hyperparameters for layer. It may contain scalar quantities and string defining layer-specific hyperparameters. Hyperparameters are otherwise defined globally upon instanciation of the :class:`nnlibs.meta.models.EpyNN` meta-model.</span>
+<span class="sd">        :ivar d: Layer **dimensions** containing scalar quantities such as the number of nodes, hidden units, filters or samples.</span>
+<span class="sd">        :vartype d: dict[str: int]</span>
+
+<span class="sd">        :ivar fs: Layer **forward shapes** for parameters, input, output and processing intermediates.</span>
+<span class="sd">        :vartype fs: dict[str: tuple[int]]</span>
+
+<span class="sd">        :ivar p: Layer weight and bias **parameters**. These are the trainable parameters.</span>
+<span class="sd">        :vartype p: dict[str: :class:`numpy.ndarray`]</span>
+
+<span class="sd">        :ivar fc: Layer **forward cache** related for input, output and processing intermediates.</span>
+<span class="sd">        :vartype fc: dict[str: :class:`numpy.ndarray`]</span>
+
+<span class="sd">        :ivar bs: Layer **backward shapes** for gradients, input, output and processing intermediates.</span>
+<span class="sd">        :vartype bs: dict[str: tuple[int]]</span>
+
+<span class="sd">        :ivar g: Layer **gradients** used to update the trainable parameters.</span>
+<span class="sd">        :vartype g: dict[str: :class:`numpy.ndarray`]</span>
+
+<span class="sd">        :ivar bc: Layer **backward cache** for input, output and processing intermediates.</span>
+<span class="sd">        :vartype bc: dict[str: :class:`numpy.ndarray`]</span>
+
+<span class="sd">        :ivar o: Other scalar quantities that do not fit within the above-described attributes (rarely used).</span>
+<span class="sd">        :vartype o: dict[str: int]</span>
+
+<span class="sd">        :ivar activation: Conveniency attribute containing names of activation gates and corresponding activation functions.</span>
+<span class="sd">        :vartype activation: dict[str: str]</span>
+
+<span class="sd">        :ivar se_hPars: Layer **hyper-parameters**.</span>
+<span class="sd">        :vartype se_hPars: dict[str: str or int]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -227,103 +235,98 @@
 <div class="viewcode-block" id="Layer.update_shapes"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.commons.models.Layer.update_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update shapes from cache.</span>
 
-<span class="sd">        :param cache: Forward of backward cache as documented above.</span>
-<span class="sd">        :type cache: dict</span>
+<span class="sd">        :param cache: Cache from forward or backward propagation.</span>
+<span class="sd">        :type cache: dict[str: :class:`numpy.ndarray`]</span>
 
-<span class="sd">        :param shapes: Corresponding forward or backward shapes as documented above.</span>
-<span class="sd">        :type shapes: dict</span>
+<span class="sd">        :param shapes: Corresponding shapes.</span>
+<span class="sd">        :type shapes: dict[str: tuple[int]]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">shapes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">cache</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
 
         <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
-<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
+<div class="viewcode-block" id="dataSet"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.models.dataSet">[docs]</a><span class="k">class</span> <span class="nc">dataSet</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a dataSet object prototype.</span>
 
-<span class="sd">    :param dataset: Contains samples</span>
-<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
+<span class="sd">    :param X_data: Set of sample features.</span>
+<span class="sd">    :type X_data: list[list[int or float]]</span>
 
-<span class="sd">    :param label: Set to False if dataset contains unlabeled samples</span>
-<span class="sd">    :type label: bool</span>
+<span class="sd">    :param Y_data: Set of sample label, defaults to None.</span>
+<span class="sd">    :type Y_data: list[list[int] or int], optional</span>
 
-<span class="sd">    :param name: For model seeding</span>
-<span class="sd">    :type name: str</span>
+<span class="sd">    :param name: Name of set, defaults to &#39;dummy&#39;.</span>
+<span class="sd">    :type name: str, optional</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="dataSet.__init__"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.commons.models.dataSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                <span class="n">dataset</span><span class="p">,</span>
-                <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<div class="viewcode-block" id="dataSet.__init__"><a class="viewcode-back" href="../../../Data_Model.html#nnlibs.commons.models.dataSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">X_data</span><span class="p">,</span>
+                <span class="n">Y_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize dataSet object.</span>
 
-<span class="sd">        :ivar n: Name of dataset</span>
-<span class="sd">        :vartype n: str</span>
+<span class="sd">        :ivar active: `True` if X_data is not empty.</span>
+<span class="sd">        :vartype active: bool</span>
 
-<span class="sd">        :ivar X: Features for samples</span>
+<span class="sd">        :ivar X: Set of sample features.</span>
 <span class="sd">        :vartype X: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar Y: One-hot encoded labels for samples</span>
+<span class="sd">        :ivar Y: Set of sample label.</span>
 <span class="sd">        :vartype Y: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar y: Single-digit labels for samples</span>
+<span class="sd">        :ivar y: Set of single-digit sample label.</span>
 <span class="sd">        :vartype y: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar b: Labels balance in dataset</span>
-<span class="sd">        :vartype b: dict</span>
+<span class="sd">        :ivar b: Balance of labels in set.</span>
+<span class="sd">        :vartype b: dict[int: int]</span>
 
-<span class="sd">        :ivar ids: Numerical identifiers for samples</span>
-<span class="sd">        :vartype ids: list</span>
+<span class="sd">        :ivar ids: Sample identifiers.</span>
+<span class="sd">        :vartype ids: list[int]</span>
 
-<span class="sd">        :ivar s: Total number of samples</span>
-<span class="sd">        :vartype s: int</span>
-
-<span class="sd">        :ivar A: Output of forward propagation for dataset</span>
+<span class="sd">        :ivar A: Output of forward propagation.</span>
 <span class="sd">        :vartype A: :class:`numpy.ndarray`</span>
 
-<span class="sd">        :ivar P: Predictions for dataset</span>
+<span class="sd">        :ivar P: Label predictions.</span>
 <span class="sd">        :vartype P: :class:`numpy.ndarray`</span>
+
+<span class="sd">        :ivar name: Name of dataset.</span>
+<span class="sd">        :vartype name: str</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">False</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-        <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
-            <span class="n">X_dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">X_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span>
+        <span class="c1"># Set of sample features</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
 
-        <span class="c1"># Set numerical id for each sample</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
-        <span class="c1"># Number of samples</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">))</span>
+            <span class="c1"># Vectorize X_data in NumPy array</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_data</span><span class="p">)</span>
 
+            <span class="c1"># Set sample identifiers</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_data</span><span class="p">))])</span>
+
+        <span class="c1"># Set of sample label</span>
+        <span class="k">if</span> <span class="n">Y_data</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+
+            <span class="c1"># Vectorize Y_data in NumPy array</span>
+            <span class="n">Y_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y_data</span><span class="p">)</span>
+
+            <span class="c1"># Check if labels are one-hot encoded or not</span>
+            <span class="n">is_encoded</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">Y_data</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">False</span>
+
+            <span class="c1"># If not encoded, reshape from (N_SAMPLES,) to (N_SAMPLES, 1)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">Y_data</span> <span class="k">if</span> <span class="n">is_encoded</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">Y_data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Retrieve single-digit label w. r. t. one-hot encoding</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y_data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_encoded</span> <span class="k">else</span> <span class="n">Y_data</span>
+
+            <span class="c1"># Map single-digit label with representation in dataset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
+
+        <span class="c1"># Initialize empty arrays</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">label</span><span class="p">:</span>
-
-            <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">Y_dataset</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y_dataset</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-        <span class="c1"># Single-digit labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># Labels balance</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="p">{</span><span class="n">label</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="kc">None</span></div></div>
 </pre></div>

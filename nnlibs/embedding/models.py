@@ -45,8 +45,8 @@ class Embedding(Layer):
     """
 
     def __init__(self,
-                X_dataset=None,
-                Y_dataset=None,
+                X_data=None,
+                Y_data=None,
                 relative_size=(2, 1, 1),
                 batch_size=None,
                 X_encode=False,
@@ -67,11 +67,11 @@ class Embedding(Layer):
             'dataset_name': name,
         }
 
-        X_dataset, Y_dataset = embedding_check(X_dataset, Y_dataset, X_scale)
+        X_data, Y_data = embedding_check(X_data, Y_data, X_scale)
 
-        X_dataset, Y_dataset = embedding_encode(self, X_dataset, Y_dataset, X_encode, Y_encode)
+        X_data, Y_data = embedding_encode(self, X_data, Y_data, X_encode, Y_encode)
 
-        embedded_data = embedding_prepare(self, X_dataset, Y_dataset)
+        embedded_data = embedding_prepare(self, X_data, Y_data)
 
         self.dtrain, self.dtest, self.dval, self.batch_dtrain = embedded_data
 
