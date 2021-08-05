@@ -11,19 +11,14 @@ import nnlibs.initialize
 from nnlibs.commons.logs import pretty_json
 from nnlibs.commons.library import (
     configure_directory,
-    read_dataset,
     read_model,
 )
 from nnlibs.commons.maths import relu
 from nnlibs.meta.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.dense.models import Dense
-from prepare_dataset import (
-    labeled_dataset,
-    unlabeled_dataset,
-)
+from prepare_dataset import prepare_dataset
 from settings import (
-    dataset as se_dataset,
     config as se_config,
     hPars as se_hPars,
 )
@@ -34,23 +29,27 @@ random.seed(1)
 
 np.set_printoptions(precision=3,threshold=sys.maxsize)
 
-np.seterr(all='raise')
+np.seterr(all='warn')
 
 configure_directory(se_config=se_config)
 
-settings = [se_dataset, se_config, se_hPars]
+settings = [se_config, se_hPars]
 
 ############################ DATASET ##########################
-dataset = labeled_dataset(se_dataset)
+X_features, Y_label = prepare_dataset(N_SAMPLES=50)
 
-embedding = Embedding(dataset, se_dataset)
-
+embedding = Embedding(X_dataset=X_features,
+                      Y_dataset=Y_label,
+                      Y_encode=True,
+                      relative_size=(2, 0, 0))
 
 ############################ MODEL ############################
 # Single-layer perceptron
 dense = Dense()
+h_dense = Dense(48, relu)
+
 name = 'Embedding_Dense'
-model = EpyNN(layers=[embedding, dense], settings=settings, seed=1, name=name)
+model = EpyNN(layers=[embedding, h_dense, dense], settings=settings, seed=1, name=name)
 
 # Feed-forward Neural Network (Multi-layer perceptron)
 #hidden_dense = Dense(nodes=4, activate=relu)
@@ -71,11 +70,11 @@ model.evaluate(write=True)
 ######################### PREDICTION ###########################
 model = read_model()
 
-unlabeled_more = unlabeled_dataset(N_SAMPLES=10)
+X_features, _ = prepare_dataset(N_SAMPLES=10)
 
-dset = model.predict(unlabeled_more)
+dset = model.predict(X_features)
 
 dset.P = np.argmax(dset.A, axis=1)
 
-for i in range(len(unlabeled_more)):
-    print(unlabeled_more[i], dset.A[i], dset.P[i])
+for i in range(len(X_features)):
+    print(X_features[i], dset.A[i], dset.P[i])

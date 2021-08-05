@@ -19,8 +19,9 @@ def initialize_backward(layer, dA):
 
 
 def embedding_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagate error to previous layer.
     """
+    # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
     dA = layer.bc['dA'] = dX

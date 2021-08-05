@@ -81,9 +81,7 @@ class dataSet:
     """
 
     def __init__(self,
-                dataset=None,
-                X_dataset=None,
-                Y_dataset=None,
+                dataset,
                 label=True,
                 name='dummy'):
         """Initialize dataSet object.
@@ -115,38 +113,44 @@ class dataSet:
         :ivar P: Predictions for dataset
         :vartype P: :class:`numpy.ndarray`
         """
-        if type(dataset) == type(X_dataset) == type(Y_dataset) == None:
+        if len(dataset) == 0:
+            self.active = False
+
             return None
 
-        if dataset and X_dataset and Y_dataset:
-            raise ValueError('Normal use: dataSet(dataset=XY_data) \
-            OR dataSet(X_dataset=X_data, Y_dataset=Y_data)')
+        self.active = True
 
-        if dataset:
-            X_dataset = [x[0] for x in dataset]
-            Y_dataset = [x[1] for x in dataset]
-
-        self.n = name
-
-        self.X = np.array(X_dataset)
-        self.Y = np.array(Y_dataset)
-
-        if self.Y.ndim == 1:
-            self.Y = np.expand_dims(self.Y, axis=1)
+        self.name = name
 
         if label:
-            # Single-digit labels
-            self.y = np.argmax(self.Y,axis=1)
-            # Labels balance
-            self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
+            X_dataset = [x[0] for x in dataset]
+        else:
+            X_dataset = dataset
+
+        self.X = np.array(X_dataset)
 
         # Set numerical id for each sample
         self.ids = np.array([i for i in range(self.X.shape[0])])
-
         # Number of samples
         self.s = str(len(self.ids))
 
         self.A = np.array([])
         self.P = np.array([])
+
+        if not label:
+
+            return None
+
+        Y_dataset = [x[1] for x in dataset]
+
+        self.Y = np.array(Y_dataset)
+
+        if self.Y.ndim == 1:
+            self.Y = np.expand_dims(self.Y, 1)
+
+        # Single-digit labels
+        self.y = np.argmax(self.Y, axis=1)
+        # Labels balance
+        self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
 
         return None

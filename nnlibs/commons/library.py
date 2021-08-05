@@ -166,10 +166,10 @@ def read_dataset(dataset_path=None):
 def settings_verification():
     """Import default settings if not present in working directory.
     """
-    init_path = str(pathlib.Path(__file__).parent.absolute())
+    init_path = str(pathlib.Path(__file__).parent.parent.absolute())
 
     if not os.path.exists('settings.py'):
         se_default_path = os.path.join(init_path, 'settings.py')
-        shutil.copy(se_default_path,'settings.py')
+        shutil.copy(se_default_path, 'settings.py')
 
     return None

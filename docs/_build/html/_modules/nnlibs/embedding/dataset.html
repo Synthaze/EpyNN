@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -177,43 +179,97 @@
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">dataSet</span>
 
 
-<div class="viewcode-block" id="embedding_prepare"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.embedding_prepare">[docs]</a><span class="k">def</span> <span class="nf">embedding_prepare</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">,</span> <span class="n">encode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare dataset for Embedding layer object</span>
+<div class="viewcode-block" id="embedding_check"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.embedding_check">[docs]</a><span class="k">def</span> <span class="nf">embedding_check</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">,</span> <span class="n">X_scale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check validity of user input and apply pre-processing.</span>
+
+<span class="sd">    :param X_dataset: Dataset containing samples features</span>
+<span class="sd">    :type encode: list[list[list]]</span>
+
+<span class="sd">    :param Y_dataset: Dataset containing samples label</span>
+<span class="sd">    :type encode: list[list[list[int]]]</span>
+
+<span class="sd">    :param X_scale: Set to True to normalize sample features within [0, 1]</span>
+<span class="sd">    :type X_scale: bool</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">Y_dataset</span><span class="p">)</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">X_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span>
+    <span class="n">Y_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y_dataset</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">X_scale</span><span class="p">:</span>
+        <span class="n">X_dataset</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_dataset</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span></div>
+
+
+<div class="viewcode-block" id="embedding_encode"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.embedding_encode">[docs]</a><span class="k">def</span> <span class="nf">embedding_encode</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">,</span> <span class="n">X_encode</span><span class="p">,</span> <span class="n">Y_encode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;One-hot encoding for samples features and label.</span>
 
 <span class="sd">    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`</span>
-<span class="sd">    :type layer: class:`nnlibs.embedding.models.Embedding`</span>
+<span class="sd">    :type layer: :class:`nnlibs.embedding.models.Embedding`</span>
 
-<span class="sd">    :param dataset:</span>
-<span class="sd">    :type dataset: list</span>
+<span class="sd">    :param X_dataset: Dataset containing samples features</span>
+<span class="sd">    :type encode: list[list[list]]</span>
 
-<span class="sd">    :param se_dataset:</span>
-<span class="sd">    :type se_dataset: dict</span>
+<span class="sd">    :param Y_dataset: Dataset containing samples label</span>
+<span class="sd">    :type encode: list[list[list[int]]]</span>
 
-<span class="sd">    :param encode:</span>
+<span class="sd">    :param X_encode: Set to True to one-hot encode features</span>
+<span class="sd">    :type encode: bool</span>
+
+<span class="sd">    :param Y_encode: Set to True to one-hot encode labels</span>
 <span class="sd">    :type encode: bool</span>
 
 <span class="sd">    :return:</span>
-<span class="sd">    :rtype : tuple</span>
+<span class="sd">    :rtype :</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">encode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">index_vocabulary_auto</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dataset</span><span class="p">)</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">encoded_dataset</span> <span class="o">=</span> <span class="n">encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">w2i</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">])</span>
+    <span class="c1"># Features one-hot encoding</span>
+    <span class="k">if</span> <span class="n">X_encode</span><span class="p">:</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">w2i</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">i2w</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index_vocabulary_auto</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span>
+        <span class="n">X_dataset</span> <span class="o">=</span> <span class="n">X_encoded_dataset</span> <span class="o">=</span> <span class="n">encode_dataset</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">w2i</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">])</span>
+    <span class="c1"># Label one-hot encoding</span>
+    <span class="k">if</span> <span class="n">Y_encode</span><span class="p">:</span>
+        <span class="n">num_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">Y_dataset</span><span class="o">.</span><span class="n">flatten</span><span class="p">())))</span>
+        <span class="n">Y_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)[</span><span class="n">Y_dataset</span><span class="p">]</span>
 
-    <span class="n">dtrain</span><span class="p">,</span> <span class="n">dtest</span><span class="p">,</span> <span class="n">dval</span> <span class="o">=</span> <span class="n">split_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span><span class="n">se_dataset</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span></div>
 
-    <span class="n">batch_dtrain</span> <span class="o">=</span> <span class="n">mini_batches</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">)</span>
+
+<div class="viewcode-block" id="embedding_prepare"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.embedding_prepare">[docs]</a><span class="k">def</span> <span class="nf">embedding_prepare</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare dataset for Embedding layer object.</span>
+
+<span class="sd">    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`</span>
+<span class="sd">    :type layer: :class:`nnlibs.embedding.models.Embedding`</span>
+
+<span class="sd">    :param X_dataset: Dataset containing samples features</span>
+<span class="sd">    :type encode: list[list[list]]</span>
+
+<span class="sd">    :param Y_dataset: Dataset containing samples label</span>
+<span class="sd">    :type encode: list[list[list[int]]]</span>
+
+<span class="sd">    :return: All training, testing and validations sets along with batched training set</span>
+<span class="sd">    :rtype : tuple[:class:`nnlibs.commons.models.dataSet`]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">se_dataset</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">se_dataset</span>
+
+    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">Y_dataset</span><span class="p">)]</span>
+
+    <span class="n">dtrain</span><span class="p">,</span> <span class="n">dtest</span><span class="p">,</span> <span class="n">dval</span> <span class="o">=</span> <span class="n">split_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">)</span>
+
+    <span class="n">batch_dtrain</span> <span class="o">=</span> <span class="n">mini_batches</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;batch_size&#39;</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">suffix</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtrain&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">dtest</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dtest</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtest&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
-    <span class="n">dval</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dval</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dval&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
+    <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtrain&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
+    <span class="n">dtest</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dtest</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtest&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
+    <span class="n">dval</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dval</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dval&#39;</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">batch_dtrain</span><span class="p">):</span>
-        <span class="n">batch</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtrain_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">dataSet</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dtrain_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="n">suffix</span><span class="p">)</span>
         <span class="n">batch_dtrain</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span>
 
     <span class="n">embedded_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">dtest</span><span class="p">,</span> <span class="n">dval</span><span class="p">,</span> <span class="n">batch_dtrain</span><span class="p">)</span>
@@ -221,39 +277,42 @@
     <span class="k">return</span> <span class="n">embedded_data</span></div>
 
 
-<div class="viewcode-block" id="index_vocabulary_auto"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.index_vocabulary_auto">[docs]</a><span class="k">def</span> <span class="nf">index_vocabulary_auto</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;[Summary]</span>
+<div class="viewcode-block" id="index_vocabulary_auto"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.index_vocabulary_auto">[docs]</a><span class="k">def</span> <span class="nf">index_vocabulary_auto</span><span class="p">(</span><span class="n">X_or_Y_dataset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine vocabulary size and generate dictionnary for one-hot encoding or features or label</span>
 
-<span class="sd">    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`</span>
-<span class="sd">    :type layer: class:`nnlibs.embedding.models.Embedding`</span>
+<span class="sd">    :param X_or_Y_dataset: Dataset containing samples features or samples label</span>
+<span class="sd">    :type encode: list[list[list]]</span>
 
-<span class="sd">    :raises [ErrorType]: [ErrorDescription]</span>
+<span class="sd">    :return: One-hot encoding converter</span>
+<span class="sd">    :rtype: dict</span>
 
-<span class="sd">    :return: [ReturnDescription]</span>
-<span class="sd">    :rtype: [ReturnType]</span>
+<span class="sd">    :return: One-hot decoding converter</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    :return: Vocabulary size</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_or_Y_dataset</span><span class="o">.</span><span class="n">flatten</span><span class="p">())))</span>
 
-    <span class="n">words</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">w</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataset</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]])))</span>
+    <span class="n">word_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">w</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
+    <span class="n">idx_to_word</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span><span class="n">i</span> <span class="ow">in</span> <span class="n">word_to_idx</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-    <span class="n">word_to_idx</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">w2i</span> <span class="o">=</span> <span class="p">{</span> <span class="n">k</span><span class="p">:</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="p">}</span>
-    <span class="n">idx_to_word</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">i2w</span> <span class="o">=</span> <span class="p">{</span> <span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">w2i</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="p">}</span>
+    <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word_to_idx</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="n">vocab_size</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">w2i</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-    <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="k">return</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">idx_to_word</span><span class="p">,</span> <span class="n">vocab_size</span></div>
 
 
 <div class="viewcode-block" id="split_dataset"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.split_dataset">[docs]</a><span class="k">def</span> <span class="nf">split_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;[Summary]</span>
+    <span class="sd">&quot;&quot;&quot;Split dataset in training, testing and validation sets.</span>
 
-<span class="sd">    :param dataset: [ParamDescription], defaults to [DefaultParamVal]</span>
-<span class="sd">    :type dataset: list</span>
+<span class="sd">    :param dataset: Dataset containing samples features and label</span>
+<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
 
-<span class="sd">    :param se_dataset: [ParamDescription], defaults to [DefaultParamVal]</span>
+<span class="sd">    :param se_dataset: Settings for sets preparation</span>
 <span class="sd">    :type se_dataset: dict</span>
 
-<span class="sd">    :return: [ReturnDescription]</span>
-<span class="sd">    :rtype: [ReturnType]</span>
+<span class="sd">    :return:</span>
+<span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">dtrain_relative</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;dtrain_relative&#39;</span><span class="p">]</span>
@@ -265,7 +324,7 @@
     <span class="n">dtrain_length</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">dtrain_relative</span> <span class="o">/</span> <span class="n">sum_relative</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
     <span class="n">dtest_length</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">dtest_relative</span> <span class="o">/</span> <span class="n">sum_relative</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
     <span class="n">dval_length</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">dval_relative</span> <span class="o">/</span> <span class="n">sum_relative</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
-
+    <span class="nb">print</span><span class="p">(</span><span class="n">dtrain_length</span><span class="p">)</span>
     <span class="n">dtrain</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:</span><span class="n">dtrain_length</span><span class="p">]</span>
     <span class="n">dtest</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dtrain_length</span><span class="p">:</span><span class="n">dtrain_length</span> <span class="o">+</span> <span class="n">dtest_length</span><span class="p">]</span>
     <span class="n">dval</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dtrain_length</span> <span class="o">+</span> <span class="n">dtest_length</span><span class="p">:]</span>
@@ -273,29 +332,31 @@
     <span class="k">return</span> <span class="n">dtrain</span><span class="p">,</span> <span class="n">dtest</span><span class="p">,</span> <span class="n">dval</span></div>
 
 
-<div class="viewcode-block" id="mini_batches"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.mini_batches">[docs]</a><span class="k">def</span> <span class="nf">mini_batches</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;[Summary]</span>
+<div class="viewcode-block" id="mini_batches"><a class="viewcode-back" href="../../../Details.html#nnlibs.embedding.dataset.mini_batches">[docs]</a><span class="k">def</span> <span class="nf">mini_batches</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Divide dataset in batches.</span>
 
-<span class="sd">    :param dataset: [ParamDescription], defaults to [DefaultParamVal]</span>
-<span class="sd">    :type dataset: list</span>
+<span class="sd">    :param dataset: Dataset containing samples features and label</span>
+<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
 
-<span class="sd">    :param se_dataset: [ParamDescription], defaults to [DefaultParamVal]</span>
-<span class="sd">    :type se_dataset: dict</span>
+<span class="sd">    :param batch_size: Number of samples per batch</span>
+<span class="sd">    :type se_dataset: int</span>
 
-<span class="sd">    :return: [ReturnDescription]</span>
-<span class="sd">    :rtype: list</span>
+<span class="sd">    :return: Batches made from dataset with respect to batch_size</span>
+<span class="sd">    :rtype: list[list[list[list,list[int]]]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">batch_size</span><span class="p">:</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-    <span class="n">n_batch</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;batch_number&#39;</span><span class="p">]</span>
+    <span class="n">n_batch</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">n_batch</span><span class="p">:</span>
+        <span class="n">n_batch</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="n">batch_dataset</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batch</span><span class="p">):</span>
 
-        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">//</span> <span class="n">n_batch</span>
-        <span class="n">stop</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">n_batch</span>
-
-        <span class="n">batch</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">]</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">batch_size</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">batch_size</span><span class="p">]</span>
 
         <span class="n">batch_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 

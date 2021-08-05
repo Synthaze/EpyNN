@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -188,13 +190,11 @@
 <span class="sd">    :return: Previous cell state initialized with zeros.</span>
 <span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
-    <span class="n">X</span><span class="p">[:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
 
     <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">])</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
-
-    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">hp</span></div>
 
@@ -206,40 +206,21 @@
     <span class="n">X</span><span class="p">,</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 
     <span class="c1"># Iterate through sequence to next cell</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]):</span>
 
         <span class="c1"># (2s) Slice sequence (l, v, m) with respect to step</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][:,</span> <span class="n">s</span><span class="p">]</span>
 
         <span class="c1"># (3s) Compute cell state</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wx&#39;</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span>
-        <span class="n">h</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;Wh&#39;</span><span class="p">],</span> <span class="n">hp</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;bh&#39;</span><span class="p">]</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate_hidden</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">])</span>
+        <span class="n">h</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">hp</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">])</span>
+        <span class="n">h</span> <span class="o">+=</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
 
-        <span class="c1"># (4s) Compute cell output to next layer</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">h</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">hp</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">][:,</span> <span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
-    <span class="c1"># Return layer.fc[&#39;A&#39;] if many-to-many mode</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span></div>
-
-
-<div class="viewcode-block" id="terminate_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.forward.terminate_forward">[docs]</a><span class="k">def</span> <span class="nf">terminate_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Check if many-to-many or many-to-one (binary) mode.</span>
-
-<span class="sd">    :param layer: An instance of RNN layer.</span>
-<span class="sd">    :type layer: :class:`nnlibs.rnn.models.RNN`</span>
-
-<span class="sd">    :return: Output of forward propagation for current layer</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">binary</span> <span class="k">else</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
-
-    <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">A</span></div>
 </pre></div>
 
            </div>

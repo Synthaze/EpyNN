@@ -93,7 +93,9 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Fully Connected (Dense)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#layer-architecture">Layer architecture</a></li>
@@ -207,8 +209,8 @@
 <h2>Layer architecture<a class="headerlink" href="#layer-architecture" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/Dense-01.svg" src="_images/Dense-01.svg" /><dl class="py class">
 <dt id="nnlibs.dense.models.Dense">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.dense.models.</code><code class="sig-name descname">Dense</code><span class="sig-paren">(</span><em class="sig-param">nodes=2</em>, <em class="sig-param">activate=&lt;function softmax&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="epynn.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.dense.models.</code><code class="sig-name descname">Dense</code><span class="sig-paren">(</span><em class="sig-param">nodes=2</em>, <em class="sig-param">activate=&lt;function sigmoid&gt;</em>, <em class="sig-param">initialization=&lt;function xavier&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/dense/models.html#Dense"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.dense.models.Dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Details.html#nnlibs.commons.models.Layer" title="nnlibs.commons.models.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code></a></p>
 <p>Definition of a dense layer prototype.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -230,11 +232,15 @@
 
     <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">#    layer.d[&#39;p&#39;] = layer.fs[&#39;X&#39;][0]</span>
+<span class="c1">#    layer.d[&#39;m&#39;] = layer.fs[&#39;X&#39;][1]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">nm</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">])</span>
-    <span class="n">n1</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">#    nm = layer.fs[&#39;W&#39;] = (layer.d[&#39;n&#39;], layer.d[&#39;p&#39;])</span>
+    <span class="n">nm</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">],</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">])</span>
+
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
@@ -251,7 +257,7 @@
     <span class="c1"># (1) Initialize cache</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
 
-    <span class="n">Z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
 
     <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -271,7 +277,7 @@
 
     <span class="n">dZ</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dZ&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fc</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">],</span> <span class="n">deriv</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dZ</span><span class="p">)</span>
+    <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dZ</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span>
 </pre></div>
@@ -291,9 +297,9 @@
     <span class="n">dZ</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dZ&#39;</span><span class="p">]</span>
 
     <span class="c1"># dW - Gradient of the cost with respect to weight (W)</span>
-    <span class="n">dW</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dW&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dZ</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">dW</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;dW&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dZ</span><span class="p">)</span>
     <span class="c1"># db - Gradient of the cost with respect to biais (b)</span>
-    <span class="n">db</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dZ</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;db&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dZ</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </pre></div>

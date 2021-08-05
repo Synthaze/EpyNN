@@ -6,13 +6,13 @@ import numpy as np
 def one_hot_encode(i, vocab_size):
     """Generate one-hot encoding array.
 
-    :param i: One-hot index
+    :param i: One-hot index for current word
     :type i: int
 
-    :param vocab_size: Size of array
+    :param vocab_size: Number of keys in the word to index encoder
     :type vocab_size: int
 
-    :return: One-hot encoded array
+    :return: One-hot encoding array for current word
     :rtype: :class:`numpy.ndarray`
     """
     one_hot = np.zeros(vocab_size)
@@ -61,11 +61,11 @@ def one_hot_decode_sequence(sequence, idx_to_word):
     return decoding
 
 
-def encode_dataset(dataset, word_to_idx, vocab_size):
+def encode_dataset(X_dataset, word_to_idx, vocab_size):
     """One-hot encode features from samples in dataset.
 
     :param dataset: Contains samples
-    :type dataset: list[list[list,list[int]]]
+    :type dataset: list[list[list,list]]
 
     :param word_to_idx: Converter with word as key and index as value
     :type word_to_idx: dict
@@ -76,18 +76,16 @@ def encode_dataset(dataset, word_to_idx, vocab_size):
     :return: One-hot encoded dataset
     :rtype:
     """
-    encoded_dataset = []
+    X_dataset = []
 
-    for i in range(len(dataset)):
+    for i in range(X_dataset.shape[0]):
 
-        features = dataset[i][0]
+        sequence = X_dataset[i]
 
-        label = dataset[i][1].copy()
+        encoded_sequence = one_hot_encode_sequence(sequence, word_to_idx, vocab_size)
 
-        encoded_features = one_hot_encode_sequence(features, word_to_idx, vocab_size)
+        X_dataset.append(encoded_sequence)
 
-        sample = [encoded_features, label]
+    X_dataset = np.array(X_dataset)
 
-        encoded_dataset.append(sample)
-
-    return encoded_dataset
+    return X_dataset

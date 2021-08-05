@@ -17,17 +17,13 @@ def pyplot_metrics(model):
     :type model: :class:`nnlibs.meta.models.EpyNN`
     """
 
-    set_names = [
-        'Training',
-        'Testing',
-        'Validation',
-    ]
-
     plt.figure()
 
     for s in model.se_config['metrics_plot']:
 
-        for k, dname in enumerate(set_names):
+        for k, dset in enumerate(model.embedding.dsets):
+
+            dname = dset.name
 
             x = [x for x in range(len(model.metrics[s][k]))]
 

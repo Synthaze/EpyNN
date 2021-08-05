@@ -69,7 +69,7 @@ def headers_logs(model, colors):
     """
     metrics = model.metrics
 
-    single = model.embedding.single
+    len_dsets = len(model.embedding.dsets)
 
     headers = [
         colored('epoch', 'white', attrs=['bold']) + '\n',
@@ -89,7 +89,7 @@ def headers_logs(model, colors):
 
         i = (i+1) % len(colors)
 
-        if not single:
+        if len_dsets >= 2:
             headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
 
         headers.append(
@@ -98,7 +98,7 @@ def headers_logs(model, colors):
             + colored('(1)', colors[i], attrs=['bold'])
         )
 
-        if not single:
+        if len_dsets == 3:
             headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
 
     headers.append(colored('Experiment', 'white', attrs=[]) + '\n')
@@ -177,7 +177,7 @@ def initialize_model_logs(model):
 
     #
     dsets = model.embedding.dsets
-    se_dataset = model.se_dataset
+    se_dataset = model.embedding.se_dataset
     se_config = model.se_config
 
     model.init_logs.append(dsets_samples_logs(dsets, se_dataset, se_config))
@@ -383,11 +383,9 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
     :rtype:
     """
     headers = [
-        'N_SAMPLES',
         'dtrain\n(0)',
         'dtest\n(1)',
         'dval\n(2)',
-        'batch\nnumber',
         'batch\nsize',
         'dataset\ntarget',
         'metrics\ntarget',
@@ -399,14 +397,7 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
 
     batch_size = se_dataset['batch_size']
 
-    batch_number = se_dataset['N_SAMPLES'] // se_dataset['batch_size']
-
-    if not batch_number:
-        batch_number = 1
-
     log = []
-
-    log.append(se_dataset['N_SAMPLES'])
 
     for dset in dsets:
         log.append(dset.s)
@@ -414,7 +405,6 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
     for i in range(3 - len(dsets)):
         log.append('None')
 
-    log.append(batch_number)
     log.append(batch_size)
     log.append(se_config['dataset_target'])
     log.append(se_config['metrics_target'])

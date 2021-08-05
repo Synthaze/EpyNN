@@ -35,11 +35,14 @@ Although EpyNN can be used for production, it is meant to be a library of **homo
 Table of Contents
 --------------------
 
+
 .. toctree::
    :maxdepth: 3
 
    quickstart
-   epynn
+   Introduction
+   EpyNN_Model
+   Layer_Model
    Embedding
    Dense
    RNN

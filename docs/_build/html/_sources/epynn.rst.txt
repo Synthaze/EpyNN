@@ -51,7 +51,6 @@ Model settings
 
 .. autoclass:: nnlibs.settings.config
 
-
 .. literalinclude:: ../nnlibs/settings.py
     :language: python
     :start-after: GENERAL CONFIGURATION SETTINGS

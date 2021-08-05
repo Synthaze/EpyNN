@@ -3,6 +3,9 @@
 import traceback
 import time
 
+# Related third party imports
+import numpy as np
+
 # Local application/library specific imports
 from nnlibs.commons.models import dataSet
 from nnlibs.commons.io import encode_dataset
@@ -76,6 +79,9 @@ class EpyNN:
         :ivar epochs: Number of training epochs
         :vartype epochs: int
 
+        :ivar e: Current training epochs
+        :vartype epochs: int
+
         :ivar seed: For model seeding
         :vartype seed: int
 
@@ -88,17 +94,22 @@ class EpyNN:
         :ivar network: Store data related to network architecture
         :vartype network: dict
 
+        :ivar training_loss: Cost function used to backpropagate errors
+        :vartype training_loss: dict
+
         :ivar metrics: Store metrics related to model training
         :vartype metrics: dict
 
         :ivar saved: Flag when model is saved on disk
         :vartype saved: bool
         """
+        # Instance variables from parameters
         self.layers = layers
-        self.se_dataset, self.se_config, self.se_hPars = settings
+        self.se_config, self.se_hPars = settings
         self.seed = seed
         self.name = name
 
+        # Other instance variables
         self.ts = int(time.time())
         self.uname = str(self.ts) + '_' + self.name
 
@@ -113,7 +124,7 @@ class EpyNN:
 
         self.training_loss = loss_functions(se_config['training_loss'])
 
-        self.metrics = {m:[[] for _ in range(3)] for m in self.se_config['metrics_list']}
+        self.metrics = {m:[[] for _ in range(3)] for m in se_config['metrics_list']}
 
         self.saved = False
 
@@ -212,7 +223,7 @@ class EpyNN:
 
         return None
 
-    def predict(self, dataset, encode=False):
+    def predict(self, X_dataset, X_encode=False):
         """Perform prediction of label from unlabeled samples in dataset.
 
         :param dataset: Unlabeled samples in dataset
@@ -224,12 +235,13 @@ class EpyNN:
         :return: Data embedding and output of forward propagation
         :rtype: :class:`nnlibs.commons.models.dataSet`
         """
-        if encode:
+
+        if X_encode:
             word_to_idx = self.embedding.w2i
             vocab_size = self.embedding.d['v']
-            dataset = encode_dataset(dataset, word_to_idx, vocab_size)
+            X_dataset = encode_dataset(X_dataset, word_to_idx, vocab_size)
 
-        dset = dataSet(dataset, label=False)
+        dset = dataSet(X_dataset, label=False)
 
         X = dset.X
 

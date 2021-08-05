@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -171,7 +173,12 @@
 <span></span><span class="c1"># EpyNN/nnlibs/dense/models.py</span>
 <span class="c1"># Local application/library specific imports</span>
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">softmax</span><span class="p">,</span> <span class="n">sigmoid</span><span class="p">,</span> <span class="n">xavier</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">softmax</span><span class="p">,</span>
+    <span class="n">sigmoid</span><span class="p">,</span>
+    <span class="n">xavier</span><span class="p">,</span>
+    <span class="n">activation_tune</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.forward</span> <span class="kn">import</span> <span class="n">dense_forward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.backward</span> <span class="kn">import</span> <span class="n">dense_backward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.parameters</span> <span class="kn">import</span> <span class="p">(</span>
@@ -198,7 +205,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">nodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                <span class="n">activate</span><span class="o">=</span><span class="n">softmax</span><span class="p">,</span>
+                <span class="n">activate</span><span class="o">=</span><span class="n">sigmoid</span><span class="p">,</span>
                 <span class="n">initialization</span><span class="o">=</span><span class="n">xavier</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -230,6 +237,7 @@
 <div class="viewcode-block" id="Dense.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.dense.models.Dense.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.dense.forward.dense_forward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activation_tune</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">dense_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
 
@@ -238,6 +246,7 @@
 <div class="viewcode-block" id="Dense.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.dense.models.Dense.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.dense.backward.dense_backward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activation_tune</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">)</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">dense_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">)</span>
 

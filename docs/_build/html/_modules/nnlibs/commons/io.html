@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -176,13 +178,13 @@
 <div class="viewcode-block" id="one_hot_encode"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.one_hot_encode">[docs]</a><span class="k">def</span> <span class="nf">one_hot_encode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate one-hot encoding array.</span>
 
-<span class="sd">    :param i: One-hot index</span>
+<span class="sd">    :param i: One-hot index for current word</span>
 <span class="sd">    :type i: int</span>
 
-<span class="sd">    :param vocab_size: Size of array</span>
+<span class="sd">    :param vocab_size: Number of keys in the word to index encoder</span>
 <span class="sd">    :type vocab_size: int</span>
 
-<span class="sd">    :return: One-hot encoded array</span>
+<span class="sd">    :return: One-hot encoding array for current word</span>
 <span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">one_hot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">)</span>
@@ -209,7 +211,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">one_hot_encode</span><span class="p">(</span><span class="n">word_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">vocab_size</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">])</span>
 
-    <span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
 
     <span class="k">return</span> <span class="n">encoding</span></div>
 
@@ -231,11 +233,11 @@
     <span class="k">return</span> <span class="n">decoding</span></div>
 
 
-<div class="viewcode-block" id="encode_dataset"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.encode_dataset">[docs]</a><span class="k">def</span> <span class="nf">encode_dataset</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
+<div class="viewcode-block" id="encode_dataset"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.io.encode_dataset">[docs]</a><span class="k">def</span> <span class="nf">encode_dataset</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;One-hot encode features from samples in dataset.</span>
 
 <span class="sd">    :param dataset: Contains samples</span>
-<span class="sd">    :type dataset: list[list[list,list[int]]]</span>
+<span class="sd">    :type dataset: list[list[list,list]]</span>
 
 <span class="sd">    :param word_to_idx: Converter with word as key and index as value</span>
 <span class="sd">    :type word_to_idx: dict</span>
@@ -246,21 +248,19 @@
 <span class="sd">    :return: One-hot encoded dataset</span>
 <span class="sd">    :rtype:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">encoded_dataset</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">X_dataset</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
 
-        <span class="n">features</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="n">X_dataset</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">encoded_sequence</span> <span class="o">=</span> <span class="n">one_hot_encode_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
 
-        <span class="n">encoded_features</span> <span class="o">=</span> <span class="n">one_hot_encode_sequence</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">word_to_idx</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+        <span class="n">X_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encoded_sequence</span><span class="p">)</span>
 
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">encoded_features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
+    <span class="n">X_dataset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_dataset</span><span class="p">)</span>
 
-        <span class="n">encoded_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">encoded_dataset</span></div>
+    <span class="k">return</span> <span class="n">X_dataset</span></div>
 </pre></div>
 
            </div>

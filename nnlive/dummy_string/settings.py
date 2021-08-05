@@ -11,7 +11,7 @@ dataset = {
     'dtrain_relative': 2,
     'dtest_relative': 1,
     'dval_relative': 1,
-    'batch_number': 5,
+    'batch_size': 32,
 }
 """Dictionary settings for dataset preparation.
 """
@@ -53,7 +53,7 @@ For binary classification, extra-metrics can be picked in:
 # HYPERPARAMETERS SETTINGS
 hPars = {
     # Schedule learning rate
-    'learning_rate': 0.1,
+    'learning_rate': 0.01,
     'schedule_mode': 'exp_decay',
     'decay_k': 0.001,
     'cycling_n': 1,

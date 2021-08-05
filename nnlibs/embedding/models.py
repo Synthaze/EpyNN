@@ -4,7 +4,7 @@ import numpy as np
 
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.embedding.dataset import embedding_prepare
+from nnlibs.embedding.dataset import embedding_prepare, embedding_check, embedding_encode
 from nnlibs.embedding.forward import embedding_forward
 from nnlibs.embedding.backward import embedding_backward
 from nnlibs.embedding.parameters import (
@@ -19,51 +19,65 @@ class Embedding(Layer):
     """
     Definition of an embedding layer prototype.
 
-    :param dataset: Samples as list of features and label.
-    :type dataset: list
+    :param dataset: Dataset containing samples features and label
+    :type dataset: list[list[list,list[int]]]
 
-    :param se_dataset: Settings to embed data in layer.
+    :param X_dataset: Dataset containing samples features
+    :type encode: list[list[list]]
+
+    :param Y_dataset: Dataset containing samples label
+    :type encode: list[list[list[int]]]
+
+    :param se_dataset: Settings for sets preparation
     :type se_dataset: dict
 
-    :param encode: One-hot encoding of features.
+    :param X_encode: Set to True to one-hot encode features
     :type encode: bool
 
-    :param single:
+    :param Y_encode: Set to True to one-hot encode labels
+    :type encode: bool
+
+    :param single: Set to True to run only with training set
     :type single: bool
+
+    :param X_scale: Set to True to normalize sample features within [0, 1]
+    :type X_scale: bool
     """
 
     def __init__(self,
-                dataset=None,
-                se_dataset=None,
+                X_dataset=None,
+                Y_dataset=None,
+                relative_size=(2, 1, 1),
                 batch_size=None,
-                encode=False,
-                single=False,
-                scale=False):
+                X_encode=False,
+                Y_encode=False,
+                X_scale=False,
+                name='dummy'):
 
         super().__init__()
 
-        if not dataset:
-            return None
+        self.se_dataset = {
+            'dtrain_relative': relative_size[0],
+            'dtest_relative': relative_size[1],
+            'dval_relative': relative_size[2],
+            'batch_size': batch_size,
+            'X_scale': X_scale,
+            'X_encode': X_encode,
+            'Y_encode': Y_encode,
+            'dataset_name': name,
+        }
 
-        if batch_size:
-            se_dataset['batch_size'] = batch_size
+        X_dataset, Y_dataset = embedding_check(X_dataset, Y_dataset, X_scale)
 
-        if scale:
-            x_data = np.array([x[0] for x in dataset])
-            x_data = (x_data-np.min(x_data)) / (np.max(x_data)-np.min(x_data))
-            y_data = [x[1] for x in dataset]
-            dataset = [[x, y] for x,y in zip(x_data, y_data)]
+        X_dataset, Y_dataset = embedding_encode(self, X_dataset, Y_dataset, X_encode, Y_encode)
 
-        embedded_data = embedding_prepare(self, dataset, se_dataset, encode, single)
+        embedded_data = embedding_prepare(self, X_dataset, Y_dataset)
 
         self.dtrain, self.dtest, self.dval, self.batch_dtrain = embedded_data
 
         self.dsets = [self.dtrain, self.dtest, self.dval]
 
-        if single:
-            self.dsets = [self.dtrain]
-
-        self.single = single
+        self.dsets = [dset for dset in self.dsets if dset.active]
 
         return None
 

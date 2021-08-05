@@ -3,9 +3,6 @@
 import random
 import os
 
-# Local application/library specific imports
-from nnlibs.commons.library import write_pickle
-
 
 def features_boolean(N_FEATURES=11):
     """Generate dummy string features.
@@ -28,12 +25,12 @@ def label_features(features):
     :param features: random boolean features of length N_FEATURES
     :type features: list[bool]
 
-    :return: One-hot encoded label
-    :rtype: list[int]
+    :return: Single-digit label with respect to features
+    :rtype: int
     """
-    # One-hot encoded positive and negative labels
-    p_label = [1, 0]
-    n_label = [0, 1]
+    # Single-digit positive and negative labels
+    p_label = 1
+    n_label = 0
 
     # Test if features contains more True (+)
     if features.count(True) > features.count(False):
@@ -46,28 +43,18 @@ def label_features(features):
     return label
 
 
-def labeled_dataset(se_dataset):
+def prepare_dataset(N_SAMPLES=100):
     """Prepare a dummy dataset of labeled samples.
 
-    One sample is a list such as [features, label].
+    :param N_SAMPLES: Number of samples to generate
+    :type N_SAMPLES: int
 
-    For one sample, features is a list and label is a list.
-
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[bool],list[int]]]
+    :return:
+    :rtype:
     """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
-
-    # See ./settings.py
-    dataset_name = se_dataset['dataset_name']
-    dataset_save = se_dataset['dataset_save']
-
-    # Initialize dataset
-    dataset = []
+    # Initialize X and Y datasets
+    X_features = []
+    Y_label = []
 
    # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
@@ -78,49 +65,19 @@ def labeled_dataset(se_dataset):
         # Retrieve label associated with features
         label = label_features(features)
 
-        # Define labeled sample
-        sample = [features, label]
+        # Append sample features to X_features
+        X_features.append(features)
 
-        # Append sample to dataset
-        dataset.append(sample)
+        # Append sample label to Y_label
+        Y_label.append(label)
+
+    # Prepare X-Y pairwise dataset
+    dataset = list(zip(X_features, Y_label))
 
     # Shuffle dataset
     random.shuffle(dataset)
 
-    # Write dataset on disk
-    if dataset_save:
-        dataset_path = os.path.join(os.getcwd(), 'dataset', dataset_name+'.pickle')
-        write_pickle(dataset_path,dataset)
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
 
-    return dataset
-
-
-def unlabeled_dataset(N_SAMPLES=1):
-    """Prepare a dummy dataset of unlabeled samples.
-
-    One sample is a list such as [features, []].
-
-    For one sample, features is a list and label is an empty list.
-
-    :param N_SAMPLES: Length for unlabeled dataset
-    :type N_SAMPLES: int
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[bool],list]]
-    """
-    # Initialize unlabeled_dataset
-    unlabeled_dataset = []
-
-    # Iterate over N_SAMPLES
-    for i in range(N_SAMPLES):
-
-        # Generate dummy boolean features
-        features = features_boolean()
-
-        # Define unlabeled sample
-        sample = [features, []]
-
-        # Append to unlabeled_dataset
-        unlabeled_dataset.append(sample)
-
-    return unlabeled_dataset
+    return X_features, Y_label

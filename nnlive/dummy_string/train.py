@@ -48,21 +48,21 @@ settings = [se_dataset, se_config, se_hPars]
 ############################ DATASET ##########################
 dataset = labeled_dataset(se_dataset)
 
-embedding = Embedding(dataset, se_dataset, encode=True)
+embedding = Embedding(dataset, relative_size=(2, 1, 0), X_encode=True, Y_encode=True)
 
 
 ############################ MODEL ############################
 # Many-to-one RNN network
-bin_rnn = RNN(12, binary=True)
+#bin_rnn = RNN(12, binary=True)
 name = 'Embedding_RNN-12-Binary'
-model = EpyNN(layers=[embedding, bin_rnn], settings=settings, seed=1, name=name)
+#model = EpyNN(layers=[embedding, bin_rnn], settings=settings, seed=1, name=name)
 
 # Many-to-many RNN network
-#rnn = RNN(12)
-#flatten = Flatten()
-#dense = Dense()
+rnn = RNN(12)
+flatten = Flatten()
+dense = Dense()
 #name = 'Embedding_RNN-12_Flatten_Dense'
-#model = EpyNN(layers=[embedding, rnn, flatten, dense], settings=settings, seed=1, name=name)
+model = EpyNN(layers=[embedding, rnn, flatten, dense], settings=settings, seed=1, name=name)
 
 
 ########################### TRAINING ###########################
@@ -76,7 +76,7 @@ model = read_model()
 
 unlabeled_more = unlabeled_dataset(N_SAMPLES=10)
 
-dset = model.predict(unlabeled_more, encode=True)
+dset = model.predict(unlabeled_more, X_encode=True)
 
 dset.P = np.argmax(dset.A, axis=1)
 

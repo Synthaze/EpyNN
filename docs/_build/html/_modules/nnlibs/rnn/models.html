@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -171,7 +173,12 @@
 <span></span><span class="c1"># EpyNN/nnlibs/rnn/models.py</span>
 <span class="c1"># Local application/library specific imports</span>
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">tanh</span><span class="p">,</span> <span class="n">softmax</span><span class="p">,</span> <span class="n">xavier</span><span class="p">,</span> <span class="n">clip_gradient</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">tanh</span><span class="p">,</span>
+    <span class="n">xavier</span><span class="p">,</span>
+    <span class="n">clip_gradient</span><span class="p">,</span>
+    <span class="n">activation_tune</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">nnlibs.rnn.forward</span> <span class="kn">import</span> <span class="n">rnn_forward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.rnn.backward</span> <span class="kn">import</span> <span class="n">rnn_backward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.rnn.parameters</span> <span class="kn">import</span> <span class="p">(</span>
@@ -182,7 +189,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="RNN"><a class="viewcode-back" href="../../../RNN.html#nnlibs.rnn.models.RNN">[docs]</a><span class="k">class</span> <span class="nc">RNN</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN">[docs]</a><span class="k">class</span> <span class="nc">RNN</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a RNN layer prototype.</span>
 
@@ -191,9 +198,6 @@
 
 <span class="sd">    :param activate: Activation function for output of RNN cells.</span>
 <span class="sd">    :type activate: function</span>
-
-<span class="sd">    :param activate_hidden: Activation function for hidden state of RNN cells.</span>
-<span class="sd">    :type activate_hidden: function</span>
 
 <span class="sd">    :param initialization: Weight initialization function for RNN layer.</span>
 <span class="sd">    :type initialization: function</span>
@@ -204,33 +208,31 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                 <span class="n">hidden_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-                <span class="n">activate</span><span class="o">=</span><span class="n">softmax</span><span class="p">,</span>
-                <span class="n">activate_hidden</span><span class="o">=</span><span class="n">tanh</span><span class="p">,</span>
+                <span class="n">activate</span><span class="o">=</span><span class="n">tanh</span><span class="p">,</span>
                 <span class="n">initialization</span><span class="o">=</span><span class="n">xavier</span><span class="p">,</span>
-                <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="n">clip_gradients</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="n">initialization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hidden_size</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">activate</span> <span class="o">=</span> <span class="n">activate</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;activate&#39;</span><span class="p">:</span> <span class="n">activate</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="s1">&#39;activate_hidden&#39;</span><span class="p">:</span> <span class="n">activate_hidden</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
         <span class="p">}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">activate</span> <span class="o">=</span> <span class="n">activate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">activate_hidden</span> <span class="o">=</span> <span class="n">activate_hidden</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialization</span> <span class="o">=</span> <span class="n">initialization</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">binary</span> <span class="o">=</span> <span class="n">binary</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hidden_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clip_gradients</span> <span class="o">=</span> <span class="n">clip_gradients</span>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="RNN.compute_shapes"><a class="viewcode-back" href="../../../RNN.html#nnlibs.rnn.models.RNN.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.rnn.parameters.rnn_compute_shapes()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rnn_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="RNN.initialize_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -240,28 +242,32 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="RNN.forward"><a class="viewcode-back" href="../../../RNN.html#nnlibs.rnn.models.RNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.rnn.forward.rnn_forward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">activation_tune</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">rnn_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="RNN.backward"><a class="viewcode-back" href="../../../RNN.html#nnlibs.rnn.models.RNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.rnn.backward.rnn_backward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activation_tune</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">se_hPars</span><span class="p">)</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">rnn_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_shapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-<div class="viewcode-block" id="RNN.compute_gradients"><a class="viewcode-back" href="../../../RNN.html#nnlibs.rnn.models.RNN.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RNN.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.rnn.models.RNN.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.rnn.parameters.rnn_compute_gradients()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rnn_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">clip_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_gradients</span><span class="p">:</span>
+            <span class="n">clip_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 

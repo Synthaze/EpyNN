@@ -1,22 +1,6 @@
 # EpyNN/nnlibs/settings.py
 
 
-# DATASET SETTINGS
-dataset = {
-    # Settings for preparation
-    'N_SAMPLES': 1000,
-    'dataset_name': 'dummy',
-    'dataset_save': False,
-    # Settings for embedding
-    'dtrain_relative': 2,
-    'dtest_relative': 1,
-    'dval_relative': 1,
-    'batch_size': 32,
-}
-"""Dictionary settings for dataset preparation.
-"""
-
-
 # GENERAL CONFIGURATION SETTINGS
 config = {
     # Globals for model training
@@ -28,10 +12,8 @@ config = {
     'logs_frequency': 1,
     'logs_frequency_display': 25,
     'metrics_list': ['accuracy', 'BCE', 'MSE'],
-    # Plot behavior
     'metrics_plot': ['accuracy', 'BCE'],
     # Make and remove on disk
-    'model_save': False,
     'directory_clear': False,
 }
 """General configuration dictionary settings.

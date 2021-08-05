@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -181,7 +183,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Flatten"><a class="viewcode-back" href="../../../Flatten.html#nnlibs.flatten.models.Flatten">[docs]</a><span class="k">class</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="Flatten"><a class="viewcode-back" href="../../../Details.html#nnlibs.flatten.models.Flatten">[docs]</a><span class="k">class</span> <span class="nc">Flatten</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a flatten layer prototype.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -191,7 +193,7 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="Flatten.compute_shapes"><a class="viewcode-back" href="../../../Flatten.html#nnlibs.flatten.models.Flatten.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Flatten.compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.flatten.models.Flatten.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_shapes()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">flatten_compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
@@ -205,7 +207,7 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Flatten.forward"><a class="viewcode-back" href="../../../Flatten.html#nnlibs.flatten.models.Flatten.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="Flatten.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.flatten.models.Flatten.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.flatten.forward.flatten_forward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compute_shapes</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
@@ -214,7 +216,7 @@
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="Flatten.backward"><a class="viewcode-back" href="../../../Flatten.html#nnlibs.flatten.models.Flatten.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+<div class="viewcode-block" id="Flatten.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.flatten.models.Flatten.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.flatten.backward.flatten_backward()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dA</span> <span class="o">=</span> <span class="n">flatten_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
@@ -222,7 +224,7 @@
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-<div class="viewcode-block" id="Flatten.compute_gradients"><a class="viewcode-back" href="../../../Flatten.html#nnlibs.flatten.models.Flatten.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Flatten.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.flatten.models.Flatten.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_gradients()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">flatten_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>

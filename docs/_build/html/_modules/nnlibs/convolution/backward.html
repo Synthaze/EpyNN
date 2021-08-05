@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -190,65 +192,48 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dX</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dA</span>
 
-    <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dXb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">])]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">])]</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
 
-    <span class="n">dA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">])</span>
-
-    <span class="k">return</span> <span class="n">dX</span><span class="p">,</span> <span class="n">dA</span></div>
+    <span class="k">return</span> <span class="n">dX</span></div>
 
 
 <div class="viewcode-block" id="convolution_backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.convolution.backward.convolution_backward">[docs]</a><span class="k">def</span> <span class="nf">convolution_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">dX</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">ih</span><span class="p">,</span> <span class="n">iw</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">dA</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
+    <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
 
-    <span class="n">im</span><span class="p">,</span> <span class="n">ih</span><span class="p">,</span> <span class="n">iw</span><span class="p">,</span> <span class="nb">id</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">fs</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;oh&#39;</span><span class="p">]):</span>
 
-    <span class="c1"># Loop through image rows</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dX&#39;</span><span class="p">][:,</span> <span class="n">t</span><span class="p">::</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;oh&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span>
 
-        <span class="n">row</span> <span class="o">=</span> <span class="n">dX</span><span class="p">[:,</span> <span class="n">t</span><span class="p">::</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">],</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ow&#39;</span><span class="p">]):</span>
 
-        <span class="c1"># Loop through row columns</span>
-        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]):</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ih&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">])</span> <span class="o">%</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;iw&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">l</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">])</span> <span class="o">%</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
 
-            <span class="c1"># region of X and dZ for this block</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">ih</span> <span class="o">-</span> <span class="n">t</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">])</span> <span class="o">%</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
-            <span class="c1"># region of X and dZ for this block</span>
-            <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">iw</span> <span class="o">-</span> <span class="n">l</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">])</span> <span class="o">%</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">row</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">l</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]::</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ow&#39;</span><span class="p">],</span> <span class="p">:]</span>
 
-            <span class="c1"># block = corresponding region of dA</span>
-            <span class="n">block</span> <span class="o">=</span> <span class="n">row</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">l</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]::</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">],</span> <span class="p">:]</span>
-            <span class="c1"># Axis for channels, rows, columns</span>
-            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
-            <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dXb&#39;</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+            <span class="n">dA</span> <span class="o">=</span> <span class="n">block</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span>
 
-            <span class="n">dA_block</span> <span class="o">=</span> <span class="n">block</span> <span class="o">*</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">]</span>
-            <span class="n">dA_block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dA_block</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-            <span class="n">dA_block</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dA_block</span><span class="p">,</span> <span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ih</span> <span class="o">-</span> <span class="n">b</span> <span class="o">-</span> <span class="n">t</span><span class="p">,</span> <span class="n">iw</span> <span class="o">-</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+            <span class="n">dA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 
-            <span class="n">dA</span><span class="p">[:,</span> <span class="n">t</span><span class="p">:</span><span class="n">ih</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span><span class="n">iw</span> <span class="o">-</span> <span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">dA_block</span>
+            <span class="n">dA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dA</span><span class="p">,</span> <span class="p">(</span>
+                                <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">],</span>
+                                <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ih&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span> <span class="o">-</span> <span class="n">t</span><span class="p">,</span>
+                                <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;iw&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span> <span class="o">-</span> <span class="n">l</span><span class="p">,</span>
+                                <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
 
-    <span class="c1">#dA = layer.bc[&#39;dA&#39;] = restore_padding(layer,dA)</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">][:,</span> <span class="n">t</span><span class="p">:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;ih&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="n">l</span><span class="p">:</span><span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;iw&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="n">dA</span>
 
-    <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span></div>
+    <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span>
 
-
-
-
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># def restore_padding(layer,dA):</span>
-<span class="c1">#</span>
-<span class="c1">#     if layer.d[&#39;p&#39;] &gt; 0:</span>
-<span class="c1">#         p = layer.d[&#39;p&#39;]</span>
-<span class="c1">#         dA = dA[:, p:-p, p:-p, :]</span>
-<span class="c1">#</span>
-<span class="c1">#     return dA</span>
+    <span class="k">return</span> <span class="n">dA</span></div>
 </pre></div>
 
            </div>

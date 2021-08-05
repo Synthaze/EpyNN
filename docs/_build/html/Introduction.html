@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Introduction &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Neural Network (Model)" href="EpyNN_Model.html" />
+    <link rel="prev" title="Quick Start" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-concepts-and-limitations">Basic Concepts and Limitations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-a-neural-network">What is a Neural Network?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-using-neural-networks">Why using Neural Networks?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#which-limits-for-neural-networks">Which limits for Neural Networks?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-and-vocabulary">Implementation and Vocabulary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#neural-network-model">Neural Network Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#layer-architecture-model">Layer Architecture Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-model">Data Model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Flatten.html">Flatten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Details.html">Details</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/Introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The aim of this section is to present basics of Neural Networks in a way that will be accessible for most visitors.</p>
+<div class="section" id="basic-concepts-and-limitations">
+<h2>Basic Concepts and Limitations<a class="headerlink" href="#basic-concepts-and-limitations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-a-neural-network">
+<h3>What is a Neural Network?<a class="headerlink" href="#what-is-a-neural-network" title="Permalink to this headline">¶</a></h3>
+<p>In the literature, it is often explained that Artificial Neural Networks (ANN) evolved from the idea of simulating the human brain <span id="id1">[<a class="reference internal" href="#id12" title="Jinming Zou, Yi Han, and Sung-Sau So. Overview of artificial neural networks. Artificial Neural Networks, pages 14–22, 2008.">1</a>]</span>.</p>
+<p>This idea may originate from McCulloch &amp; Pitts who published in 1943 a paper entitled <strong>“A logical calculus of the ideas immanent in nervous activity”</strong> <span id="id2">[<a class="reference internal" href="#id13" title="Warren S McCulloch and Walter Pitts. A logical calculus of the ideas immanent in nervous activity. The bulletin of mathematical biophysics, 5(4):115–133, 1943.">2</a>]</span> where they developed the theory according to which <em>“Because of the “all-or-none” character of nervous activity, neural events and the relations among them can be treated by means of propositional logic.”</em></p>
+<p>In common language, this means that upon integration and weighting of various stimuli by a given biological neuron, this same neuron may spike or may not spike, thus propagating forward the information to the next neuron.</p>
+<p>In ANNs, we would translate by saying that a node within the network will integrate inputs, weight them and pass the product through a <code class="docutils literal notranslate"><span class="pre">step_function(input</span> <span class="pre">*</span> <span class="pre">weight)</span></code> which propagates forward <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> to the next node.</p>
+</div>
+<div class="section" id="why-using-neural-networks">
+<h3>Why using Neural Networks?<a class="headerlink" href="#why-using-neural-networks" title="Permalink to this headline">¶</a></h3>
+<p>Neural Networks are claimed to be universal function approximators <span id="id3">[<a class="reference internal" href="#id15" title="Kurt Hornik, Maxwell Stinchcombe, and Halbert White. Multilayer feedforward networks are universal approximators. Neural networks, 2(5):359–366, 1989.">3</a>]</span>.</p>
+<p>In the scope of Supervised Machine Learning (SML), it means that ANNs can theoretically determine any function which will approximate the relationship between inputs (X) and output (Y) known <em>a priori</em> and describing a given <strong>sample</strong>.</p>
+<p>Importantly, ANNs deal with n-dimensional input <strong>features</strong>. It means that one <strong>sample</strong> is described by one or more features to which a <strong>label</strong> is associated.</p>
+<p>Included in a training data set, a relatively large number of samples is provided to the Neural Network which will iterate over a user-provided number of <strong>epochs</strong> or iterations.</p>
+<p>Provided with a learning rule, which is generally composed of a <strong>learning rate</strong> and a <strong>cost function</strong> to be minimized, ANNs can auto-adjust their <strong>trainable parameters</strong> to find one function which will make the link between features and labels.</p>
+<p>The ability of ANNs to detect patterns in sample features that are relevant to associated label makes them widely used for classification task, anomaly detection, time series predictions, deconvolution and among many others.</p>
+<p>Daily life examples may include music source separation which is the task of separating a waveform in individual sources corresponding to voices and accompaniments. Such task was historically challenging but enormous progress were made through deep learning approaches <span id="id4">[<a class="reference internal" href="#id17" title="Stefan Uhlich, Marcello Porcu, Franck Giron, Michael Enenkl, Thomas Kemp, Naoya Takahashi, and Yuki Mitsufuji. Improving music source separation based on deep neural networks through data augmentation and network blending. In 2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 261–265. IEEE, 2017.">4</a>]</span>. Recently, a simple python library was published based on ANNs which provides for anyone state-of-the-art results in such task <span id="id5">[<a class="reference internal" href="#id16" title="Romain Hennequin, Anis Khlif, Felix Voituret, and Manuel Moussallam. Spleeter: a fast and efficient music source separation tool with pre-trained models. Journal of Open Source Software, 5(50):2154, 2020.">5</a>]</span>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>How to prepare raw <code class="docutils literal notranslate"><span class="pre">.wav</span></code> files: <a class="reference internal" href="nnlive/author_music/prepare_dataset.html"><span class="doc">Music to NumPy</span></a>.</p>
+</div>
+<p>Another example may consist in artist-based painting classification. From a set of art-painting (features) and associated author (label), researchers could develop an ANN which was effective and achieved state-of-the-art performance in pairing painting and the corresponding author <span id="id6">[<a class="reference internal" href="#id18" title="Kai-Lung Hua, Trang-Thi Ho, Kevin-Alfianto Jangtjik, Yu-Jen Chen, and Mei-Chen Yeh. Artist-based painting classification using markov random fields with convolution neural network. Multimedia Tools and Applications, pages 1–24, 2020.">6</a>]</span>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<div class="line-block">
+<div class="line">How to prepare dummy images: <a class="reference internal" href="nnlive/dummy_image/prepare_dataset.html"><span class="doc">Integers to Image</span></a>.</div>
+<div class="line">How to prepare handwritten digits images from the MNIST database: <a class="reference internal" href="nnlive/dummy_image/prepare_dataset.html"><span class="doc">Prepare MNIST</span></a>.</div>
+</div>
+</div>
+<p>In the daily life of the <em>biochemist</em>, the <em>structural biologist</em> or more generally anyone interested in protein or peptide sequences, first applications of Neural Networks date from decades. As early as 1989, Howard L. Holley and Nobel Prize laureate Mark Karplus published a paper entitled <strong>“Protein secondary structure prediction with a neural network”</strong> <span id="id7">[<a class="reference internal" href="#id19" title="L Howard Holley and Martin Karplus. Protein secondary structure prediction with a neural network. Proceedings of the National Academy of Sciences, 86(1):152–156, 1989.">7</a>]</span>. Since then, the <em>NMR spectroscopist</em> may acknowledge <strong>“TALOS+: a hybrid method for predicting protein backbone torsion angles from NMR chemical shifts”</strong> <span id="id8">[<a class="reference internal" href="#id20" title="Yang Shen, Frank Delaglio, Gabriel Cornilescu, and Ad Bax. Talos+: a hybrid method for predicting protein backbone torsion angles from nmr chemical shifts. Journal of biomolecular NMR, 44(4):213–223, 2009.">8</a>]</span> which partially relies on Neural Networks to predict angle constrains extensively used in protein structure calculation from NMR data. Finally, the field of protein research is looking forward to recent developments from <strong>“Highly accurate protein structure prediction with AlphaFold”</strong> <span id="id9">[<a class="reference internal" href="#id21" title="John Jumper, Richard Evans, Alexander Pritzel, Tim Green, Michael Figurnov, Olaf Ronneberger, Kathryn Tunyasuvunakool, Russ Bates, Augustin Zidek, Anna Potapenko, and others. Highly accurate protein structure prediction with alphafold. Nature, pages 1–11, 2021.">9</a>]</span>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<div class="line-block">
+<div class="line">How to prepare string data: <a class="reference internal" href="nnlive/dummy_string/prepare_dataset.html"><span class="doc">String Encoding</span></a>.</div>
+<div class="line">How to prepare peptide sequences: <a class="reference internal" href="nnlive/ptm_protein/prepare_dataset.html"><span class="doc">Prepare Peptides</span></a>.</div>
+</div>
+</div>
+</div>
+<div class="section" id="which-limits-for-neural-networks">
+<h3>Which limits for Neural Networks?<a class="headerlink" href="#which-limits-for-neural-networks" title="Permalink to this headline">¶</a></h3>
+<p>Artificial Neural Networks (ANNs) are extremely efficient computational models which can solve problems in any fields.</p>
+<p>However, there are classical limitations to such models.</p>
+<ul class="simple">
+<li><p><strong>Training corpus</strong></p></li>
+</ul>
+<p>In Supervised Machine Learning (SML) based on ANNs, the principle is to provide a training corpus which should contains a large number of samples being representative of the phenomenon of interest.</p>
+<ul class="simple">
+<li><p><strong>Overfitting</strong></p></li>
+</ul>
+<p>Overfitting is an error in regression procedure which happens when the model corresponds to closely to a particular set of data. Said differently, ANNs tend to include outliers in the output model.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<div class="line-block">
+<div class="line">Example of overfitting on random data</div>
+</div>
+</div>
+<ul class="simple">
+<li><p><strong>Explainability</strong></p></li>
+</ul>
+<p>Because ANNs are nested and non-linear structures with thousands - up to billions - parameters, they are difficult to interpret and are often considered as “black boxes” used for performance <span id="id10">[<a class="reference internal" href="#id22" title="Wojciech Samek and Klaus-Robert Müller. Towards explainable artificial intelligence. In Explainable AI: interpreting, explaining and visualizing deep learning, pages 5–22. Springer, 2019.">10</a>]</span>.</p>
+</div>
+</div>
+<div class="section" id="implementation-and-vocabulary">
+<h2>Implementation and Vocabulary<a class="headerlink" href="#implementation-and-vocabulary" title="Permalink to this headline">¶</a></h2>
+<p>Artificial Neural Networks (ANNs) can be implemented in Python.</p>
+<p>Python is an <em>object-oriented</em> programming language. This means that abstract objects - equivalent to object prototypes - can be defined is a custom manner by the programmer.</p>
+<p>Such prototypes are defined in <code class="docutils literal notranslate"><span class="pre">class</span></code>, such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;MyModel&#39;</span>
+
+    <span class="k">def</span> <span class="nf">my_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The object related to the class <code class="docutils literal notranslate"><span class="pre">MyModel</span></code> can be <strong>instantiated</strong> by calling the corresponding <strong>class constructor</strong> such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_object</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The object <code class="docutils literal notranslate"><span class="pre">my_object</span></code> is now an <strong>instance</strong> of the class <code class="docutils literal notranslate"><span class="pre">MyModel</span></code>.</p>
+<p>When the instance <code class="docutils literal notranslate"><span class="pre">my_object</span></code> is being created, the <code class="docutils literal notranslate"><span class="pre">__init__()</span></code> method is executed. Later on, other methods defined within the class can be executed from the instantiated object, such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_object</span><span class="o">.</span><span class="n">my_method</span><span class="p">(</span><span class="s1">&#39;My Message&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which will print <code class="docutils literal notranslate"><span class="pre">My</span> <span class="pre">Message</span></code> on the terminal session.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<div class="line-block">
+<div class="line">Interactive examples on <a class="reference external" href="https://www.w3schools.com/python/python_classes.asp">W3 Schools</a>.</div>
+<div class="line">Detailed explanations on <a class="reference external" href="https://docs.python.org/3/tutorial/classes.html">Python Official Documentation</a>.</div>
+</div>
+</div>
+<p>This scheme is the basis for the design of most AI-related libraries, including EpyNN.</p>
+<div class="section" id="neural-network-model">
+<h3>Neural Network Model<a class="headerlink" href="#neural-network-model" title="Permalink to this headline">¶</a></h3>
+<p>If willing to define a model object - or object prototype - for a Neural Network, then a minimalist version could be summarized such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyNetwork</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a non-functional summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="p">[]):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">layers</span>
+
+    <span class="k">def</span> <span class="nf">training</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">):</span>
+        <span class="c1"># Procedure to train the network from labeled data</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_data</span><span class="p">):</span>
+        <span class="c1"># Procedure to predict label from unlabeled data</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The corresponding object instance can be instantiated such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_network</span> <span class="o">=</span> <span class="n">MyNetwork</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="p">[</span><span class="n">input_layer</span><span class="p">,</span> <span class="n">output_layer</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>While the network could be trained such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_network</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And further used to predict from unlabeled data, such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_network</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In short, the Neural Network model itself implements the training procedure. The actual architecture of the Neural Network is defined within the <code class="docutils literal notranslate"><span class="pre">layers</span></code> argument passed when calling the class constructor.</p>
+<p>The detailed implementation of the <code class="docutils literal notranslate"><span class="pre">EpyNN</span></code> model for such Neural Network object is presented in the <a class="reference internal" href="EpyNN_Model.html"><span class="doc">Neural Network (Model)</span></a> section.</p>
+</div>
+<div class="section" id="layer-architecture-model">
+<h3>Layer Architecture Model<a class="headerlink" href="#layer-architecture-model" title="Permalink to this headline">¶</a></h3>
+<p>We have seen that a model of Neural Network can be instantiated by calling its class constructor provided with a list of layers.</p>
+<p>Layers prototypes can also be defined within classes, with a minimal example such as:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyLayer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a non-functional summary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="c1"># Procedure to propagate the signal forward</span>
+        <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To next layer</span>
+
+    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+        <span class="c1"># Procedure to propagate the error backward</span>
+        <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span>
+
+    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gradients</span><span class="p">):</span>
+        <span class="c1"># Procedure to update parameters from gradients</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-model">
+<h3>Data Model<a class="headerlink" href="#data-model" title="Permalink to this headline">¶</a></h3>
+<p id="id11"><dl class="citation">
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Jinming Zou, Yi Han, and Sung-Sau So. Overview of artificial neural networks. <em>Artificial Neural Networks</em>, pages 14–22, 2008.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Warren S McCulloch and Walter Pitts. A logical calculus of the ideas immanent in nervous activity. <em>The bulletin of mathematical biophysics</em>, 5(4):115–133, 1943.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Kurt Hornik, Maxwell Stinchcombe, and Halbert White. Multilayer feedforward networks are universal approximators. <em>Neural networks</em>, 2(5):359–366, 1989.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>Stefan Uhlich, Marcello Porcu, Franck Giron, Michael Enenkl, Thomas Kemp, Naoya Takahashi, and Yuki Mitsufuji. Improving music source separation based on deep neural networks through data augmentation and network blending. In <em>2017 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)</em>, 261–265. IEEE, 2017.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+<dd><p>Romain Hennequin, Anis Khlif, Felix Voituret, and Manuel Moussallam. Spleeter: a fast and efficient music source separation tool with pre-trained models. <em>Journal of Open Source Software</em>, 5(50):2154, 2020.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dd><p>Kai-Lung Hua, Trang-Thi Ho, Kevin-Alfianto Jangtjik, Yu-Jen Chen, and Mei-Chen Yeh. Artist-based painting classification using markov random fields with convolution neural network. <em>Multimedia Tools and Applications</em>, pages 1–24, 2020.</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id7">7</a></span></dt>
+<dd><p>L Howard Holley and Martin Karplus. Protein secondary structure prediction with a neural network. <em>Proceedings of the National Academy of Sciences</em>, 86(1):152–156, 1989.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets"><a class="fn-backref" href="#id8">8</a></span></dt>
+<dd><p>Yang Shen, Frank Delaglio, Gabriel Cornilescu, and Ad Bax. Talos+: a hybrid method for predicting protein backbone torsion angles from nmr chemical shifts. <em>Journal of biomolecular NMR</em>, 44(4):213–223, 2009.</p>
+</dd>
+<dt class="label" id="id21"><span class="brackets"><a class="fn-backref" href="#id9">9</a></span></dt>
+<dd><p>John Jumper, Richard Evans, Alexander Pritzel, Tim Green, Michael Figurnov, Olaf Ronneberger, Kathryn Tunyasuvunakool, Russ Bates, Augustin Zidek, Anna Potapenko, and others. Highly accurate protein structure prediction with alphafold. <em>Nature</em>, pages 1–11, 2021.</p>
+</dd>
+<dt class="label" id="id22"><span class="brackets"><a class="fn-backref" href="#id10">10</a></span></dt>
+<dd><p>Wojciech Samek and Klaus-Robert Müller. Towards explainable artificial intelligence. In <em>Explainable AI: interpreting, explaining and visualizing deep learning</em>, pages 5–22. Springer, 2019.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="EpyNN_Model.html" class="btn btn-neutral float-right" title="Neural Network (Model)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

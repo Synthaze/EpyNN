@@ -1,22 +1,6 @@
 # EpyNN/nnlive/dummy_boolean/settings.py
 
 
-# DATASET SETTINGS
-dataset = {
-    # Settings for preparation
-    'N_SAMPLES': 1000,
-    'dataset_name': 'dummy',
-    'dataset_save': False,
-    # Settings for embedding
-    'dtrain_relative': 2,
-    'dtest_relative': 1,
-    'dval_relative': 1,
-    'batch_number': 5,
-}
-"""Dictionary settings for dataset preparation.
-"""
-
-
 # GENERAL CONFIGURATION SETTINGS
 config = {
     # Globals for model training
@@ -27,14 +11,9 @@ config = {
     # Logs behavior
     'logs_frequency': 1,
     'logs_frequency_display': 25,
-    'metrics_list': ['accuracy', 'CCE', 'MSE', 'precision', 'recall'],
-    'print_over': True,
-    # Plot behavior
-    'metrics_plot': ['accuracy', 'CCE'],
-    'pyplot': True,
-    'gnuplot': False,
+    'metrics_list': ['accuracy', 'BCE', 'MSE'],
+    'metrics_plot': ['accuracy', 'BCE'],
     # Make and remove on disk
-    'model_save': False,
     'directory_clear': False,
 }
 """General configuration dictionary settings.
@@ -54,7 +33,7 @@ For binary classification, extra-metrics can be picked in:
 hPars = {
     # Schedule learning rate
     'learning_rate': 0.1,
-    'schedule_mode': 'exp_decay',
+    'schedule_mode': 'steady',
     'decay_k': 0.001,
     'cycling_n': 1,
     'descent_d': 1,
@@ -65,8 +44,6 @@ hPars = {
     'ELU_alpha': 0.01,
     'LRELU_alpha': 0.01,
     'softmax_temperature': 1,
-    # May prevent from floating point error
-    'min_epsilon': 1e-9,
 }
 """Hyperparameters dictionary settings.
 

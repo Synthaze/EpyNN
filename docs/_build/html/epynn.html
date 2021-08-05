@@ -250,10 +250,12 @@
 <li><p><strong>se_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Settings for general configuration</p></li>
 <li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Settings for hyperparameters</p></li>
 <li><p><strong>epochs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of training epochs</p></li>
+<li><p><strong>e</strong> – Current training epochs</p></li>
 <li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – For model seeding</p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of model</p></li>
 <li><p><strong>uname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Unique name made of timestamp and name</p></li>
 <li><p><strong>network</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Store data related to network architecture</p></li>
+<li><p><strong>training_loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Cost function used to backpropagate errors</p></li>
 <li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Store metrics related to model training</p></li>
 <li><p><strong>saved</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Flag when model is saved on disk</p></li>
 </ul>
@@ -263,20 +265,22 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.forward">
-<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.meta.forward.model_forward" title="nnlibs.meta.forward.model_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.forward.model_forward()</span></code></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Forward propagate input data from input to output layer.</span>
 
 <span class="sd">    :param model: An instance of EpyNN network.</span>
 <span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
 
-<span class="sd">    :param A: Input of forward propagation for embedding layer</span>
-<span class="sd">    :type A: :class:`numpy.ndarray`</span>
+<span class="sd">    :param X: Input of forward propagation for embedding layer</span>
+<span class="sd">    :type X: :class:`numpy.ndarray`</span>
 
 <span class="sd">    :return: Output of forward propagation for output layer</span>
 <span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">X</span>
+
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
 
         <span class="n">layer</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span>
@@ -329,7 +333,7 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.initialize">
-<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init_params</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize EpyNN meta-model.</p>
 </dd></dl>
 
@@ -372,7 +376,7 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataset</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform prediction of label from unlabeled samples in dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -403,17 +407,15 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Globals for model training</span>
     <span class="s1">&#39;training_epochs&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;training_loss&#39;</span><span class="p">:</span> <span class="s1">&#39;BCE&#39;</span><span class="p">,</span>
     <span class="s1">&#39;metrics_target&#39;</span><span class="p">:</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;dataset_target&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="c1"># Logs behavior</span>
     <span class="s1">&#39;logs_frequency&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;logs_frequency_display&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="s1">&#39;metrics_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;CCE&#39;</span><span class="p">,</span> <span class="s1">&#39;MSE&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;print_over&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;metrics_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;BCE&#39;</span><span class="p">,</span> <span class="s1">&#39;MSE&#39;</span><span class="p">],</span>
     <span class="c1"># Plot behavior</span>
-    <span class="s1">&#39;metrics_plot&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;CCE&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;pyplot&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="s1">&#39;gnuplot&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;metrics_plot&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;BCE&#39;</span><span class="p">],</span>
     <span class="c1"># Make and remove on disk</span>
     <span class="s1">&#39;model_save&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s1">&#39;directory_clear&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -430,6 +432,8 @@
 <span class="sd">[&#39;precision&#39;, &#39;recall&#39;, &#39;BCE&#39;]</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+
+<span class="c1"># HYPERPARAMETERS SETTINGS</span>
 </pre></div>
 </div>
 <dl class="py attribute">
@@ -451,8 +455,6 @@
     <span class="s1">&#39;ELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
     <span class="s1">&#39;LRELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
     <span class="s1">&#39;softmax_temperature&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="c1"># May prevent from floating point error</span>
-    <span class="s1">&#39;min_epsilon&#39;</span><span class="p">:</span> <span class="mf">1e-9</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="sd">&quot;&quot;&quot;Hyperparameters dictionary settings.</span>
 
@@ -468,11 +470,11 @@
 <h3>Base Layer<a class="headerlink" href="#base-layer" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="nnlibs.commons.models.Layer">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">Layer</code><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.commons.models.</code><code class="sig-name descname">Layer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of a layer meta-prototype. All classes which define a layer prototype inherit from this class. Layer prototypes are defined with respect to a specific architecture (Dense, RNN, Convolution…) whereas the layer meta-prototype is a parent class defining instance attributes common to every layer object.</p>
 <dl class="py method">
 <dt id="nnlibs.commons.models.Layer.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/commons/models.html#Layer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.commons.models.Layer.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize instance variable attributes.</p>
 <dl class="simple">
 <dt>d<span class="classifier">dict</span></dt><dd><p>Instance attribute for layer <strong>dimensions</strong>. It contains <strong>scalar quantities</strong> such as the number of nodes, hidden units, filters or samples with respect to a given layer prototype and instantiated object.</p>
@@ -658,7 +660,7 @@
     <span class="s1">&#39;dtrain_relative&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
     <span class="s1">&#39;dtest_relative&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;dval_relative&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s1">&#39;batch_number&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">&#39;batch_size&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="sd">&quot;&quot;&quot;Dictionary settings for dataset preparation.</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -668,9 +670,9 @@
 <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Globals for model training</span>
     <span class="s1">&#39;training_epochs&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="s1">&#39;training_loss&#39;</span><span class="p">:</span> <span class="s1">&#39;BCE&#39;</span><span class="p">,</span>
     <span class="s1">&#39;metrics_target&#39;</span><span class="p">:</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;dataset_target&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="c1"># Logs behavior</span>
 </pre></div>
 </div>
 </div>

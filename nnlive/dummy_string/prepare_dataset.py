@@ -41,8 +41,8 @@ def label_features(features, WORDS):
     :rtype: list[int]
     """
     # One-hot encoded positive and negative labels
-    p_label = [1, 0]
-    n_label = [0, 1]
+    p_label = [1]
+    n_label = [0]
 
     # Number of features
     N_FEATURES = len(features)

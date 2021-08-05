@@ -91,7 +91,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -171,18 +173,20 @@
 <span></span><span class="c1"># EpyNN/nnlibs/meta/forward.py</span>
 
 
-<div class="viewcode-block" id="model_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.forward.model_forward">[docs]</a><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<div class="viewcode-block" id="model_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.forward.model_forward">[docs]</a><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Forward propagate input data from input to output layer.</span>
 
 <span class="sd">    :param model: An instance of EpyNN network.</span>
 <span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
 
-<span class="sd">    :param A: Input of forward propagation for embedding layer</span>
-<span class="sd">    :type A: :class:`numpy.ndarray`</span>
+<span class="sd">    :param X: Input of forward propagation for embedding layer</span>
+<span class="sd">    :type X: :class:`numpy.ndarray`</span>
 
 <span class="sd">    :return: Output of forward propagation for output layer</span>
 <span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">X</span>
+
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
 
         <span class="n">layer</span><span class="o">.</span><span class="n">e</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span>
