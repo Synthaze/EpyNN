@@ -10,7 +10,7 @@
 Neural Network (Model)
 ===============================
 
-EpyNN model
+EpyNN Class Object
 ------------------------------
 
 
@@ -46,21 +46,13 @@ EpyNN model
     .. automethod:: predict
 
 
-EpyNN settings
+Hyperparameters
 ------------------------------
 
 .. autoclass:: nnlibs.settings.config
 
-.. literalinclude:: ../nnlibs/settings.py
-    :language: python
-    :start-after: GENERAL CONFIGURATION SETTINGS
-    :lines: 1-30
-
-
-.. autoclass:: nnlibs.settings.hPars
-
+.. autoclass:: nnlibs.settings.se_hPars
 
 .. literalinclude:: ../nnlibs/settings.py
     :language: python
     :start-after: HYPERPARAMETERS SETTINGS
-    :lines: 1-22

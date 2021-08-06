@@ -192,7 +192,7 @@
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;metrics_plot&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">dsets</span><span class="p">):</span>
 

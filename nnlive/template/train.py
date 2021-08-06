@@ -3,8 +3,8 @@
 from nnlibs.initialize import *
 # Import common models
 from nnlibs.commons.models import runData, hPars
-# Import EpyNN meta-model to build neural networks
-from nnlibs.meta.models import EpyNN
+# Import EpyNN network-model to build neural networks
+from nnlibs.network.models import EpyNN
 # Import models specific to layer architectures
 from nnlibs.conv.models import Convolution
 from nnlibs.dense.models import Dense

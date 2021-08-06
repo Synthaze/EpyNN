@@ -15,52 +15,6 @@ from pygments import highlight
 from tabulate import tabulate
 
 
-def model_logs(model):
-    """.
-
-    :param model:
-    :type model:
-    """
-    colors = [
-        'white',
-        'green',
-        'red',
-        'magenta',
-        'cyan',
-        'yellow',
-        'blue',
-        'grey',
-    ]
-
-    se_config = model.se_config
-
-    logs_freq = se_config['logs_frequency']
-    logs_freq_disp = se_config['logs_frequency_display']
-
-    if model.e == 0:
-        model.current_logs = [headers_logs(model, colors)]
-
-    if model.e % logs_freq == 0:
-        model.current_logs.append(current_logs(model, colors))
-
-    if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
-
-        logs = tabulate(model.current_logs,
-                        headers="firstrow",
-                        numalign="center",
-                        stralign='center',
-                        tablefmt="pretty",
-                        )
-
-        print (logs, flush=True)
-
-        remaining_time_logs(model)
-
-        model.current_logs = [headers_logs(model, colors)]
-
-    return None
-
-
 def headers_logs(model, colors):
     """.
 
@@ -139,11 +93,7 @@ def current_logs(model, colors):
 
             log.append(colored('%.3f' % m, colors[i], attrs=['bold']))
 
-    if model.saved == True:
-        log.append(colored('SAVED','red','on_white',attrs=['bold','blink']))
-        model.saved = False
-    else:
-        log.append(colored(model.uname,'white',attrs=[]))
+    log.append(colored(model.uname,'white',attrs=[]))
 
     return log
 
@@ -165,47 +115,13 @@ def remaining_time_logs(model):
     return None
 
 
-def initialize_model_logs(model):
-    """.
-
-    :param model:
-    :type model:
-    """
-    model.current_logs = []
-
-    model.init_logs = []
-
-    #
-    dsets = model.embedding.dsets
-    se_dataset = model.embedding.se_dataset
-    se_config = model.se_config
-
-    model.init_logs.append(dsets_samples_logs(dsets, se_dataset, se_config))
-    model.init_logs.append(dsets_labels_logs(dsets))
-
-    #
-    network = model.network
-
-    model.init_logs.append(network_logs(network))
-
-    #
-    layers = model.layers
-
-    model.init_logs.append(layers_lrate_logs(layers))
-    model.init_logs.append(layers_others_logs(layers))
-
-    initialize_logs_print(model)
-
-    return None
-
-
 def initialize_logs_print(model):
     """.
 
     :param model:
     :type model:
     """
-    cprint ('----------------------- %s -------------------------\n' % model.name, attrs=['bold'], end='\n\n')
+    cprint ('----------------------- %s -------------------------\n' % model.uname, attrs=['bold'], end='\n\n')
 
     cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
 
@@ -224,7 +140,7 @@ def initialize_logs_print(model):
     print (model.init_logs[4].draw(), end='\n\n')
 
 
-    cprint ('----------------------- %s -------------------------\n' % model.name, attrs=['bold'], end='\n\n')
+    cprint ('----------------------- %s -------------------------\n' % model.uname, attrs=['bold'], end='\n\n')
 
     return None
 
@@ -279,14 +195,14 @@ def layers_lrate_logs(layers):
     """
     headers = [
         'Layer',
-        'training\nepochs\n(e)',
-        'schedule\nmode',
-        'cycling\n(n)',
-        'e/n',
-        'decay\n(k)',
-        'descent\n(d)',
-        'start',
-        'end',
+        'epochs',
+        'schedule',
+        'decay_k',
+        'cycle\nepochs\n',
+        'cycle\ndescent',
+        'cycle\nnumber',
+        'learning\nrate\n(start)',
+        'learning\nrate\n(end)',
         'end\n(%)',
     ]
 
@@ -306,12 +222,12 @@ def layers_lrate_logs(layers):
         pc_end = round(lr_end / lr_ori * 100,3) if lr_ori != 0 else 0
 
         log.append(layer.name)
-        log.append(se_hPars['training_epochs'])
-        log.append(se_hPars['schedule_mode'])
-        log.append(se_hPars['cycling_n'])
-        log.append(se_hPars['epochs_per_cycle'])
+        log.append(se_hPars['epochs'])
+        log.append(se_hPars['schedule'])
         log.append(se_hPars['decay_k'])
-        log.append(se_hPars['descent_d'])
+        log.append(se_hPars['cycle_epochs'])
+        log.append(se_hPars['cycle_descent'])
+        log.append(se_hPars['cycle_number'])
         log.append("{:.2e}".format(lr_ori))
         log.append("{:.2e}".format(lr_end))
         log.append(pc_end)
@@ -338,8 +254,8 @@ def layers_others_logs(layers):
         'LRELU\nalpha',
         'ELU\nalpha',
         'softmax\ntemperature',
-        'reg.\nl1',
-        'reg.\nl2',
+#        'reg.\nl1',
+#        'reg.\nl2',
     ]
 
     logs = Texttable()
@@ -356,8 +272,8 @@ def layers_others_logs(layers):
         log.append(se_hPars['LRELU_alpha'])
         log.append(se_hPars['ELU_alpha'])
         log.append(se_hPars['softmax_temperature'])
-        log.append(se_hPars['regularization_l1'])
-        log.append(se_hPars['regularization_l2'])
+#        log.append(se_hPars['regularization_l1'])
+#        log.append(se_hPars['regularization_l2'])
 
         if layer.p != {}:
             logs.add_row(log)
@@ -367,7 +283,7 @@ def layers_others_logs(layers):
     return logs
 
 
-def dsets_samples_logs(dsets, se_dataset, se_config):
+def dsets_samples_logs(dsets, se_dataset):
     """.
 
     :param dsets:
@@ -375,9 +291,6 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
 
     :param se_dataset:
     :type se_dataset:
-
-    :param se_config:
-    :type se_config:
 
     :return:
     :rtype:
@@ -387,8 +300,6 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
         'dtest\n(1)',
         'dval\n(2)',
         'batch\nsize',
-        'dataset\ntarget',
-        'metrics\ntarget',
     ]
 
     logs = Texttable()
@@ -406,8 +317,6 @@ def dsets_samples_logs(dsets, se_dataset, se_config):
         log.append('None')
 
     log.append(batch_size)
-    log.append(se_config['dataset_target'])
-    log.append(se_config['metrics_target'])
 
     logs.add_row(log)
 

@@ -2,7 +2,6 @@
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.commons.maths import (
-    softmax,
     sigmoid,
     xavier,
     activation_tune,
@@ -32,11 +31,12 @@ class Dense(Layer):
     """
 
     def __init__(self,
-                nodes=2,
+                nodes=1,
                 activate=sigmoid,
-                initialization=xavier):
+                initialization=xavier,
+                se_hPars=None):
 
-        super().__init__()
+        super().__init__(se_hPars)
 
         self.initialization = initialization
 

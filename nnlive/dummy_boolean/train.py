@@ -14,15 +14,13 @@ from nnlibs.commons.library import (
     read_model,
 )
 from nnlibs.commons.maths import relu
-from nnlibs.meta.models import EpyNN
+from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.dense.models import Dense
 from prepare_dataset import prepare_dataset
-from settings import (
-    config as se_config,
-    hPars as se_hPars,
-)
+from settings import se_hPars
 
+import copy
 
 ############################ HEADERS ##########################
 random.seed(1)
@@ -31,24 +29,34 @@ np.set_printoptions(precision=3,threshold=sys.maxsize)
 
 np.seterr(all='warn')
 
-configure_directory(se_config=se_config)
-
-settings = [se_config, se_hPars]
+configure_directory(clear=False)
 
 ############################ DATASET ##########################
 X_features, Y_label = prepare_dataset(N_SAMPLES=50)
 
-embedding = Embedding(X_data=X_features,
-                      Y_data=Y_label,
-                      Y_encode=True,
-                      relative_size=(2, 0, 0))
-
 ############################ MODEL ############################
 # Single-layer perceptron
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      relative_size=(2, 0, 0))
+
 dense = Dense()
 
 name = 'Embedding_Dense'
-model = EpyNN(layers=[embedding, dense], settings=settings, seed=1, name=name)
+
+model = EpyNN(layers=[embedding, dense], name=name)
+
+model.train(epochs=100)
+
+model.plot()
+
+model.write()
+
+model = read_model()
+
+X_test, _ = prepare_dataset(N_SAMPLES=10)
+
+dset = model.predict(X_test)
 
 # Feed-forward Neural Network (Multi-layer perceptron)
 #hidden_dense = Dense(nodes=4, activate=relu)
@@ -61,10 +69,6 @@ model = EpyNN(layers=[embedding, dense], settings=settings, seed=1, name=name)
 #model = EpyNN(layers=[embedding, more_hidden_dense, hidden_dense, dense], settings=settings, seed=1, name=name)
 
 ########################### TRAINING ###########################
-model.train()
-model.plot()
-model.evaluate(write=True)
-
 
 ######################### PREDICTION ###########################
 model = read_model()

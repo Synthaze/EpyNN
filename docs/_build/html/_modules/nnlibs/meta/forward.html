@@ -176,15 +176,6 @@
 
 <div class="viewcode-block" id="model_forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.meta.forward.model_forward">[docs]</a><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Forward propagate input data from input to output layer.</span>
-
-<span class="sd">    :param model: An instance of EpyNN network.</span>
-<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
-
-<span class="sd">    :param X: Input of forward propagation for embedding layer</span>
-<span class="sd">    :type X: :class:`numpy.ndarray`</span>
-
-<span class="sd">    :return: Output of forward propagation for output layer</span>
-<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">X</span>
 
@@ -194,7 +185,7 @@
 
         <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">A</span></div>
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To derivative of ...</span></div>
 </pre></div>
 
            </div>

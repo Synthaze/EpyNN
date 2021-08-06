@@ -16,7 +16,7 @@ from nnlibs.commons.library import (
     read_model,
 )
 from nnlibs.commons.maths import relu
-from nnlibs.meta.models import EpyNN
+from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.rnn.models import RNN
 # from nnlibs.lstm.models import LSTM

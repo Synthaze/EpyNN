@@ -2,8 +2,8 @@
 ################################## IMPORTS ################################
 # Set default environment and settings
 from nnlibs.initialize import *
-# EpyNN meta-model for neural networks
-from nnlibs.meta.models import EpyNN
+# EpyNN network-model for neural networks
+from nnlibs.network.models import EpyNN
 # Embedding layer for input data
 from nnlibs.embedding.models import Embedding
 # Import models specific to layer architectures

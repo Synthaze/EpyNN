@@ -3,6 +3,39 @@
 import numpy as np
 
 
+def index_vocabulary_auto(X_data):
+    """Determine vocabulary size and generate dictionnary for one-hot encoding or features or label
+
+    :param X_data: Dataset containing samples features or samples label
+    :type X_data: list[list[list]]
+
+    :return: One-hot encoding converter
+    :rtype: dict
+
+    :return: One-hot decoding converter
+    :rtype: dict
+
+    :return: Vocabulary size
+    :rtype: int
+    """
+    words = sorted(list(set(X_data.flatten())))
+
+    word_to_idx = {w:i for i,w in enumerate(words)}
+    idx_to_word = {i:w for w,i in word_to_idx.items()}
+
+    vocab_size = len(word_to_idx.keys())
+
+    return word_to_idx, idx_to_word, vocab_size
+
+
+def scale_features(X_data):
+    """.
+    """
+    X_data = (X_data-np.min(X_data)) / (np.max(X_data)-np.min(X_data))
+
+    return X_data
+
+
 def one_hot_encode(i, vocab_size):
     """Generate one-hot encoding array.
 

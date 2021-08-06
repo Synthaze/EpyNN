@@ -16,7 +16,7 @@ from nnlibs.commons.library import (
     read_model,
 )
 from nnlibs.commons.maths import relu, softmax, sigmoid, tanh
-from nnlibs.meta.models import EpyNN
+from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.convolution.models import Convolution
 from nnlibs.pooling.models import Pooling
