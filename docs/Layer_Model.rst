@@ -34,7 +34,7 @@ Template Layer
     .. automethod:: initialize_parameters
 
         .. literalinclude:: ./../nnlibs/template/parameters.py
-            :pyobject: initialize_parameters
+            :pyobject: template_initialize_parameters
 
     .. automethod:: forward
 
@@ -55,7 +55,7 @@ Template Layer
 
         .. literalinclude:: ./../nnlibs/template/parameters.py
             :pyobject: template_update_parameters
-            
+
 
 Layer Settings
 ------------------------------

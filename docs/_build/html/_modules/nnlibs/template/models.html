@@ -171,7 +171,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for nnlibs.template.models</h1><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlibs/template/parameters.py</span>
+<span></span><span class="c1"># EpyNN.nnlibs.template.parameters</span>
 <span class="c1"># Local application/library specific imports</span>
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
 <span class="kn">from</span> <span class="nn">nnlibs.template.forward</span> <span class="kn">import</span> <span class="n">template_forward</span>
@@ -184,7 +184,7 @@
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+<div class="viewcode-block" id="Template"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template">[docs]</a><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Definition of a template layer prototype. This is a pass-through or inactive layer prototype which contains method definitions used for all active layers. For all layer prototypes, methods are wrappers of functions which contain the specific implementations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -196,8 +196,8 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.compute_shapes"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute **shapes** and set dependent **dimensions**. Is a wrapper for :func:`nnlibs.template.parameters.template_compute_shapes()`.</span>
+<div class="viewcode-block" id="Template.compute_shapes"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.compute_shapes">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.parameters.template_compute_shapes()`.</span>
 
 <span class="sd">        :param A: Output of forward propagation from *previous* layer.</span>
 <span class="sd">        :type A: :class:`numpy.ndarray`</span>
@@ -206,15 +206,15 @@
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.initialize_parameters"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize **weight** and **bias** parameters from shapes. Is a wrapper for :func:`nnlibs.template.parameters.template_initialize_parameters()`.</span>
+<div class="viewcode-block" id="Template.initialize_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.initialize_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.parameters.template_initialize_parameters()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">template_initialize_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.forward"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Forward propagation of signal through **current** layer. Is a wrapper for :func:`nnlibs.template.forward.template_forward()`.</span>
+<div class="viewcode-block" id="Template.forward"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.forward.template_forward()`.</span>
 
 <span class="sd">        :param A: Output of forward propagation from *previous* layer.</span>
 <span class="sd">        :type A: :class:`numpy.ndarray`</span>
@@ -228,8 +228,8 @@
 
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="Template.backward"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Backward propagation of error through **current** layer. Is a wrapper for :func:`nnlibs.template.backward.template_backward()`.</span>
+<div class="viewcode-block" id="Template.backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.backward.template_backward()`.</span>
 
 <span class="sd">        :param dA: Output of backward propagation from *next* layer.</span>
 <span class="sd">        :type dA: :class:`numpy.ndarray`</span>
@@ -242,15 +242,15 @@
 
         <span class="k">return</span> <span class="n">dA</span></div>
 
-<div class="viewcode-block" id="Template.compute_gradients"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute **gradients** with respect to **weight** and **bias** parameters for current layer. Is a wrapper for :func:`nnlibs.template.parameters.template_compute_gradients()`.</span>
+<div class="viewcode-block" id="Template.compute_gradients"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.compute_gradients">[docs]</a>    <span class="k">def</span> <span class="nf">compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.parameters.template_compute_gradients()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">template_compute_gradients</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Template.update_parameters"><a class="viewcode-back" href="../../../Layer_Model.html#nnlibs.template.models.Template.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Update **weight** and **bias** parameters with respect to **gradients** for current layer. Is a wrapper for :func:`nnlibs.template.parameters.template_update_parameters()`.</span>
+<div class="viewcode-block" id="Template.update_parameters"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.models.Template.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Is a wrapper for :func:`nnlibs.template.parameters.template_update_parameters()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">template_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 

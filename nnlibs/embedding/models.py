@@ -4,7 +4,11 @@ import numpy as np
 
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
-from nnlibs.embedding.dataset import embedding_prepare, embedding_check, embedding_encode
+from nnlibs.embedding.dataset import (
+    embedding_prepare,
+    embedding_encode,
+    embedding_check,
+)
 from nnlibs.embedding.forward import embedding_forward
 from nnlibs.embedding.backward import embedding_backward
 from nnlibs.embedding.parameters import (
@@ -40,7 +44,7 @@ class Embedding(Layer):
     :param single: Set to True to run only with training set
     :type single: bool
 
-    :param X_scale: Set to True to normalize sample features within [0, 1]
+    :param X_scale: Normalize sample features within [0, 1]
     :type X_scale: bool
     """
 

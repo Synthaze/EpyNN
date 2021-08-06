@@ -19,7 +19,7 @@ def pyplot_metrics(model):
 
     plt.figure()
 
-    for s in model.se_config['metrics_plot']:
+    for s in model.metrics.keys():
 
         for k, dset in enumerate(model.embedding.dsets):
 
@@ -48,6 +48,8 @@ def pyplot_metrics(model):
     plot_path = os.path.join(os.getcwd(), 'plots', model.uname)  + '.png'
 
     plt.savefig(plot_path)
+
+    plt.close()
 
     process_logs('Make: ' + plot_path, level=1)
 

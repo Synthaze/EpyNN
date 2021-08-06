@@ -268,19 +268,19 @@
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.compute_shapes">
 <code class="sig-name descname">compute_shapes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.compute_shapes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.compute_shapes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute <strong>shapes</strong> and set dependent <strong>dimensions</strong>. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_compute_shapes" title="nnlibs.template.parameters.template_compute_shapes"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_compute_shapes()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_compute_shapes" title="nnlibs.template.parameters.template_compute_shapes"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_compute_shapes()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Output of forward propagation from <em>previous</em> layer.</p>
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_compute_shapes</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute forward shapes and dimensions for cells and layer.</span>
+    <span class="sd">&quot;&quot;&quot;Compute dimensions and forward shapes for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">A</span>    <span class="c1"># Input of current layer of shape (m .. n)</span>
 
     <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>     <span class="c1"># Number of samples (m)</span>
-    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>    <span class="c1"># Features</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>    <span class="c1"># Sample features (.. n)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
@@ -290,13 +290,21 @@
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.initialize_parameters">
 <code class="sig-name descname">initialize_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.initialize_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.initialize_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize <strong>weight</strong> and <strong>bias</strong> parameters from shapes. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_initialize_parameters" title="nnlibs.template.parameters.template_initialize_parameters"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_initialize_parameters()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_initialize_parameters" title="nnlibs.template.parameters.template_initialize_parameters"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_initialize_parameters()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_initialize_parameters</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initialize parameters from shapes for layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># No parameters to initialize for Template layer</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forward propagation of signal through <strong>current</strong> layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.forward.template_forward" title="nnlibs.template.forward.template_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.forward.template_forward()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.forward.template_forward" title="nnlibs.template.forward.template_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.forward.template_forward()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>A</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Output of forward propagation from <em>previous</em> layer.</p>
@@ -309,7 +317,7 @@
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Forward propagate signal to next layer.</span>
+    <span class="sd">&quot;&quot;&quot;Forward propagation of signal to next layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># (1) Initialize cache</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">initialize_forward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
@@ -325,7 +333,7 @@
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.backward">
 <code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.backward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Backward propagation of error through <strong>current</strong> layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.backward.template_backward" title="nnlibs.template.backward.template_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.backward.template_backward()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.backward.template_backward" title="nnlibs.template.backward.template_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.backward.template_backward()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dA</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Output of backward propagation from <em>next</em> layer.</p>
@@ -338,12 +346,12 @@
 </dd>
 </dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
+    <span class="sd">&quot;&quot;&quot;Backward propagation of error to previous layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># (1) Initialize cache</span>
     <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
 
-    <span class="c1"># (1) Pass backward</span>
+    <span class="c1"># (2) Pass backward</span>
     <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span>
 
     <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span>
@@ -354,11 +362,11 @@
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.compute_gradients">
 <code class="sig-name descname">compute_gradients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.compute_gradients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.compute_gradients" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute <strong>gradients</strong> with respect to <strong>weight</strong> and <strong>bias</strong> parameters for current layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_compute_gradients" title="nnlibs.template.parameters.template_compute_gradients"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_compute_gradients()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_compute_gradients" title="nnlibs.template.parameters.template_compute_gradients"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_compute_gradients()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_compute_gradients</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute gradients with respect to weight and bias for layer.</span>
+    <span class="sd">&quot;&quot;&quot;Compute gradients of the cost with respect to weight and bias for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># No gradients to update for Template layer</span>
+    <span class="c1"># No gradients to compute for Template layer</span>
 
     <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
@@ -368,9 +376,9 @@
 <dl class="py method">
 <dt id="nnlibs.template.models.Template.update_parameters">
 <code class="sig-name descname">update_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/template/models.html#Template.update_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.template.models.Template.update_parameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update <strong>weight</strong> and <strong>bias</strong> parameters with respect to <strong>gradients</strong> for current layer. Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_update_parameters" title="nnlibs.template.parameters.template_update_parameters"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_update_parameters()</span></code></a>.</p>
+<dd><p>Is a wrapper for <a class="reference internal" href="Details.html#nnlibs.template.parameters.template_update_parameters" title="nnlibs.template.parameters.template_update_parameters"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.template.parameters.template_update_parameters()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">template_update_parameters</span><span class="p">(</span><span class="n">layer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Update parameters for layer.</span>
+    <span class="sd">&quot;&quot;&quot;Update parameters from gradients and learning rate for layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># No parameters to update for Template layer</span>
 

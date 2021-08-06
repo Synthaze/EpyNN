@@ -1,30 +1,34 @@
-# EpyNN/nnlibs/meta/initialize.py
+# EpyNN/nnlibs/network/initialize.py
 # Standard library imports
-import json
 import sys
 
 # Related third party imports
 from termcolor import cprint
+import numpy as np
 
 # Local application/library specific imports
 from nnlibs.commons.logs import pretty_json
 
 
-def model_initialize(model, init_params=True):
+def model_initialize(model, params=True):
     """Initialize Neural Network.
 
-    :param init_params:
-    :type init_params: bool
+    :param params:
+    :type params: bool
 
     :param model: An instance of EpyNN network.
-    :type model: :class:`nnlibs.meta.models.EpyNN`
+    :type model: :class:`nnlibs.network.models.EpyNN`
     """
+    model.network = {id(layer):{} for layer in model.layers}
+
     batch_dtrain = model.embedding.batch_dtrain
 
     sample = batch_dtrain[0]
 
     A = X = sample.X
     Y = sample.Y
+
+    seed = model.seed
 
     for layer in model.layers:
 
@@ -39,9 +43,15 @@ def model_initialize(model, init_params=True):
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-        if init_params:
+        if params:
+
+            layer.o['seed'] = seed
+            layer.np_rng = np.random.default_rng(seed=layer.o['seed'])
+
             cprint('initialize_parameters: ' + layer.name, 'green', attrs=['bold'])
             layer.initialize_parameters()
+
+            seed = seed + 1 if seed else None
 
         cprint('forward: ' + layer.name, 'green', attrs=['bold'])
         A = layer.forward(A)
@@ -60,6 +70,8 @@ def model_initialize(model, init_params=True):
         cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'])
         layer.compute_gradients()
 
+    model.e = 0
+
     return None
 
 
@@ -71,6 +83,6 @@ def model_initialize_exceptions(model,trace):
 
     cprint('/!\\ Initialization of EpyNN model failed','red',attrs=['bold'])
 
-    print (trace)
+    print(trace)
 
     sys.exit()

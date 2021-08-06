@@ -95,8 +95,8 @@
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Neural Network (Model)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#epynn-model">EpyNN model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#epynn-settings">EpyNN settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#epynn-class-object">EpyNN Class Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hyperparameters">Hyperparameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Layer_Model.html">Architecture Layers (Model)</a></li>
@@ -206,44 +206,32 @@
 </div>
 <div class="section" id="neural-network-model">
 <h1>Neural Network (Model)<a class="headerlink" href="#neural-network-model" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="epynn-model">
-<h2>EpyNN model<a class="headerlink" href="#epynn-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="epynn-class-object">
+<h2>EpyNN Class Object<a class="headerlink" href="#epynn-class-object" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="nnlibs.meta.models.EpyNN">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.meta.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">settings</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Model'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.meta.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of a Neural Network prototype following the EpyNN scheme.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>layers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Model architecture</p></li>
-<li><p><strong>settings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>]</em>) – Such as [se_dataset, se_config, se_hPars]</p></li>
-<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>NoneType</em>) – For model seeding</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of model</p></li>
+<li><p><strong>layers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><em>Object</em><em>]</em>) – Network architecture</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – Name of network, defaults to ‘Network’</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">settings</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Model'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize instance variable attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Variables</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Timestamp unique identifier</p></li>
-<li><p><strong>layers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Model architecture</p></li>
+<li><p><strong>layers</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><em>Object</em><em>]</em>) – Network architecture</p></li>
 <li><p><strong>embedding</strong> (<a class="reference internal" href="Details.html#nnlibs.embedding.models.Embedding" title="nnlibs.embedding.models.Embedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code></a>) – Embedding layer</p></li>
-<li><p><strong>se_dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Settings for dataset</p></li>
-<li><p><strong>se_config</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Settings for general configuration</p></li>
-<li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Settings for hyperparameters</p></li>
-<li><p><strong>epochs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of training epochs</p></li>
-<li><p><strong>e</strong> – Current training epochs</p></li>
-<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – For model seeding</p></li>
-<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of model</p></li>
-<li><p><strong>uname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Unique name made of timestamp and name</p></li>
-<li><p><strong>network</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Store data related to network architecture</p></li>
-<li><p><strong>training_loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Cost function used to backpropagate errors</p></li>
-<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Store metrics related to model training</p></li>
-<li><p><strong>saved</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Flag when model is saved on disk</p></li>
+<li><p><strong>ts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Timestamp identifier</p></li>
+<li><p><strong>uname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Network unique identifier</p></li>
+<li><p><strong>initialized</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Model initialization state</p></li>
 </ul>
 </dd>
 </dl>
@@ -253,17 +241,19 @@
 <dt id="nnlibs.meta.models.EpyNN.forward">
 <code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.meta.forward.model_forward" title="nnlibs.meta.forward.model_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.forward.model_forward()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Set of sample features.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Output of forward propagation through all layers in the Network.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_forward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Forward propagate input data from input to output layer.</span>
-
-<span class="sd">    :param model: An instance of EpyNN network.</span>
-<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
-
-<span class="sd">    :param X: Input of forward propagation for embedding layer</span>
-<span class="sd">    :type X: :class:`numpy.ndarray`</span>
-
-<span class="sd">    :return: Output of forward propagation for output layer</span>
-<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">X</span>
 
@@ -273,7 +263,7 @@
 
         <span class="n">A</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">A</span>
+    <span class="k">return</span> <span class="n">A</span>    <span class="c1"># To derivative of ...</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -282,14 +272,19 @@
 <dt id="nnlibs.meta.models.EpyNN.backward">
 <code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.meta.backward.model_backward" title="nnlibs.meta.backward.model_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.backward.model_backward()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dA</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Derivative of ….</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Output of forward propagation through all layers in the Network.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p>
+</dd>
+</dl>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">model_backward</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Backward propagate error from output to input layer.</span>
-
-<span class="sd">    :param model: An instance of EpyNN network.</span>
-<span class="sd">    :type model: :class:`nnlibs.meta.models.EpyNN`</span>
-
-<span class="sd">    :param dA: Derivative of cost function with respect to output of forward propagation</span>
-<span class="sd">    :type dA: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
 
@@ -305,13 +300,16 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">run</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">epochs</span></em>, <em class="sig-param"><span class="n">se_hPars</span></em>, <em class="sig-param"><span class="n">loss</span><span class="o">=</span><span class="default_value">'MSE'</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">['accuracy']</span></em>, <em class="sig-param"><span class="n">init_logs</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.training.model_training()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>init</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Skip model initialization if False</p></li>
-<li><p><strong>run</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Skip model training if False</p></li>
+<li><p><strong>epochs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Number of training iterations</p></li>
+<li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: float</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>init_logs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
@@ -319,8 +317,16 @@
 
 <dl class="py method">
 <dt id="nnlibs.meta.models.EpyNN.initialize">
-<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init_params</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize EpyNN meta-model.</p>
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_params</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>NoneType</em><em>, </em><em>optional</em>) – For reproducibility in parameters initialization</p></li>
+<li><p><strong>init_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Layer parameters initialization.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -335,7 +341,7 @@
 <dd><p>Evaluate model against metrics and write on disk accordingly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>write</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Arbitrarily write model on disk if True</p>
+<dd class="field-odd"><p><strong>write</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – To write model on disk regardless metrics</p>
 </dd>
 </dl>
 </dd></dl>
@@ -353,8 +359,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pyplot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Show plot of results using matplotlib</p></li>
-<li><p><strong>gnuplot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Show plot of results using gnuplot</p></li>
+<li><p><strong>pyplot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Plot of results on GUI using matplotlib</p></li>
+<li><p><strong>gnuplot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Plot results on terminal using gnuplot</p></li>
 </ul>
 </dd>
 </dl>
@@ -367,8 +373,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>,</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>]</em><em>]</em><em>]</em>) – Unlabeled samples in dataset</p></li>
-<li><p><strong>encode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Perform one-hot encoding on features</p></li>
+<li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em>) – Set of sample features.</p></li>
+<li><p><strong>X_encode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – One-hot encode sample features.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -383,60 +389,20 @@
 </dd></dl>
 
 </div>
-<div class="section" id="epynn-settings">
-<h2>EpyNN settings<a class="headerlink" href="#epynn-settings" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hyperparameters">
+<h2>Hyperparameters<a class="headerlink" href="#hyperparameters" title="Permalink to this headline">¶</a></h2>
 <dl class="py attribute">
-<dt id="nnlibs.settings.config">
-<code class="sig-prename descclassname">nnlibs.settings.</code><code class="sig-name descname">config</code><a class="headerlink" href="#nnlibs.settings.config" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.settings.se_hPars">
+<code class="sig-prename descclassname">nnlibs.settings.</code><code class="sig-name descname">se_hPars</code><a class="headerlink" href="#nnlibs.settings.se_hPars" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># Globals for model training</span>
-    <span class="s1">&#39;training_epochs&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-    <span class="s1">&#39;training_loss&#39;</span><span class="p">:</span> <span class="s1">&#39;BCE&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;metrics_target&#39;</span><span class="p">:</span> <span class="s1">&#39;accuracy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;dataset_target&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="c1"># Logs behavior</span>
-    <span class="s1">&#39;logs_frequency&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s1">&#39;logs_frequency_display&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="s1">&#39;metrics_list&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;BCE&#39;</span><span class="p">,</span> <span class="s1">&#39;MSE&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;metrics_plot&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span> <span class="s1">&#39;BCE&#39;</span><span class="p">],</span>
-    <span class="c1"># Make and remove on disk</span>
-    <span class="s1">&#39;directory_clear&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="sd">&quot;&quot;&quot;General configuration dictionary settings.</span>
-
-<span class="sd">Target dataset can be picked in:</span>
-<span class="sd">[0, 1, 2]    # [dtrain, dtest, dval]</span>
-
-<span class="sd">Metrics can be picked in:</span>
-<span class="sd">[&#39;accuracy&#39;, &#39;CCE&#39;, &#39;MSE&#39;, &#39;MAE&#39;, &#39;RMSLE&#39;]</span>
-
-<span class="sd">For binary classification, extra-metrics can be picked in:</span>
-<span class="sd">[&#39;precision&#39;, &#39;recall&#39;, &#39;BCE&#39;]</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
-<span class="c1"># HYPERPARAMETERS SETTINGS</span>
-<span class="n">hPars</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># Schedule learning rate</span>
-</pre></div>
-</div>
-<dl class="py attribute">
-<dt id="nnlibs.settings.hPars">
-<code class="sig-prename descclassname">nnlibs.settings.</code><code class="sig-name descname">hPars</code><a class="headerlink" href="#nnlibs.settings.hPars" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hPars</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">se_hPars</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Schedule learning rate</span>
     <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="s1">&#39;schedule_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;exp_decay&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;schedule_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;steady&#39;</span><span class="p">,</span>
     <span class="s1">&#39;decay_k&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
     <span class="s1">&#39;cycling_n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;descent_d&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="c1"># Regularization</span>
-    <span class="s1">&#39;regularization_l2&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s1">&#39;regularization_l1&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1"># Tune activation function</span>
     <span class="s1">&#39;ELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
     <span class="s1">&#39;LRELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>

@@ -50,11 +50,11 @@ For binary classification, extra-metrics can be picked in:
 # HYPERPARAMETERS SETTINGS
 hPars = {
     # Schedule learning rate
-    'learning_rate': 0.001,
-    'schedule_mode': 'steady',
+    'learning_rate': 0.1,
+    'schedule': 'steady',
     'decay_k': 0.001,
-    'cycling_n': 1,
-    'descent_d': 1,
+    'cycle_epochs': 0,
+    'cycle_descent': 0,
     # Regularization
     'regularization_l2': 0,
     'regularization_l1': 0,

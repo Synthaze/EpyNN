@@ -192,12 +192,12 @@
 
 
 <div class="viewcode-block" id="template_backward"><a class="viewcode-back" href="../../../Details.html#nnlibs.template.backward.template_backward">[docs]</a><span class="k">def</span> <span class="nf">template_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Backward propagate signal to previous layer.</span>
+    <span class="sd">&quot;&quot;&quot;Backward propagation of error to previous layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># (1) Initialize cache</span>
     <span class="n">dX</span> <span class="o">=</span> <span class="n">initialize_backward</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">dA</span><span class="p">)</span>
 
-    <span class="c1"># (1) Pass backward</span>
+    <span class="c1"># (2) Pass backward</span>
     <span class="n">dA</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">bc</span><span class="p">[</span><span class="s1">&#39;dA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dX</span>
 
     <span class="k">return</span> <span class="n">dA</span>    <span class="c1"># To previous layer</span></div>

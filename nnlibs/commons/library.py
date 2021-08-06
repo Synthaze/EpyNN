@@ -59,7 +59,7 @@ def write_pickle(f, c):
     return None
 
 
-def configure_directory(se_config=None):
+def configure_directory(clear=False):
     """Configure working directory.
 
     :param se_config: Settings for general configuration
@@ -71,7 +71,7 @@ def configure_directory(se_config=None):
 
     for path in [datasets_path, models_path, plots_path]:
 
-        if se_config['directory_clear'] and os.path.exists(path):
+        if clear and os.path.exists(path):
             shutil.rmtree(path)
             process_logs('Remove: '+path, level=2)
 

@@ -3,12 +3,16 @@
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.io import encode_dataset
+from nnlibs.commons.io import (
+    encode_dataset,
+    scale_features,
+    index_vocabulary_auto,
+)
 from nnlibs.commons.models import dataSet
 
 
-def embedding_check(X_data, Y_data, X_scale=False):
-    """Check validity of user input and apply pre-processing.
+def embedding_check(X_data, Y_data=None, X_scale=False):
+    """Pre-processing.
 
     :param X_data: Dataset containing samples features
     :type encode: list[list[list]]
@@ -19,14 +23,12 @@ def embedding_check(X_data, Y_data, X_scale=False):
     :param X_scale: Set to True to normalize sample features within [0, 1]
     :type X_scale: bool
     """
-    if type(X_data) == type(Y_data) == None:
-        return None
+    if X_scale:
+        X_data = scale_features(X_data)
 
     X_data = np.array(X_data)
-    Y_data = np.array(Y_data)
 
-    if X_scale:
-        X_data = (X_data-np.min(X_data)) / (np.max(X_data)-np.min(X_data))
+    Y_data = np.array(Y_data)
 
     return X_data, Y_data
 
@@ -108,31 +110,6 @@ def embedding_prepare(layer, X_data, Y_data):
     embedded_data = (dtrain, dtest, dval, batch_dtrain)
 
     return embedded_data
-
-
-def index_vocabulary_auto(X_or_Y_data):
-    """Determine vocabulary size and generate dictionnary for one-hot encoding or features or label
-
-    :param X_or_Y_data: Dataset containing samples features or samples label
-    :type encode: list[list[list]]
-
-    :return: One-hot encoding converter
-    :rtype: dict
-
-    :return: One-hot decoding converter
-    :rtype: dict
-
-    :return: Vocabulary size
-    :rtype: int
-    """
-    words = sorted(list(set(X_or_Y_data.flatten())))
-
-    word_to_idx = {w:i for i,w in enumerate(words)}
-    idx_to_word = {i:w for w,i in word_to_idx.items()}
-
-    vocab_size = len(word_to_idx.keys())
-
-    return word_to_idx, idx_to_word, vocab_size
 
 
 def split_dataset(dataset, se_dataset):

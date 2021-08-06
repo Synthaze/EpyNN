@@ -205,10 +205,11 @@
         <span class="s1">&#39;grey&#39;</span><span class="p">,</span>
     <span class="p">]</span>
 
-    <span class="n">se_config</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">se_config</span>
+    <span class="n">logs_freq</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">logs_freq_disp</span> <span class="o">=</span> <span class="mi">25</span>
 
-    <span class="n">logs_freq</span> <span class="o">=</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;logs_frequency&#39;</span><span class="p">]</span>
-    <span class="n">logs_freq_disp</span> <span class="o">=</span> <span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;logs_frequency_display&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;current_logs&#39;</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">current_logs</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">e</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">current_logs</span> <span class="o">=</span> <span class="p">[</span><span class="n">headers_logs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">colors</span><span class="p">)]</span>
@@ -338,7 +339,7 @@
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="initialize_model_logs"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.logs.initialize_model_logs">[docs]</a><span class="k">def</span> <span class="nf">initialize_model_logs</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="viewcode-block" id="initialize_model_logs"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.logs.initialize_model_logs">[docs]</a><span class="k">def</span> <span class="nf">initialize_model_logs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">    :param model:</span>
@@ -351,9 +352,8 @@
     <span class="c1">#</span>
     <span class="n">dsets</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">dsets</span>
     <span class="n">se_dataset</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">se_dataset</span>
-    <span class="n">se_config</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">se_config</span>
 
-    <span class="n">model</span><span class="o">.</span><span class="n">init_logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dsets_samples_logs</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">,</span> <span class="n">se_config</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">init_logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dsets_samples_logs</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">init_logs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dsets_labels_logs</span><span class="p">(</span><span class="n">dsets</span><span class="p">))</span>
 
     <span class="c1">#</span>
@@ -369,6 +369,8 @@
 
     <span class="n">initialize_logs_print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
+    <span class="n">start_counter</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
@@ -378,7 +380,7 @@
 <span class="sd">    :param model:</span>
 <span class="sd">    :type model:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cprint</span> <span class="p">(</span><span class="s1">&#39;----------------------- </span><span class="si">%s</span><span class="s1"> -------------------------</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">cprint</span> <span class="p">(</span><span class="s1">&#39;----------------------- </span><span class="si">%s</span><span class="s1"> -------------------------</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="n">cprint</span> <span class="p">(</span><span class="s1">&#39;-------------------------------- Datasets ------------------------------------</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">])</span>
 
@@ -397,7 +399,7 @@
     <span class="nb">print</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">init_logs</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 
-    <span class="n">cprint</span> <span class="p">(</span><span class="s1">&#39;----------------------- </span><span class="si">%s</span><span class="s1"> -------------------------</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">cprint</span> <span class="p">(</span><span class="s1">&#39;----------------------- </span><span class="si">%s</span><span class="s1"> -------------------------</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">model</span><span class="o">.</span><span class="n">uname</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bold&#39;</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -458,8 +460,8 @@
         <span class="s1">&#39;e/n&#39;</span><span class="p">,</span>
         <span class="s1">&#39;decay</span><span class="se">\n</span><span class="s1">(k)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;descent</span><span class="se">\n</span><span class="s1">(d)&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;start&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;end&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;learning</span><span class="se">\n</span><span class="s1">rate</span><span class="se">\n</span><span class="s1">(start)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;learning</span><span class="se">\n</span><span class="s1">rate</span><span class="se">\n</span><span class="s1">(end)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;end</span><span class="se">\n</span><span class="s1">(%)&#39;</span><span class="p">,</span>
     <span class="p">]</span>
 
@@ -511,8 +513,8 @@
         <span class="s1">&#39;LRELU</span><span class="se">\n</span><span class="s1">alpha&#39;</span><span class="p">,</span>
         <span class="s1">&#39;ELU</span><span class="se">\n</span><span class="s1">alpha&#39;</span><span class="p">,</span>
         <span class="s1">&#39;softmax</span><span class="se">\n</span><span class="s1">temperature&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;reg.</span><span class="se">\n</span><span class="s1">l1&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;reg.</span><span class="se">\n</span><span class="s1">l2&#39;</span><span class="p">,</span>
+<span class="c1">#        &#39;reg.\nl1&#39;,</span>
+<span class="c1">#        &#39;reg.\nl2&#39;,</span>
     <span class="p">]</span>
 
     <span class="n">logs</span> <span class="o">=</span> <span class="n">Texttable</span><span class="p">()</span>
@@ -529,8 +531,8 @@
         <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;LRELU_alpha&#39;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;ELU_alpha&#39;</span><span class="p">])</span>
         <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;softmax_temperature&#39;</span><span class="p">])</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;regularization_l1&#39;</span><span class="p">])</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_hPars</span><span class="p">[</span><span class="s1">&#39;regularization_l2&#39;</span><span class="p">])</span>
+<span class="c1">#        log.append(se_hPars[&#39;regularization_l1&#39;])</span>
+<span class="c1">#        log.append(se_hPars[&#39;regularization_l2&#39;])</span>
 
         <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">p</span> <span class="o">!=</span> <span class="p">{}:</span>
             <span class="n">logs</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
@@ -540,7 +542,7 @@
     <span class="k">return</span> <span class="n">logs</span></div>
 
 
-<div class="viewcode-block" id="dsets_samples_logs"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.logs.dsets_samples_logs">[docs]</a><span class="k">def</span> <span class="nf">dsets_samples_logs</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">,</span> <span class="n">se_config</span><span class="p">):</span>
+<div class="viewcode-block" id="dsets_samples_logs"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.logs.dsets_samples_logs">[docs]</a><span class="k">def</span> <span class="nf">dsets_samples_logs</span><span class="p">(</span><span class="n">dsets</span><span class="p">,</span> <span class="n">se_dataset</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;.</span>
 
 <span class="sd">    :param dsets:</span>
@@ -548,9 +550,6 @@
 
 <span class="sd">    :param se_dataset:</span>
 <span class="sd">    :type se_dataset:</span>
-
-<span class="sd">    :param se_config:</span>
-<span class="sd">    :type se_config:</span>
 
 <span class="sd">    :return:</span>
 <span class="sd">    :rtype:</span>
@@ -560,8 +559,6 @@
         <span class="s1">&#39;dtest</span><span class="se">\n</span><span class="s1">(1)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;dval</span><span class="se">\n</span><span class="s1">(2)&#39;</span><span class="p">,</span>
         <span class="s1">&#39;batch</span><span class="se">\n</span><span class="s1">size&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;dataset</span><span class="se">\n</span><span class="s1">target&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;metrics</span><span class="se">\n</span><span class="s1">target&#39;</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="n">logs</span> <span class="o">=</span> <span class="n">Texttable</span><span class="p">()</span>
@@ -579,8 +576,6 @@
         <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
 
     <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;dataset_target&#39;</span><span class="p">])</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">se_config</span><span class="p">[</span><span class="s1">&#39;metrics_target&#39;</span><span class="p">])</span>
 
     <span class="n">logs</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
 
