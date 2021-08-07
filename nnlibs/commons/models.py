@@ -130,9 +130,6 @@ class dataSet:
             # Vectorize X_data in NumPy array
             self.X = np.array(X_data)
 
-            # Set sample identifiers
-            self.ids = np.array([i for i in range(len(X_data))])
-
         # Set of sample label
         if Y_data and self.active:
 
@@ -150,6 +147,9 @@ class dataSet:
 
             # Map single-digit label with representation in dataset
             self.b = {label:np.count_nonzero(self.y == label) for label in self.y}
+
+        # Set sample identifiers
+        self.ids = np.array([i for i in range(len(X_data))])
 
         # Initialize empty arrays
         self.A = np.array([])

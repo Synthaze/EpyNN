@@ -15,7 +15,7 @@ Boolean
     :maxdepth: 0
 
     nnlive/dummy_boolean/prepare_dataset.ipynb
-
+    nnlive/dummy_boolean/train.ipynb
 
 String
 ------------------------------
