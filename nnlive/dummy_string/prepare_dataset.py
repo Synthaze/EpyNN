@@ -1,10 +1,6 @@
 # EpyNN/nnlive/dummy_strings/prepare_dataset.py
 # Standard library imports
 import random
-import os
-
-# Local application/library specific imports
-from nnlibs.commons.library import write_pickle
 
 
 def features_string():

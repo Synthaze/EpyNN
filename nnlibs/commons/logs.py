@@ -104,7 +104,9 @@ def remaining_time_logs(model):
     :param model:
     :type model:
     """
-    elapsed_time = round(time.time() - int(model.ts), 2)
+    model.cts = time.time()
+    
+    elapsed_time = round(int(model.cts) - int(model.ts), 2)
 
     rate = round((model.e+1) / elapsed_time, 2)
 

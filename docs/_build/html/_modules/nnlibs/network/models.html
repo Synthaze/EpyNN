@@ -357,7 +357,7 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../EpyNN_Model.html#nnlibs.network.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pyplot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gnuplot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="EpyNN.plot"><a class="viewcode-back" href="../../../EpyNN_Model.html#nnlibs.network.models.EpyNN.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pyplot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gnuplot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot metrics from model training.</span>
 
 <span class="sd">        :param pyplot: Plot of results on GUI using matplotlib</span>
@@ -365,9 +365,12 @@
 
 <span class="sd">        :param gnuplot: Plot results on terminal using gnuplot</span>
 <span class="sd">        :type gnuplot: bool</span>
+
+<span class="sd">        :param path: Write matplotlib plot</span>
+<span class="sd">        :type path: bool or NoneType</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">pyplot</span><span class="p">:</span>
-            <span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">pyplot_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">gnuplot</span><span class="p">:</span>
             <span class="n">gnuplot_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
