@@ -89,22 +89,17 @@ def embedding_prepare(layer, X_data, Y_data):
 
     batch_dtrain = mini_batches(dtrain, se_dataset['batch_size'])
 
-    if se_dataset['dataset_name'] != None:
-        suffix = '_' + se_dataset['dataset_name']
-    else:
-        pass
-
     X_train, Y_train = zip(*dtrain)
     X_test, Y_test = zip(*dtest) if dtest else [(), ()]
     X_val, Y_val = zip(*dval) if dval else [(), ()]
 
-    dtrain = dataSet(X_data=X_train, Y_data=Y_train, name='dtrain' + suffix)
-    dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest' + suffix)
-    dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval' + suffix)
+    dtrain = dataSet(X_data=X_train, Y_data=Y_train, name='dtrain')
+    dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest')
+    dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval')
 
     for i, batch in enumerate(batch_dtrain):
         X_batch, Y_batch = zip(*batch)
-        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name='dtrain_' + str(i) + suffix)
+        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name='dtrain_' + str(i))
         batch_dtrain[i] = batch
 
     embedded_data = (dtrain, dtest, dval, batch_dtrain)

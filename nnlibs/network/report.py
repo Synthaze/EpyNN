@@ -34,8 +34,8 @@ def model_report(model):
         'grey',
     ]
 
-    logs_freq = 1
-    logs_freq_disp = 25
+    logs_freq = 10
+    logs_freq_disp = 10
 
     if not hasattr(model, 'current_logs'):
         model.current_logs = []

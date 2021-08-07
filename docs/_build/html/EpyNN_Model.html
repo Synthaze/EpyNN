@@ -209,8 +209,8 @@
 <div class="section" id="epynn-class-object">
 <h2>EpyNN Class Object<a class="headerlink" href="#epynn-class-object" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="nnlibs.meta.models.EpyNN">
-<em class="property">class </em><code class="sig-prename descclassname">nnlibs.meta.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.network.models.EpyNN">
+<em class="property">class </em><code class="sig-prename descclassname">nnlibs.network.models.</code><code class="sig-name descname">EpyNN</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition of a Neural Network prototype following the EpyNN scheme.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -221,8 +221,8 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.network.models.EpyNN.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layers</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'Network'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize instance variable attributes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Variables</dt>
@@ -238,9 +238,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.forward">
-<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.meta.forward.model_forward" title="nnlibs.meta.forward.model_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.forward.model_forward()</span></code></a>.</p>
+<dt id="nnlibs.network.models.EpyNN.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.network.forward.model_forward()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>X</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Set of sample features.</p>
@@ -269,9 +269,9 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.backward">
-<code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.backward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.meta.backward.model_backward" title="nnlibs.meta.backward.model_backward"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.backward.model_backward()</span></code></a>.</p>
+<dt id="nnlibs.network.models.EpyNN.backward">
+<code class="sig-name descname">backward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dA</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.network.backward.model_backward()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>dA</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – Derivative of ….</p>
@@ -299,62 +299,46 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.train">
-<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">epochs</span></em>, <em class="sig-param"><span class="n">se_hPars</span></em>, <em class="sig-param"><span class="n">loss</span><span class="o">=</span><span class="default_value">'MSE'</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">['accuracy']</span></em>, <em class="sig-param"><span class="n">init_logs</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.training.model_training()</span></code>.</p>
+<dt id="nnlibs.network.models.EpyNN.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">epochs</span></em>, <em class="sig-param"><span class="n">init_logs</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.network.training.model_training()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>epochs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – Number of training iterations</p></li>
-<li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: float</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
-<li><p><strong>loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
-<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>init_logs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
+<li><p><strong>extend</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – </p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.initialize">
-<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">init_params</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.network.models.EpyNN.initialize">
+<code class="sig-name descname">initialize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loss</span><span class="o">=</span><span class="default_value">'MSE'</span></em>, <em class="sig-param"><span class="n">se_hPars</span><span class="o">=</span><span class="default_value">{'ELU_alpha': 0.01, 'LRELU_alpha': 0.01, 'cycle_descent': 0, 'cycle_epochs': 0, 'decay_k': 0.001, 'learning_rate': 0.1, 'schedule': 'steady', 'softmax_temperature': 1}</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">['accuracy']</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">params</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.initialize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the Network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – </p></li>
+<li><p><strong>se_hPars</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>[</em><em>str: float</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
+<li><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – </p></li>
 <li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>NoneType</em><em>, </em><em>optional</em>) – For reproducibility in parameters initialization</p></li>
-<li><p><strong>init_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Layer parameters initialization.</p></li>
+<li><p><strong>params</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Layer parameters initialization.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.compute_metrics">
-<code class="sig-name descname">compute_metrics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.compute_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.compute_metrics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.meta.metrics.model_compute_metrics()</span></code>.</p>
+<dt id="nnlibs.network.models.EpyNN.evaluate">
+<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.network.evaluate.model_evaluate()</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.evaluate">
-<code class="sig-name descname">evaluate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.evaluate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate model against metrics and write on disk accordingly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>write</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – To write model on disk regardless metrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.logs">
-<code class="sig-name descname">logs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.logs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for <a class="reference internal" href="Details.html#nnlibs.commons.logs.model_logs" title="nnlibs.commons.logs.model_logs"><code class="xref py py-func docutils literal notranslate"><span class="pre">nnlibs.commons.logs.model_logs()</span></code></a>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.plot">
-<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pyplot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">gnuplot</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.plot" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.network.models.EpyNN.plot">
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pyplot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">gnuplot</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot metrics from model training.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -367,14 +351,16 @@
 </dd></dl>
 
 <dl class="py method">
-<dt id="nnlibs.meta.models.EpyNN.predict">
-<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/meta/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.meta.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
+<dt id="nnlibs.network.models.EpyNN.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">X_data</span></em>, <em class="sig-param"><span class="n">X_encode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">X_scale</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nnlibs/network/models.html#EpyNN.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nnlibs.network.models.EpyNN.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform prediction of label from unlabeled samples in dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em><em>]</em>) – Set of sample features.</p></li>
 <li><p><strong>X_encode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – One-hot encode sample features.</p></li>
+<li><p><strong>X_encode</strong> – One-hot encode sample features.</p></li>
+<li><p><strong>X_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Normalize sample features within [0, 1]</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -399,10 +385,10 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">se_hPars</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Schedule learning rate</span>
     <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-    <span class="s1">&#39;schedule_mode&#39;</span><span class="p">:</span> <span class="s1">&#39;steady&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;schedule&#39;</span><span class="p">:</span> <span class="s1">&#39;steady&#39;</span><span class="p">,</span>
     <span class="s1">&#39;decay_k&#39;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span>
-    <span class="s1">&#39;cycling_n&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s1">&#39;descent_d&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;cycle_epochs&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;cycle_descent&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
     <span class="c1"># Tune activation function</span>
     <span class="s1">&#39;ELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
     <span class="s1">&#39;LRELU_alpha&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>

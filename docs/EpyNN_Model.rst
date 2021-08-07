@@ -14,23 +14,23 @@ EpyNN Class Object
 ------------------------------
 
 
-.. autoclass:: nnlibs.meta.models.EpyNN
+.. autoclass:: nnlibs.network.models.EpyNN
 
     .. automethod:: __init__
 
     .. automethod:: forward
 
-        .. literalinclude:: ./../nnlibs/meta/forward.py
+        .. literalinclude:: ./../nnlibs/network/forward.py
             :pyobject: model_forward
 
     .. automethod:: backward
 
-        .. literalinclude:: ./../nnlibs/meta/backward.py
+        .. literalinclude:: ./../nnlibs/network/backward.py
             :pyobject: model_backward
 
     .. automethod:: train
 
-        .. literalinclude:: ./../nnlibs/meta/train.py
+        .. literalinclude:: ./../nnlibs/network/train.py
             :pyobject: model_training
 
     .. automethod:: initialize

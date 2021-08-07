@@ -55,8 +55,7 @@ class Embedding(Layer):
                 batch_size=None,
                 X_encode=False,
                 Y_encode=False,
-                X_scale=False,
-                name='dummy'):
+                X_scale=False):
 
         super().__init__()
 
@@ -68,7 +67,6 @@ class Embedding(Layer):
             'X_scale': X_scale,
             'X_encode': X_encode,
             'Y_encode': Y_encode,
-            'dataset_name': name,
         }
 
         X_data, Y_data = embedding_check(X_data, Y_data, X_scale)

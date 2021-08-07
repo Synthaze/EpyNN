@@ -30,6 +30,8 @@ def model_initialize(model, params=True):
 
     seed = model.seed
 
+    cprint('--- EpyNN Check --- ', attrs=['bold'])
+
     for layer in model.layers:
 
         layer.name = layer.__class__.__name__

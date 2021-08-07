@@ -91,7 +91,10 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quick Start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../epynn.html">EpyNN Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -173,129 +176,71 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="model_compute_metrics"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.model_compute_metrics">[docs]</a><span class="k">def</span> <span class="nf">model_compute_metrics</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">metrics_functions</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
     <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
         <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">recall</span><span class="p">,</span>
         <span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">precision</span><span class="p">,</span>
-        <span class="s1">&#39;CCE&#39;</span><span class="p">:</span> <span class="n">CCE</span><span class="p">,</span>
-        <span class="s1">&#39;CE&#39;</span><span class="p">:</span> <span class="n">CE</span><span class="p">,</span>
-        <span class="s1">&#39;BCE&#39;</span><span class="p">:</span> <span class="n">BCE</span><span class="p">,</span>
-        <span class="s1">&#39;MSE&#39;</span><span class="p">:</span> <span class="n">MSE</span><span class="p">,</span>
-        <span class="s1">&#39;MAE&#39;</span><span class="p">:</span> <span class="n">MAE</span><span class="p">,</span>
-        <span class="s1">&#39;RMSLE&#39;</span><span class="p">:</span> <span class="n">RMSLE</span><span class="p">,</span>
-        <span class="s1">&#39;KLD&#39;</span><span class="p">:</span> <span class="n">KLD</span><span class="p">,</span>
     <span class="p">}</span>
 
+    <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="n">dsets</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">dsets</span>
-
-    <span class="n">hPars</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">se_hPars</span>
-
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">dset</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">dsets</span><span class="p">)):</span>
-
-        <span class="n">A</span> <span class="o">=</span> <span class="n">X</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">X</span>
-
-        <span class="n">dset</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-
-        <span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-
-            <span class="n">m</span> <span class="o">=</span> <span class="n">metrics</span><span class="p">[</span><span class="n">s</span><span class="p">](</span><span class="n">dset</span><span class="p">,</span> <span class="n">hPars</span><span class="p">)</span>
-
-            <span class="n">model</span><span class="o">.</span><span class="n">metrics</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="n">dsets</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="k">return</span> <span class="n">metrics</span>
 
 
-<div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.accuracy">[docs]</a><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+<div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.accuracy">[docs]</a><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Accuracy of prediction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">-</span> <span class="n">dset</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">Y</span>
+
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">P</span> <span class="o">-</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">accuracy</span></div>
 
 
-<div class="viewcode-block" id="recall"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.recall">[docs]</a><span class="k">def</span> <span class="nf">recall</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+<div class="viewcode-block" id="recall"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.recall">[docs]</a><span class="k">def</span> <span class="nf">recall</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fraction of positive instances retrieved over the total.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">oy</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">+</span> <span class="n">dset</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">y</span>
+
+    <span class="n">oy</span> <span class="o">=</span> <span class="n">P</span> <span class="o">+</span> <span class="n">y</span>
 
     <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">oy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">tp</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">tp</span>
     <span class="n">tn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">oy</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">P</span><span class="p">)</span> <span class="o">-</span> <span class="n">tn</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">-</span> <span class="n">tn</span>
 
-    <span class="n">recall</span> <span class="o">=</span> <span class="n">tp</span><span class="o">/</span><span class="p">(</span><span class="n">tp</span><span class="o">+</span><span class="n">fn</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">])</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="p">(</span><span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span><span class="o">+</span><span class="n">fn</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">recall</span></div>
 
 
-<div class="viewcode-block" id="precision"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.precision">[docs]</a><span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
+<div class="viewcode-block" id="precision"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.precision">[docs]</a><span class="k">def</span> <span class="nf">precision</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fraction of positive samples among retrieved instances.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">oy</span> <span class="o">=</span> <span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">+</span> <span class="n">dset</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoded</span> <span class="k">else</span> <span class="n">y</span>
+
+    <span class="n">oy</span> <span class="o">=</span> <span class="n">P</span> <span class="o">+</span> <span class="n">y</span>
 
     <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">oy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">tp</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span> <span class="n">tp</span>
     <span class="n">tn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">oy</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">P</span><span class="p">)</span> <span class="o">-</span> <span class="n">tn</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">-</span> <span class="n">tn</span>
 
-    <span class="n">precision</span> <span class="o">=</span> <span class="n">tp</span><span class="o">/</span><span class="p">(</span><span class="n">tp</span><span class="o">+</span><span class="n">fp</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">])</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="p">(</span><span class="n">tp</span> <span class="o">/</span> <span class="p">(</span><span class="n">tp</span><span class="o">+</span><span class="n">fp</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">precision</span></div>
-
-
-<div class="viewcode-block" id="CCE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.CCE">[docs]</a><span class="k">def</span> <span class="nf">CCE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">CCE</span> <span class="o">=</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span> <span class="o">+</span> <span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">CCE</span></div>
-
-
-<div class="viewcode-block" id="CE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.CE">[docs]</a><span class="k">def</span> <span class="nf">CE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
-    <span class="n">CE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">B</span> <span class="o">-</span> <span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
-    <span class="k">return</span> <span class="n">CE</span></div>
-
-
-<div class="viewcode-block" id="BCE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.BCE">[docs]</a><span class="k">def</span> <span class="nf">BCE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">BCE</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">])))</span>
-    <span class="k">return</span> <span class="n">BCE</span></div>
-
-
-<div class="viewcode-block" id="MSE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.MSE">[docs]</a><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">MSE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">MSE</span></div>
-
-
-<div class="viewcode-block" id="MAE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.MAE">[docs]</a><span class="k">def</span> <span class="nf">MAE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">MAE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="o">-</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">MAE</span></div>
-
-
-<div class="viewcode-block" id="RMSLE"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.RMSLE">[docs]</a><span class="k">def</span> <span class="nf">RMSLE</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">RMSLE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]))))</span>
-    <span class="k">return</span> <span class="n">RMSLE</span></div>
-
-
-<div class="viewcode-block" id="KLD"><a class="viewcode-back" href="../../../Details.html#nnlibs.commons.metrics.KLD">[docs]</a><span class="k">def</span> <span class="nf">KLD</span><span class="p">(</span><span class="n">dset</span><span class="p">,</span><span class="n">hPars</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">KLD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(((</span><span class="n">dset</span><span class="o">.</span><span class="n">A</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">dset</span><span class="o">.</span><span class="n">Y</span><span class="o">+</span><span class="n">hPars</span><span class="p">[</span><span class="s1">&#39;min_epsilon&#39;</span><span class="p">]))))</span>
-    <span class="k">return</span> <span class="n">KLD</span></div>
 </pre></div>
 
            </div>

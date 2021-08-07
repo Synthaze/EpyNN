@@ -1,0 +1,1125 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Dummy Network &mdash; EpyNN 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dummy string data" href="../dummy_string/prepare_dataset.html" />
+    <link rel="prev" title="Dummy dataset" href="prepare_dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> EpyNN
+          
+
+          
+            
+            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Model.html">Dataset (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Embedding.html">Data Embedding (Input)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dense.html">Fully Connected (Dense)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../RNN.html">Recurrent Neural Network (RNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../LSTM.html">Long Short-Term Memory (LSTM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../GRU.html">Gated Recurrent Unit (GRU)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Convolution.html">Convolutional Neural Network (CNN)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Dropout.html">Dropout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Flatten.html">Flatten</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#boolean">Boolean</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="prepare_dataset.html">Dummy dataset</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy Network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Which-input-data?">Which input data?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Why-a-dummy-Neural-Network?">Why a dummy Neural Network?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Import-and-configure">Import and configure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Retrieve-sample-Boolean-features-and-label">Retrieve sample Boolean features and label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Embedding-layer-and-dataSet">Embedding layer and dataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Perceptron---Single-layer-Neural-Network">Perceptron - Single layer Neural Network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">EpyNN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
+        
+      <li>Dummy Network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/nnlive/dummy_boolean/train.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Dummy-Network">
+<h1>Dummy Network<a class="headerlink" href="#Dummy-Network" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_boolean/train.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_boolean/train.py</span></code>.</p>
+<p>This notebook is the first of the series on Neural Network training and prediction with EpyNN. Therefore, it contains extra-details not necessarily refreshed in the next notebooks.</p>
+<p>In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.</p>
+<div class="section" id="Which-input-data?">
+<h2>Which input data?<a class="headerlink" href="#Which-input-data?" title="Permalink to this headline">¶</a></h2>
+<p>In this example we use <a class="reference internal" href="prepare_dataset.html"><span class="doc">dummy dataset with boolean sample features</span></a> to generate data.</p>
+<p>Briefly, one sample is described by a list of pseudo-random boolean features to which is associated a single-digit label with respect to a simple law.</p>
+</div>
+<div class="section" id="Why-a-dummy-Neural-Network?">
+<h2>Why a dummy Neural Network?<a class="headerlink" href="#Why-a-dummy-Neural-Network?" title="Permalink to this headline">¶</a></h2>
+<p>We introduced in the above-linked notebook that dummy data and run are important because they may allow to detect critical mistakes that are often easy to correct. It is a good practice, which saves time that can be invested in real word problems.</p>
+<p>Such examples in the context of this notebook are also useful because the focus is not about the data significance or the problem itself: it is about a landscape of possibilities with respect to data structure and data type.</p>
+</div>
+<div class="section" id="Import-and-configure">
+<h2>Import and configure<a class="headerlink" href="#Import-and-configure" title="Permalink to this headline">¶</a></h2>
+<p>We will import all libraries and configure seeding, behaviors and directory.</p>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/train.ipynb</span>
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="c1"># Related third party imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Local application/library specific imports</span>
+<span class="kn">import</span> <span class="nn">nnlibs.initialize</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.maths</span> <span class="kn">import</span> <span class="n">relu</span>
+<span class="kn">from</span> <span class="nn">nnlibs.commons.library</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">configure_directory</span><span class="p">,</span>
+    <span class="n">read_model</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nnlibs.network.models</span> <span class="kn">import</span> <span class="n">EpyNN</span>
+<span class="kn">from</span> <span class="nn">nnlibs.embedding.models</span> <span class="kn">import</span> <span class="n">Embedding</span>
+<span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">prepare_dataset</span> <span class="kn">import</span> <span class="n">prepare_dataset</span>
+<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">se_hPars</span>
+</pre></div>
+</div>
+</div>
+<p>Note that we imported all libraries we will use, at once and on top of the script. Even though we are going through a notebook, we should pay attention to follow good practices for imports as stated in <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#imports">PEP 8 – Style Guide for Python Code</a>.</p>
+<p>You may have also noted that <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Related</span> <span class="pre">third</span> <span class="pre">party</span> <span class="pre">imports</span></code> are limited to <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<p>According to the <a href="#id1"><span class="problematic" id="id2">`Philosophy of EpyNN &lt;&gt;`__</span></a>, we developed an educational resource for which computations rely in pure Python/NumPy, nothing else.</p>
+<p>Let’s now proceed with the configuration and preferences for the current script.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;warn&#39;</span><span class="p">)</span>
+
+<span class="n">configure_directory</span><span class="p">(</span><span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    <span class="c1"># This is a dummy example</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">Remove: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/datasets</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/datasets</span>
+<span class="ansi-red-intense-fg ansi-bold">Remove: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/models</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/models</span>
+<span class="ansi-red-intense-fg ansi-bold">Remove: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/plots</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/plots</span>
+</pre></div></div>
+</div>
+<p>We already explained the <a class="reference external" href="prepare_dataset.html#Seeding">reason for seeding</a>.</p>
+<p>The call to <code class="docutils literal notranslate"><span class="pre">np.set_printoptions()</span></code> set the printing behavior of NumPy arrays. To not overfill this notebook, we instructed that beyond <code class="docutils literal notranslate"><span class="pre">threshold=10</span></code> NumPy will trigger summarization rather than full representation.</p>
+<p>The call to <code class="docutils literal notranslate"><span class="pre">np.seterr()</span></code> is <strong>very important</strong> if you want to be aware of what’s happening in your Network. Follow the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.seterr.html">numpy.seterr</a> official documentation for details. Herein, we make sure that floating-point errors will always <code class="docutils literal notranslate"><span class="pre">warn</span></code> on the terminal session and thus we will always be aware of them.</p>
+<p>Finally, the call to <code class="docutils literal notranslate"><span class="pre">configure_directory()</span></code> is purely facultative but creates the default EpyNN subdirectories in the working directory.</p>
+</div>
+</div>
+<div class="section" id="Retrieve-sample-Boolean-features-and-label">
+<h2>Retrieve sample Boolean features and label<a class="headerlink" href="#Retrieve-sample-Boolean-features-and-label" title="Permalink to this headline">¶</a></h2>
+<p>From prepare_dataset we imported the function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s inspect, always.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">)),</span> <span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0 False [False, False, False, False, True, True, False, True, False, True, True]
+1 True [False, True, False, False, True, True, True, True, False, True, True]
+1 True [True, False, True, False, True, True, True, False, False, False, True]
+1 True [False, True, True, True, False, True, True, True, False, False, False]
+0 False [False, False, False, True, False, False, False, True, True, False, True]
+</pre></div></div>
+</div>
+<p>We have what we expect. Remeber that the conditional expression is the dummy law we used to assign a label to dummy sample boolean features.</p>
+</div>
+<div class="section" id="Embedding-layer-and-dataSet">
+<h2>Embedding layer and dataSet<a class="headerlink" href="#Embedding-layer-and-dataSet" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Instantiate-the-Embedding-layer">
+<h3>Instantiate the Embedding layer<a class="headerlink" href="#Instantiate-the-Embedding-layer" title="Permalink to this headline">¶</a></h3>
+<p>In EpyNN, data must be passed as arguments upon call of the <code class="docutils literal notranslate"><span class="pre">Embedding()</span></code> layer class constructor.</p>
+<p>The instantiated object - the embedding or input layer - is always the first layer in Neural Networks made with EpyNN.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">embedding</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">X_data</span><span class="o">=</span><span class="n">X_features</span><span class="p">,</span>
+                      <span class="n">Y_data</span><span class="o">=</span><span class="n">Y_label</span><span class="p">,</span>
+                      <span class="n">relative_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1"># Training, testing, validation set</span>
+</pre></div>
+</div>
+</div>
+<p>You can refer to <a class="reference external" href="../../Embedding.html">Data Embedding (Input)</a> for full documentation.</p>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">X_features</span></code> and <code class="docutils literal notranslate"><span class="pre">Y_label</span></code> passed in the class constructor have been split with respect to relative sizes for training, testing and validation sets.</p>
+<p>Let’s explore some properties and attributes of the instantiated <code class="docutils literal notranslate"><span class="pre">embedding</span></code> layer object.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Type of object</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">embedding</span><span class="p">))</span>
+
+<span class="c1"># Attributes and values of embedding layer</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">embedding</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;nnlibs.embedding.models.Embedding&#39;&gt;
+0 d {}
+1 fs {}
+2 p {}
+3 fc {}
+4 bs {}
+5 g {}
+6 bc {}
+7 o {}
+8 activation {}
+9 se_hPars None
+10 se_dataset {&#39;dtrain_relative&#39;: 2, &#39;dtest_relative&#39;: 1, &#39;dval_relative&#39;: 0, &#39;batch_size&#39;: None, &#39;X_scale&#39;: False, &#39;X_encode&#39;: False, &#39;Y_encode&#39;: False}
+11 dtrain &lt;nnlibs.commons.models.dataSet object at 0x7f4204889cf8&gt;
+12 dtest &lt;nnlibs.commons.models.dataSet object at 0x7f4204889ef0&gt;
+13 dval &lt;nnlibs.commons.models.dataSet object at 0x7f4204889f28&gt;
+14 batch_dtrain [&lt;nnlibs.commons.models.dataSet object at 0x7f4204889f98&gt;]
+15 dsets [&lt;nnlibs.commons.models.dataSet object at 0x7f4204889cf8&gt;, &lt;nnlibs.commons.models.dataSet object at 0x7f4204889ef0&gt;]
+</pre></div></div>
+</div>
+<p><strong>Lines 0-9</strong>: Inherited from <code class="docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code> which is the <a class="reference external" href="../../Layer_Model.html">Base Layer</a>. These instance attributes exist for any layers in EpyNN.</p>
+<p><strong>Lines 10-15</strong>: Instance attributes specific to <code class="docutils literal notranslate"><span class="pre">nnlibs.embedding.models.Embedding</span></code> layer.</p>
+<ul class="simple">
+<li><ol class="arabic simple" start="10">
+<li><p>se_dataset: Contains data-related settings applied upon layer instantiation</p></li>
+</ol>
+</li>
+<li><p>(11-13) dtrain, dtest, dval: Training, testing and validation sets in EpyNN <code class="docutils literal notranslate"><span class="pre">dataSet</span></code> object.</p></li>
+<li><ol class="arabic simple" start="14">
+<li><p>batch_dtrain: Training mini-batches. Contains the data actually used for training.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="15">
+<li><p>dsets: Contains the active datasets that will be evaluated during training. It contains only two <code class="docutils literal notranslate"><span class="pre">dataSet</span></code> objects because dval was set to empty.</p></li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="The-dataSet-object">
+<h3>The dataSet object<a class="headerlink" href="#The-dataSet-object" title="Permalink to this headline">¶</a></h3>
+<p>Let’s examinate one <code class="docutils literal notranslate"><span class="pre">dataSet</span></code> object the same way.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Type of object</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="p">))</span>
+
+<span class="c1"># Attributes and values of embedding layer</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;nnlibs.commons.models.dataSet&#39;&gt;
+0 name dtrain
+1 active True
+2 X [[False False False ... False  True  True]
+ [False  True False ... False  True  True]
+ [ True False  True ... False False  True]
+ ...
+ [False  True  True ...  True  True False]
+ [False  True False ...  True False False]
+ [False False  True ... False False False]]
+3 Y [[0]
+ [1]
+ [1]
+ ...
+ [1]
+ [1]
+ [0]]
+4 y [0 1 1 ... 1 1 0]
+5 b {0: 23, 1: 27}
+6 ids [ 0  1  2 ... 47 48 49]
+7 A []
+8 P []
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><ol class="arabic simple" start="0">
+<li><p>name: Self-explaining</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple">
+<li><p>active: If it contains data</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>X: Set of sample features</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>Y: Set of sample label.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="4">
+<li><p>y: Set of single-digit sample label.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="5">
+<li><p>b: Balance of labels in set.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="6">
+<li><p>ids: Sample identifiers.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="7">
+<li><p>A: Output of forward propagation</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="8">
+<li><p>P: Label predictions.</p></li>
+</ol>
+</li>
+</ul>
+<p>For full documentation of <code class="docutils literal notranslate"><span class="pre">nnlibs.commons.models.dataSet</span></code> object, you can refer to <a class="reference external" href="../../Data_Model.html">Dataset (Model)</a>.</p>
+<p>Note that in the present example we use single digit-labels and therefore the only difference between (3) and (4) is about the shape. The reason for this apparent duplicate will appear in a next notebook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">embedding</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(50, 1)
+(50,)
+True
+</pre></div></div>
+</div>
+<p>We described how to instantiate the embedding - or input - layer with EpyNN and we browsed the attached attribute-value pairs.</p>
+<p>We observed that it contains <code class="docutils literal notranslate"><span class="pre">dataSet</span></code> objects and we browsed the corresponding attribute-value pairs for the training set.</p>
+<p>We introduced all we needed to know.</p>
+<p>We are ready.</p>
+</div>
+</div>
+<div class="section" id="Perceptron---Single-layer-Neural-Network">
+<h2>Perceptron - Single layer Neural Network<a class="headerlink" href="#Perceptron---Single-layer-Neural-Network" title="Permalink to this headline">¶</a></h2>
+<p>Herein, we are going to build the most simple Neural Network and to train it in the most simple way we can.</p>
+<p><img alt="bcee37821500426e96ea795a22a2382f" src="../../_images/perceptron-01.png" /></p>
+<p>This scheme depict the topology of a Perceptron, a single layer Neural Network capable of linear regressions.</p>
+<p>Although the picture is clearly stating that there are two layers in there, <strong>single layer</strong> refers to <strong>single trainable layer</strong>.</p>
+<p>The trainable layer is the output layer, which is here a <em>fully connected</em> or <em>Dense</em> layer.</p>
+<p>Since we already spent time to detail the what is and what contains an <code class="docutils literal notranslate"><span class="pre">Embedding</span></code> layer and <code class="docutils literal notranslate"><span class="pre">dataSet</span></code> object, we will focus on practice and pass on these important definitions otherwise reviewed in <a href="#id1"><span class="problematic" id="id3">`xxxx &lt;&gt;`__</span></a>.</p>
+<p>We have the embedding or input layer to satisfy the scheme above. We need to instantiate a Dense layer object.</p>
+<div class="section" id="Instantiate-a-Dense-layer">
+<h3>Instantiate a Dense layer<a class="headerlink" href="#Instantiate-a-Dense-layer" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">()</span>    <span class="c1"># Defaults to Dense(nodes=1, activation=sigmoid)</span>
+</pre></div>
+</div>
+</div>
+<p>This one was easy. Let’s inspect.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Type of object</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dense</span><span class="p">))</span>
+
+<span class="c1"># Attributes and values of dense layer</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">dense</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;nnlibs.dense.models.Dense&#39;&gt;
+0 d {&#39;n&#39;: 1}
+1 fs {}
+2 p {}
+3 fc {}
+4 bs {}
+5 g {}
+6 bc {}
+7 o {}
+8 activation {&#39;activate&#39;: &#39;sigmoid&#39;}
+9 se_hPars None
+10 initialization &lt;function xavier at 0x7f4207a4a488&gt;
+11 activate &lt;function sigmoid at 0x7f4207a4a268&gt;
+</pre></div></div>
+</div>
+<p>We pass on details again. Simply note that (1) indicates the number of nodes in the Dense layer, and (8, 11) the activation function for this layer. See <a href="#id1"><span class="problematic" id="id4">`xx &lt;&gt;`__</span></a>.</p>
+</div>
+<div class="section" id="Instantiate-the-EpyNN-Neural-Network">
+<h3>Instantiate the EpyNN Neural Network<a class="headerlink" href="#Instantiate-the-EpyNN-Neural-Network" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have an embedding (input) layer and a Dense (output) layer, we can instantiate the EpyNN object which represents the Neural Network.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding</span><span class="p">,</span> <span class="n">dense</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>The list <code class="docutils literal notranslate"><span class="pre">layers</span></code> is the architecture of a Perceptron.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Perceptron_Dense-1-sigmoid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The object <code class="docutils literal notranslate"><span class="pre">EpyNN</span></code> is the Perceptron itself.</p>
+<p>Let’s proove it.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Type of object</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">))</span>
+
+<span class="c1"># Attributes and values of EpyNN model for a Perceptron</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">vars</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;nnlibs.network.models.EpyNN&#39;&gt;
+0 layers [&lt;nnlibs.embedding.models.Embedding object at 0x7f4204889d30&gt;, &lt;nnlibs.dense.models.Dense object at 0x7f42610d5710&gt;]
+1 embedding &lt;nnlibs.embedding.models.Embedding object at 0x7f4204889d30&gt;
+2 ts 1628295230
+3 uname 1628295230_Perceptron_Dense-1-sigmoid
+4 initialized False
+</pre></div></div>
+</div>
+<p>Does it really contains the layers we instantiated before?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">((</span><span class="n">model</span><span class="o">.</span><span class="n">embedding</span> <span class="o">==</span> <span class="n">embedding</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">dense</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+True
+True
+</pre></div></div>
+</div>
+<p>It does seems, yes.</p>
+<p>We are going to start the training of this Perceptron with all defaults, the very most simple.</p>
+<p>If willing to read the docs about <a class="reference external" href="../../EpyNN_Model.html">Neural Network (EpyNN)</a> before, or examinate a <a href="#id1"><span class="problematic" id="id5">`less basic use &lt;&gt;`__</span></a> first, feel free.</p>
+<p>Otherwise, let’s train it.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">--- EpyNN Check --- </span>
+<span class="ansi-bold">Layer: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Embedding</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
+<span class="ansi-bold">----------------------- 1628295230_Perceptron_Dense-1-sigmoid -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++--------+-------+------+-------+
+| dtrain | dtest | dval | batch |
+| (0)    | (1)   | (2)  | size  |
++--------+-------+------+-------+
+| 50     | 25    | None | None  |
++--------+-------+------+-------+
+
++----------+--------+-------+------+
+| N_LABELS | dtrain | dtest | dval |
+|          | (0)    | (1)   | (2)  |
++----------+--------+-------+------+
+| 2        | 0: 23  | 0: 12 | None |
+|          | 1: 27  | 1: 13 |      |
++----------+--------+-------+------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-------------------+-------------+--------------+
+| ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
++----+-----------+------------+-------------------+-------------+--------------+
+| 0  | Embedding | m: 50      |                   | X: (50, 11) | dX: (50, 11) |
+|    |           | n: 11      |                   | A: (50, 11) | dA: (50, 11) |
++----+-----------+------------+-------------------+-------------+--------------+
+| 1  | Dense     | n: 1       | activate: sigmoid | X: (50, 11) | dX: (50, 1)  |
+|    |           | m: 50      |                   | W: (11, 1)  | dZ: (50, 1)  |
+|    |           | p: 11      |                   | b: (1, 1)   | dA: (50, 11) |
+|    |           |            |                   | Z: (50, 1)  |              |
+|    |           |            |                   | A: (50, 1)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Layer | epochs | schedule | decay_k | cycle  | cycle   | cycle  | learning | learning | end |
+|       |        |          |         | epochs | descent | number | rate     | rate     | (%) |
+|       |        |          |         |        |         |        | (start)  | (end)    |     |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+
++-------+-------+-------+-------------+
+| Layer | LRELU | ELU   | softmax     |
+|       | alpha | alpha | temperature |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+
+<span class="ansi-bold">----------------------- 1628295230_Perceptron_Dense-1-sigmoid -------------------------
+</span>
+
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |              <span class="ansi-white-fg">Experiment</span>               |
+|       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                       |
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.420</span> |  <span class="ansi-green-intense-fg ansi-bold">0.400</span>   | <span class="ansi-red-intense-fg ansi-bold">0.413</span> | <span class="ansi-red-intense-fg ansi-bold">0.478</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.720</span> |  <span class="ansi-green-intense-fg ansi-bold">0.560</span>   | <span class="ansi-red-intense-fg ansi-bold">0.201</span> | <span class="ansi-red-intense-fg ansi-bold">0.281</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.780</span> |  <span class="ansi-green-intense-fg ansi-bold">0.560</span>   | <span class="ansi-red-intense-fg ansi-bold">0.141</span> | <span class="ansi-red-intense-fg ansi-bold">0.245</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.860</span> |  <span class="ansi-green-intense-fg ansi-bold">0.640</span>   | <span class="ansi-red-intense-fg ansi-bold">0.113</span> | <span class="ansi-red-intense-fg ansi-bold">0.214</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.900</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.097</span> | <span class="ansi-red-intense-fg ansi-bold">0.191</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.920</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.087</span> | <span class="ansi-red-intense-fg ansi-bold">0.173</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.920</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.079</span> | <span class="ansi-red-intense-fg ansi-bold">0.160</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.073</span> | <span class="ansi-red-intense-fg ansi-bold">0.149</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.760</span>   | <span class="ansi-red-intense-fg ansi-bold">0.068</span> | <span class="ansi-red-intense-fg ansi-bold">0.140</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.960</span> |  <span class="ansi-green-intense-fg ansi-bold">0.760</span>   | <span class="ansi-red-intense-fg ansi-bold">0.064</span> | <span class="ansi-red-intense-fg ansi-bold">0.133</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 5.83s RATE: 15.61e/s TTC: 1s</span>
++-------+-------+-----+----------+-----+-----+------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
+|       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
++-------+-------+-----+----------+-----+-----+------------+
++-------+-------+-----+----------+-----+-----+------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 5.84s RATE: 17.12e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>XXXX</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_53_0.png" src="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_53_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/plots/1628295230_Perceptron_Dense-1-sigmoid.png</span>
+</pre></div></div>
+</div>
+<p>XXXX</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<p>XXX</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../dummy_string/prepare_dataset.html" class="btn btn-neutral float-right" title="Dummy string data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="prepare_dataset.html" class="btn btn-neutral float-left" title="Dummy dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Florian Malard and Stéphanie Olivier-Van Stichelen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

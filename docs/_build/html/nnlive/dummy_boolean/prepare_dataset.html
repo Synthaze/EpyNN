@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Dummy boolean data &mdash; EpyNN 0.1.0 documentation</title>
+  <title>Dummy dataset &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Dummy string data" href="../dummy_string/prepare_dataset.html" />
+    <link rel="next" title="Dummy Network" href="train.html" />
     <link rel="prev" title="Examples and data" href="../../examples.html" /> 
 </head>
 
@@ -94,8 +94,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -106,7 +107,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Flatten.html">Flatten</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#boolean">Boolean</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy boolean data</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-is-a-Boolean-data-type?">What is a Boolean data-type?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Why-preparing-a-dummy-dataset-with-Boolean-features?">Why preparing a dummy dataset with Boolean features?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Prepare-a-set-of-boolean-sample-features-and-related-label">Prepare a set of boolean sample features and related label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="train.html">Dummy Network</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
@@ -165,7 +173,7 @@
         
           <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
         
-      <li>Dummy boolean data</li>
+      <li>Dummy dataset</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -454,36 +462,69 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Dummy-boolean-data">
-<h1>Dummy boolean data<a class="headerlink" href="#Dummy-boolean-data" title="Permalink to this headline">¶</a></h1>
-<p>Regular Python code located in …</p>
-<p>… using these data:</p>
-<p>Imports.</p>
+<div class="section" id="Dummy-dataset">
+<h1>Dummy dataset<a class="headerlink" href="#Dummy-dataset" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_boolean/prepare_dataset.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_boolean/prepare_dataset.py</span></code>.</p>
+<p>This notebook is the first of the series on preparing data for Neural Network regression with EpyNN.</p>
+<p>In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.</p>
+<div class="section" id="What-is-a-Boolean-data-type?">
+<h2>What is a Boolean data-type?<a class="headerlink" href="#What-is-a-Boolean-data-type?" title="Permalink to this headline">¶</a></h2>
+<p>Boolean data type is a form of data with only two possible values, namely <code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> in most programming languages. In Python, these values evaluate to <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> behind the scene. Calculations using Boolean data are very quick and performance gain also arise from easier data and output processing compared to other data types.</p>
+<p>Examples of real world topics well suited for the Boolean data type may include: molecular interactions, gene regulation, disease prediction and diagnosis, among many others.</p>
+</div>
+<div class="section" id="Why-preparing-a-dummy-dataset-with-Boolean-features?">
+<h2>Why preparing a dummy dataset with Boolean features?<a class="headerlink" href="#Why-preparing-a-dummy-dataset-with-Boolean-features?" title="Permalink to this headline">¶</a></h2>
+<p>A dummy dataset means an ensemble of data having no interest in the real world. However, dummy dataset can be prepared in a way that results from Neural Network regression are made <strong>predictable</strong>. When having the <em>a priori</em> knowledge of the law we want to model, it is easier to evaluate if the Neural Network is working in an optimal way. When dealing with samples described by boolean features, it is then a good and time-saving practice to test the code and settings on simple problems from dummy
+data that should work if no mistake was introduced in the procedure.</p>
+</div>
+<div class="section" id="Prepare-a-set-of-boolean-sample-features-and-related-label">
+<h2>Prepare a set of boolean sample features and related label<a class="headerlink" href="#Prepare-a-set-of-boolean-sample-features-and-related-label" title="Permalink to this headline">¶</a></h2>
+<p>In a Python script, the first thing is to import librairies. Drawing the analogy between common sense and programming: <em>“a building or room **[a python file]*</em> containing collections of <strong>[objects]</strong> books, periodicals, and sometimes films and recorded music for people <strong>[for developers]</strong> to read, borrow, or refer to”<a href="#id1"><span class="problematic" id="id2">*</span></a>.</p>
+<p>We need to import librairies for the usable content it provides.</p>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/prepare_dataset.ipynb</span>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/prepare_dataset.py</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">random</span>
-
-<span class="c1"># Local application/library specific imports</span>
-<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span>
 </pre></div>
 </div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">random</span></code> seed for reproducibility.</p>
-<div class="nbinput nblast docutils container">
+<p>According to <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/#imports">PEP 8 – Style Guide for Python Code</a>, imports should should be grouped. Herein, we imported the library <code class="docutils literal notranslate"><span class="pre">random</span></code> which is a Python built-in library or <em>standard library</em>.</p>
+</div>
+<div class="section" id="Seeding">
+<h3>Seeding<a class="headerlink" href="#Seeding" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">random</span></code> library provides functions to generate <em>pseudo-random</em> numbers. It is said <em>pseudo-random</em> because the numbers are generated by an algorythm, rather than physical processes expected to be <em>truly-random</em>. See <a class="reference external" href="https://en.wikipedia.org/wiki/Random_number_generation#%22True%22_vs._pseudo-random_numbers">“True” vs. pseudo-random numbers</a> on Wikipedia for a brief introduction.</p>
+<p>Still, pseudo-random generators are convenient because they offer the possibility to reproduce sequences of numbers. This is important because when modifying code in a program which includes such generators, we want to evaluate the impact of the code modification, not the noise from the difference in the input sequence of pseudo-random numbers.</p>
+<p>To introduce reproducibility in pseudo-random numbers generated by the <code class="docutils literal notranslate"><span class="pre">random</span></code> library, we need to <strong>seed</strong> the generator.</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
-<p>Dummy string features.</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2
+</pre></div></div>
+</div>
+<p>Each time you will run this code, the same number will be generated.</p>
+</div>
+<div class="section" id="Generate-features">
+<h3>Generate features<a class="headerlink" href="#Generate-features" title="Permalink to this headline">¶</a></h3>
+<p>We need to define a function which will generate pseudo-random boolean features.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -505,14 +546,14 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code is commented and quite self-explaining, let’s proceed with a call.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -521,27 +562,100 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[True, True, False, True, False, False, False, False, True, True, False]
+[True, False, True, False, False, False, False, True, True, False, True] 11
 </pre></div></div>
 </div>
-<p>Label from features.</p>
-<div class="nbinput nblast docutils container">
+<p>When no <em>argument</em> is provided, the <code class="docutils literal notranslate"><span class="pre">features_boolean()</span></code> function which takes <code class="docutils literal notranslate"><span class="pre">N_FEATURES</span></code> as parameter will consider the <em>default argument</em> value.</p>
+<p>To change this behavior, the function <code class="docutils literal notranslate"><span class="pre">features_boolean()</span></code> could be also called as follows</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[False, False, True, False, False, True, True, False, True, True] 10
+[True, True, False, True, False, True, True, False, False, True] 10
+</pre></div></div>
+</div>
+<p>This generates a features list of length 22. You may have observed that <strong>Boolean values are different</strong> from one list to the next.</p>
+<p>Let’s have a bit of fun to depict the previous comments about pseudo-random numbers and generator seeding.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[True, True, False, True, False, False, False, False, True, True] 10
+[True, True, False, True, False, False, False, False, True, True] 10
+[True, True, False, True, False, False, False, False, True, True, False, True, False, False, True] 15
+[True, True, False, True, False] 5
+</pre></div></div>
+</div>
+<p>The author of these lines is pleased to let you draw your own conclusion.</p>
+<p>Now we have a function to generate dummy Boolean features to describe samples, we need another function to generate the associated sample label.</p>
+</div>
+<div class="section" id="Generate-label">
+<h3>Generate label<a class="headerlink" href="#Generate-label" title="Permalink to this headline">¶</a></h3>
+<p>In the context of Supervised Machine Learning (SML), there are three things: sample features, sample label, and the law which makes the link between the two. Among those three, two are known <em>a priori</em> and before the actual training procedure: sample features and label.</p>
+<p>What is unknown is the law, or mathematical function, which takes sample features as input and return the correct sample label.</p>
+<p>As already mentioned, in this dummy example we have the <em>a priori</em> knowledge of the law we want to model.</p>
+<p>Herein, the law which associates samples features and label should be simple, because this is a sort of positive control: if the further regression using our Neural Network can not model this simple law, it likely means we did a big mistake.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prepare label associated with features.</span>
 
+<span class="sd">    The dummy law is:</span>
+
+<span class="sd">    More True = positive</span>
+<span class="sd">    More False = negative</span>
+
 <span class="sd">    :param features: random boolean features of length N_FEATURES</span>
 <span class="sd">    :type features: list[bool]</span>
 
-<span class="sd">    :return: One-hot encoded label</span>
-<span class="sd">    :rtype: list[int]</span>
+<span class="sd">    :return: Single-digit label with respect to features</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># One-hot encoded positive and negative labels</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Single-digit positive and negative labels</span>
+    <span class="n">p_label</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_label</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># Test if features contains more True (+)</span>
     <span class="k">if</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
@@ -555,14 +669,18 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code above is commented and self explaining. Note that the default argument of the <code class="docutils literal notranslate"><span class="pre">features_boolean()</span></code> is set to <code class="docutils literal notranslate"><span class="pre">11</span></code> because this is an odd number. So features must fall within one or the other condition with no predictable imbalance between positive and negative label associated with sample features.</p>
+<p>Let’s check the function we made for a few iterations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="kc">False</span><span class="p">)),</span> <span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -571,35 +689,40 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[0, 1]
+0 False [False, False, False, True, True, False, True, False, False, True, False]
+1 True [False, True, True, False, True, True, True, True, False, True, False]
+1 True [True, True, False, False, True, False, True, True, False, False, True]
+0 False [False, True, True, False, True, False, False, True, False, False, False]
+0 False [False, True, False, True, False, False, True, False, False, True, False]
 </pre></div></div>
 </div>
-<p>Prepare labeled dataset.</p>
+<p>This seems to be fully consistent with what we expect. No red flag.</p>
+</div>
+<div class="section" id="Prepare-dataset">
+<h3>Prepare dataset<a class="headerlink" href="#Prepare-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Let’s go on and write the function which will iterate to generate a set of sample Boolean features and label.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of labeled samples.</span>
+<span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy boolean sample features and label</span>
 
-<span class="sd">    One sample is a list such as [features, label].</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate</span>
+<span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    For one sample, features is a list and label is a list.</span>
+<span class="sd">    :return: Set of sample features</span>
+<span class="sd">    :rtype: tuple[list[bool]]</span>
 
-<span class="sd">    :param se_dataset: Settings for dataset preparation</span>
-<span class="sd">    :type se_dataset: dict</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[list[bool],list[int]]]</span>
+<span class="sd">    :return: Set of single-digit sample label</span>
+<span class="sd">    :rtype: tuple[int]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># See ./settings.py</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
+    <span class="c1"># Initialize X and Y datasets</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y_label</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
+   <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
 
         <span class="c1"># Compute random boolean features</span>
@@ -608,30 +731,37 @@ div.rendered_html tbody tr:hover {
         <span class="c1"># Retrieve label associated with features</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># Define labeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
+        <span class="c1"># Append sample features to X_features</span>
+        <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="c1"># Append sample label to Y_label</span>
+        <span class="n">Y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Prepare X-Y pairwise dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))</span>
 
     <span class="c1"># Shuffle dataset</span>
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dataset</span>
+    <span class="c1"># Separate X-Y pairs</span>
+    <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>Note that <em>features</em> is assigned to X within <code class="docutils literal notranslate"><span class="pre">X_features</span></code> while <em>label</em> is assigned to Y within <code class="docutils literal notranslate"><span class="pre">Y_features</span></code>. The dummy law is the function such as <code class="docutils literal notranslate"><span class="pre">f(X)</span> <span class="pre">=</span> <span class="pre">Y</span></code>.</p>
+<p>Let’s check the function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">):</span>
     <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -640,81 +770,26 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[True, False, False, True, False, False, True, True, False, True, True] [1, 0]
-[True, True, False, True, False, True, True, False, False, True, False] [1, 0]
-[False, True, False, False, False, False, False, True, False, False, True] [0, 1]
-[False, True, False, False, False, False, True, False, True, False, False] [0, 1]
-[False, True, False, True, True, False, False, True, True, True, False] [1, 0]
-[False, False, False, False, True, False, True, True, False, True, False] [0, 1]
-[False, True, False, False, True, True, True, True, True, True, False] [1, 0]
-[True, False, False, True, False, True, True, False, False, False, True] [0, 1]
-[True, True, False, False, True, False, True, True, False, True, False] [1, 0]
-[True, True, True, True, False, True, True, True, True, False, True] [1, 0]
+1 [True, True, True, True, False, True, False, True, True, True, True]
+0 [False, False, True, False, False, True, False, False, True, False, True]
+0 [True, False, True, True, False, False, True, True, False, False, False]
+1 [False, True, True, False, True, False, True, False, True, False, True]
+1 [False, False, False, False, True, True, False, True, True, True, True]
+1 [True, False, True, True, True, False, False, False, False, True, True]
+0 [False, False, True, False, True, False, False, True, False, True, True]
+0 [True, False, False, True, True, True, False, True, False, False, False]
+1 [True, False, False, False, True, True, True, False, True, True, False]
+1 [True, False, False, True, False, True, True, True, True, False, True]
 </pre></div></div>
 </div>
-<p>Prepare unlabeled dataset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of unlabeled samples.</span>
-
-<span class="sd">    One sample is a list such as [features, []].</span>
-
-<span class="sd">    For one sample, features is a list and label is an empty list.</span>
-
-<span class="sd">    :param N_SAMPLES: Length for unlabeled dataset</span>
-<span class="sd">    :type N_SAMPLES: int</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[list[bool],list]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Initialize unlabeled_dataset</span>
-    <span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-
-        <span class="c1"># Generate dummy boolean features</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="n">features_boolean</span><span class="p">()</span>
-
-        <span class="c1"># Define unlabeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="p">[]]</span>
-
-        <span class="c1"># Append to unlabeled_dataset</span>
-        <span class="n">unlabeled_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">unlabeled_dataset</span>
-</pre></div>
+<p>We are done with the code required to generate a dummy dataset of sample boolean features and associated label.</p>
 </div>
 </div>
-<p>Check the function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
+<div class="section" id="What-comes-next?">
+<h2>What comes next?<a class="headerlink" href="#What-comes-next?" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code> applied to dummy boolean data is used in the following working examples:</p>
+<p>XXX</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[False, False, True, True, False, False, False, False, True, False, True] []
-[False, True, False, True, True, True, False, True, True, True, False] []
-[False, True, False, True, True, False, False, False, True, False, True] []
-[True, True, False, True, True, False, False, True, False, False, True] []
-[True, True, True, False, True, True, False, True, False, True, True] []
-</pre></div></div>
-</div>
-<p>Done.</p>
 </div>
 
 
@@ -723,7 +798,7 @@ div.rendered_html tbody tr:hover {
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../dummy_string/prepare_dataset.html" class="btn btn-neutral float-right" title="Dummy string data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="train.html" class="btn btn-neutral float-right" title="Dummy Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="../../examples.html" class="btn btn-neutral float-left" title="Examples and data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

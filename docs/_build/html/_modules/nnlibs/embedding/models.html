@@ -177,7 +177,11 @@
 
 <span class="c1"># Local application/library specific imports</span>
 <span class="kn">from</span> <span class="nn">nnlibs.commons.models</span> <span class="kn">import</span> <span class="n">Layer</span>
-<span class="kn">from</span> <span class="nn">nnlibs.embedding.dataset</span> <span class="kn">import</span> <span class="n">embedding_prepare</span><span class="p">,</span> <span class="n">embedding_check</span><span class="p">,</span> <span class="n">embedding_encode</span>
+<span class="kn">from</span> <span class="nn">nnlibs.embedding.dataset</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">embedding_prepare</span><span class="p">,</span>
+    <span class="n">embedding_encode</span><span class="p">,</span>
+    <span class="n">embedding_check</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">nnlibs.embedding.forward</span> <span class="kn">import</span> <span class="n">embedding_forward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.embedding.backward</span> <span class="kn">import</span> <span class="n">embedding_backward</span>
 <span class="kn">from</span> <span class="nn">nnlibs.embedding.parameters</span> <span class="kn">import</span> <span class="p">(</span>
@@ -213,7 +217,7 @@
 <span class="sd">    :param single: Set to True to run only with training set</span>
 <span class="sd">    :type single: bool</span>
 
-<span class="sd">    :param X_scale: Set to True to normalize sample features within [0, 1]</span>
+<span class="sd">    :param X_scale: Normalize sample features within [0, 1]</span>
 <span class="sd">    :type X_scale: bool</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -224,8 +228,7 @@
                 <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                 <span class="n">X_encode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">Y_encode</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">X_scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;dummy&#39;</span><span class="p">):</span>
+                <span class="n">X_scale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -237,7 +240,6 @@
             <span class="s1">&#39;X_scale&#39;</span><span class="p">:</span> <span class="n">X_scale</span><span class="p">,</span>
             <span class="s1">&#39;X_encode&#39;</span><span class="p">:</span> <span class="n">X_encode</span><span class="p">,</span>
             <span class="s1">&#39;Y_encode&#39;</span><span class="p">:</span> <span class="n">Y_encode</span><span class="p">,</span>
-            <span class="s1">&#39;dataset_name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span> <span class="o">=</span> <span class="n">embedding_check</span><span class="p">(</span><span class="n">X_data</span><span class="p">,</span> <span class="n">Y_data</span><span class="p">,</span> <span class="n">X_scale</span><span class="p">)</span>

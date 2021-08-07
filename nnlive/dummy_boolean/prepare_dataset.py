@@ -1,7 +1,6 @@
 # EpyNN/nnlive/dummy_boolean/prepare_dataset.py
 # Standard library imports
 import random
-import os
 
 
 def features_boolean(N_FEATURES=11):
@@ -21,6 +20,11 @@ def features_boolean(N_FEATURES=11):
 
 def label_features(features):
     """Prepare label associated with features.
+
+    The dummy law is:
+
+    More True = positive
+    More False = negative
 
     :param features: random boolean features of length N_FEATURES
     :type features: list[bool]
@@ -44,13 +48,16 @@ def label_features(features):
 
 
 def prepare_dataset(N_SAMPLES=100):
-    """Prepare a dummy dataset of labeled samples.
+    """Prepare a set of dummy boolean sample features and label
 
     :param N_SAMPLES: Number of samples to generate
     :type N_SAMPLES: int
 
-    :return:
-    :rtype:
+    :return: Set of sample features
+    :rtype: tuple[list[bool]]
+
+    :return: Set of single-digit sample label
+    :rtype: tuple[int]
     """
     # Initialize X and Y datasets
     X_features = []
