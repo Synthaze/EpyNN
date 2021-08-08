@@ -184,7 +184,7 @@ class EpyNN:
 
         return None
 
-    def plot(self, pyplot=True, gnuplot=False):
+    def plot(self, pyplot=True, gnuplot=False, path=None):
         """Plot metrics from model training.
 
         :param pyplot: Plot of results on GUI using matplotlib
@@ -192,9 +192,12 @@ class EpyNN:
 
         :param gnuplot: Plot results on terminal using gnuplot
         :type gnuplot: bool
+
+        :param path: Write matplotlib plot
+        :type path: bool or NoneType
         """
         if pyplot:
-            pyplot_metrics(self)
+            pyplot_metrics(self, path)
 
         if gnuplot:
             gnuplot_accuracy(self)

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Dummy string data &mdash; EpyNN 0.1.0 documentation</title>
+  <title>Dummy dataset &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -42,8 +42,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Protein sequences" href="../ptm_protein/prepare_dataset.html" />
-    <link rel="prev" title="Dummy boolean data" href="../dummy_boolean/prepare_dataset.html" /> 
+    <link rel="next" title="Protein Modification" href="../ptm_protein/prepare_dataset.html" />
+    <link rel="prev" title="Dummy Network" href="../dummy_boolean/train.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -94,8 +91,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -107,12 +105,19 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#boolean">Boolean</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#string">String</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy string data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../ptm_protein/prepare_dataset.html">Protein sequences</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-is-a-string-data-type?">What is a string data-type?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Why-preparing-a-dummy-dataset-with-string-features?">Why preparing a dummy dataset with string features?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Prepare-a-set-of-string-sample-features-and-related-label">Prepare a set of string sample features and related label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#One-hot-encoding-of-string-features">One-hot encoding of string features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ptm_protein/prepare_dataset.html">Protein Modification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
@@ -166,7 +171,7 @@
         
           <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
         
-      <li>Dummy string data</li>
+      <li>Dummy dataset</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -455,28 +460,106 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Dummy-string-data">
-<h1>Dummy string data<a class="headerlink" href="#Dummy-string-data" title="Permalink to this headline">¶</a></h1>
-<p>Regular Python code located in …</p>
-<p>… using these data:</p>
-<p>Imports.</p>
-<div class="nbinput nblast docutils container">
+<div class="section" id="Dummy-dataset">
+<h1>Dummy dataset<a class="headerlink" href="#Dummy-dataset" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_string/prepare_dataset.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_string/prepare_dataset.py</span></code>.</p>
+<p>This notebook is the second of the series on preparing data for Neural Network regression with EpyNN.</p>
+<p>In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.</p>
+<p>Note that elements developed in <a class="reference internal" href="../dummy_boolean/prepare_dataset.html"><span class="doc">dummy dataset with boolean sample features</span></a> may not be recalled herein.</p>
+<div class="section" id="What-is-a-string-data-type?">
+<h2>What is a string data-type?<a class="headerlink" href="#What-is-a-string-data-type?" title="Permalink to this headline">¶</a></h2>
+<p>String data type is a form of data which corresponds to sequences of character data.</p>
+<p><img alt="7253702c0b2648a5b002d77dd9a9afb9" src="../../_images/python_dataTypes-01.png" /></p>
+<p>Before preparing a dummy dataset of sample string features, let’s explore some properties of Python built-in data-types.</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlive/dummy_strings/prepare_dataset.ipynb</span>
-<span class="c1"># Standard library imports</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<span></span><span class="n">my_str</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+<span class="n">my_int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">my_str</span><span class="p">)</span>
+<span class="n">my_float</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">my_str</span><span class="p">)</span>
 
-<span class="c1"># Local application/library specific imports</span>
-<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_str</span><span class="p">),</span> <span class="n">my_str</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_int</span><span class="p">),</span> <span class="n">my_int</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">my_float</span><span class="p">),</span> <span class="n">my_float</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">random</span></code> seed for reproducibility.</p>
-<div class="nbinput nblast docutils container">
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;str&#39;&gt; 1
+&lt;class &#39;int&#39;&gt; 1
+&lt;class &#39;float&#39;&gt; 1.0
+</pre></div></div>
+</div>
+<p>Note that data objects inherit from a class.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">my_str</span></code> and <code class="docutils literal notranslate"><span class="pre">my_int</span></code> looks the same. Does it mean it is really the same, in a practical perspective?</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">my_str</span> <span class="o">+</span> <span class="n">my_str</span><span class="p">,</span> <span class="s1">&#39;- This is called string concatenation&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">my_int</span> <span class="o">+</span> <span class="n">my_int</span><span class="p">,</span> <span class="s1">&#39;- This is the arithmetical addition&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">my_str</span> <span class="o">+</span> <span class="n">my_int</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s1">&#39;- Concatenation does not exist for int&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">my_int</span> <span class="o">+</span> <span class="n">my_str</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s1">&#39;- Addition does not exist for str&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+11 - This is called string concatenation
+2 - This is the arithmetical addition
+can only concatenate str (not &#34;int&#34;) to str - Concatenation does not exist for int
+unsupported operand type(s) for +: &#39;int&#39; and &#39;str&#39; - Addition does not exist for str
+</pre></div></div>
+</div>
+<p>The conclusion is: <strong>we can not do maths with the string data type</strong></p>
+<p>Although this problem will not be fixed at the stage of preparing a dummy dataset with string sample features, we will still extend the notebook to show the principle of it.</p>
+</div>
+<div class="section" id="Why-preparing-a-dummy-dataset-with-string-features?">
+<h2>Why preparing a dummy dataset with string features?<a class="headerlink" href="#Why-preparing-a-dummy-dataset-with-string-features?" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the general interest of dummy dataset explained in dummy dataset with boolean sample features, we will take the opportunity to review the principle which translates string data in something which can be mathematically processed in the context of a Neural Network: The principle is called <em>encoding</em>, and one of the method is called <em>one-hot encoding</em>.</p>
+</div>
+<div class="section" id="Prepare-a-set-of-string-sample-features-and-related-label">
+<h2>Prepare a set of string sample features and related label<a class="headerlink" href="#Prepare-a-set-of-string-sample-features-and-related-label" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_string/prepare_dataset.ipynb</span>
+<span class="c1"># Standard library imports</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># Related third party imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Seeding">
+<h3>Seeding<a class="headerlink" href="#Seeding" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -484,22 +567,22 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Dummy string features.</p>
+</div>
+<div class="section" id="Generate-features">
+<h3>Generate features<a class="headerlink" href="#Generate-features" title="Permalink to this headline">¶</a></h3>
+<p>We need to define a function which will generate pseudo-random string features.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">features_string</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate dummy string features.</span>
 
-<span class="sd">    :param N_FEATURES: Number of features</span>
+<span class="sd">    :param N_FEATURES: Number of features, defaults to 12.</span>
 <span class="sd">    :type N_FEATURES: int</span>
 
-<span class="sd">    :return: Words that may be contained in features</span>
-<span class="sd">    :rtype: list[str]</span>
-
-<span class="sd">    :return: random string features of length N_FEATURES</span>
+<span class="sd">    :return: random string features of length N_FEATURES.</span>
 <span class="sd">    :rtype: list[str]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># List of words</span>
@@ -508,18 +591,118 @@ div.rendered_html tbody tr:hover {
     <span class="c1"># Random choice of words for N_FEATURES iterations</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">WORDS</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="p">)]</span>
 
-    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span>
+    <span class="k">return</span> <span class="n">features</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code is commented and quite self-explaining, let’s proceed with a call.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span></span><span class="n">features</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;] 12
+</pre></div></div>
+</div>
+<p>Did we get a string, scrictly speaking?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;class &#39;list&#39;&gt;
+</pre></div></div>
+</div>
+<p>The answer is no: we got a list. But did we expect to get a string, after all?</p>
+<p>We are talking about sample features which are <strong>each</strong> a string. But because sample features represent a <strong>list of features</strong>, then we got a list.</p>
+<p>Does this list really contain string? This is important, cause if you ignore your data type, you will mess up your day of work.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">feature</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+T 1 &lt;class &#39;str&#39;&gt;
+A 1 &lt;class &#39;str&#39;&gt;
+G 1 &lt;class &#39;str&#39;&gt;
+A 1 &lt;class &#39;str&#39;&gt;
+C 1 &lt;class &#39;str&#39;&gt;
+C 1 &lt;class &#39;str&#39;&gt;
+C 1 &lt;class &#39;str&#39;&gt;
+C 1 &lt;class &#39;str&#39;&gt;
+T 1 &lt;class &#39;str&#39;&gt;
+A 1 &lt;class &#39;str&#39;&gt;
+C 1 &lt;class &#39;str&#39;&gt;
+A 1 &lt;class &#39;str&#39;&gt;
+</pre></div></div>
+</div>
+<p>Looks good! The list contains elements of type str.</p>
+<p>Let’s play around to see which relationship between sequential data type <code class="docutils literal notranslate"><span class="pre">str</span></code> and <code class="docutils literal notranslate"><span class="pre">list</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Original list of string features of length N_FEATURES&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">features</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Join the original list and get a single string feature of length N_FEATURES&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">features</span><span class="p">)),</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Original list of string features of length N_FEATURES
+&lt;class &#39;list&#39;&gt; [&#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;]
+
+Join the original list and get a single string feature of length N_FEATURES
+&lt;class &#39;str&#39;&gt; TAGACCCCTACA
+
+</pre></div></div>
+</div>
+<p>Now let see the classical mistake:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Because each string feature has length 1, the mistake is not seen</span>
+<span class="n">str_feature</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str_feature</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">str_feature</span><span class="p">)</span> <span class="o">==</span> <span class="n">features</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -529,59 +712,101 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [&#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;]
+True
 </pre></div></div>
 </div>
-<p>Label from features.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<p>That’s cool, it seems we can reverse the <code class="docutils literal notranslate"><span class="pre">join()</span></code> with the <code class="docutils literal notranslate"><span class="pre">list()</span></code>.</p>
+<p>Really?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span><span class="p">):</span>
+<span></span><span class="c1"># At least one feature has length greater than one</span>
+<span class="n">test_features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;My&#39;</span><span class="p">,</span> <span class="s1">&#39; mistake&#39;</span><span class="p">]</span>    <span class="c1"># Features as string with 2 elements</span>
+
+<span class="n">str_test_features</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_features</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">str_test_features</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">((</span><span class="nb">list</span><span class="p">(</span><span class="n">str_test_features</span><span class="p">)</span> <span class="o">==</span> <span class="n">features</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;M&#39;, &#39;y&#39;, &#39; &#39;, &#39;m&#39;, &#39;i&#39;, &#39;s&#39;, &#39;t&#39;, &#39;a&#39;, &#39;k&#39;, &#39;e&#39;]
+False
+</pre></div></div>
+</div>
+<p><strong>When applying list() with a string as argument, it separates all characters in the string</strong></p>
+<p>Now we have seen some traps about string data type and that we have built our function to generate dummy sample features of string data type, we will go ahead with label assignment.</p>
+<p>But good practices first, let’s clean the namespace out of the test content.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">del</span> <span class="n">test_features</span>
+<span class="k">del</span> <span class="n">str_test_features</span>
+</pre></div>
+</div>
+</div>
+<p>If you want to increase the level of complexity in your life, don’t follow good practices. Otherwise, do follow them.</p>
+</div>
+<div class="section" id="Generate-label">
+<h3>Generate label<a class="headerlink" href="#Generate-label" title="Permalink to this headline">¶</a></h3>
+<p>As already mentioned, in this dummy example we have the <em>a priori</em> knowledge of the law we want to model.</p>
+<p>Herein, the law which associates samples features and label should be simple, because this is a sort of positive control: if the further regression using our Neural Network can not model this simple law, it likely means we did a big mistake.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prepare label associated with features.</span>
 
-<span class="sd">    :param features: random string features of length N_FEATURES</span>
+<span class="sd">    The dummy law is:</span>
+
+<span class="sd">    First and last elements are equal = positive.</span>
+<span class="sd">    First and last elements are NOT equal = negative.</span>
+
+<span class="sd">    :param features: random string features of length N_FEATURES.</span>
 <span class="sd">    :type features: list[str]</span>
 
-<span class="sd">    :param WORDS: Words that may be contained in features</span>
-<span class="sd">    :type WORDS: list[str]</span>
-
-<span class="sd">    :return: One-hot encoded label</span>
-<span class="sd">    :rtype: list[int]</span>
+<span class="sd">    :return: Single-digit label with respect to features.</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># One-hot encoded positive and negative labels</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Single-digit positive and negative labels</span>
+    <span class="n">p_label</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_label</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># Number of features</span>
-    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-
-    <span class="c1"># Mean distribution for words in features</span>
-    <span class="n">mean_distribution</span> <span class="o">=</span> <span class="n">N_FEATURES</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">WORDS</span><span class="p">)</span>
-
-    <span class="c1"># Target word</span>
-    <span class="n">adenosine</span> <span class="o">=</span> <span class="n">WORDS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Test if word count deviates from mean (+)</span>
-    <span class="k">if</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">adenosine</span><span class="p">)</span> <span class="o">==</span> <span class="n">mean_distribution</span><span class="p">:</span>
+    <span class="c1"># Pattern associated with positive label (+)</span>
+    <span class="k">if</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">p_label</span>
 
-    <span class="c1"># Test if word count does not deviate from mean (-)</span>
-    <span class="k">elif</span> <span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">adenosine</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mean_distribution</span><span class="p">:</span>
+    <span class="c1"># Other pattern associated with negative label (-)</span>
+    <span class="k">elif</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">features</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="n">label</span> <span class="o">=</span> <span class="n">n_label</span>
 
     <span class="k">return</span> <span class="n">label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code above is commented and self explaining.</p>
+<p>Let’s check the function we made for a few iterations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -590,15 +815,25 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[0, 1]
+0 [&#39;C&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;]
+1 [&#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;]
+1 [&#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;]
+1 [&#39;C&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;]
+0 [&#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;]
 </pre></div></div>
 </div>
+<p>This seems to be fully consistent with what we expect. No red flag.</p>
+<p>Not that to not make things too complicated, we came to accept that the dummy dataset will be imbalanced in term of label representation. This question is important, and it will be the opportunity to discuss it when feeding the Network with the data.</p>
+<p>See what I am talking about.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">WORDS</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">label_features</span><span class="p">(</span><span class="n">features_string</span><span class="p">())</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">labels</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -607,84 +842,77 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-4
+0 78
+1 22
 </pre></div></div>
 </div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
+<p>By the way, we have just performed a <em>list comprehension</em> operation which compute <code class="docutils literal notranslate"><span class="pre">label_features()</span></code> from features returned by the argument <code class="docutils literal notranslate"><span class="pre">features_string()</span></code>, this for 100 iterations.</p>
+<p>This is a <em>Pythonic</em> way to do.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">WORDS</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">WORDS</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-False
-</pre></div></div>
-</div>
-<p>Prepare labeled dataset.</p>
+<div class="section" id="Prepare-dataset">
+<h3>Prepare dataset<a class="headerlink" href="#Prepare-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Let’s go on and write the function which will iterate to generate a set of sample string features and label.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of labeled samples.</span>
+<span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy string sample features and label.</span>
 
-<span class="sd">    One sample is a list such as [features, label].</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate, defaults to 100.</span>
+<span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    For one sample, features is a list and label is a list.</span>
+<span class="sd">    :return: Set of sample features.</span>
+<span class="sd">    :rtype: tuple[list[str]]</span>
 
-<span class="sd">    :param se_dataset: Settings for dataset preparation</span>
-<span class="sd">    :type se_dataset: dict</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[list[str],list[int]]]</span>
+<span class="sd">    :return: Set of single-digit sample label.</span>
+<span class="sd">    :rtype: tuple[int]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># See ./settings.py</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
+    <span class="c1"># Initialize X and Y datasets</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y_label</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
+   <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
 
-        <span class="c1"># Generate dummy string features</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
+        <span class="c1"># Compute random string features</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
 
         <span class="c1"># Retrieve label associated with features</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">WORDS</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># Define labeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
+        <span class="c1"># Append sample features to X_features</span>
+        <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="c1"># Append sample label to Y_label</span>
+        <span class="n">Y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Prepare X-Y pairwise dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))</span>
 
     <span class="c1"># Shuffle dataset</span>
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dataset</span>
+    <span class="c1"># Separate X-Y pairs</span>
+    <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>Note that this function is identical to the one discussed in dummy dataset with boolean sample features because the variable content with respect to data type is generated by the functions <code class="docutils literal notranslate"><span class="pre">features_string()</span></code> and <code class="docutils literal notranslate"><span class="pre">label_features()</span></code>.</p>
+<p>Let’s check the function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
+<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">):</span>
     <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -693,65 +921,123 @@ False
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&#39;G&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;C&#39;, &#39;A&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;] [0, 1]
-[&#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;] [0, 1]
-[&#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;] [1, 0]
-[&#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;] [0, 1]
-[&#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;] [1, 0]
-[&#39;C&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;, &#39;A&#39;] [0, 1]
-[&#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;] [1, 0]
-[&#39;C&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;] [0, 1]
-[&#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;] [0, 1]
-[&#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;T&#39;] [0, 1]
+0 [&#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;]
+0 [&#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;]
+1 [&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;, &#39;C&#39;]
+0 [&#39;A&#39;, &#39;A&#39;, &#39;A&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;]
+0 [&#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;A&#39;]
+0 [&#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;]
+1 [&#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;]
+0 [&#39;T&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;]
+0 [&#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;C&#39;, &#39;G&#39;]
+0 [&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;]
 </pre></div></div>
 </div>
-<p>Prepare unlabeled dataset.</p>
+<p>We are done with the code required to generate a dummy dataset of sample string features and associated label.</p>
+</div>
+</div>
+<div class="section" id="One-hot-encoding-of-string-features">
+<h2>One-hot encoding of string features<a class="headerlink" href="#One-hot-encoding-of-string-features" title="Permalink to this headline">¶</a></h2>
+<p>As already stated in the introductory comments of this notebook, there are things you can not and other you can not, with respect to the type of variable you are handling.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>        <span class="c1"># Arithmetics</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1&#39;</span> <span class="o">+</span> <span class="s1">&#39;1&#39;</span><span class="p">)</span>    <span class="c1"># String concatenation</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>       <span class="c1"># String concatenation</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>   <span class="c1"># Arithmetics</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2
+11
+
+11
+2
+</pre></div></div>
+</div>
+<p>There are things you can do with integer or string, and the way you can convert one data type into the other.</p>
+<p>But obviously, you can not convert a non-digit string to integer data type.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+A
+invalid literal for int() with base 10: &#39;A&#39;
+</pre></div></div>
+</div>
+<p>Given our features, which are string features in a list. How can we proceed with arithmetics on them?</p>
+<p>In EpyNN this is made automatically at a later stage. See <a class="reference external" href="../../Embedding.html">Data Embedding (Input)</a> for full documentation.</p>
+<p>For now, we will do it by hand. We have:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">features</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;]
+[&#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;]
+</pre></div></div>
+</div>
+<p>A list of string features, composed of four possible characters - or single-character words - for a length of N_FEATURES.</p>
+<p>Since our sample of features contains all four characters, it is fine to proceed with encoding.</p>
+<p>You will get why.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of unlabeled samples.</span>
+<span></span><span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
 
-<span class="sd">    One sample is a list such as [features, []].</span>
+<span class="n">words_to_idx</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">)}</span>
+<span class="c1"># The just above line is equivalent to</span>
+<span class="c1"># words_to_idx = {words[idx]:idx for idx in range(len(words))}</span>
 
-<span class="sd">    For one sample, features is a list and label is an empty list.</span>
-
-<span class="sd">    :param N_SAMPLES: Length for unlabeled dataset</span>
-<span class="sd">    :type N_SAMPLES: int</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[list[str],list]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Initialize unlabeled_dataset</span>
-    <span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-
-        <span class="c1"># Generate dummy string features</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">features_string</span><span class="p">()</span>
-
-        <span class="c1"># Define unlabeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="p">[]]</span>
-
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">unlabeled_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">unlabeled_dataset</span>
+<span class="n">idx_to_words</span> <span class="o">=</span> <span class="p">{</span><span class="n">idx</span><span class="p">:</span> <span class="n">words</span> <span class="k">for</span> <span class="n">words</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">words_to_idx</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>Check it.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">words_to_idx</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">idx_to_words</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -760,14 +1046,241 @@ False
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&#39;A&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;] []
-[&#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;A&#39;, &#39;G&#39;, &#39;T&#39;, &#39;T&#39;, &#39;A&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;] []
-[&#39;G&#39;, &#39;G&#39;, &#39;T&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;A&#39;] []
-[&#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;] []
-[&#39;A&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;, &#39;T&#39;, &#39;G&#39;, &#39;T&#39;, &#39;G&#39;, &#39;C&#39;, &#39;T&#39;] []
+[&#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;]
+{&#39;C&#39;: 0, &#39;G&#39;: 1, &#39;A&#39;: 2, &#39;T&#39;: 3}
+{0: &#39;C&#39;, 1: &#39;G&#39;, 2: &#39;A&#39;, 3: &#39;T&#39;}
 </pre></div></div>
 </div>
-<p>Done.</p>
+<p>You may have got where we are heading now.</p>
+<p>By the way, we instantiated dictionnary objects here, <code class="docutils literal notranslate"><span class="pre">{}</span></code> and such data type works like <code class="docutils literal notranslate"><span class="pre">{key:</span> <span class="pre">value}</span></code>.</p>
+<p>Let’s proceed.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">words_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+C 0
+G 1
+A 2
+T 3
+</pre></div></div>
+</div>
+<p>Could this be the conversion table? Not really. Because numbers are quantities. Every character should represented by the same quantity: one.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">words_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+C 0 [0. 0. 0. 0.]
+G 1 [0. 0. 0. 0.]
+A 2 [0. 0. 0. 0.]
+T 3 [0. 0. 0. 0.]
+</pre></div></div>
+</div>
+<p>Almost there. Almost.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+    <span class="n">encoded_word</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+    <span class="n">encoded_word</span><span class="p">[</span><span class="n">words_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">words_to_idx</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">encoded_word</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+C 0 [1. 0. 0. 0.]
+G 1 [0. 1. 0. 0.]
+A 2 [0. 0. 1. 0.]
+T 3 [0. 0. 0. 1.]
+</pre></div></div>
+</div>
+<p>This is <strong>One-hot encoding</strong>.</p>
+<p>With string features.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+    <span class="n">encoded_feature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+    <span class="n">encoded_feature</span><span class="p">[</span><span class="n">words_to_idx</span><span class="p">[</span><span class="n">feature</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">words_to_idx</span><span class="p">[</span><span class="n">feature</span><span class="p">],</span> <span class="n">encoded_feature</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+C 0 [1. 0. 0. 0.]
+T 3 [0. 0. 0. 1.]
+T 3 [0. 0. 0. 1.]
+C 0 [1. 0. 0. 0.]
+A 2 [0. 0. 1. 0.]
+T 3 [0. 0. 0. 1.]
+C 0 [1. 0. 0. 0.]
+T 3 [0. 0. 0. 1.]
+G 1 [0. 1. 0. 0.]
+A 2 [0. 0. 1. 0.]
+A 2 [0. 0. 1. 0.]
+T 3 [0. 0. 0. 1.]
+</pre></div></div>
+</div>
+<p>Let’s make a proper NumPy array from this.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Just to show the principle of nested list comprehension. Not necessarily a best idea, but still :)</span>
+<span class="n">encoded_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="n">words_to_idx</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">))]</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">encoded_features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encoded_features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1 0 0 0]
+ [0 0 0 1]
+ [0 0 0 1]
+ [1 0 0 0]
+ [0 0 1 0]
+ [0 0 0 1]
+ [1 0 0 0]
+ [0 0 0 1]
+ [0 1 0 0]
+ [0 0 1 0]
+ [0 0 1 0]
+ [0 0 0 1]]
+(12, 4)
+</pre></div></div>
+</div>
+<p>Decoding one-hot encoded data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">idx_to_words</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">encoded_feature</span><span class="p">)]</span> <span class="k">for</span> <span class="n">encoded_feature</span> <span class="ow">in</span> <span class="n">encoded_features</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;]
+[&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;]
+</pre></div></div>
+</div>
+<p>And we will finish on the purpose of this <code class="docutils literal notranslate"><span class="pre">np.argmax()</span></code> function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;with respect to&#39;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;with respect to&#39;</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+2
+
+2 with respect to 3
+[1 0 0]
+
+3 with respect to 2
+[2 0]
+</pre></div></div>
+</div>
+<p>In words, <code class="docutils literal notranslate"><span class="pre">np.argmax()</span></code> returns the index at which is located the maximal value. It return the argument which return the maximum when provided as index of the array.</p>
+<p>Built-in Python on <strong>list</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lst</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">lst</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">lst</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2
+</pre></div></div>
+</div>
+<p>We are done with the code required to generate a dummy dataset of sample string features and associated label.</p>
+<p>And we extensively reviewed the practice of one-hot encoding, as well as some insights into Python data type and NumPy arrays manipulation!</p>
+</div>
+<div class="section" id="What-comes-next?">
+<h2>What comes next?<a class="headerlink" href="#What-comes-next?" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code> applied to dummy string data is used in the following working examples:</p>
+<p>XXX</p>
+</div>
 </div>
 
 
@@ -776,8 +1289,8 @@ False
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-right" title="Protein sequences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../dummy_boolean/prepare_dataset.html" class="btn btn-neutral float-left" title="Dummy boolean data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-right" title="Protein Modification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../dummy_boolean/train.html" class="btn btn-neutral float-left" title="Dummy Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

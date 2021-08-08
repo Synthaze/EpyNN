@@ -3,6 +3,7 @@
 import tarfile
 import random
 import glob
+import gzip
 import wget
 import os
 
@@ -11,7 +12,7 @@ import numpy as np
 from scipy.io import wavfile
 
 # Local application/library specific imports
-from nnlibs.commons.library import write_pickle
+from nnlibs.commons.logs import process_logs
 
 
 def download_music():
@@ -35,94 +36,67 @@ def download_music():
     return None
 
 
-def clips_music(wav_file, clip_time=4, sampling_step=100, digitize=True):
-    """Clip music and proceed with resampling and digitalization.
+def clips_music(wav_file, TIME=4, SAMPLING_RATE=4410):
+    """Clip music and proceed with resampling.
 
-    :param wav_file: The filename of .wav file which contains the music
+    :param wav_file: The filename of .wav file which contains the music.
     :type wav_file: str
 
-    :param clip_time: Duration of one clip
-    :type clip_time: int
+    :param SAMPLING_RATE: Sampling rate (Hz), default to 4410.
+    :type SAMPLING_RATE: int
 
-    :param sampling_step: Factor by which the original sampling rate is divided
-    :type sampling_step: int
+    :param TIME: Sampling time (s), defaults to 4.
+    :type TIME: int
 
-    :param digitize: Proceed or not with digitalization
-    :type digitize: bool
-
-    :return: A list of clips of duration equal to CLIP_TIME
-    :rtype: list[class:`numpy.ndarray`]
+    :return: Clipped and re-sampled music.
+    :rtype: list[:class:`numpy.ndarray`]
     """
-    # Number of bins for signal digitalization
-    N_BINS = 16 # 4-bits ADC converter
+    # Number of features describing a sample
+    N_FEATURES = SAMPLING_RATE * TIME
 
-    # BINS
-    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
+    # Retrieve original sampling rate (Hz) and data
+    wav_sampling_rate, wav_data = wavfile.read(wav_file)
 
-    # Retrieve sampling rate (Hz) and data from wav file
-    SAMPLING_RATE, data = wavfile.read(wav_file)
+    # Total duration (s) of original data
+    wav_time = wav_data.shape[0] / wav_sampling_rate
 
-    time = data.shape[0] / SAMPLING_RATE
+    # Number of clips to slice from original data
+    N_CLIPS = int(wav_time / TIME)
 
-    if clip_time != None:
+    # Make clips from data
+    clips = [wav_data[i * N_FEATURES:(i+1) * N_FEATURES] for i in range(N_CLIPS)]
 
-        N_CLIPS = int(time / clip_time)
-        N_FEATURES = SAMPLING_RATE * clip_time
+    # Compute step for re-sampling
+    sampling_step = int(wav_sampling_rate / SAMPLING_RATE)
 
-        # Make clips from data
-        clips = [data[i*N_FEATURES:(i+1)*N_FEATURES] for i in range(N_CLIPS)]
-
-    else:
-        clips = [data]
-
-    for i, clip in enumerate(clips):
-
-        # Re-sampling to avoid memory allocation errors
-        clips[i] = clip[::sampling_step]
-
-        # Normalize data in 0-1 range
-        clip = np.divide(clip, 32768)
-
-        if digitize:
-            # Digitize and normalize digits
-            clips[i] = np.digitize(clip, bins=BINS) / BINS.shape[0]
+    # Re-sampling to avoid memory allocation errors
+    clips = [clip[::sampling_step] for clip in clips]
 
     return clips
 
 
-def labeled_dataset(se_dataset):
-    """Prepare a dataset of labeled samples.
+def prepare_dataset(N_SAMPLES=100):
+    """Prepare a dataset of clipped music as NumPy arrays.
 
-    One sample is a list such as [features, label].
+    :param N_SAMPLES: Number of clip samples to retrieve, defaults to 100.
+    :type N_SAMPLES: int
 
-    For one sample, features is a class:`numpy.ndarray` and label is a list.
+    :return: Set of sample features.
+    :rtype: tuple[:class:`numpy.ndarray`]
 
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[class:`numpy.ndarray`,list[int]]]
+    :return: Set of single-digit sample label.
+    :rtype: tuple[:class:`numpy.ndarray`]
     """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
-
-    # See ./settings.py
-    dataset_name = se_dataset['dataset_name']
-    dataset_save = se_dataset['dataset_save']
-    
-    # Initialize dataset
-    dataset = []
-
-    # One-hot encoded positive and negative labels
-    p_label = [1, 0]
-    n_label = [0, 1]
+    # Initialize X and Y datasets
+    X_features = []
+    Y_label = []
 
     wav_paths = os.path.join('data', '*', '*wav')
 
-    WAV_FILES = glob.glob(wav_paths)
+    wav_files = glob.glob(wav_paths)
 
     # Iterate over WAV_FILES
-    for wav_file in WAV_FILES:
+    for wav_file in wav_files:
 
         # Retrieve clips
         clips = clips_music(wav_file)
@@ -130,29 +104,25 @@ def labeled_dataset(se_dataset):
         # Iterate over clips
         for features in clips:
 
-            # Test if features is from author A (+)
-            if 'true' in wav_file:
-                label = p_label
+            # Clip is positive if played by true author (+) else negative (-)
+            label = 1 if 'true' in wav_file else 0
 
-            # Test if features is from author B (-)
-            elif 'false' in wav_file:
-                label = n_label
+            # Append sample features to X_features
+            X_features.append(features)
 
-            # Define labeled sample
-            sample = [features, label]
+            # Append sample label to Y_label
+            Y_label.append(label)
 
-            # Append sample to dataset
-            dataset.append(sample)
+    # Prepare X-Y pairwise dataset
+    dataset = list(zip(X_features, Y_label))
 
-    # Shuffle dataset before split
+    # Shuffle dataset
     random.shuffle(dataset)
 
     # Truncate dataset to N_SAMPLES
     dataset = dataset[:N_SAMPLES]
 
-    # Write dataset on disk
-    if dataset_save:
-        dataset_path = './datasets/'+dataset_name+'.pickle'
-        cli.write_pickle(dataset_path,dataset)
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
 
-    return dataset
+    return X_features, Y_label

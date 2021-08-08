@@ -2,8 +2,8 @@
 # Standard library imports
 import tarfile
 import random
-import wget
 import gzip
+import wget
 import os
 
 # Related third party imports
@@ -21,7 +21,7 @@ def download_mnist():
     if not os.path.exists(data_path):
 
         # Download @url with wget
-        url = 'https://synthase.s3.us-west-2.amazonaws.com/mnist_database_data.tar'
+        url = 'https://synthase.s3.us-west-2.amazonaws.com/mnist_database.tar'
         fname = wget.download(url)
 
         # Extract archive
@@ -34,60 +34,41 @@ def download_mnist():
     return None
 
 
-def labeled_dataset(se_dataset):
-    """Prepare a dataset of labeled samples.
+def prepare_dataset(N_SAMPLES=100):
+    """Prepare a dataset of hand-written digits as images.
 
-    One sample is a list such as [features, label].
+    :param N_SAMPLES: Number of MNIST samples to retrieve, defaults to 100.
+    :type N_SAMPLES: int
 
-    For one sample, features is a list and label is a list.
+    :return: Set of sample features.
+    :rtype: tuple[:class:`numpy.ndarray`]
 
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[str],list[int]]]
+    :return: Set of single-digit sample label.
+    :rtype: tuple[:class:`numpy.ndarray`]
     """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
-
-    # See ./settings.py
-    dataset_name = se_dataset['dataset_name']
-    dataset_save = se_dataset['dataset_save']
-
     # Process MNIST images
-    f = gzip.open('data/train-images.gz')
+    img_file = gzip.open('data/train-images-idx3-ubyte.gz')
 
-    header = f.read(16)
-    num_images = int.from_bytes(header[4:8], byteorder='big')
+    header = img_file.read(16)
     image_size = int.from_bytes(header[8:12], byteorder='big')
-    buf = f.read(image_size * image_size * num_images)
-    data = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
-    images = data.reshape(num_images, image_size, image_size, 1)
+    buf = img_file.read(image_size * image_size * N_SAMPLES)
+    X_features = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
+    X_features = X_features.reshape(N_SAMPLES, image_size, image_size, 1)
 
     # Process MNIST labels
-    f = gzip.open('data/train-labels.gz')
+    label_file = gzip.open('data/train-labels-idx1-ubyte.gz')
 
-    header = f.read(8)
-    num_labels = int.from_bytes(header[4:8], byteorder='big')
-    buf = f.read(image_size * image_size * num_images)
-    labels = np.frombuffer(buf, dtype=np.uint8)
+    header = label_file.read(8)
+    buf = label_file.read(image_size * image_size * N_SAMPLES)
+    Y_label = np.frombuffer(buf, dtype=np.uint8)
 
-    num_classes = np.max(labels) + 1
+    # Prepare X-Y pairwise dataset
+    dataset = list(zip(X_features, Y_label))
 
-    # one-hot-encoded labels
-    labels = np.eye(num_classes)[labels]
-
-    # Initialize dataset
-    dataset = [[x,y] for x,y in zip(images,labels)]
-
-    # Shuffle dataset before split
+    # Shuffle dataset
     random.shuffle(dataset)
 
-    # Default N_SAMPLES
-    if N_SAMPLES == None:
-        N_SAMPLES = len(dataset)
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
 
-    # Truncate dataset to N_SAMPLES
-    dataset = dataset[:N_SAMPLES]
-
-    return dataset
+    return X_features, Y_label

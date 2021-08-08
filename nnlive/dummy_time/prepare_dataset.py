@@ -1,178 +1,121 @@
 # EpyNN/nnlive/dummy_time/prepare_dataset.py
 # Standard library imports
 import random
-import os
 
 # Related third party imports
-import matplotlib.pyplot as plt
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.library import write_pickle
 
-
-def features_time():
+def features_time(TIME=1, SAMPLING_RATE=128):
     """Generate dummy time features.
 
-    Time features may be white noise or a sum with a pure sin-wave.
+    Time features may be white noise or a sum with a pure sine-wave.
 
-    The pure sin-wave has random frequency lower than SAMPLING_RATE // 2.
+    The pure sin-wave has random frequency lower than SAMPLING_RATE // 4.
 
-    :param SAMPLING_RATE: Sampling rate (Hz)
+    :param SAMPLING_RATE: Sampling rate (Hz), defaults to 128.
     :type SAMPLING_RATE: int
 
-    :param TIME: Sampling time (s)
+    :param TIME: Sampling time (s), defaults to 1.
     :type TIME: int
 
-    :return: Normalized and digitized random time features of length N_FEATURES.
-    :rtype: class:`numpy.ndarray`
+    :return: Time features of shape (N_FEATURES,).
+    :rtype: :class:`numpy.ndarray`
 
-    :return: Raw random time features of length N_FEATURES
-    :rtype: class:`numpy.ndarray`
-
-    :return: Raw white noise of length N_FEATURES
-    :rtype: class:`numpy.ndarray`
+    :return: White noise of shape (N_FEATURES,).
+    :rtype: :class:`numpy.ndarray`
     """
-    # Number of bins for signal digitalization
-    N_BINS = 16 # 4-bits ADC converter
-
-    # BINS
-    BINS = np.linspace(0, 1, N_BINS, endpoint=False)
-
-    # Sampling rate (Hz) and Time (s)
-    SAMPLING_RATE = 128
-    TIME = 1
-
     # Number of features describing a sample
-    N_FEATURES = SAMPLING_RATE * TIME
+    N_FEATURES = TIME * SAMPLING_RATE
 
     # Initialize features array
-    raw_features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
+    features = np.linspace(0, TIME, N_FEATURES, endpoint=False)
 
     # Random choice of true signal frequency
-    signal_frequency = random.uniform(0,SAMPLING_RATE//2)
+    signal_frequency = random.uniform(0, SAMPLING_RATE // 4)
 
     # Generate pure sine wave of N_FEATURES points
-    raw_features = np.sin(2 * np.pi * signal_frequency * raw_features)
+    features = np.sin(2 * np.pi * signal_frequency * features)
 
     # Generate white noise
-    white_noise = np.random.normal(0, 1, size=N_FEATURES) * 0.1
+    white_noise = np.random.normal(0, 1, size=N_FEATURES)
 
-    # Random choice for raw_features
-    raw_features = random.choice([raw_features + white_noise, white_noise])
+    # Random choice between noisy signal or white noise
+    features = random.choice([features + white_noise, white_noise])
 
-    # Normalize features in range 0-1
-    features = raw_features + np.abs(np.min(raw_features))
-    features /= np.max(features)
-
-    # Digitize and normalize digits
-    features = np.digitize(features,bins=BINS) / BINS.shape[0]
-
-    return features, raw_features, white_noise
+    return features, white_noise
 
 
-def label_features(raw_features, white_noise):
+def label_features(features, white_noise):
     """Prepare label associated with features.
 
-    :param raw_features: Random times features of length N_FEATURES
-    :type raw_features: class:`numpy.ndarray`
+    The dummy law is:
 
-    :param white_noise: Raw white noise of length N_FEATURES
-    :type white_noise: class:`numpy.ndarray`
+    True signal in features = positive.
+    No true signal in features = negative.
 
-    :return: One-hot encoded label
-    :rtype: list[int]
+    :return: Time features of shape (N_FEATURES,).
+    :rtype: :class:`numpy.ndarray`
+
+    :return: White noise of shape (N_FEATURES,).
+    :rtype: :class:`numpy.ndarray`
+
+    :return: Single-digit label with respect to features.
+    :rtype: int
     """
-    # One-hot encoded positive and negative labels
-    p_label = [1, 0]
-    n_label = [0, 1]
+    # Single-digit positive and negative labels
+    p_label = 1
+    n_label = 0
 
     # Test if features contains signal (+)
-    if np.sum(raw_features) != np.sum(white_noise):
+    if np.sum(features) != np.sum(white_noise):
         label = p_label
 
-    # Test if features does not contain signal (-)
-    elif np.sum(raw_features) == np.sum(white_noise):
+    # Test if features is equal to white noise (-)
+    elif np.sum(features) == np.sum(white_noise):
         label = n_label
 
     return label
 
 
-def prepare_dataset(se_dataset):
-    """Prepare a dummy dataset of labeled samples.
+def prepare_dataset(N_SAMPLES=100):
+    """Prepare a set of dummy time sample features and label.
 
-    One sample is a list such as [features, label].
-
-    For one sample, features is a class:`numpy.ndarray` and label is a list.
-
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[class:`numpy.ndarray`,list[int]]]
-    """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
-
-    # See ./settings.py
-    dataset_name = se_dataset['dataset_name']
-    dataset_save = se_dataset['dataset_save']
-
-    # Initialize dataset
-    dataset = []
-
-    # Iterate over N_SAMPLES
-    for i in range(N_SAMPLES):
-
-        # Retrieve features, raw_features and white_noise
-        features, raw_features, white_noise = features_time()
-
-        # Retrieve label associated with features
-        label = label_features(raw_features, white_noise)
-
-        # Define labeled sample
-        sample = [features, label]
-
-        # Append sample to dataset
-        dataset.append(sample)
-
-    # Shuffle dataset
-    random.shuffle(dataset)
-
-    # Write dataset on disk
-    if dataset_save:
-        dataset_path = os.path.join(os.getcwd(), 'dataset', dataset_name+'.pickle')
-        write_pickle(dataset_path, dataset)
-
-    return dataset
-
-
-def prepare_unlabeled(N_SAMPLES=1):
-    """Prepare a dummy dataset of unlabeled samples.
-
-    One sample is a list such as [features, []].
-
-    For one sample, features is a class:`numpy.ndarray` and label is an empty list.
-
-    :param N_SAMPLES: Length for unlabeled dataset
+    :param N_SAMPLES: Number of samples to generate, defaults to 100.
     :type N_SAMPLES: int
 
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[class:`numpy.ndarray`,list]]
+    :return: Set of sample features.
+    :rtype: tuple[:class:`numpy.ndarray`]
+
+    :return: Set of single-digit sample label.
+    :rtype: tuple[int]
     """
-    # Initialize unlabeled_dataset
-    unlabeled_dataset = []
+    # Initialize X and Y datasets
+    X_features = []
+    Y_label = []
 
    # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        # Retrieve features
-        features, _, _ = features_time()
+        # Compute random time features
+        features, white_noise = features_time()
 
-        # Define unlabeled sample
-        sample = [features, []]
+        # Retrieve label associated with features
+        label = label_features(features, white_noise)
 
-        # Append sample to dataset
-        unlabeled_dataset.append(sample)
+        # Append sample features to X_features
+        X_features.append(features)
 
-    return unlabeled_dataset
+        # Append sample label to Y_label
+        Y_label.append(label)
+
+    # Prepare X-Y pairwise dataset
+    dataset = list(zip(X_features, Y_label))
+
+    # Shuffle dataset
+    random.shuffle(dataset)
+
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
+
+    return X_features, Y_label

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Dummy time data &mdash; EpyNN 0.1.0 documentation</title>
+  <title>Dummy dataset &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -42,8 +42,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Music" href="../author_music/prepare_dataset.html" />
-    <link rel="prev" title="Protein sequences" href="../ptm_protein/prepare_dataset.html" /> 
+    <link rel="next" title="Music Authorship" href="../author_music/prepare_dataset.html" />
+    <link rel="prev" title="Protein Modification" href="../ptm_protein/prepare_dataset.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -108,12 +105,18 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#boolean">Boolean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#time">Time</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy time data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../author_music/prepare_dataset.html">Music</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-is-a-time-series?">What is a time series?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Why-preparing-a-dummy-dataset-with-time-features?">Why preparing a dummy dataset with time features?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Prepare-a-set-of-time-sample-features-and-related-label">Prepare a set of time sample features and related label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../author_music/prepare_dataset.html">Music Authorship</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
@@ -167,7 +170,7 @@
         
           <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
         
-      <li>Dummy time data</li>
+      <li>Dummy dataset</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -456,11 +459,24 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Dummy-time-data">
-<h1>Dummy time data<a class="headerlink" href="#Dummy-time-data" title="Permalink to this headline">¶</a></h1>
-<p>Regular Python code located in …</p>
-<p>… using these data:</p>
-<p>Imports.</p>
+<div class="section" id="Dummy-dataset">
+<h1>Dummy dataset<a class="headerlink" href="#Dummy-dataset" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time/prepare_dataset.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_time/prepare_dataset.py</span></code>.</p>
+<p>This notebook is the third of the series on preparing data for Neural Network regression with EpyNN.</p>
+<p>In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.</p>
+<p>Note that elements developed in <a class="reference internal" href="../dummy_boolean/prepare_dataset.html"><span class="doc">dummy dataset with Boolean</span></a> and <a class="reference internal" href="../dummy_string/prepare_dataset.html"><span class="doc">dummy dataset with string</span></a> may not be recalled herein.</p>
+<div class="section" id="What-is-a-time-series?">
+<h2>What is a time series?<a class="headerlink" href="#What-is-a-time-series?" title="Permalink to this headline">¶</a></h2>
+<p>Time series is not a data-type. It represents sequential data with respect to the time dimension. Herein, we will work with <strong>sequential</strong> data containing <strong>numerical</strong> elements of data-type <strong>float</strong>.</p>
+</div>
+<div class="section" id="Why-preparing-a-dummy-dataset-with-time-features?">
+<h2>Why preparing a dummy dataset with time features?<a class="headerlink" href="#Why-preparing-a-dummy-dataset-with-time-features?" title="Permalink to this headline">¶</a></h2>
+<p>The general interest of dummy dataset is explained in dummy dataset with boolean sample features.</p>
+</div>
+<div class="section" id="Prepare-a-set-of-time-sample-features-and-related-label">
+<h2>Prepare a set of time sample features and related label<a class="headerlink" href="#Prepare-a-set-of-time-sample-features-and-related-label" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -469,162 +485,87 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="c1"># EpyNN/nnlive/dummy_time/prepare_dataset.ipynb</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Local application/library specific imports</span>
-<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span>
 </pre></div>
 </div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">random</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code> seed for reproducibility.</p>
+</div>
+<div class="section" id="Seeding">
+<h3>Seeding<a class="headerlink" href="#Seeding" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<p>Dummy time features.</p>
+</div>
+<div class="section" id="Generate-features">
+<h3>Generate features<a class="headerlink" href="#Generate-features" title="Permalink to this headline">¶</a></h3>
+<p>We need to define a function which will generate pseudo-random time features.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">features_time</span><span class="p">(</span><span class="n">SAMPLING_RATE</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">TIME</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">features_time</span><span class="p">(</span><span class="n">TIME</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">SAMPLING_RATE</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate dummy time features.</span>
 
-<span class="sd">    Time features may be white noise or a sum with a pure sin-wave.</span>
+<span class="sd">    Time features may be white noise or a sum with a pure sine-wave.</span>
 
-<span class="sd">    The pure sin-wave has random frequency lower than SAMPLING_RATE // 2.</span>
+<span class="sd">    The pure sin-wave has random frequency lower than SAMPLING_RATE // 4.</span>
 
-<span class="sd">    :param SAMPLING_RATE: Sampling rate (Hz)</span>
+<span class="sd">    :param SAMPLING_RATE: Sampling rate (Hz), defaults to 128.</span>
 <span class="sd">    :type SAMPLING_RATE: int</span>
 
-<span class="sd">    :param TIME: Sampling time (s)</span>
+<span class="sd">    :param TIME: Sampling time (s), defaults to 1.</span>
 <span class="sd">    :type TIME: int</span>
 
-<span class="sd">    :return: Normalized and digitized random time features of length N_FEATURES.</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :return: Time features of shape (N_FEATURES,).</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 
-<span class="sd">    :return: Raw random time features of length N_FEATURES</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
-
-<span class="sd">    :return: Raw white noise of length N_FEATURES</span>
-<span class="sd">    :rtype: class:`numpy.ndarray`</span>
+<span class="sd">    :return: White noise of shape (N_FEATURES,).</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Number of bins for signal digitalization</span>
-    <span class="n">N_BINS</span> <span class="o">=</span> <span class="mi">16</span> <span class="c1"># 4-bits ADC converter</span>
-
-    <span class="c1"># BINS</span>
-    <span class="n">BINS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N_BINS</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="c1"># Sampling rate (Hz) and Time (s)</span>
-    <span class="n">SAMPLING_RATE</span> <span class="o">=</span> <span class="mi">128</span>
-    <span class="n">TIME</span> <span class="o">=</span> <span class="mi">1</span>
-
     <span class="c1"># Number of features describing a sample</span>
-    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="n">SAMPLING_RATE</span> <span class="o">*</span> <span class="n">TIME</span>
+    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="n">TIME</span> <span class="o">*</span> <span class="n">SAMPLING_RATE</span>
 
     <span class="c1"># Initialize features array</span>
-    <span class="n">raw_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TIME</span><span class="p">,</span> <span class="n">N_FEATURES</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TIME</span><span class="p">,</span> <span class="n">N_FEATURES</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Random choice of true signal frequency</span>
-    <span class="n">signal_frequency</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">SAMPLING_RATE</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">signal_frequency</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">SAMPLING_RATE</span> <span class="o">//</span> <span class="mi">4</span><span class="p">)</span>
 
     <span class="c1"># Generate pure sine wave of N_FEATURES points</span>
-    <span class="n">raw_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">signal_frequency</span> <span class="o">*</span> <span class="n">raw_features</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">signal_frequency</span> <span class="o">*</span> <span class="n">features</span><span class="p">)</span>
 
     <span class="c1"># Generate white noise</span>
-    <span class="n">white_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N_FEATURES</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">white_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N_FEATURES</span><span class="p">)</span>
 
-    <span class="c1"># Random choice for raw_features</span>
-    <span class="n">raw_features</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">raw_features</span> <span class="o">+</span> <span class="n">white_noise</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">])</span>
+    <span class="c1"># Random choice between noisy signal or white noise</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">features</span> <span class="o">+</span> <span class="n">white_noise</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">])</span>
 
-    <span class="c1"># Normalize features in range 0-1</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">raw_features</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">raw_features</span><span class="p">))</span>
-    <span class="n">features</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-
-    <span class="c1"># Digitize and normalize digits</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span><span class="n">features</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="n">BINS</span><span class="p">)</span> <span class="o">/</span> <span class="n">BINS</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span>
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code is commented and quite self-explaining, let’s proceed with a call.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">features</span><span class="p">,</span> <span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span></span><span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">raw_features</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_noise</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(128,)
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_10_1.png" src="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_10_1.png" />
-</div>
-</div>
-<p>Again.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">features</span><span class="p">,</span> <span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">raw_features</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_noise</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(128,)
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_12_1.png" src="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_12_1.png" />
-</div>
-</div>
-<p>Features.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;white_noise&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">features</span> <span class="o">-</span> <span class="n">white_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;features - white_noise&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -636,200 +577,161 @@ div.rendered_html tbody tr:hover {
 <img alt="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_14_0.png" src="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_14_0.png" />
 </div>
 </div>
-<p>Label from features.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<p>Here we have got noisy features from the random choice because when subtracting white_noise from features we recover a pure sine-wave of random frequency, as stated in the comment of the features_time() function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">):</span>
+<span></span><span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;features&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">white_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;white_noise&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">features</span> <span class="o">-</span> <span class="n">white_noise</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;features - white_noise&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_16_0.png" src="nnlive/dummy_time/../../_build/doctrees/nbsphinx/nnlive_dummy_time_prepare_dataset_16_0.png" />
+</div>
+</div>
+<p>By contrast, here we retrieved features which only contain white_noise, since the subtract operation return a flat line.</p>
+<p>Therefore, sample features may consist of noise containing a true signal, or just pure noise.</p>
+</div>
+<div class="section" id="Generate-label">
+<h3>Generate label<a class="headerlink" href="#Generate-label" title="Permalink to this headline">¶</a></h3>
+<p>As already mentioned, in this dummy example we have the <em>a priori</em> knowledge of the law we want to model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prepare label associated with features.</span>
 
-<span class="sd">    :param raw_features: Random times features of length N_FEATURES</span>
-<span class="sd">    :type raw_features: class:`numpy.ndarray`</span>
+<span class="sd">    The dummy law is:</span>
 
-<span class="sd">    :param white_noise: Raw white noise of length N_FEATURES</span>
-<span class="sd">    :type white_noise: class:`numpy.ndarray`</span>
+<span class="sd">    True signal in features = positive.</span>
+<span class="sd">    No true signal in features = negative.</span>
 
-<span class="sd">    :return: One-hot encoded label</span>
-<span class="sd">    :rtype: list[int]</span>
+<span class="sd">    :return: Time features of shape (N_FEATURES,).</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: White noise of shape (N_FEATURES,).</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Single-digit label with respect to features.</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># One-hot encoded positive and negative labels</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Single-digit positive and negative labels</span>
+    <span class="n">p_label</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_label</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="c1"># Test if features contains signal (+)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raw_features</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">white_noise</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">white_noise</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">p_label</span>
 
-    <span class="c1"># Test if features does not contain signal (-)</span>
-    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raw_features</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">white_noise</span><span class="p">):</span>
+    <span class="c1"># Test if features is equal to white noise (-)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">white_noise</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">n_label</span>
 
     <span class="k">return</span> <span class="n">label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code above is commented and self explaining.</p>
+<p>Let’s check the function we made for a few iterations.</p>
 <div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">white_noise</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0 8.229805878605298 8.229805878605298
+1 -14.050458965546074 -14.815710108626986
+1 -11.549709837862915 -11.540337261071977
+0 13.328422448204016 13.328422448204016
+1 -10.182354522856613 -11.182867459686078
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Prepare-dataset">
+<h3>Prepare dataset<a class="headerlink" href="#Prepare-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Let’s go on and write the function which will iterate to generate a set of sample time features and label.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[0, 1]
-</pre></div></div>
-</div>
-<p>Prepare labeled dataset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of labeled samples.</span>
+<span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy time sample features and label.</span>
 
-<span class="sd">    One sample is a list such as [features, label].</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate, defaults to 100.</span>
+<span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    For one sample, features is a class:`numpy.ndarray` and label is a list.</span>
+<span class="sd">    :return: Set of sample features.</span>
+<span class="sd">    :rtype: tuple[:class:`numpy.ndarray`]</span>
 
-<span class="sd">    :param se_dataset: Settings for dataset preparation</span>
-<span class="sd">    :type se_dataset: dict</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[class:`numpy.ndarray`,list[int]]]</span>
+<span class="sd">    :return: Set of single-digit sample label.</span>
+<span class="sd">    :rtype: tuple[int]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># See ./settings.py</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
+    <span class="c1"># Initialize X and Y datasets</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y_label</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
+   <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
 
-        <span class="c1"># Retrieve features, raw_features and white_noise</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
+        <span class="c1"># Compute random time features</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
 
         <span class="c1"># Retrieve label associated with features</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">raw_features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">)</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">white_noise</span><span class="p">)</span>
 
-        <span class="c1"># Define labeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
+        <span class="c1"># Append sample features to X_features</span>
+        <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="c1"># Append sample label to Y_label</span>
+        <span class="n">Y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Prepare X-Y pairwise dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))</span>
 
     <span class="c1"># Shuffle dataset</span>
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dataset</span>
+    <span class="c1"># Separate X-Y pairs</span>
+    <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
-
-<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-</pre></div>
+<p>Again, this function is the same as seen in the previous notebooks of the series. It simply wraps the exemple-specific elements which are the functions <code class="docutils literal notranslate"><span class="pre">features_time()</span></code> and <code class="docutils literal notranslate"><span class="pre">label_features()</span></code>.</p>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="section" id="What-comes-next?">
+<h2>What comes next?<a class="headerlink" href="#What-comes-next?" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code> applied to dummy time data is used in the following working examples:</p>
+<p>XXX</p>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(128,) [1, 0]
-(128,) [1, 0]
-(128,) [1, 0]
-(128,) [1, 0]
-(128,) [1, 0]
-(128,) [0, 1]
-(128,) [0, 1]
-(128,) [1, 0]
-(128,) [0, 1]
-(128,) [1, 0]
-</pre></div></div>
-</div>
-<p>Prepare unlabeled dataset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of unlabeled samples.</span>
-
-<span class="sd">    One sample is a list such as [features, []].</span>
-
-<span class="sd">    For one sample, features is a class:`numpy.ndarray` and label is an empty list.</span>
-
-<span class="sd">    :param N_SAMPLES: Length for unlabeled dataset</span>
-<span class="sd">    :type N_SAMPLES: int</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[class:`numpy.ndarray`,list]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Initialize unlabeled_dataset</span>
-    <span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-
-        <span class="c1"># Retrieve features</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">features_time</span><span class="p">()</span>
-
-        <span class="c1"># Define unlabeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="p">[]]</span>
-
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">unlabeled_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">unlabeled_dataset</span>
-</pre></div>
-</div>
-</div>
-<p>Check the function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(128,) []
-(128,) []
-(128,) []
-(128,) []
-(128,) []
-</pre></div></div>
-</div>
-<p>Done.</p>
 </div>
 
 
@@ -838,8 +740,8 @@ div.rendered_html tbody tr:hover {
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../author_music/prepare_dataset.html" class="btn btn-neutral float-right" title="Music" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-left" title="Protein sequences" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../author_music/prepare_dataset.html" class="btn btn-neutral float-right" title="Music Authorship" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-left" title="Protein Modification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

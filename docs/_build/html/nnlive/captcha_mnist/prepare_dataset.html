@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>MNIST &mdash; EpyNN 0.1.0 documentation</title>
+  <title>MNIST Database &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Details" href="../../Details.html" />
-    <link rel="prev" title="Dummy image data" href="../dummy_image/prepare_dataset.html" /> 
+    <link rel="prev" title="Dummy dataset" href="../dummy_image/prepare_dataset.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -94,8 +91,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../EpyNN_Model.html">Neural Network (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Layer_Model.html">Architecture Layers (Model)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Data_Model.html">Dataset (Model)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Embedding.html">Data Embedding (Input)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Dense.html">Fully Connected (Dense)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../RNN.html">Recurrent Neural Network (RNN)</a></li>
@@ -107,10 +105,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#boolean">Boolean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#image">Image</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../dummy_image/prepare_dataset.html">Dummy image data</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">MNIST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../dummy_image/prepare_dataset.html">Dummy dataset</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MNIST Database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Recognition-of-hand-written-digits">Recognition of hand-written digits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Prepare-a-set-of-hand-written-digits-as-images">Prepare a set of hand-written digits as images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -166,7 +169,7 @@
         
           <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
         
-      <li>MNIST</li>
+      <li>MNIST Database</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -455,25 +458,33 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="MNIST">
-<h1>MNIST<a class="headerlink" href="#MNIST" title="Permalink to this headline">¶</a></h1>
-<p>Regular Python code located in …</p>
-<p>… using these data:</p>
-<p>Imports.</p>
+<div class="section" id="MNIST-Database">
+<h1>MNIST Database<a class="headerlink" href="#MNIST-Database" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/captcha_mnist/prepare_dataset.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/captcha_mnist/prepare_dataset.py</span></code>.</p>
+<p>This notebook is part of the series on preparing data for Neural Network regression with EpyNN. It deals with a real world problem and therefore will focus on the problem itself, rather than basics that were reviewed along with the preparation of dummy dataset <a class="reference internal" href="../dummy_boolean/prepare_dataset.html"><span class="doc">with Boolean</span></a>, <a class="reference internal" href="../dummy_string/prepare_dataset.html"><span class="doc">with string</span></a>, <a class="reference internal" href="../dummy_time/prepare_dataset.html"><span class="doc">with time-series (numerical)</span></a> and <a class="reference internal" href="../dummy_image/prepare_dataset.html"><span class="doc">with image
+(numerical)</span></a>.</p>
+<div class="section" id="Recognition-of-hand-written-digits">
+<h2>Recognition of hand-written digits<a class="headerlink" href="#Recognition-of-hand-written-digits" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="Prepare-a-set-of-hand-written-digits-as-images">
+<h2>Prepare a set of hand-written digits as images<a class="headerlink" href="#Prepare-a-set-of-hand-written-digits-as-images" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlive/captcha_mnist/prepare_dataset.py</span>
+<span></span><span class="c1"># EpyNN/nnlive/captcha_mnist/prepare_dataset.ipynb</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">tarfile</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">wget</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">wget</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1"># Related third party imports</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Local application/library specific imports</span>
@@ -481,9 +492,23 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Retrieve MNIST from the cloud.</p>
+</div>
+<div class="section" id="Seeding">
+<h3>Seeding<a class="headerlink" href="#Seeding" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Download-MNIST-database">
+<h3>Download MNIST database<a class="headerlink" href="#Download-MNIST-database" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -495,7 +520,7 @@ div.rendered_html tbody tr:hover {
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
 
         <span class="c1"># Download @url with wget</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://synthase.s3.us-west-2.amazonaws.com/mnist_database_data.tar&#39;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://synthase.s3.us-west-2.amazonaws.com/mnist_database.tar&#39;</span>
         <span class="n">fname</span> <span class="o">=</span> <span class="n">wget</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
         <span class="c1"># Extract archive</span>
@@ -506,72 +531,165 @@ div.rendered_html tbody tr:hover {
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
-
-<span class="n">download_mnist</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<p>Labeled dataset.</p>
+<p>Retrieve the data as follows.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dataset of labeled samples.</span>
-
-<span class="sd">    One sample is a list such as [features, label].</span>
-
-<span class="sd">    For one sample, features is a list and label is a list.</span>
-
-<span class="sd">    :param se_dataset: Settings for dataset preparation</span>
-<span class="sd">    :type se_dataset: dict</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[list[str],list[int]]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># See ./settings.py</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
-
-    <span class="c1"># Process MNIST images</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/train-images.gz&#39;</span><span class="p">)</span>
-
-    <span class="n">header</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
-    <span class="n">num_images</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
-    <span class="n">image_size</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
-    <span class="n">buf</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image_size</span> <span class="o">*</span> <span class="n">image_size</span> <span class="o">*</span> <span class="n">num_images</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-    <span class="n">images</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">num_images</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># Process MNIST labels</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/train-labels.gz&#39;</span><span class="p">)</span>
-
-    <span class="n">header</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
-    <span class="n">num_labels</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">8</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
-    <span class="n">buf</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image_size</span> <span class="o">*</span> <span class="n">image_size</span> <span class="o">*</span> <span class="n">num_images</span><span class="p">)</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-
-    <span class="n">num_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="c1"># one-hot-encoded labels</span>
-    <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)[</span><span class="n">labels</span><span class="p">]</span>
-
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">images</span><span class="p">,</span><span class="n">labels</span><span class="p">)]</span>
-
-    <span class="c1"># Shuffle dataset before split</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-
-    <span class="c1"># Default N_SAMPLES</span>
-    <span class="k">if</span> <span class="n">N_SAMPLES</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
-
-    <span class="c1"># Truncate dataset to N_SAMPLES</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[:</span><span class="n">N_SAMPLES</span><span class="p">]</span>
-
-    <span class="k">return</span> <span class="n">dataset</span>
+<span></span><span class="n">download_mnist</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="Prepare-dataset">
+<h3>Prepare dataset<a class="headerlink" href="#Prepare-dataset" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a dataset of hand-written digits as images.</span>
+
+<span class="sd">    :param N_SAMPLES: Number of MNIST samples to retrieve, defaults to 100.</span>
+<span class="sd">    :type N_SAMPLES: int</span>
+
+<span class="sd">    :return: Set of sample features.</span>
+<span class="sd">    :rtype: tuple[:class:`numpy.ndarray`]</span>
+
+<span class="sd">    :return: Set of single-digit sample label.</span>
+<span class="sd">    :rtype: tuple[:class:`numpy.ndarray`]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Process MNIST images</span>
+    <span class="n">img_file</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/train-images-idx3-ubyte.gz&#39;</span><span class="p">)</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="n">img_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">image_size</span> <span class="o">=</span> <span class="nb">int</span><span class="o">.</span><span class="n">from_bytes</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">12</span><span class="p">],</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">img_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image_size</span> <span class="o">*</span> <span class="n">image_size</span> <span class="o">*</span> <span class="n">N_SAMPLES</span><span class="p">)</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="n">X_features</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Process MNIST labels</span>
+    <span class="n">label_file</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;data/train-labels-idx1-ubyte.gz&#39;</span><span class="p">)</span>
+
+    <span class="n">header</span> <span class="o">=</span> <span class="n">label_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">buf</span> <span class="o">=</span> <span class="n">label_file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image_size</span> <span class="o">*</span> <span class="n">image_size</span> <span class="o">*</span> <span class="n">N_SAMPLES</span><span class="p">)</span>
+    <span class="n">Y_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="c1"># Prepare X-Y pairwise dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))</span>
+
+    <span class="c1"># Shuffle dataset</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="c1"># Separate X-Y pairs</span>
+    <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s check the function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_1.png" src="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_3.png" src="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+9
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_5.png" src="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+5
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_7.png" src="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_7.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_9.png" src="nnlive/captcha_mnist/../../_build/doctrees/nbsphinx/nnlive_captcha_mnist_prepare_dataset_16_9.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="What-comes-next?">
+<h2>What comes next?<a class="headerlink" href="#What-comes-next?" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code> applied to dummy string data is used in the following working examples:</p>
+<p>XXX</p>
 </div>
 </div>
 
@@ -582,7 +700,7 @@ div.rendered_html tbody tr:hover {
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="../../Details.html" class="btn btn-neutral float-right" title="Details" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../dummy_image/prepare_dataset.html" class="btn btn-neutral float-left" title="Dummy image data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dummy_image/prepare_dataset.html" class="btn btn-neutral float-left" title="Dummy dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

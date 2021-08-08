@@ -10,11 +10,14 @@ from matplotlib import pyplot as plt
 from nnlibs.commons.logs import process_logs
 
 
-def pyplot_metrics(model):
+def pyplot_metrics(model, path):
     """Plot metrics from training with matplotlib
 
     :param model: An instance of EpyNN network.
     :type model: :class:`nnlibs.meta.models.EpyNN`
+
+    :param path: Write matplotlib plot
+    :type path: bool or NoneType
     """
 
     plt.figure()
@@ -45,13 +48,16 @@ def pyplot_metrics(model):
 
     plt.show()
 
-    plot_path = os.path.join(os.getcwd(), 'plots', model.uname)  + '.png'
+    if path == None:
+        path = 'plots'
 
-    plt.savefig(plot_path)
+    if path:
+        plot_path = os.path.join(os.getcwd(), path, model.uname)  + '.png'
+        plt.savefig(plot_path)
+
+        process_logs('Make: ' + plot_path, level=1)
 
     plt.close()
-
-    process_logs('Make: ' + plot_path, level=1)
 
     return None
 

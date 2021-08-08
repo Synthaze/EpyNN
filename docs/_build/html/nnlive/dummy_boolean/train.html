@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Dummy string data" href="../dummy_string/prepare_dataset.html" />
+    <link rel="next" title="Dummy dataset" href="../dummy_string/prepare_dataset.html" />
     <link rel="prev" title="Dummy dataset" href="prepare_dataset.html" /> 
 </head>
 
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -115,13 +112,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#Retrieve-sample-Boolean-features-and-label">Retrieve sample Boolean features and label</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Embedding-layer-and-dataSet">Embedding layer and dataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Perceptron---Single-layer-Neural-Network">Perceptron - Single layer Neural Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Multi-Class-Perceptron---One-Hot-encoding-of-sample-label">Multi-Class Perceptron - One-Hot encoding of sample label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Feed-Forward-Neural-Network---Hidden-layer">Feed-Forward Neural Network - Hidden layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Comparison">Comparison</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
@@ -508,7 +508,6 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">nnlibs.embedding.models</span> <span class="kn">import</span> <span class="n">Embedding</span>
 <span class="kn">from</span> <span class="nn">nnlibs.dense.models</span> <span class="kn">import</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">prepare_dataset</span> <span class="kn">import</span> <span class="n">prepare_dataset</span>
-<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">se_hPars</span>
 </pre></div>
 </div>
 </div>
@@ -558,7 +557,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+<span></span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="n">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -579,11 +578,11 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0 False [False, False, False, False, True, True, False, True, False, True, True]
-1 True [False, True, False, False, True, True, True, True, False, True, True]
-1 True [True, False, True, False, True, True, True, False, False, False, True]
-1 True [False, True, True, True, False, True, True, True, False, False, False]
-0 False [False, False, False, True, False, False, False, True, True, False, True]
+1 True [True, False, False, True, False, True, False, True, True, True, False]
+0 False [False, True, False, False, False, False, False, True, False, False, True]
+1 True [False, False, False, True, True, True, False, True, False, True, True]
+1 True [True, True, True, True, False, True, True, True, True, False, True]
+0 False [True, False, True, False, True, False, False, False, False, False, True]
 </pre></div></div>
 </div>
 <p>We have what we expect. Remeber that the conditional expression is the dummy law we used to assign a label to dummy sample boolean features.</p>
@@ -639,11 +638,11 @@ div.rendered_html tbody tr:hover {
 8 activation {}
 9 se_hPars None
 10 se_dataset {&#39;dtrain_relative&#39;: 2, &#39;dtest_relative&#39;: 1, &#39;dval_relative&#39;: 0, &#39;batch_size&#39;: None, &#39;X_scale&#39;: False, &#39;X_encode&#39;: False, &#39;Y_encode&#39;: False}
-11 dtrain &lt;nnlibs.commons.models.dataSet object at 0x7f4204889cf8&gt;
-12 dtest &lt;nnlibs.commons.models.dataSet object at 0x7f4204889ef0&gt;
-13 dval &lt;nnlibs.commons.models.dataSet object at 0x7f4204889f28&gt;
-14 batch_dtrain [&lt;nnlibs.commons.models.dataSet object at 0x7f4204889f98&gt;]
-15 dsets [&lt;nnlibs.commons.models.dataSet object at 0x7f4204889cf8&gt;, &lt;nnlibs.commons.models.dataSet object at 0x7f4204889ef0&gt;]
+11 dtrain &lt;nnlibs.commons.models.dataSet object at 0x7fe479b371d0&gt;
+12 dtest &lt;nnlibs.commons.models.dataSet object at 0x7fe479b372b0&gt;
+13 dval &lt;nnlibs.commons.models.dataSet object at 0x7fe479b25ac8&gt;
+14 batch_dtrain [&lt;nnlibs.commons.models.dataSet object at 0x7fe479b372e8&gt;]
+15 dsets [&lt;nnlibs.commons.models.dataSet object at 0x7fe479b371d0&gt;, &lt;nnlibs.commons.models.dataSet object at 0x7fe479b372b0&gt;]
 </pre></div></div>
 </div>
 <p><strong>Lines 0-9</strong>: Inherited from <code class="docutils literal notranslate"><span class="pre">nnlibs.commons.models.Layer</span></code> which is the <a class="reference external" href="../../Layer_Model.html">Base Layer</a>. These instance attributes exist for any layers in EpyNN.</p>
@@ -689,23 +688,23 @@ div.rendered_html tbody tr:hover {
 &lt;class &#39;nnlibs.commons.models.dataSet&#39;&gt;
 0 name dtrain
 1 active True
-2 X [[False False False ... False  True  True]
- [False  True False ... False  True  True]
- [ True False  True ... False False  True]
+2 X [[ True False False ...  True  True False]
+ [False  True False ... False False  True]
+ [False False False ... False  True  True]
  ...
- [False  True  True ...  True  True False]
- [False  True False ...  True False False]
- [False False  True ... False False False]]
-3 Y [[0]
- [1]
+ [ True False False ... False False  True]
+ [False  True False ... False  True False]
+ [False False  True ...  True  True False]]
+3 Y [[1]
+ [0]
  [1]
  ...
- [1]
- [1]
- [0]]
-4 y [0 1 1 ... 1 1 0]
-5 b {0: 23, 1: 27}
-6 ids [ 0  1  2 ... 47 48 49]
+ [0]
+ [0]
+ [1]]
+4 y [1 0 1 ... 0 0 1]
+5 b {1: 31, 0: 36}
+6 ids [ 0  1  2 ... 64 65 66]
 7 A []
 8 P []
 </pre></div></div>
@@ -767,8 +766,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-(50, 1)
-(50,)
+(67, 1)
+(67,)
 True
 </pre></div></div>
 </div>
@@ -781,7 +780,7 @@ True
 <div class="section" id="Perceptron---Single-layer-Neural-Network">
 <h2>Perceptron - Single layer Neural Network<a class="headerlink" href="#Perceptron---Single-layer-Neural-Network" title="Permalink to this headline">¶</a></h2>
 <p>Herein, we are going to build the most simple Neural Network and to train it in the most simple way we can.</p>
-<p><img alt="bcee37821500426e96ea795a22a2382f" src="../../_images/perceptron-01.png" /></p>
+<p><img alt="71b5be561a2b40a89a4df061cac69f58" src="../../_images/perceptron-01.png" /></p>
 <p>This scheme depict the topology of a Perceptron, a single layer Neural Network capable of linear regressions.</p>
 <p>Although the picture is clearly stating that there are two layers in there, <strong>single layer</strong> refers to <strong>single trainable layer</strong>.</p>
 <p>The trainable layer is the output layer, which is here a <em>fully connected</em> or <em>Dense</em> layer.</p>
@@ -829,8 +828,8 @@ True
 7 o {}
 8 activation {&#39;activate&#39;: &#39;sigmoid&#39;}
 9 se_hPars None
-10 initialization &lt;function xavier at 0x7f4207a4a488&gt;
-11 activate &lt;function sigmoid at 0x7f4207a4a268&gt;
+10 initialization &lt;function xavier at 0x7fe47ccea400&gt;
+11 activate &lt;function sigmoid at 0x7fe47ccea1e0&gt;
 </pre></div></div>
 </div>
 <p>We pass on details again. Simply note that (1) indicates the number of nodes in the Dense layer, and (8, 11) the activation function for this layer. See <a href="#id1"><span class="problematic" id="id4">`xx &lt;&gt;`__</span></a>.</p>
@@ -879,10 +878,10 @@ True
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 &lt;class &#39;nnlibs.network.models.EpyNN&#39;&gt;
-0 layers [&lt;nnlibs.embedding.models.Embedding object at 0x7f4204889d30&gt;, &lt;nnlibs.dense.models.Dense object at 0x7f42610d5710&gt;]
-1 embedding &lt;nnlibs.embedding.models.Embedding object at 0x7f4204889d30&gt;
-2 ts 1628295230
-3 uname 1628295230_Perceptron_Dense-1-sigmoid
+0 layers [&lt;nnlibs.embedding.models.Embedding object at 0x7fe479b370f0&gt;, &lt;nnlibs.dense.models.Dense object at 0x7fe479b25390&gt;]
+1 embedding &lt;nnlibs.embedding.models.Embedding object at 0x7fe479b370f0&gt;
+2 ts 1628334037
+3 uname 1628334037_Perceptron_Dense-1-sigmoid
 4 initialized False
 </pre></div></div>
 </div>
@@ -937,7 +936,7 @@ True
 <span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
 <span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
 <span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
-<span class="ansi-bold">----------------------- 1628295230_Perceptron_Dense-1-sigmoid -------------------------
+<span class="ansi-bold">----------------------- 1628334037_Perceptron_Dense-1-sigmoid -------------------------
 </span>
 
 <span class="ansi-bold">-------------------------------- Datasets ------------------------------------
@@ -946,15 +945,15 @@ True
 | dtrain | dtest | dval | batch |
 | (0)    | (1)   | (2)  | size  |
 +--------+-------+------+-------+
-| 50     | 25    | None | None  |
+| 67     | 33    | None | None  |
 +--------+-------+------+-------+
 
 +----------+--------+-------+------+
 | N_LABELS | dtrain | dtest | dval |
 |          | (0)    | (1)   | (2)  |
 +----------+--------+-------+------+
-| 2        | 0: 23  | 0: 12 | None |
-|          | 1: 27  | 1: 13 |      |
+| 2        | 0: 36  | 0: 14 | None |
+|          | 1: 31  | 1: 19 |      |
 +----------+--------+-------+------+
 
 <span class="ansi-bold">----------------------- Model Architecture -------------------------
@@ -962,14 +961,14 @@ True
 +----+-----------+------------+-------------------+-------------+--------------+
 | ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
 +----+-----------+------------+-------------------+-------------+--------------+
-| 0  | Embedding | m: 50      |                   | X: (50, 11) | dX: (50, 11) |
-|    |           | n: 11      |                   | A: (50, 11) | dA: (50, 11) |
+| 0  | Embedding | m: 67      |                   | X: (67, 11) | dX: (67, 11) |
+|    |           | n: 11      |                   | A: (67, 11) | dA: (67, 11) |
 +----+-----------+------------+-------------------+-------------+--------------+
-| 1  | Dense     | n: 1       | activate: sigmoid | X: (50, 11) | dX: (50, 1)  |
-|    |           | m: 50      |                   | W: (11, 1)  | dZ: (50, 1)  |
-|    |           | p: 11      |                   | b: (1, 1)   | dA: (50, 11) |
-|    |           |            |                   | Z: (50, 1)  |              |
-|    |           |            |                   | A: (50, 1)  |              |
+| 1  | Dense     | n: 1       | activate: sigmoid | X: (67, 11) | dX: (67, 1)  |
+|    |           | m: 67      |                   | W: (11, 1)  | dZ: (67, 1)  |
+|    |           | p: 11      |                   | b: (1, 1)   | dA: (67, 11) |
+|    |           |            |                   | Z: (67, 1)  |              |
+|    |           |            |                   | A: (67, 1)  |              |
 +----+-----------+------------+-------------------+-------------+--------------+
 
 <span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
@@ -989,36 +988,36 @@ True
 | Dense | 0.010 | 0.010 | 1           |
 +-------+-------+-------+-------------+
 
-<span class="ansi-bold">----------------------- 1628295230_Perceptron_Dense-1-sigmoid -------------------------
+<span class="ansi-bold">----------------------- 1628334037_Perceptron_Dense-1-sigmoid -------------------------
 </span>
 
 +-------+----------+-------+----------+-------+-------+---------------------------------------+
 | <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |              <span class="ansi-white-fg">Experiment</span>               |
 |       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                       |
 +-------+----------+-------+----------+-------+-------+---------------------------------------+
-|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.420</span> |  <span class="ansi-green-intense-fg ansi-bold">0.400</span>   | <span class="ansi-red-intense-fg ansi-bold">0.413</span> | <span class="ansi-red-intense-fg ansi-bold">0.478</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.720</span> |  <span class="ansi-green-intense-fg ansi-bold">0.560</span>   | <span class="ansi-red-intense-fg ansi-bold">0.201</span> | <span class="ansi-red-intense-fg ansi-bold">0.281</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.780</span> |  <span class="ansi-green-intense-fg ansi-bold">0.560</span>   | <span class="ansi-red-intense-fg ansi-bold">0.141</span> | <span class="ansi-red-intense-fg ansi-bold">0.245</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.860</span> |  <span class="ansi-green-intense-fg ansi-bold">0.640</span>   | <span class="ansi-red-intense-fg ansi-bold">0.113</span> | <span class="ansi-red-intense-fg ansi-bold">0.214</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.900</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.097</span> | <span class="ansi-red-intense-fg ansi-bold">0.191</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.920</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.087</span> | <span class="ansi-red-intense-fg ansi-bold">0.173</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.920</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.079</span> | <span class="ansi-red-intense-fg ansi-bold">0.160</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.720</span>   | <span class="ansi-red-intense-fg ansi-bold">0.073</span> | <span class="ansi-red-intense-fg ansi-bold">0.149</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.760</span>   | <span class="ansi-red-intense-fg ansi-bold">0.068</span> | <span class="ansi-red-intense-fg ansi-bold">0.140</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
-|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.960</span> |  <span class="ansi-green-intense-fg ansi-bold">0.760</span>   | <span class="ansi-red-intense-fg ansi-bold">0.064</span> | <span class="ansi-red-intense-fg ansi-bold">0.133</span> | <span class="ansi-white-fg">1628295230_Perceptron_Dense-1-sigmoid</span> |
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.433</span> |  <span class="ansi-green-intense-fg ansi-bold">0.455</span>   | <span class="ansi-red-intense-fg ansi-bold">0.418</span> | <span class="ansi-red-intense-fg ansi-bold">0.441</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.716</span> |  <span class="ansi-green-intense-fg ansi-bold">0.606</span>   | <span class="ansi-red-intense-fg ansi-bold">0.226</span> | <span class="ansi-red-intense-fg ansi-bold">0.264</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.806</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.150</span> | <span class="ansi-red-intense-fg ansi-bold">0.194</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.910</span> |  <span class="ansi-green-intense-fg ansi-bold">0.788</span>   | <span class="ansi-red-intense-fg ansi-bold">0.107</span> | <span class="ansi-red-intense-fg ansi-bold">0.138</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.090</span> | <span class="ansi-red-intense-fg ansi-bold">0.116</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.081</span> | <span class="ansi-red-intense-fg ansi-bold">0.104</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.073</span> | <span class="ansi-red-intense-fg ansi-bold">0.096</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.985</span> |  <span class="ansi-green-intense-fg ansi-bold">0.970</span>   | <span class="ansi-red-intense-fg ansi-bold">0.070</span> | <span class="ansi-red-intense-fg ansi-bold">0.098</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.879</span>   | <span class="ansi-red-intense-fg ansi-bold">0.075</span> | <span class="ansi-red-intense-fg ansi-bold">0.114</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.985</span> |  <span class="ansi-green-intense-fg ansi-bold">0.939</span>   | <span class="ansi-red-intense-fg ansi-bold">0.064</span> | <span class="ansi-red-intense-fg ansi-bold">0.097</span> | <span class="ansi-white-fg">1628334037_Perceptron_Dense-1-sigmoid</span> |
 +-------+----------+-------+----------+-------+-------+---------------------------------------+
-<span class="ansi-white-intense-fg ansi-bold">TIME: 5.83s RATE: 15.61e/s TTC: 1s</span>
+<span class="ansi-white-intense-fg ansi-bold">TIME: 5s RATE: 18.2e/s TTC: 1s</span>
 +-------+-------+-----+----------+-----+-----+------------+
 | <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
 |       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
 +-------+-------+-----+----------+-----+-----+------------+
 +-------+-------+-----+----------+-----+-----+------------+
-<span class="ansi-white-intense-fg ansi-bold">TIME: 5.84s RATE: 17.12e/s TTC: 0s</span>
+<span class="ansi-white-intense-fg ansi-bold">TIME: 5s RATE: 20.0e/s TTC: 0s</span>
 </pre></div></div>
 </div>
 <p>XXXX</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1038,7 +1037,7 @@ True
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/plots/1628295230_Perceptron_Dense-1-sigmoid.png</span>
+<span class="ansi-green-intense-fg ansi-bold">Make: /media/synthase/beta/EpyNN/nnlive/dummy_boolean/plots/1628334037_Perceptron_Dense-1-sigmoid.png</span>
 </pre></div></div>
 </div>
 <p>XXXX</p>
@@ -1053,12 +1052,760 @@ True
 </div>
 <p>XXX</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span>
 </pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Multi-Class-Perceptron---One-Hot-encoding-of-sample-label">
+<h2>Multi-Class Perceptron - One-Hot encoding of sample label<a class="headerlink" href="#Multi-Class-Perceptron---One-Hot-encoding-of-sample-label" title="Permalink to this headline">¶</a></h2>
+<p>We are going to repeat the experiment but in a little different way.</p>
+<p>Let me show you something.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0
+1
+</pre></div></div>
+</div>
+<p>I bet you’re not impressed.</p>
+<p>We have two labels - or two classes - in the present problem. This is a binary classification task.</p>
+<p>We have a set of single-digit sample label so we have a single node in the Dense output layer.</p>
+<p>Let say we would like to have one more node in the output layer. How would we do?</p>
+<p>We need to <em>encode</em> single-digit label over two digits, then we can have two output nodes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">n_label</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">p_label</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">n_labels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">n_label</span><span class="p">,</span> <span class="n">p_label</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[</span><span class="n">n_label</span><span class="p">,</span> <span class="n">p_label</span><span class="p">]:</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_labels</span><span class="p">):</span>
+        <span class="n">encoding</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">encoding</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0 [1, 0]
+1 [0, 1]
+</pre></div></div>
+</div>
+<p>We just manually encoded labels over two digit using Python list.</p>
+<p>We have done that by initializing a list of length n_labels with zeros, then by assigning the value one to the list index equal to the single-digit label.</p>
+<p>This is called <em>One-Hot encoding</em>.</p>
+<p>Let’s encode by hand the first ten in our set of sample label, using some NumPy.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Y_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y_label</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Y_label</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(100,)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">n_labels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">Y_label</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">Y_label</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_labels</span><span class="p">)</span>
+    <span class="n">encoding</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+0 [1. 0.]
+0 [1. 0.]
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+</pre></div></div>
+</div>
+<p>Using even more NumPy.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">encoded_Y_label</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_labels</span><span class="p">)[</span><span class="n">Y_label</span><span class="p">]</span>    <span class="c1"># Encoding using np.eye</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">Y_label</span><span class="p">,</span> <span class="n">encoded_Y_label</span><span class="p">))[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+0 [1. 0.]
+0 [1. 0.]
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+</pre></div></div>
+</div>
+<p>With EpyNN, this operation can be achieved when calling the class constructor for the embedding layer.</p>
+<p>For this to happen, one need to set the corresponding argument accordingly.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">embedding_Y_encoded</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">X_data</span><span class="o">=</span><span class="n">X_features</span><span class="p">,</span>
+                                <span class="n">Y_data</span><span class="o">=</span><span class="n">Y_label</span><span class="p">,</span>
+                                <span class="n">Y_encode</span><span class="o">=</span><span class="kc">True</span> <span class="p">,</span>  <span class="c1"># Here is the argument to one-hot encode Y_data</span>
+                                <span class="n">relative_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">encoding</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">Y_label</span><span class="p">,</span> <span class="n">embedding_Y_encoded</span><span class="o">.</span><span class="n">dtrain</span><span class="o">.</span><span class="n">Y</span><span class="p">))[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+0 [1. 0.]
+0 [1. 0.]
+1 [0. 1.]
+0 [1. 0.]
+1 [0. 1.]
+1 [0. 1.]
+</pre></div></div>
+</div>
+<p>Now, we need to instantiate a new Dense layer object because it should contain two nodes instead of one.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dense2</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding_Y_encoded</span><span class="p">,</span> <span class="n">dense2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>We also built the layers list to instantiate a new Neural Network via EpyNN.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model2</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Perceptron_Dense-2-sigmoid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s train it.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model2</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">--- EpyNN Check --- </span>
+<span class="ansi-bold">Layer: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Embedding</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
+<span class="ansi-bold">----------------------- 1628334044_Perceptron_Dense-2-sigmoid -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++--------+-------+------+-------+
+| dtrain | dtest | dval | batch |
+| (0)    | (1)   | (2)  | size  |
++--------+-------+------+-------+
+| 67     | 33    | None | None  |
++--------+-------+------+-------+
+
++----------+--------+-------+------+
+| N_LABELS | dtrain | dtest | dval |
+|          | (0)    | (1)   | (2)  |
++----------+--------+-------+------+
+| 2        | 0: 36  | 0: 14 | None |
+|          | 1: 31  | 1: 19 |      |
++----------+--------+-------+------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-------------------+-------------+--------------+
+| ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
++----+-----------+------------+-------------------+-------------+--------------+
+| 0  | Embedding | m: 67      |                   | X: (67, 11) | dX: (67, 11) |
+|    |           | n: 11      |                   | A: (67, 11) | dA: (67, 11) |
++----+-----------+------------+-------------------+-------------+--------------+
+| 1  | Dense     | n: 2       | activate: sigmoid | X: (67, 11) | dX: (67, 2)  |
+|    |           | m: 67      |                   | W: (11, 2)  | dZ: (67, 2)  |
+|    |           | p: 11      |                   | b: (1, 2)   | dA: (67, 11) |
+|    |           |            |                   | Z: (67, 2)  |              |
+|    |           |            |                   | A: (67, 2)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Layer | epochs | schedule | decay_k | cycle  | cycle   | cycle  | learning | learning | end |
+|       |        |          |         | epochs | descent | number | rate     | rate     | (%) |
+|       |        |          |         |        |         |        | (start)  | (end)    |     |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+
++-------+-------+-------+-------------+
+| Layer | LRELU | ELU   | softmax     |
+|       | alpha | alpha | temperature |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+
+<span class="ansi-bold">----------------------- 1628334044_Perceptron_Dense-2-sigmoid -------------------------
+</span>
+
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |              <span class="ansi-white-fg">Experiment</span>               |
+|       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                       |
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.597</span> |  <span class="ansi-green-intense-fg ansi-bold">0.636</span>   | <span class="ansi-red-intense-fg ansi-bold">0.288</span> | <span class="ansi-red-intense-fg ansi-bold">0.266</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.746</span> |  <span class="ansi-green-intense-fg ansi-bold">0.727</span>   | <span class="ansi-red-intense-fg ansi-bold">0.193</span> | <span class="ansi-red-intense-fg ansi-bold">0.204</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.866</span> |  <span class="ansi-green-intense-fg ansi-bold">0.697</span>   | <span class="ansi-red-intense-fg ansi-bold">0.151</span> | <span class="ansi-red-intense-fg ansi-bold">0.178</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.896</span> |  <span class="ansi-green-intense-fg ansi-bold">0.727</span>   | <span class="ansi-red-intense-fg ansi-bold">0.130</span> | <span class="ansi-red-intense-fg ansi-bold">0.160</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.910</span> |  <span class="ansi-green-intense-fg ansi-bold">0.818</span>   | <span class="ansi-red-intense-fg ansi-bold">0.116</span> | <span class="ansi-red-intense-fg ansi-bold">0.146</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.925</span> |  <span class="ansi-green-intense-fg ansi-bold">0.848</span>   | <span class="ansi-red-intense-fg ansi-bold">0.106</span> | <span class="ansi-red-intense-fg ansi-bold">0.134</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.879</span>   | <span class="ansi-red-intense-fg ansi-bold">0.098</span> | <span class="ansi-red-intense-fg ansi-bold">0.125</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.092</span> | <span class="ansi-red-intense-fg ansi-bold">0.117</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.086</span> | <span class="ansi-red-intense-fg ansi-bold">0.110</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.082</span> | <span class="ansi-red-intense-fg ansi-bold">0.105</span> | <span class="ansi-white-fg">1628334044_Perceptron_Dense-2-sigmoid</span> |
++-------+----------+-------+----------+-------+-------+---------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 22.75e/s TTC: 0s</span>
++-------+-------+-----+----------+-----+-----+------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
+|       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
++-------+-------+-----+----------+-----+-----+------------+
++-------+-------+-----+----------+-----+-----+------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 25.0e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>We will now proceed and discuss the result a bit later.</p>
+</div>
+<div class="section" id="Feed-Forward-Neural-Network---Hidden-layer">
+<h2>Feed-Forward Neural Network - Hidden layer<a class="headerlink" href="#Feed-Forward-Neural-Network---Hidden-layer" title="Permalink to this headline">¶</a></h2>
+<p>We are going to proceed all at once.</p>
+<p>We go from a perceptron to a proper Feed-Forward Neural Network by adding one hiddent layer between the input and output layer.</p>
+<p>Therefore, we have <strong>two trainable layers</strong>.</p>
+<p>Let’s do it naively with all defaults. The hidden layer will have a single node and a sigmoid activation function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hidden_dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">()</span>
+
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding_Y_encoded</span><span class="p">,</span> <span class="n">hidden_dense</span><span class="p">,</span> <span class="n">dense2</span><span class="p">]</span>
+
+<span class="n">fnn_model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;FNN_Dense-1-sigmoid_Dense-2-sigmoid&#39;</span><span class="p">)</span>
+
+<span class="n">fnn_model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">--- EpyNN Check --- </span>
+<span class="ansi-bold">Layer: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Embedding</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
+<span class="ansi-bold">----------------------- 1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++--------+-------+------+-------+
+| dtrain | dtest | dval | batch |
+| (0)    | (1)   | (2)  | size  |
++--------+-------+------+-------+
+| 67     | 33    | None | None  |
++--------+-------+------+-------+
+
++----------+--------+-------+------+
+| N_LABELS | dtrain | dtest | dval |
+|          | (0)    | (1)   | (2)  |
++----------+--------+-------+------+
+| 2        | 0: 36  | 0: 14 | None |
+|          | 1: 31  | 1: 19 |      |
++----------+--------+-------+------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-------------------+-------------+--------------+
+| ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
++----+-----------+------------+-------------------+-------------+--------------+
+| 0  | Embedding | m: 67      |                   | X: (67, 11) | dX: (67, 11) |
+|    |           | n: 11      |                   | A: (67, 11) | dA: (67, 11) |
++----+-----------+------------+-------------------+-------------+--------------+
+| 1  | Dense     | n: 1       | activate: sigmoid | X: (67, 11) | dX: (67, 1)  |
+|    |           | m: 67      |                   | W: (11, 1)  | dZ: (67, 1)  |
+|    |           | p: 11      |                   | b: (1, 1)   | dA: (67, 11) |
+|    |           |            |                   | Z: (67, 1)  |              |
+|    |           |            |                   | A: (67, 1)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+| 2  | Dense     | n: 2       | activate: sigmoid | X: (67, 1)  | dX: (67, 2)  |
+|    |           | m: 67      |                   | W: (1, 2)   | dZ: (67, 2)  |
+|    |           | p: 1       |                   | b: (1, 2)   | dA: (67, 1)  |
+|    |           |            |                   | Z: (67, 2)  |              |
+|    |           |            |                   | A: (67, 2)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Layer | epochs | schedule | decay_k | cycle  | cycle   | cycle  | learning | learning | end |
+|       |        |          |         | epochs | descent | number | rate     | rate     | (%) |
+|       |        |          |         |        |         |        | (start)  | (end)    |     |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+
++-------+-------+-------+-------------+
+| Layer | LRELU | ELU   | softmax     |
+|       | alpha | alpha | temperature |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+
+<span class="ansi-bold">----------------------- 1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid -------------------------
+</span>
+
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |                   <span class="ansi-white-fg">Experiment</span>                   |
+|       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                                |
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.537</span> |  <span class="ansi-green-intense-fg ansi-bold">0.424</span>   | <span class="ansi-red-intense-fg ansi-bold">0.253</span> | <span class="ansi-red-intense-fg ansi-bold">0.255</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.537</span> |  <span class="ansi-green-intense-fg ansi-bold">0.424</span>   | <span class="ansi-red-intense-fg ansi-bold">0.249</span> | <span class="ansi-red-intense-fg ansi-bold">0.256</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.597</span> |  <span class="ansi-green-intense-fg ansi-bold">0.424</span>   | <span class="ansi-red-intense-fg ansi-bold">0.246</span> | <span class="ansi-red-intense-fg ansi-bold">0.253</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.597</span> |  <span class="ansi-green-intense-fg ansi-bold">0.606</span>   | <span class="ansi-red-intense-fg ansi-bold">0.241</span> | <span class="ansi-red-intense-fg ansi-bold">0.248</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.567</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.233</span> | <span class="ansi-red-intense-fg ansi-bold">0.241</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.582</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.225</span> | <span class="ansi-red-intense-fg ansi-bold">0.235</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.642</span> |  <span class="ansi-green-intense-fg ansi-bold">0.727</span>   | <span class="ansi-red-intense-fg ansi-bold">0.216</span> | <span class="ansi-red-intense-fg ansi-bold">0.227</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.657</span> |  <span class="ansi-green-intense-fg ansi-bold">0.727</span>   | <span class="ansi-red-intense-fg ansi-bold">0.205</span> | <span class="ansi-red-intense-fg ansi-bold">0.217</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.716</span> |  <span class="ansi-green-intense-fg ansi-bold">0.758</span>   | <span class="ansi-red-intense-fg ansi-bold">0.190</span> | <span class="ansi-red-intense-fg ansi-bold">0.206</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.821</span> |  <span class="ansi-green-intense-fg ansi-bold">0.697</span>   | <span class="ansi-red-intense-fg ansi-bold">0.164</span> | <span class="ansi-red-intense-fg ansi-bold">0.195</span> | <span class="ansi-white-fg">1628334048_FNN_Dense-1-sigmoid_Dense-2-sigmoid</span> |
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 22.75e/s TTC: 0s</span>
++-------+-------+-------+-----+----------+-----+-----+------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
+|       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
++-------+-------+-------+-----+----------+-----+-----+------------+
++-------+-------+-------+-----+----------+-----+-----+------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 25.0e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>We can observe that this naive approach is not good at all. The accuracy goes down, the <em>cost from the loss function</em> goes up, not a good setup.</p>
+<p>Although there is no definitive rule in all this, it is commonly accepted - based on experience - that the hidden layer herein should have a number of nodes between the number of input nodes and output nodes.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Input (layer) nodes = 11</span>
+<span class="c1"># Hidden (layer) nodes = 4</span>
+<span class="c1"># Output (layer) nodes = 2</span>
+
+<span class="n">hidden_dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding_Y_encoded</span><span class="p">,</span> <span class="n">hidden_dense</span><span class="p">,</span> <span class="n">dense2</span><span class="p">]</span>
+
+<span class="n">fnn_model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;FNN_Dense-4-sigmoid_Dense-2-sigmoid&#39;</span><span class="p">)</span>
+
+<span class="n">fnn_model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">--- EpyNN Check --- </span>
+<span class="ansi-bold">Layer: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Embedding</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
+<span class="ansi-bold">----------------------- 1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++--------+-------+------+-------+
+| dtrain | dtest | dval | batch |
+| (0)    | (1)   | (2)  | size  |
++--------+-------+------+-------+
+| 67     | 33    | None | None  |
++--------+-------+------+-------+
+
++----------+--------+-------+------+
+| N_LABELS | dtrain | dtest | dval |
+|          | (0)    | (1)   | (2)  |
++----------+--------+-------+------+
+| 2        | 0: 36  | 0: 14 | None |
+|          | 1: 31  | 1: 19 |      |
++----------+--------+-------+------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-------------------+-------------+--------------+
+| ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
++----+-----------+------------+-------------------+-------------+--------------+
+| 0  | Embedding | m: 67      |                   | X: (67, 11) | dX: (67, 11) |
+|    |           | n: 11      |                   | A: (67, 11) | dA: (67, 11) |
++----+-----------+------------+-------------------+-------------+--------------+
+| 1  | Dense     | n: 4       | activate: sigmoid | X: (67, 11) | dX: (67, 4)  |
+|    |           | m: 67      |                   | W: (11, 4)  | dZ: (67, 4)  |
+|    |           | p: 11      |                   | b: (1, 4)   | dA: (67, 11) |
+|    |           |            |                   | Z: (67, 4)  |              |
+|    |           |            |                   | A: (67, 4)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+| 2  | Dense     | n: 2       | activate: sigmoid | X: (67, 4)  | dX: (67, 2)  |
+|    |           | m: 67      |                   | W: (4, 2)   | dZ: (67, 2)  |
+|    |           | p: 4       |                   | b: (1, 2)   | dA: (67, 4)  |
+|    |           |            |                   | Z: (67, 2)  |              |
+|    |           |            |                   | A: (67, 2)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Layer | epochs | schedule | decay_k | cycle  | cycle   | cycle  | learning | learning | end |
+|       |        |          |         | epochs | descent | number | rate     | rate     | (%) |
+|       |        |          |         |        |         |        | (start)  | (end)    |     |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+
++-------+-------+-------+-------------+
+| Layer | LRELU | ELU   | softmax     |
+|       | alpha | alpha | temperature |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+
+<span class="ansi-bold">----------------------- 1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid -------------------------
+</span>
+
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |                   <span class="ansi-white-fg">Experiment</span>                   |
+|       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                                |
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.448</span> |  <span class="ansi-green-intense-fg ansi-bold">0.364</span>   | <span class="ansi-red-intense-fg ansi-bold">0.260</span> | <span class="ansi-red-intense-fg ansi-bold">0.263</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.701</span> |  <span class="ansi-green-intense-fg ansi-bold">0.606</span>   | <span class="ansi-red-intense-fg ansi-bold">0.223</span> | <span class="ansi-red-intense-fg ansi-bold">0.242</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.821</span> |  <span class="ansi-green-intense-fg ansi-bold">0.636</span>   | <span class="ansi-red-intense-fg ansi-bold">0.193</span> | <span class="ansi-red-intense-fg ansi-bold">0.220</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.851</span> |  <span class="ansi-green-intense-fg ansi-bold">0.636</span>   | <span class="ansi-red-intense-fg ansi-bold">0.159</span> | <span class="ansi-red-intense-fg ansi-bold">0.197</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.896</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.130</span> | <span class="ansi-red-intense-fg ansi-bold">0.174</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.910</span> |  <span class="ansi-green-intense-fg ansi-bold">0.758</span>   | <span class="ansi-red-intense-fg ansi-bold">0.105</span> | <span class="ansi-red-intense-fg ansi-bold">0.149</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.848</span>   | <span class="ansi-red-intense-fg ansi-bold">0.085</span> | <span class="ansi-red-intense-fg ansi-bold">0.125</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.848</span>   | <span class="ansi-red-intense-fg ansi-bold">0.069</span> | <span class="ansi-red-intense-fg ansi-bold">0.107</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.985</span> |  <span class="ansi-green-intense-fg ansi-bold">0.879</span>   | <span class="ansi-red-intense-fg ansi-bold">0.057</span> | <span class="ansi-red-intense-fg ansi-bold">0.093</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">1.000</span> |  <span class="ansi-green-intense-fg ansi-bold">0.909</span>   | <span class="ansi-red-intense-fg ansi-bold">0.048</span> | <span class="ansi-red-intense-fg ansi-bold">0.082</span> | <span class="ansi-white-fg">1628334052_FNN_Dense-4-sigmoid_Dense-2-sigmoid</span> |
++-------+----------+----------+-------+----------+-------+-------+------------------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 22.75e/s TTC: 0s</span>
++-------+-------+-------+-----+----------+-----+-----+------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
+|       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
++-------+-------+-------+-----+----------+-----+-----+------------+
++-------+-------+-------+-----+----------+-----+-----+------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 25.0e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>This is actually the best result we’ve got so far, by a little I concede.</p>
+<p>Let’s simply change the activation function for the hidden layer.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">hidden_dense</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">activate</span><span class="o">=</span><span class="n">relu</span><span class="p">)</span>
+
+<span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">embedding_Y_encoded</span><span class="p">,</span> <span class="n">hidden_dense</span><span class="p">,</span> <span class="n">dense2</span><span class="p">]</span>
+
+<span class="n">fnn_model</span> <span class="o">=</span> <span class="n">EpyNN</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;FNN_Dense-4-relu_Dense-2-sigmoid&#39;</span><span class="p">)</span>
+
+<span class="n">fnn_model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-bold">--- EpyNN Check --- </span>
+<span class="ansi-bold">Layer: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Embedding</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Embedding</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-bold">Layer: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">compute_shapes: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">initialize_parameters: Dense</span>
+<span class="ansi-green-intense-fg ansi-bold">forward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Dense</span>
+<span class="ansi-cyan-intense-fg ansi-bold">backward: Embedding</span>
+<span class="ansi-cyan-intense-fg ansi-bold">compute_gradients: Embedding</span>
+<span class="ansi-bold">----------------------- 1628334056_FNN_Dense-4-relu_Dense-2-sigmoid -------------------------
+</span>
+
+<span class="ansi-bold">-------------------------------- Datasets ------------------------------------
+</span>
++--------+-------+------+-------+
+| dtrain | dtest | dval | batch |
+| (0)    | (1)   | (2)  | size  |
++--------+-------+------+-------+
+| 67     | 33    | None | None  |
++--------+-------+------+-------+
+
++----------+--------+-------+------+
+| N_LABELS | dtrain | dtest | dval |
+|          | (0)    | (1)   | (2)  |
++----------+--------+-------+------+
+| 2        | 0: 36  | 0: 14 | None |
+|          | 1: 31  | 1: 19 |      |
++----------+--------+-------+------+
+
+<span class="ansi-bold">----------------------- Model Architecture -------------------------
+</span>
++----+-----------+------------+-------------------+-------------+--------------+
+| ID | Layer     | Dimensions | Activation        | FW_Shapes   | BW_Shapes    |
++----+-----------+------------+-------------------+-------------+--------------+
+| 0  | Embedding | m: 67      |                   | X: (67, 11) | dX: (67, 11) |
+|    |           | n: 11      |                   | A: (67, 11) | dA: (67, 11) |
++----+-----------+------------+-------------------+-------------+--------------+
+| 1  | Dense     | n: 4       | activate: relu    | X: (67, 11) | dX: (67, 4)  |
+|    |           | m: 67      |                   | W: (11, 4)  | dZ: (67, 4)  |
+|    |           | p: 11      |                   | b: (1, 4)   | dA: (67, 11) |
+|    |           |            |                   | Z: (67, 4)  |              |
+|    |           |            |                   | A: (67, 4)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+| 2  | Dense     | n: 2       | activate: sigmoid | X: (67, 4)  | dX: (67, 2)  |
+|    |           | m: 67      |                   | W: (4, 2)   | dZ: (67, 2)  |
+|    |           | p: 4       |                   | b: (1, 2)   | dA: (67, 4)  |
+|    |           |            |                   | Z: (67, 2)  |              |
+|    |           |            |                   | A: (67, 2)  |              |
++----+-----------+------------+-------------------+-------------+--------------+
+
+<span class="ansi-bold">------------------------------------------- Layers ---------------------------------------------
+</span>
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Layer | epochs | schedule | decay_k | cycle  | cycle   | cycle  | learning | learning | end |
+|       |        |          |         | epochs | descent | number | rate     | rate     | (%) |
+|       |        |          |         |        |         |        | (start)  | (end)    |     |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+| Dense | 100    | steady   | 0.001   | 0      | 0       | 1      | 0.100    | 0.100    | 100 |
++-------+--------+----------+---------+--------+---------+--------+----------+----------+-----+
+
++-------+-------+-------+-------------+
+| Layer | LRELU | ELU   | softmax     |
+|       | alpha | alpha | temperature |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+| Dense | 0.010 | 0.010 | 1           |
++-------+-------+-------+-------------+
+
+<span class="ansi-bold">----------------------- 1628334056_FNN_Dense-4-relu_Dense-2-sigmoid -------------------------
+</span>
+
++-------+----------+----------+-------+----------+-------+-------+---------------------------------------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |  <span class="ansi-white-intense-fg ansi-bold">lrate</span>   |       | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |       |  <span class="ansi-red-intense-fg ansi-bold">MSE</span>  |                 <span class="ansi-white-fg">Experiment</span>                  |
+|       |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-white-fg">Dense</span>   |  <span class="ansi-green-intense-fg ansi-bold">(0)</span>  |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    |  <span class="ansi-red-intense-fg ansi-bold">(0)</span>  |  <span class="ansi-red-intense-fg ansi-bold">(1)</span>  |                                             |
++-------+----------+----------+-------+----------+-------+-------+---------------------------------------------+
+|   <span class="ansi-white-intense-fg ansi-bold">0</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.597</span> |  <span class="ansi-green-intense-fg ansi-bold">0.545</span>   | <span class="ansi-red-intense-fg ansi-bold">0.243</span> | <span class="ansi-red-intense-fg ansi-bold">0.249</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">10</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.761</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.195</span> | <span class="ansi-red-intense-fg ansi-bold">0.231</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">20</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.821</span> |  <span class="ansi-green-intense-fg ansi-bold">0.545</span>   | <span class="ansi-red-intense-fg ansi-bold">0.150</span> | <span class="ansi-red-intense-fg ansi-bold">0.265</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">30</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.836</span> |  <span class="ansi-green-intense-fg ansi-bold">0.667</span>   | <span class="ansi-red-intense-fg ansi-bold">0.107</span> | <span class="ansi-red-intense-fg ansi-bold">0.186</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">40</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.940</span> |  <span class="ansi-green-intense-fg ansi-bold">0.697</span>   | <span class="ansi-red-intense-fg ansi-bold">0.059</span> | <span class="ansi-red-intense-fg ansi-bold">0.172</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">50</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.970</span> |  <span class="ansi-green-intense-fg ansi-bold">0.697</span>   | <span class="ansi-red-intense-fg ansi-bold">0.038</span> | <span class="ansi-red-intense-fg ansi-bold">0.171</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">60</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.758</span>   | <span class="ansi-red-intense-fg ansi-bold">0.043</span> | <span class="ansi-red-intense-fg ansi-bold">0.156</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">70</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.727</span>   | <span class="ansi-red-intense-fg ansi-bold">0.039</span> | <span class="ansi-red-intense-fg ansi-bold">0.151</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">80</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">1.000</span> |  <span class="ansi-green-intense-fg ansi-bold">0.758</span>   | <span class="ansi-red-intense-fg ansi-bold">0.018</span> | <span class="ansi-red-intense-fg ansi-bold">0.155</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
+|  <span class="ansi-white-intense-fg ansi-bold">90</span>   | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-white-intense-fg ansi-bold">1.00e-01</span> | <span class="ansi-green-intense-fg ansi-bold">0.955</span> |  <span class="ansi-green-intense-fg ansi-bold">0.788</span>   | <span class="ansi-red-intense-fg ansi-bold">0.026</span> | <span class="ansi-red-intense-fg ansi-bold">0.144</span> | <span class="ansi-white-fg">1628334056_FNN_Dense-4-relu_Dense-2-sigmoid</span> |
++-------+----------+----------+-------+----------+-------+-------+---------------------------------------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 22.75e/s TTC: 0s</span>
++-------+-------+-------+-----+----------+-----+-----+------------+
+| <span class="ansi-white-intense-fg ansi-bold">epoch</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> | <span class="ansi-white-intense-fg ansi-bold">lrate</span> |     | <span class="ansi-green-intense-fg ansi-bold">accuracy</span> |     | <span class="ansi-red-intense-fg ansi-bold">MSE</span> | <span class="ansi-white-fg">Experiment</span> |
+|       | <span class="ansi-white-fg">Dense</span> | <span class="ansi-white-fg">Dense</span> | <span class="ansi-green-intense-fg ansi-bold">(0)</span> |   <span class="ansi-green-intense-fg ansi-bold">(1)</span>    | <span class="ansi-red-intense-fg ansi-bold">(0)</span> | <span class="ansi-red-intense-fg ansi-bold">(1)</span> |            |
++-------+-------+-------+-----+----------+-----+-----+------------+
++-------+-------+-------+-----+----------+-----+-----+------------+
+<span class="ansi-white-intense-fg ansi-bold">TIME: 4s RATE: 25.0e/s TTC: 0s</span>
+</pre></div></div>
+</div>
+<p>This is even better.</p>
+<p>We will not comment on the activation function by now.</p>
+</div>
+<div class="section" id="Comparison">
+<h2>Comparison<a class="headerlink" href="#Comparison" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">model2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fnn_model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_0.png" src="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_1.png" src="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_2.png" src="nnlive/dummy_boolean/../../_build/doctrees/nbsphinx/nnlive_dummy_boolean_train_87_2.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -1072,7 +1819,6 @@ True
 </div>
 </div>
 </div>
-</div>
 
 
            </div>
@@ -1080,7 +1826,7 @@ True
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../dummy_string/prepare_dataset.html" class="btn btn-neutral float-right" title="Dummy string data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../dummy_string/prepare_dataset.html" class="btn btn-neutral float-right" title="Dummy dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="prepare_dataset.html" class="btn btn-neutral float-left" title="Dummy dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

@@ -1,144 +1,93 @@
 # EpyNN/nnlive/dummy_strings/prepare_dataset.py
 # Standard library imports
 import random
-import os
-
-# Local application/library specific imports
-from nnlibs.commons.library import write_pickle
 
 
-def features_string():
+def features_string(N_FEATURES=12):
     """Generate dummy string features.
 
-    :return: Words that may be contained in features
-    :rtype: list[str]
+    :param N_FEATURES: Number of features, defaults to 12.
+    :type N_FEATURES: int
 
-    :return: random string features of length N_FEATURES
+    :return: random string features of length N_FEATURES.
     :rtype: list[str]
     """
-    # Number of features
-    N_FEATURES = 12
-
     # List of words
     WORDS = ['A', 'T', 'G', 'C']
 
     # Random choice of words for N_FEATURES iterations
     features = [random.choice(WORDS) for j in range(N_FEATURES)]
 
-    return features, WORDS
+    return features
 
 
-def label_features(features, WORDS):
+def label_features(features):
     """Prepare label associated with features.
 
-    :param features: random string features of length N_FEATURES
+    The dummy law is:
+
+    First and last elements are equal = positive.
+    First and last elements are NOT equal = negative.
+
+    :param features: random string features of length N_FEATURES.
     :type features: list[str]
 
-    :param WORDS: Words that may be contained in features
-    :type WORDS: list[str]
-
-    :return: One-hot encoded label
-    :rtype: list[int]
+    :return: Single-digit label with respect to features.
+    :rtype: int
     """
-    # One-hot encoded positive and negative labels
-    p_label = [1]
-    n_label = [0]
+    # Single-digit positive and negative labels
+    p_label = 1
+    n_label = 0
 
-    # Number of features
-    N_FEATURES = len(features)
-
-    # Mean distribution for words in features
-    mean_distribution = N_FEATURES // len(WORDS)
-
-    # Target word
-    adenosine = WORDS[0]
-
-    # Test if word count deviates from mean (+)
-    if features.count(adenosine) == mean_distribution:
+    # Pattern associated with positive label (+)
+    if features[0] == features[-1]:
             label = p_label
 
-    # Test if word count does not deviate from mean (-)
-    elif features.count(adenosine) != mean_distribution:
+    # Other pattern associated with negative label (-)
+    elif features[0] != features[-1]:
             label = n_label
 
     return label
 
 
-def labeled_dataset(se_dataset):
-    """Prepare a dummy dataset of labeled samples.
+def prepare_dataset(N_SAMPLES=100):
+    """Prepare a set of dummy string sample features and label.
 
-    One sample is a list such as [features, label].
+    :param N_SAMPLES: Number of samples to generate, defaults to 100.
+    :type N_SAMPLES: int
 
-    For one sample, features is a list and label is a list.
+    :return: Set of sample features.
+    :rtype: tuple[list[str]]
 
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[str],list[int]]]
+    :return: Set of single-digit sample label.
+    :rtype: tuple[int]
     """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
+    # Initialize X and Y datasets
+    X_features = []
+    Y_label = []
 
-    # See ./settings.py
-    dataset_name = se_dataset['dataset_name']
-    dataset_save = se_dataset['dataset_save']
-
-    # Initialize dataset
-    dataset = []
-
-    # Iterate over N_SAMPLES
+   # Iterate over N_SAMPLES
     for i in range(N_SAMPLES):
 
-        # Generate dummy string features
-        features, WORDS = features_string()
+        # Compute random string features
+        features = features_string()
 
         # Retrieve label associated with features
-        label = label_features(features, WORDS)
+        label = label_features(features)
 
-        # Define labeled sample
-        sample = [features, label]
+        # Append sample features to X_features
+        X_features.append(features)
 
-        # Append sample to dataset
-        dataset.append(sample)
+        # Append sample label to Y_label
+        Y_label.append(label)
+
+    # Prepare X-Y pairwise dataset
+    dataset = list(zip(X_features, Y_label))
 
     # Shuffle dataset
     random.shuffle(dataset)
 
-    # Write dataset on disk
-    if dataset_save:
-        dataset_path = os.path.join(os.getcwd(), 'dataset', dataset_name+'.pickle')
-        write_pickle(dataset_path, dataset)
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
 
-    return dataset
-
-
-def unlabeled_dataset(N_SAMPLES=1):
-    """Prepare a dummy dataset of unlabeled samples.
-
-    One sample is a list such as [features, []].
-
-    For one sample, features is a list and label is an empty list.
-
-    :param N_SAMPLES: Length for unlabeled dataset
-    :type N_SAMPLES: int
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[str],list]]
-    """
-    # Initialize unlabeled_dataset
-    unlabeled_dataset = []
-
-    # Iterate over N_SAMPLES
-    for i in range(N_SAMPLES):
-
-        # Generate dummy string features
-        features, _ = features_string()
-
-        # Define unlabeled sample
-        sample = [features, []]
-
-        # Append sample to dataset
-        unlabeled_dataset.append(sample)
-
-    return unlabeled_dataset
+    return X_features, Y_label

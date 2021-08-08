@@ -26,7 +26,7 @@ String
     nnlive/dummy_string/prepare_dataset.ipynb
     nnlive/ptm_protein/prepare_dataset.ipynb
 
-Time
+Numerical (Series)
 ------------------------------
 
 .. toctree::
@@ -35,7 +35,7 @@ Time
     nnlive/dummy_time/prepare_dataset.ipynb
     nnlive/author_music/prepare_dataset.ipynb
 
-Image
+Numerical (Image)
 ------------------------------
 
 .. toctree::
