@@ -4,28 +4,64 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Dummy image data"
+    "# Dummy dataset"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Regular Python code located in ..."
+    "Find this notebook at `EpyNN/nnlive/dummy_image/prepare_dataset.ipynb`. \n",
+    "Regular python code at `EpyNN/nnlive/dummy_image/prepare_dataset.py`."
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "... using these data:"
+    "This notebook is the fourth of the series on preparing data for Neural Network regression with EpyNN.\n",
+    "\n",
+    "In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.\n",
+    "\n",
+    "Note that elements developed in dummy dataset [with Boolean](../dummy_boolean/prepare_dataset.ipynb), [with string](../dummy_string/prepare_dataset.ipynb) and [with numerical (time-series)](../dummy_time/prepare_dataset.ipynb) features may not be recalled herein."
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Imports."
+    "## What is an image?\n",
+    "\n",
+    "Instinctively, an image may resemble to a 2D plane composed of **WIDTH * HEIGHT** colored units arranged together in a particular manner.\n",
+    "\n",
+    "In computing, a 2D image is generally a 3D object which is composed of **WIDTH * HEIGHT** units within each plane with respect the the third dimension, which is the **DEPTH** of the image, therefore giving **WIDTH * HEIGHT * DEPTH = N_FEATURES**.\n",
+    "\n",
+    "Image depth is simply the number of channels which compose the image. You are certainly aware of RGB colors, for instance. In the RGB scheme, one color is written such as ``rgb(int, int, int)`` or ``rgb(255, 0, 0)``, ``rgb(0, 255, 0)`` and ``rgb(0, 0, 255)`` for pure red, green and blue, respectively. One RGB image would therefore have a **depth** equal to 3, because three channels in there.\n",
+    "\n",
+    "Note that following this scheme, an image is made of Numerical data, namely integer or ``int``. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Why preparing a dummy dataset with ... features?\n",
+    "\n",
+    "In addition to the general interest of dummy dataset explained in [dummy dataset with boolean sample features](../dummy_boolean/prepare_dataset.ipynb#Why-preparing-a-dummy-dataset-with-Boolean-features)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Prepare a set of image sample features and related label"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Imports"
    ]
   },
   {
@@ -37,23 +73,17 @@
     "# EpyNN/nnlive/dummy_image/prepare_dataset.ipynb\n",
     "# Standard library imports\n",
     "import random\n",
-    "import glob\n",
-    "import os\n",
     "\n",
     "# Related third party imports\n",
     "import matplotlib.pyplot as plt\n",
-    "import numpy as np\n",
-    "\n",
-    "# Local application/library specific imports\n",
-    "from nnlibs.commons.library import write_pickle\n",
-    "from settings import dataset as se_dataset"
+    "import numpy as np"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Set `random` seed for reproducibility."
+    "### Seeding"
    ]
   },
   {
@@ -69,7 +99,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Dummy image features."
+    "### Generate features"
    ]
   },
   {
@@ -78,96 +108,51 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "def features_images(WIDTH=28, HEIGHT=28):\n",
+    "def features_image(WIDTH=28, HEIGHT=28):\n",
     "    \"\"\"Generate dummy image features.\n",
     "\n",
-    "    :param WIDTH: Image width\n",
+    "    :param WIDTH: Image width, defaults to 28.\n",
     "    :type WIDTH: int\n",
     "\n",
-    "    :param HEIGHT: Image height\n",
+    "    :param HEIGHT: Image height, defaults to 28.\n",
     "    :type HEIGHT: int\n",
-    "    \n",
-    "    :return: alterated random image features of length N_FEATURES\n",
-    "    :rtype: int\n",
     "\n",
-    "    :return: Value of tone used to alterate random image features\n",
-    "    :rtype: int\n",
+    "    :return: Random image features of size N_FEATURES.\n",
+    "    :rtype: :class:`numpy.ndarray`\n",
     "\n",
-    "    :return: original random image features of length N_FEATURES\n",
-    "    :rtype: list[int]\n",
+    "    :return: Non-random image features of size N_FEATURES.\n",
+    "    :rtype: :class:`numpy.ndarray`\n",
     "    \"\"\"\n",
-    "    # Number of distinct tones in features\n",
-    "    N_TONES = 16\n",
-    "\n",
     "    # Number of channels is one for greyscale images\n",
     "    DEPTH = 1\n",
     "\n",
     "    # Number of features describing a sample\n",
-    "    N_FEATURES = WIDTH * HEIGHT\n",
-    "    \n",
-    "    # Number of channels is one for greyscale images\n",
-    "    DEPTH = 1\n",
-    "    \n",
-    "    # Shade of greys color palette\n",
+    "    N_FEATURES = WIDTH * HEIGHT * DEPTH\n",
+    "\n",
+    "    # Number of distinct tones in features\n",
+    "    N_TONES = 16\n",
+    "\n",
+    "    # Shades of grey\n",
     "    GSCALE = [i for i in range(N_TONES)]\n",
     "\n",
-    "    # Random choice of shade of greys for N_FEATURES iterations\n",
+    "    # Random choice of shades for N_FEATURES iterations\n",
     "    features = [random.choice(GSCALE) for j in range(N_FEATURES)]\n",
-    "    o_features = features.copy()\n",
     "\n",
-    "    # Random choice darkest or lightest shade in GSCALE\n",
-    "    tone = random.choice([0, N_TONES-1])\n",
-    "    \n",
-    "    # Random choice of features indexes for 5% of N_FEATURES iterations\n",
-    "    idxs = [random.choice(range(N_FEATURES)) for j in range(N_FEATURES // 20)]\n",
+    "    mask_on_features = [0 if random.randint(0, N_FEATURES - 1) < N_FEATURES // 20 else feature for feature in features]\n",
     "\n",
-    "    # Alteration of features with darkest or lightest tone\n",
-    "    for idx in idxs:\n",
-    "        features[idx] = tone\n",
-    "        \n",
-    "    # Vectorization of features to image and scaling\n",
-    "    features = np.array(features).reshape(HEIGHT, WIDTH, DEPTH) / (N_TONES-1)\n",
-    "    \n",
-    "    o_features = np.array(o_features).reshape(features.shape) / (N_TONES-1)\n",
-    "    \n",
-    "    return features, tone, o_features\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Check the function."
+    "    # Vectorization of features and masked features\n",
+    "    features = np.array(features).reshape(HEIGHT, WIDTH, DEPTH)\n",
+    "    mask_on_features = np.array(mask_on_features).reshape(features.shape)\n",
+    "\n",
+    "    # Random choice between random image or masked image\n",
+    "    features = random.choice([features, mask_on_features])\n",
+    "\n",
+    "    return features, mask_on_features"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 4,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "(28, 28, 1)\n"
-     ]
-    }
-   ],
-   "source": [
-    "features, tone, o_features = features_images()\n",
-    "print(features.shape)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Inspect the image before alteration."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -184,7 +169,9 @@
     }
    ],
    "source": [
-    "plt.imshow(o_features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
+    "features, mask_on_features = features_image()\n",
+    "\n",
+    "plt.imshow(features, cmap='gray')\n",
     "plt.show()"
    ]
   },
@@ -192,99 +179,79 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Inspect the image after alteration."
+    "This is the image features we retrieve for one sample. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.imshow(features - mask_on_features, cmap='gray')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "When subtracting ``mask_on_features`` from ``features``, we observe that the image is not all black - is not all zeros -. This means that the random choice here has selected the non-random image, the one that has been alterated during the generation of image sample features."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Generate label"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 6,
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "image/png": "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\n",
-      "text/plain": [
-       "<Figure size 432x288 with 1 Axes>"
-      ]
-     },
-     "metadata": {
-      "needs_background": "light"
-     },
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "plt.imshow(features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
-    "plt.show()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Not obvious, though. Let's inspect the image difference."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 7,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "image/png": "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\n",
-      "text/plain": [
-       "<Figure size 432x288 with 1 Axes>"
-      ]
-     },
-     "metadata": {
-      "needs_background": "light"
-     },
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "diff_features = np.abs(o_features - features)\n",
-    "\n",
-    "plt.imshow(diff_features[:, :, 0], cmap='gray', vmin=0, vmax=1)\n",
-    "plt.show()"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Label from features."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {},
    "outputs": [],
    "source": [
-    "def label_features(features, tone):\n",
+    "def label_features(features, mask_on_features):\n",
     "    \"\"\"Prepare label associated with features.\n",
     "\n",
-    "    :param features: random image features of length N_FEATURES\n",
-    "    :type features: list[int]\n",
+    "    The dummy law is:\n",
     "\n",
-    "    :param tone: Darker or lighter tone used to alterate image features\n",
-    "    :type tone: int\n",
-    "    \n",
-    "    :return: One-hot encoded label\n",
-    "    :rtype: list[int]\n",
+    "    Image is NOT random = positive\n",
+    "    Image is random = negative\n",
+    "\n",
+    "    :param features: Random image features of size N_FEATURES\n",
+    "    :type features: :class:`numpy.ndarray`\n",
+    "\n",
+    "    :param mask_on_features: Non-random image features of size N_FEATURES\n",
+    "    :type mask_on_features: :class:`numpy.ndarray`\n",
+    "\n",
+    "    :return: Single-digit label with respect to features\n",
+    "    :rtype: int\n",
     "    \"\"\"\n",
-    "    # One-hot encoded positive and negative labels\n",
-    "    p_label = [1, 0]\n",
-    "    n_label = [0, 1]\n",
+    "    # Single-digit positive and negative labels\n",
+    "    p_label = 1\n",
+    "    n_label = 0\n",
     "\n",
-    "    # Test if image was alterated with lightest tone (+)\n",
-    "    if tone == 0:\n",
+    "    # Test if image is not random (+)\n",
+    "    if np.sum(features) == np.sum(mask_on_features):\n",
     "        label = p_label\n",
     "\n",
-    "    # Test if features associates with darkest tone (-)\n",
-    "    else:\n",
+    "    # Test if image is random (-)\n",
+    "    elif np.sum(features) != np.sum(mask_on_features):\n",
     "        label = n_label\n",
     "\n",
     "    return label"
@@ -294,194 +261,114 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Check the function."
+    "The code above is commented and self explaining.\n",
+    "\n",
+    "Let's check the function we made for a few iterations."
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 9,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[1, 0] 0\n"
+      "1 5567 5567\n",
+      "0 5690 5690\n",
+      "0 5707 5707\n",
+      "1 5550 5550\n",
+      "0 5482 5482\n"
      ]
     }
    ],
    "source": [
-    "label = label_features(features, tone)\n",
-    "print(label, tone)"
+    "for i in range(5):\n",
+    "    features, mask_on_features = features_image()\n",
+    "    label = label_features(features, mask_on_features)\n",
+    "\n",
+    "    print(label, np.sum(mask_on_features), np.sum(mask_on_features))"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Prepare labeled dataset."
+    "### Prepare dataset"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 10,
+   "execution_count": 8,
    "metadata": {},
    "outputs": [],
    "source": [
-    "def labeled_dataset(se_dataset):\n",
-    "    \"\"\"Prepare a dummy dataset of labeled samples.\n",
-    "    \n",
-    "    One sample is a list such as [features, label].\n",
-    "    \n",
-    "    For one sample, features is a class:`numpy.ndarray` and label is a list.\n",
+    "def prepare_dataset(N_SAMPLES=100):\n",
+    "    \"\"\"Prepare a set of dummy time sample features and label.\n",
     "\n",
-    "    :param se_dataset: Settings for dataset preparation\n",
-    "    :type se_dataset: dict\n",
-    "\n",
-    "    :return: A dataset of length N_SAMPLES\n",
-    "    :rtype: list[list[class:`numpy.ndarray`,list[int]]]\n",
-    "    \"\"\"\n",
-    "    # See ./settings.py\n",
-    "    N_SAMPLES = se_dataset['N_SAMPLES']\n",
-    "\n",
-    "    # Initialize dataset\n",
-    "    dataset = []\n",
-    "\n",
-    "    # Iterate over N_SAMPLES\n",
-    "    for i in range(N_SAMPLES):\n",
-    "\n",
-    "        # Generate dummy string features \n",
-    "        features, tone, _ = features_images()\n",
-    "        \n",
-    "        # Retrieve label associated with features\n",
-    "        label = label_features(features, tone)\n",
-    "\n",
-    "        # Define labeled sample\n",
-    "        sample = [features, label]\n",
-    "        \n",
-    "        # Append sample to dataset\n",
-    "        dataset.append(sample)\n",
-    "\n",
-    "    return dataset"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Check the function."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "(28, 28, 1) [0, 1]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [0, 1]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [0, 1]\n",
-      "(28, 28, 1) [1, 0]\n",
-      "(28, 28, 1) [1, 0]\n"
-     ]
-    }
-   ],
-   "source": [
-    "se_dataset['N_SAMPLES'] = 10\n",
-    "\n",
-    "for sample in labeled_dataset(se_dataset):\n",
-    "    features, label = sample\n",
-    "    print(features.shape, label)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Prepare unlabeled dataset."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def unlabeled_dataset(N_SAMPLES=1):\n",
-    "    \"\"\"Prepare a dummy dataset of unlabeled samples.\n",
-    "    \n",
-    "    One sample is a list such as [features, []].\n",
-    "\n",
-    "    For one sample, features is a class:`numpy.ndarray` and label is an empty list.\n",
-    "\n",
-    "    :param N_SAMPLES: Length for unlabeled dataset\n",
+    "    :param N_SAMPLES: Number of samples to generate, defaults to 100.\n",
     "    :type N_SAMPLES: int\n",
     "\n",
-    "    :return: A dataset of length N_SAMPLES\n",
-    "    :rtype: list[list[class:`numpy.ndarray`,list[int]]]\n",
-    "    \"\"\"\n",
-    "    # Initialize unlabeled_dataset\n",
-    "    unlabeled_dataset = []\n",
+    "    :return: Set of sample features.\n",
+    "    :rtype: tuple[:class:`numpy.ndarray`]\n",
     "\n",
-    "    # Iterate over N_SAMPLES\n",
+    "    :return: Set of single-digit sample label.\n",
+    "    :rtype: tuple[int]\n",
+    "    \"\"\"\n",
+    "    # Initialize X and Y datasets\n",
+    "    X_features = []\n",
+    "    Y_label = []\n",
+    "\n",
+    "   # Iterate over N_SAMPLES\n",
     "    for i in range(N_SAMPLES):\n",
     "\n",
-    "        # Generate dummy image features\n",
-    "        features, _, _ = features_images()\n",
+    "        # Compute random string features\n",
+    "        features, mask_on_features = features_image()\n",
     "\n",
-    "        # Define unlabeled sample\n",
-    "        sample = [features, []]\n",
+    "        # Retrieve label associated with features\n",
+    "        label = label_features(features, mask_on_features)\n",
     "\n",
-    "        # Append to unlabeled_dataset\n",
-    "        unlabeled_dataset.append(sample)\n",
+    "        # Append sample features to X_features\n",
+    "        X_features.append(features)\n",
     "\n",
-    "    return unlabeled_dataset"
+    "        # Append sample label to Y_label\n",
+    "        Y_label.append(label)\n",
+    "\n",
+    "    # Prepare X-Y pairwise dataset\n",
+    "    dataset = list(zip(X_features, Y_label))\n",
+    "\n",
+    "    # Shuffle dataset\n",
+    "    random.shuffle(dataset)\n",
+    "\n",
+    "    # Separate X-Y pairs\n",
+    "    X_features, Y_label = zip(*dataset)\n",
+    "\n",
+    "    return X_features, Y_label"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Check the function."
+    "## What comes next?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The function ``prepare_dataset()`` applied to dummy time data is used in the following working examples:\n",
+    "\n",
+    "XXX"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": null,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "(28, 28, 1) []\n",
-      "(28, 28, 1) []\n",
-      "(28, 28, 1) []\n",
-      "(28, 28, 1) []\n",
-      "(28, 28, 1) []\n"
-     ]
-    }
-   ],
-   "source": [
-    "for sample in unlabeled_dataset(N_SAMPLES=5):\n",
-    "    features, label = sample\n",
-    "    print(features.shape, label)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Done."
-   ]
+   "outputs": [],
+   "source": []
   }
  ],
  "metadata": {

@@ -61,9 +61,6 @@
           
 
           
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
-          
           </a>
 
           
@@ -118,8 +115,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
@@ -488,7 +485,7 @@ data that should work if no mistake was introduced in the procedure.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/prepare_dataset.py</span>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_boolean/prepare_dataset.ipynb</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">random</span>
 </pre></div>
@@ -533,10 +530,10 @@ data that should work if no mistake was introduced in the procedure.</p>
 <span></span><span class="k">def</span> <span class="nf">features_boolean</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate dummy string features.</span>
 
-<span class="sd">    :param N_FEATURES: Number of features</span>
+<span class="sd">    :param N_FEATURES: Number of features, defaults to 11.</span>
 <span class="sd">    :type N_FEATURES: int</span>
 
-<span class="sd">    :return: random boolean features of length N_FEATURES</span>
+<span class="sd">    :return: random boolean features of length N_FEATURES.</span>
 <span class="sd">    :rtype: list[bool]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Random choice True or False for N_FEATURES iterations</span>
@@ -644,13 +641,13 @@ data that should work if no mistake was introduced in the procedure.</p>
 
 <span class="sd">    The dummy law is:</span>
 
-<span class="sd">    More True = positive</span>
-<span class="sd">    More False = negative</span>
+<span class="sd">    More True = positive.</span>
+<span class="sd">    More False = negative.</span>
 
-<span class="sd">    :param features: random boolean features of length N_FEATURES</span>
+<span class="sd">    :param features: random boolean features of length N_FEATURES.</span>
 <span class="sd">    :type features: list[bool]</span>
 
-<span class="sd">    :return: Single-digit label with respect to features</span>
+<span class="sd">    :return: Single-digit label with respect to features.</span>
 <span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Single-digit positive and negative labels</span>
@@ -707,22 +704,22 @@ data that should work if no mistake was introduced in the procedure.</p>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy boolean sample features and label</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy boolean sample features and label.</span>
 
-<span class="sd">    :param N_SAMPLES: Number of samples to generate</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate, defaults to 100.</span>
 <span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    :return: Set of sample features</span>
+<span class="sd">    :return: Set of sample features.</span>
 <span class="sd">    :rtype: tuple[list[bool]]</span>
 
-<span class="sd">    :return: Set of single-digit sample label</span>
+<span class="sd">    :return: Set of single-digit sample label.</span>
 <span class="sd">    :rtype: tuple[int]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize X and Y datasets</span>
     <span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">Y_label</span> <span class="o">=</span> <span class="p">[]</span>
 
-   <span class="c1"># Iterate over N_SAMPLES</span>
+    <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
 
         <span class="c1"># Compute random boolean features</span>
@@ -753,7 +750,7 @@ data that should work if no mistake was introduced in the procedure.</p>
 <p>Note that <em>features</em> is assigned to X within <code class="docutils literal notranslate"><span class="pre">X_features</span></code> while <em>label</em> is assigned to Y within <code class="docutils literal notranslate"><span class="pre">Y_features</span></code>. The dummy law is the function such as <code class="docutils literal notranslate"><span class="pre">f(X)</span> <span class="pre">=</span> <span class="pre">Y</span></code>.</p>
 <p>Let’s check the function.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -770,16 +767,16 @@ data that should work if no mistake was introduced in the procedure.</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1 [True, True, True, True, False, True, False, True, True, True, True]
-0 [False, False, True, False, False, True, False, False, True, False, True]
-0 [True, False, True, True, False, False, True, True, False, False, False]
-1 [False, True, True, False, True, False, True, False, True, False, True]
-1 [False, False, False, False, True, True, False, True, True, True, True]
-1 [True, False, True, True, True, False, False, False, False, True, True]
-0 [False, False, True, False, True, False, False, True, False, True, True]
-0 [True, False, False, True, True, True, False, True, False, False, False]
-1 [True, False, False, False, True, True, True, False, True, True, False]
-1 [True, False, False, True, False, True, True, True, True, False, True]
+0 [False, False, True, True, True, False, True, False, False, False, False]
+0 [False, True, True, False, True, False, False, True, False, False, False]
+1 [False, True, False, True, True, True, False, True, True, True, False]
+1 [False, False, True, False, False, True, True, True, True, True, False]
+0 [False, False, True, True, False, False, False, False, True, False, True]
+1 [True, True, True, True, True, False, False, False, False, False, True]
+1 [True, True, True, True, False, True, False, True, False, True, True]
+1 [True, True, False, True, True, False, False, True, False, False, True]
+0 [False, True, False, True, True, False, False, False, True, False, True]
+0 [True, True, False, False, False, True, False, True, False, False, True]
 </pre></div></div>
 </div>
 <p>We are done with the code required to generate a dummy dataset of sample boolean features and associated label.</p>

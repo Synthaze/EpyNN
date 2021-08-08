@@ -42,7 +42,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Protein sequences" href="../ptm_protein/prepare_dataset.html" />
+    <link rel="next" title="Protein Modification" href="../ptm_protein/prepare_dataset.html" />
     <link rel="prev" title="Dummy Network" href="../dummy_boolean/train.html" /> 
 </head>
 
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -116,11 +113,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../ptm_protein/prepare_dataset.html">Protein sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ptm_protein/prepare_dataset.html">Protein Modification</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#image">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Details.html">Details</a></li>
@@ -472,7 +469,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="What-is-a-string-data-type?">
 <h2>What is a string data-type?<a class="headerlink" href="#What-is-a-string-data-type?" title="Permalink to this headline">¶</a></h2>
 <p>String data type is a form of data which corresponds to sequences of character data.</p>
-<p><img alt="ff6179147e58432883e54aeede6516e3" src="../../_images/python_dataTypes-01.png" /></p>
+<p><img alt="7253702c0b2648a5b002d77dd9a9afb9" src="../../_images/python_dataTypes-01.png" /></p>
 <p>Before preparing a dummy dataset of sample string features, let’s explore some properties of Python built-in data-types.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -549,7 +546,7 @@ unsupported operand type(s) for +: &#39;int&#39; and &#39;str&#39; - Addition do
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># EpyNN/nnlive/dummy_string/prepare_dataset.py</span>
+<span></span><span class="c1"># EpyNN/nnlive/dummy_string/prepare_dataset.ipynb</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">random</span>
 
@@ -582,10 +579,10 @@ unsupported operand type(s) for +: &#39;int&#39; and &#39;str&#39; - Addition do
 <span></span><span class="k">def</span> <span class="nf">features_string</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate dummy string features.</span>
 
-<span class="sd">    :param N_FEATURES: Number of features</span>
+<span class="sd">    :param N_FEATURES: Number of features, defaults to 12.</span>
 <span class="sd">    :type N_FEATURES: int</span>
 
-<span class="sd">    :return: random string features of length N_FEATURES</span>
+<span class="sd">    :return: random string features of length N_FEATURES.</span>
 <span class="sd">    :rtype: list[str]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># List of words</span>
@@ -773,13 +770,13 @@ False
 
 <span class="sd">    The dummy law is:</span>
 
-<span class="sd">    First and last elements are equal = positive</span>
-<span class="sd">    First and last elements are NOT equal = negative</span>
+<span class="sd">    First and last elements are equal = positive.</span>
+<span class="sd">    First and last elements are NOT equal = negative.</span>
 
-<span class="sd">    :param features: random string features of length N_FEATURES</span>
+<span class="sd">    :param features: random string features of length N_FEATURES.</span>
 <span class="sd">    :type features: list[str]</span>
 
-<span class="sd">    :return: Single-digit label with respect to features</span>
+<span class="sd">    :return: Single-digit label with respect to features.</span>
 <span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Single-digit positive and negative labels</span>
@@ -861,15 +858,15 @@ False
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy string sample features and label</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy string sample features and label.</span>
 
-<span class="sd">    :param N_SAMPLES: Number of samples to generate</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate, defaults to 100.</span>
 <span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    :return: Set of sample features</span>
-<span class="sd">    :rtype: tuple[list[bool]]</span>
+<span class="sd">    :return: Set of sample features.</span>
+<span class="sd">    :rtype: tuple[list[str]]</span>
 
-<span class="sd">    :return: Set of single-digit sample label</span>
+<span class="sd">    :return: Set of single-digit sample label.</span>
 <span class="sd">    :rtype: tuple[int]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize X and Y datasets</span>
@@ -1011,7 +1008,7 @@ invalid literal for int() with base 10: &#39;A&#39;
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 [&#39;C&#39;, &#39;T&#39;, &#39;T&#39;, &#39;C&#39;, &#39;A&#39;, &#39;T&#39;, &#39;C&#39;, &#39;T&#39;, &#39;G&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;]
-[&#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;]
+[&#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;]
 </pre></div></div>
 </div>
 <p>A list of string features, composed of four possible characters - or single-character words - for a length of N_FEATURES.</p>
@@ -1049,9 +1046,9 @@ invalid literal for int() with base 10: &#39;A&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[&#39;G&#39;, &#39;T&#39;, &#39;A&#39;, &#39;C&#39;]
-{&#39;G&#39;: 0, &#39;T&#39;: 1, &#39;A&#39;: 2, &#39;C&#39;: 3}
-{0: &#39;G&#39;, 1: &#39;T&#39;, 2: &#39;A&#39;, 3: &#39;C&#39;}
+[&#39;C&#39;, &#39;G&#39;, &#39;A&#39;, &#39;T&#39;]
+{&#39;C&#39;: 0, &#39;G&#39;: 1, &#39;A&#39;: 2, &#39;T&#39;: 3}
+{0: &#39;C&#39;, 1: &#39;G&#39;, 2: &#39;A&#39;, 3: &#39;T&#39;}
 </pre></div></div>
 </div>
 <p>You may have got where we are heading now.</p>
@@ -1072,10 +1069,10 @@ invalid literal for int() with base 10: &#39;A&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-G 0
-T 1
+C 0
+G 1
 A 2
-C 3
+T 3
 </pre></div></div>
 </div>
 <p>Could this be the conversion table? Not really. Because numbers are quantities. Every character should represented by the same quantity: one.</p>
@@ -1094,10 +1091,10 @@ C 3
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-G 0 [0. 0. 0. 0.]
-T 1 [0. 0. 0. 0.]
+C 0 [0. 0. 0. 0.]
+G 1 [0. 0. 0. 0.]
 A 2 [0. 0. 0. 0.]
-C 3 [0. 0. 0. 0.]
+T 3 [0. 0. 0. 0.]
 </pre></div></div>
 </div>
 <p>Almost there. Almost.</p>
@@ -1119,10 +1116,10 @@ C 3 [0. 0. 0. 0.]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-G 0 [1. 0. 0. 0.]
-T 1 [0. 1. 0. 0.]
+C 0 [1. 0. 0. 0.]
+G 1 [0. 1. 0. 0.]
 A 2 [0. 0. 1. 0.]
-C 3 [0. 0. 0. 1.]
+T 3 [0. 0. 0. 1.]
 </pre></div></div>
 </div>
 <p>This is <strong>One-hot encoding</strong>.</p>
@@ -1145,18 +1142,18 @@ C 3 [0. 0. 0. 1.]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-C 3 [0. 0. 0. 1.]
-T 1 [0. 1. 0. 0.]
-T 1 [0. 1. 0. 0.]
-C 3 [0. 0. 0. 1.]
+C 0 [1. 0. 0. 0.]
+T 3 [0. 0. 0. 1.]
+T 3 [0. 0. 0. 1.]
+C 0 [1. 0. 0. 0.]
 A 2 [0. 0. 1. 0.]
-T 1 [0. 1. 0. 0.]
-C 3 [0. 0. 0. 1.]
-T 1 [0. 1. 0. 0.]
-G 0 [1. 0. 0. 0.]
+T 3 [0. 0. 0. 1.]
+C 0 [1. 0. 0. 0.]
+T 3 [0. 0. 0. 1.]
+G 1 [0. 1. 0. 0.]
 A 2 [0. 0. 1. 0.]
 A 2 [0. 0. 1. 0.]
-T 1 [0. 1. 0. 0.]
+T 3 [0. 0. 0. 1.]
 </pre></div></div>
 </div>
 <p>Let’s make a proper NumPy array from this.</p>
@@ -1178,18 +1175,18 @@ T 1 [0. 1. 0. 0.]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[[0 0 0 1]
- [0 1 0 0]
- [0 1 0 0]
+[[1 0 0 0]
  [0 0 0 1]
- [0 0 1 0]
- [0 1 0 0]
  [0 0 0 1]
- [0 1 0 0]
  [1 0 0 0]
  [0 0 1 0]
+ [0 0 0 1]
+ [1 0 0 0]
+ [0 0 0 1]
+ [0 1 0 0]
  [0 0 1 0]
- [0 1 0 0]]
+ [0 0 1 0]
+ [0 0 0 1]]
 (12, 4)
 </pre></div></div>
 </div>
@@ -1292,7 +1289,7 @@ T 1 [0. 1. 0. 0.]
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-right" title="Protein sequences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../ptm_protein/prepare_dataset.html" class="btn btn-neutral float-right" title="Protein Modification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="../dummy_boolean/train.html" class="btn btn-neutral float-left" title="Dummy Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Dummy image data &mdash; EpyNN 0.1.0 documentation</title>
+  <title>Dummy dataset &mdash; EpyNN 0.1.0 documentation</title>
   
 
   
@@ -42,8 +42,8 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MNIST" href="../captcha_mnist/prepare_dataset.html" />
-    <link rel="prev" title="Music" href="../author_music/prepare_dataset.html" /> 
+    <link rel="next" title="MNIST Database" href="../captcha_mnist/prepare_dataset.html" />
+    <link rel="prev" title="Music Authorship" href="../author_music/prepare_dataset.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -60,9 +60,6 @@
             <a href="../../index.html" class="icon icon-home"> EpyNN
           
 
-          
-            
-            <img src="../../_static/logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -108,10 +105,16 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../../examples.html">Examples and data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#boolean">Boolean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples.html#string">String</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples.html#time">Time</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#image">Image</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy image data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../captcha_mnist/prepare_dataset.html">MNIST</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples.html#numerical-series">Numerical (Series)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../examples.html#numerical-image">Numerical (Image)</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Dummy dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#What-is-an-image?">What is an image?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Why-preparing-a-dummy-dataset-with-…-features?">Why preparing a dummy dataset with … features?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Prepare-a-set-of-image-sample-features-and-related-label">Prepare a set of image sample features and related label</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#What-comes-next?">What comes next?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../captcha_mnist/prepare_dataset.html">MNIST Database</a></li>
 </ul>
 </li>
 </ul>
@@ -167,7 +170,7 @@
         
           <li><a href="../../examples.html">Examples and data</a> &raquo;</li>
         
-      <li>Dummy image data</li>
+      <li>Dummy dataset</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -456,11 +459,27 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Dummy-image-data">
-<h1>Dummy image data<a class="headerlink" href="#Dummy-image-data" title="Permalink to this headline">¶</a></h1>
-<p>Regular Python code located in …</p>
-<p>… using these data:</p>
-<p>Imports.</p>
+<div class="section" id="Dummy-dataset">
+<h1>Dummy dataset<a class="headerlink" href="#Dummy-dataset" title="Permalink to this headline">¶</a></h1>
+<p>Find this notebook at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_image/prepare_dataset.ipynb</span></code>. Regular python code at <code class="docutils literal notranslate"><span class="pre">EpyNN/nnlive/dummy_image/prepare_dataset.py</span></code>.</p>
+<p>This notebook is the fourth of the series on preparing data for Neural Network regression with EpyNN.</p>
+<p>In addition to the topic-specific content, it contains several explanations about basics or general concepts in programming that are important in the context.</p>
+<p>Note that elements developed in dummy dataset <a class="reference internal" href="../dummy_boolean/prepare_dataset.html"><span class="doc">with Boolean</span></a>, <a class="reference internal" href="../dummy_string/prepare_dataset.html"><span class="doc">with string</span></a> and <a class="reference internal" href="../dummy_time/prepare_dataset.html"><span class="doc">with numerical (time-series)</span></a> features may not be recalled herein.</p>
+<div class="section" id="What-is-an-image?">
+<h2>What is an image?<a class="headerlink" href="#What-is-an-image?" title="Permalink to this headline">¶</a></h2>
+<p>Instinctively, an image may resemble to a 2D plane composed of <strong>WIDTH * HEIGHT</strong> colored units arranged together in a particular manner.</p>
+<p>In computing, a 2D image is generally a 3D object which is composed of <strong>WIDTH * HEIGHT</strong> units within each plane with respect the the third dimension, which is the <strong>DEPTH</strong> of the image, therefore giving <strong>WIDTH * HEIGHT * DEPTH = N_FEATURES</strong>.</p>
+<p>Image depth is simply the number of channels which compose the image. You are certainly aware of RGB colors, for instance. In the RGB scheme, one color is written such as <code class="docutils literal notranslate"><span class="pre">rgb(int,</span> <span class="pre">int,</span> <span class="pre">int)</span></code> or <code class="docutils literal notranslate"><span class="pre">rgb(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>, <code class="docutils literal notranslate"><span class="pre">rgb(0,</span> <span class="pre">255,</span> <span class="pre">0)</span></code> and <code class="docutils literal notranslate"><span class="pre">rgb(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></code> for pure red, green and blue, respectively. One RGB image would therefore have a <strong>depth</strong> equal to 3, because three channels in there.</p>
+<p>Note that following this scheme, an image is made of Numerical data, namely integer or <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+</div>
+<div class="section" id="Why-preparing-a-dummy-dataset-with-…-features?">
+<h2>Why preparing a dummy dataset with … features?<a class="headerlink" href="#Why-preparing-a-dummy-dataset-with-…-features?" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the general interest of dummy dataset explained in dummy dataset with boolean sample features.</p>
+</div>
+<div class="section" id="Prepare-a-set-of-image-sample-features-and-related-label">
+<h2>Prepare a set of image sample features and related label<a class="headerlink" href="#Prepare-a-set-of-image-sample-features-and-related-label" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Imports">
+<h3>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -469,20 +488,16 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="c1"># EpyNN/nnlive/dummy_image/prepare_dataset.ipynb</span>
 <span class="c1"># Standard library imports</span>
 <span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="c1"># Related third party imports</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Local application/library specific imports</span>
-<span class="kn">from</span> <span class="nn">nnlibs.commons.library</span> <span class="kn">import</span> <span class="n">write_pickle</span>
-<span class="kn">from</span> <span class="nn">settings</span> <span class="kn">import</span> <span class="n">dataset</span> <span class="k">as</span> <span class="n">se_dataset</span>
 </pre></div>
 </div>
 </div>
-<p>Set <code class="docutils literal notranslate"><span class="pre">random</span></code> seed for reproducibility.</p>
+</div>
+<div class="section" id="Seeding">
+<h3>Seeding<a class="headerlink" href="#Seeding" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -492,95 +507,65 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Dummy image features.</p>
+</div>
+<div class="section" id="Generate-features">
+<h3>Generate features<a class="headerlink" href="#Generate-features" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">features_images</span><span class="p">(</span><span class="n">WIDTH</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="o">=</span><span class="mi">28</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">features_image</span><span class="p">(</span><span class="n">WIDTH</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">HEIGHT</span><span class="o">=</span><span class="mi">28</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate dummy image features.</span>
 
-<span class="sd">    :param WIDTH: Image width</span>
+<span class="sd">    :param WIDTH: Image width, defaults to 28.</span>
 <span class="sd">    :type WIDTH: int</span>
 
-<span class="sd">    :param HEIGHT: Image height</span>
+<span class="sd">    :param HEIGHT: Image height, defaults to 28.</span>
 <span class="sd">    :type HEIGHT: int</span>
 
-<span class="sd">    :return: alterated random image features of length N_FEATURES</span>
-<span class="sd">    :rtype: int</span>
+<span class="sd">    :return: Random image features of size N_FEATURES.</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 
-<span class="sd">    :return: Value of tone used to alterate random image features</span>
-<span class="sd">    :rtype: int</span>
-
-<span class="sd">    :return: original random image features of length N_FEATURES</span>
-<span class="sd">    :rtype: list[int]</span>
+<span class="sd">    :return: Non-random image features of size N_FEATURES.</span>
+<span class="sd">    :rtype: :class:`numpy.ndarray`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Number of distinct tones in features</span>
-    <span class="n">N_TONES</span> <span class="o">=</span> <span class="mi">16</span>
-
     <span class="c1"># Number of channels is one for greyscale images</span>
     <span class="n">DEPTH</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="c1"># Number of features describing a sample</span>
-    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="n">WIDTH</span> <span class="o">*</span> <span class="n">HEIGHT</span>
+    <span class="n">N_FEATURES</span> <span class="o">=</span> <span class="n">WIDTH</span> <span class="o">*</span> <span class="n">HEIGHT</span> <span class="o">*</span> <span class="n">DEPTH</span>
 
-    <span class="c1"># Number of channels is one for greyscale images</span>
-    <span class="n">DEPTH</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># Number of distinct tones in features</span>
+    <span class="n">N_TONES</span> <span class="o">=</span> <span class="mi">16</span>
 
-    <span class="c1"># Shade of greys color palette</span>
+    <span class="c1"># Shades of grey</span>
     <span class="n">GSCALE</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TONES</span><span class="p">)]</span>
 
-    <span class="c1"># Random choice of shade of greys for N_FEATURES iterations</span>
+    <span class="c1"># Random choice of shades for N_FEATURES iterations</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">GSCALE</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="p">)]</span>
-    <span class="n">o_features</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="c1"># Random choice darkest or lightest shade in GSCALE</span>
-    <span class="n">tone</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">N_TONES</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">mask_on_features</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N_FEATURES</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">N_FEATURES</span> <span class="o">//</span> <span class="mi">20</span> <span class="k">else</span> <span class="n">feature</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">]</span>
 
-    <span class="c1"># Random choice of features indexes for 5% of N_FEATURES iterations</span>
-    <span class="n">idxs</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span><span class="p">))</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_FEATURES</span> <span class="o">//</span> <span class="mi">20</span><span class="p">)]</span>
+    <span class="c1"># Vectorization of features and masked features</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">HEIGHT</span><span class="p">,</span> <span class="n">WIDTH</span><span class="p">,</span> <span class="n">DEPTH</span><span class="p">)</span>
+    <span class="n">mask_on_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mask_on_features</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-    <span class="c1"># Alteration of features with darkest or lightest tone</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">:</span>
-        <span class="n">features</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">tone</span>
+    <span class="c1"># Random choice between random image or masked image</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span><span class="p">])</span>
 
-    <span class="c1"># Vectorization of features to image and scaling</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">features</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">HEIGHT</span><span class="p">,</span> <span class="n">WIDTH</span><span class="p">,</span> <span class="n">DEPTH</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N_TONES</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">o_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">o_features</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N_TONES</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">,</span> <span class="n">o_features</span>
-
+    <span class="k">return</span> <span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">,</span> <span class="n">o_features</span> <span class="o">=</span> <span class="n">features_images</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(28, 28, 1)
-</pre></div></div>
-</div>
-<p>Inspect the image before alteration.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">o_features</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span></span><span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span> <span class="o">=</span> <span class="n">features_image</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -592,13 +577,13 @@ div.rendered_html tbody tr:hover {
 <img alt="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_12_0.png" src="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_12_0.png" />
 </div>
 </div>
-<p>Inspect the image after alteration.</p>
+<p>This is the image features we retrieve for one sample.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">features</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">features</span> <span class="o">-</span> <span class="n">mask_on_features</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -610,68 +595,60 @@ div.rendered_html tbody tr:hover {
 <img alt="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_14_0.png" src="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_14_0.png" />
 </div>
 </div>
-<p>Not obvious, though. Let’s inspect the image difference.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
+<p>When subtracting <code class="docutils literal notranslate"><span class="pre">mask_on_features</span></code> from <code class="docutils literal notranslate"><span class="pre">features</span></code>, we observe that the image is not all black - is not all zeros -. This means that the random choice here has selected the non-random image, the one that has been alterated during the generation of image sample features.</p>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">diff_features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">o_features</span> <span class="o">-</span> <span class="n">features</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">diff_features</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_16_0.png" src="nnlive/dummy_image/../../_build/doctrees/nbsphinx/nnlive_dummy_image_prepare_dataset_16_0.png" />
-</div>
-</div>
-<p>Label from features.</p>
+<div class="section" id="Generate-label">
+<h3>Generate label<a class="headerlink" href="#Generate-label" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">):</span>
+<span></span><span class="k">def</span> <span class="nf">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Prepare label associated with features.</span>
 
-<span class="sd">    :param features: random image features of length N_FEATURES</span>
-<span class="sd">    :type features: list[int]</span>
+<span class="sd">    The dummy law is:</span>
 
-<span class="sd">    :param tone: Darker or lighter tone used to alterate image features</span>
-<span class="sd">    :type tone: int</span>
+<span class="sd">    Image is NOT random = positive</span>
+<span class="sd">    Image is random = negative</span>
 
-<span class="sd">    :return: One-hot encoded label</span>
-<span class="sd">    :rtype: list[int]</span>
+<span class="sd">    :param features: Random image features of size N_FEATURES</span>
+<span class="sd">    :type features: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :param mask_on_features: Non-random image features of size N_FEATURES</span>
+<span class="sd">    :type mask_on_features: :class:`numpy.ndarray`</span>
+
+<span class="sd">    :return: Single-digit label with respect to features</span>
+<span class="sd">    :rtype: int</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># One-hot encoded positive and negative labels</span>
-    <span class="n">p_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-    <span class="n">n_label</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Single-digit positive and negative labels</span>
+    <span class="n">p_label</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n_label</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="c1"># Test if image was alterated with lightest tone (+)</span>
-    <span class="k">if</span> <span class="n">tone</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># Test if image is not random (+)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_on_features</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">p_label</span>
 
-    <span class="c1"># Test if features associates with darkest tone (-)</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Test if image is random (-)</span>
+    <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_on_features</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="n">n_label</span>
 
     <span class="k">return</span> <span class="n">label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
+<p>The code above is commented and self explaining.</p>
+<p>Let’s check the function we made for a few iterations.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">tone</span><span class="p">)</span>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span> <span class="o">=</span> <span class="n">features_image</span><span class="p">()</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_on_features</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_on_features</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -680,147 +657,81 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[1, 0] 0
+1 5567 5567
+0 5690 5690
+0 5707 5707
+1 5550 5550
+0 5482 5482
 </pre></div></div>
 </div>
-<p>Prepare labeled dataset.</p>
+</div>
+<div class="section" id="Prepare-dataset">
+<h3>Prepare dataset<a class="headerlink" href="#Prepare-dataset" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of labeled samples.</span>
+<span></span><span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Prepare a set of dummy time sample features and label.</span>
 
-<span class="sd">    One sample is a list such as [features, label].</span>
-
-<span class="sd">    For one sample, features is a class:`numpy.ndarray` and label is a list.</span>
-
-<span class="sd">    :param se_dataset: Settings for dataset preparation</span>
-<span class="sd">    :type se_dataset: dict</span>
-
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[class:`numpy.ndarray`,list[int]]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># See ./settings.py</span>
-    <span class="n">N_SAMPLES</span> <span class="o">=</span> <span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span>
-
-    <span class="c1"># Initialize dataset</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Iterate over N_SAMPLES</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
-
-        <span class="c1"># Generate dummy string features</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">features_images</span><span class="p">()</span>
-
-        <span class="c1"># Retrieve label associated with features</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">tone</span><span class="p">)</span>
-
-        <span class="c1"># Define labeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span>
-
-        <span class="c1"># Append sample to dataset</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">dataset</span>
-</pre></div>
-</div>
-</div>
-<p>Check the function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">se_dataset</span><span class="p">[</span><span class="s1">&#39;N_SAMPLES&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
-
-<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">labeled_dataset</span><span class="p">(</span><span class="n">se_dataset</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(28, 28, 1) [0, 1]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [0, 1]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [0, 1]
-(28, 28, 1) [1, 0]
-(28, 28, 1) [1, 0]
-</pre></div></div>
-</div>
-<p>Prepare unlabeled dataset.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Prepare a dummy dataset of unlabeled samples.</span>
-
-<span class="sd">    One sample is a list such as [features, []].</span>
-
-<span class="sd">    For one sample, features is a class:`numpy.ndarray` and label is an empty list.</span>
-
-<span class="sd">    :param N_SAMPLES: Length for unlabeled dataset</span>
+<span class="sd">    :param N_SAMPLES: Number of samples to generate, defaults to 100.</span>
 <span class="sd">    :type N_SAMPLES: int</span>
 
-<span class="sd">    :return: A dataset of length N_SAMPLES</span>
-<span class="sd">    :rtype: list[list[class:`numpy.ndarray`,list[int]]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Initialize unlabeled_dataset</span>
-    <span class="n">unlabeled_dataset</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="sd">    :return: Set of sample features.</span>
+<span class="sd">    :rtype: tuple[:class:`numpy.ndarray`]</span>
 
-    <span class="c1"># Iterate over N_SAMPLES</span>
+<span class="sd">    :return: Set of single-digit sample label.</span>
+<span class="sd">    :rtype: tuple[int]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Initialize X and Y datasets</span>
+    <span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">Y_label</span> <span class="o">=</span> <span class="p">[]</span>
+
+   <span class="c1"># Iterate over N_SAMPLES</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="p">):</span>
 
-        <span class="c1"># Generate dummy image features</span>
-        <span class="n">features</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">features_images</span><span class="p">()</span>
+        <span class="c1"># Compute random string features</span>
+        <span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span> <span class="o">=</span> <span class="n">features_image</span><span class="p">()</span>
 
-        <span class="c1"># Define unlabeled sample</span>
-        <span class="n">sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">features</span><span class="p">,</span> <span class="p">[]]</span>
+        <span class="c1"># Retrieve label associated with features</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">label_features</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">mask_on_features</span><span class="p">)</span>
 
-        <span class="c1"># Append to unlabeled_dataset</span>
-        <span class="n">unlabeled_dataset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="c1"># Append sample features to X_features</span>
+        <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">unlabeled_dataset</span>
+        <span class="c1"># Append sample label to Y_label</span>
+        <span class="n">Y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+    <span class="c1"># Prepare X-Y pairwise dataset</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">))</span>
+
+    <span class="c1"># Shuffle dataset</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="c1"># Separate X-Y pairs</span>
+    <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_features</span><span class="p">,</span> <span class="n">Y_label</span>
 </pre></div>
 </div>
 </div>
-<p>Check the function.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</div>
+</div>
+<div class="section" id="What-comes-next?">
+<h2>What comes next?<a class="headerlink" href="#What-comes-next?" title="Permalink to this headline">¶</a></h2>
+<p>The function <code class="docutils literal notranslate"><span class="pre">prepare_dataset()</span></code> applied to dummy time data is used in the following working examples:</p>
+<p>XXX</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">unlabeled_dataset</span><span class="p">(</span><span class="n">N_SAMPLES</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">features</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">sample</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+<span></span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(28, 28, 1) []
-(28, 28, 1) []
-(28, 28, 1) []
-(28, 28, 1) []
-(28, 28, 1) []
-</pre></div></div>
-</div>
-<p>Done.</p>
 </div>
 
 
@@ -829,8 +740,8 @@ div.rendered_html tbody tr:hover {
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../captcha_mnist/prepare_dataset.html" class="btn btn-neutral float-right" title="MNIST" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../author_music/prepare_dataset.html" class="btn btn-neutral float-left" title="Music" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../captcha_mnist/prepare_dataset.html" class="btn btn-neutral float-right" title="MNIST Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../author_music/prepare_dataset.html" class="btn btn-neutral float-left" title="Music Authorship" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

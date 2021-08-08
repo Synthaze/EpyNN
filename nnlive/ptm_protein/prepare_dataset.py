@@ -5,9 +5,9 @@ import random
 import wget
 import os
 
-
 # Local application/library specific imports
 from nnlibs.commons.library import read_file
+from nnlibs.commons.logs import process_logs
 
 
 def download_sequences():
@@ -23,7 +23,7 @@ def download_sequences():
 
         # Extract archive
         tar = tarfile.open(fname).extractall('.')
-        process_logs('Make: '+fname, level=1)
+        process_logs('Make: ' + fname, level=1)
 
         # Clean-up
         os.remove(fname)
@@ -31,28 +31,25 @@ def download_sequences():
     return None
 
 
-def labeled_dataset(se_dataset):
-    """Prepare a dataset of labeled samples.
+def prepare_dataset(N_SAMPLES=100):
+    """Prepare a set of labeled peptides.
 
-    One sample is a list such as [features, label].
+    :param N_SAMPLES: Number of peptide samples to retrieve, defaults to 100.
+    :type N_SAMPLES: int
 
-    For one sample, features is a list and label is a list.
+    :return: Set of peptides.
+    :rtype: tuple[list[str]]
 
-    :param se_dataset: Settings for dataset preparation
-    :type se_dataset: dict
-
-    :return: A dataset of length N_SAMPLES
-    :rtype: list[list[list[str],list[int]]]
+    :return: Set of single-digit peptides label.
+    :rtype: tuple[int]
     """
-    # See ./settings.py
-    N_SAMPLES = se_dataset['N_SAMPLES']
-
-    # One-hot encoded positive and negative labels
-    p_label = [1, 0]
-    n_label = [0, 1]
+    # Single-digit positive and negative labels
+    p_label = 1
+    n_label = 0
 
     # Positive data are Homo sapiens O-GlcNAcylated peptide sequences from oglcnac.mcw.edu
     path_positive = 'data/21_positive.dat'
+
     # Negative data are peptide sequences presumably not O-GlcNAcylated
     path_negative = 'data/21_negative.dat'
 
@@ -64,16 +61,19 @@ def labeled_dataset(se_dataset):
     random.shuffle(positive)
     random.shuffle(negative)
 
-    # Truncate list of negative sequences
+    # Truncate to prepare a balanced dataset
     negative = negative[:len(positive)]
 
     # Prepare a balanced dataset
     dataset = positive + negative
 
-    # Shuffle dataset before split
+    # Shuffle dataset
     random.shuffle(dataset)
 
     # Truncate dataset to N_SAMPLES
     dataset = dataset[:N_SAMPLES]
 
-    return dataset
+    # Separate X-Y pairs
+    X_features, Y_label = zip(*dataset)
+
+    return X_features, Y_label
