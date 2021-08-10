@@ -57,7 +57,7 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     # Features one-hot encoding
     if X_encode:
         layer.w2i, layer.i2w, layer.d['v'] = index_vocabulary_auto(X_data)
-        X_data = X_encoded_dataset = encode_dataset(X_data, layer.w2i, layer.d['v'])
+        X_data = encode_dataset(X_data, layer.w2i, layer.d['v'])
     # Label one-hot encoding
     if Y_encode:
         num_classes = len(list(set(Y_data.flatten())))

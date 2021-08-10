@@ -7,7 +7,7 @@ from nnlibs.commons.schedule import schedule_functions
 
 
 def model_hyperparameters(model):
-    """Schedule learning rate for each layer in model.
+    """Set hyperparameters for each layer in model.
 
     :param model: An instance of EpyNN network.
     :type model: :class:`nnlibs.network.models.EpyNN`
@@ -19,7 +19,18 @@ def model_hyperparameters(model):
         else:
             se_hPars = layer.se_hPars
 
-        layer.se_hPars, layer.lrate = schedule_lrate(se_hPars, model.epochs)
+    return None
+
+
+def model_learning_rate(model):
+    """Schedule learning rate for each layer in model.
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.network.models.EpyNN`
+    """
+    for layer in model.layers:
+
+        layer.se_hPars, layer.lrate = schedule_lrate(layer.se_hPars, model.epochs)
 
     return None
 
@@ -42,16 +53,17 @@ def schedule_lrate(se_hPars, training_epochs):
 
     e = se_hPars['epochs'] = training_epochs
     lr = se_hPars['learning_rate']
-    epc = se_hPars['cycle_epochs']
     d = se_hPars['cycle_descent']
     k = se_hPars['decay_k']
+
+    epc = se_hPars['cycle_epochs'] if se_hPars['cycle_epochs'] else training_epochs
 
     se_hPars['cycle_number'] = n = 1 if not epc else e // epc
 
     # Default decay
     if k == 0:
-        # 0.005% of initial lr for last epoch in cycle
-        k = se_hPars['decay_k'] = 10 / epc
+        # ~ 1% of initial lr for last epoch in cycle
+        k = se_hPars['decay_k'] = 5 / epc
 
     hPars = (e, lr, n, k, d, epc)
 

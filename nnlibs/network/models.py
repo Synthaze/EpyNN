@@ -23,7 +23,10 @@ from nnlibs.network.initialize import (
     model_initialize,
     model_initialize_exceptions,
 )
-from nnlibs.network.hyperparameters import model_hyperparameters
+from nnlibs.network.hyperparameters import (
+    model_hyperparameters,
+    model_learning_rate,
+)
 from nnlibs.network.evaluate import model_evaluate
 from nnlibs.network.forward import model_forward
 from nnlibs.network.backward import model_backward
@@ -121,6 +124,8 @@ class EpyNN:
         self.se_hPars = se_hPars
         self.seed = seed
 
+        model_hyperparameters(self)
+
         metrics.append(self.training_loss.__name__)
         self.metrics = {m:[[] for _ in range(3)] for m in metrics}
 
@@ -134,11 +139,14 @@ class EpyNN:
 
         return None
 
-    def train(self, epochs, init_logs=True):
+    def train(self, epochs, verbose=None, init_logs=True):
         """Wrapper for :func:`nnlibs.network.training.model_training()`.
 
         :param epochs: Number of training iterations
         :type epochs: dict[str: int or str]
+
+        :param verbose: Print logs every Nth epochs, defaults to None which sets to every tenth of epochs.
+        :type verbose: int or NoneType
 
         :param init_logs:
         :type init_logs: bool
@@ -151,10 +159,15 @@ class EpyNN:
 
         self.epochs = epochs if not self.e else epochs + self.e + 1
 
-        model_hyperparameters(self)
+        model_learning_rate(self)
 
         if init_logs:
             initialize_model_report(self, timeout=3)
+
+        if not verbose:
+            verbose = epochs // 10
+
+        self.verbose = verbose
 
         model_training(self)
 

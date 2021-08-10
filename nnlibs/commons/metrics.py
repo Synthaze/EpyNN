@@ -40,9 +40,9 @@ def recall(Y, A):
 
     oy = P + y
 
-    tp = np.sum(np.where(oy == 0,1,0))
-    fp = np.sum(np.where(P == 0,1,0)) - tp
-    tn = np.sum(np.where(oy == 2,1,0))
+    tp = np.sum(np.where(oy == 0, 1, 0))
+    fp = np.sum(np.where(P == 0, 1, 0)) - tp
+    tn = np.sum(np.where(oy == 2, 1, 0))
     fn = np.sum(P) - tn
 
     recall = (tp / (tp+fn))
@@ -60,9 +60,9 @@ def precision(Y, A):
 
     oy = P + y
 
-    tp = np.sum(np.where(oy == 0,1,0))
-    fp = np.sum(np.where(P == 0,1,0)) - tp
-    tn = np.sum(np.where(oy == 2,1,0))
+    tp = np.sum(np.where(oy == 0, 1, 0))
+    fp = np.sum(np.where(P == 0, 1, 0)) - tp
+    tn = np.sum(np.where(oy == 2, 1, 0))
     fn = np.sum(P) - tn
 
     precision = (tp / (tp+fp))

@@ -39,10 +39,10 @@ def rnn_backward(layer, dA):
     for s in reversed(range(layer.d['s'])):
 
         # (2s) Slice sequence (m, s, v) with respect to step
-        dX = layer.bc['dX'][:, s]
+        dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
         dh = dX + dhn
-
+        
         dh = layer.bc['dh'][:, s] = layer.activate(layer.fc['h'][:, s]**2, deriv=True) * dh
 
         dhn = layer.bc['dhn'][:, s] = np.dot(dh, layer.p['W'].T)

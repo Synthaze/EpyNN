@@ -22,21 +22,23 @@ def model_evaluate(model):
 
     dsets = model.embedding.dsets
 
-    for k, dset in enumerate(reversed(dsets)):
+    for k, dset in enumerate(dsets):
 
-        X = dset.X
-
-        dset.A = model.forward(X)
+        dset.A = model.forward(dset.X)
 
         for s in model.metrics.keys():
 
             m = metrics[s](dset.Y, dset.A)
 
-            if m.ndim == 1:
+            if m.ndim == 0:
+                pass
+
+            elif m.ndim == 1:
                 m = np.sum(m) / len(dset.ids)
+
             else:
                 m = np.mean(m.mean(axis=1))
 
-            model.metrics[s][len(dsets) - 1 - k].append(m)
+            model.metrics[s][k].append(m)
 
     return None

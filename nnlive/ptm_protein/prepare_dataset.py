@@ -54,8 +54,8 @@ def prepare_dataset(N_SAMPLES=100):
     path_negative = 'data/21_negative.dat'
 
     # Read text files, each containing one sequence per line
-    positive = [[x, p_label] for x in read_file(path_positive).splitlines()]
-    negative = [[x, n_label] for x in read_file(path_negative).splitlines()]
+    positive = [[list(x), p_label] for x in read_file(path_positive).splitlines()]
+    negative = [[list(x), n_label] for x in read_file(path_negative).splitlines()]
 
     # Shuffle data to prevent from any sorting previously applied
     random.shuffle(positive)

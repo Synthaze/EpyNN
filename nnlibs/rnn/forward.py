@@ -21,7 +21,7 @@ def initialize_forward(layer, A):
     X = layer.fc['X'] = A
 
     layer.fc['h'] = np.zeros(layer.fs['h'])
-    
+
     hp = np.zeros_like(layer.fc['h'][:, 0])
 
     return X, hp
@@ -46,6 +46,8 @@ def rnn_forward(layer, A):
 
         h = hp = layer.fc['h'][:, s] = layer.activate(h)
 
-    A = layer.fc['A'] = layer.fc['h']
+    A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
 
-    return A    # To next layer
+    layer.fc['A'] = A
+
+    return A   # To next layer

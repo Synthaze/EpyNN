@@ -10,12 +10,9 @@ def dense_compute_shapes(layer, A):
 
     layer.fs['X'] = X.shape
 
-#    layer.d['p'] = layer.fs['X'][0]
-#    layer.d['m'] = layer.fs['X'][1]
     layer.d['m'] = layer.fs['X'][0]
     layer.d['p'] = layer.fs['X'][1]
 
-#    nm = layer.fs['W'] = (layer.d['n'], layer.d['p'])
     nm = layer.fs['W'] = (layer.d['p'], layer.d['n'])
 
     n1 = layer.fs['b'] = (1, layer.d['n'])

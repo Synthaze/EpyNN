@@ -1,71 +1,85 @@
 # EpyNN/nnlive/ptm_protein/train.py
 # Standard library imports
 import random
-import sys
 
 # Related third party imports
 import numpy as np
 
 # Local application/library specific imports
 import nnlibs.initialize
-from nnlibs.commons.io import one_hot_decode_sequence
-from nnlibs.commons.logs import pretty_json
+from nnlibs.commons.maths import relu, softmax
 from nnlibs.commons.library import (
     configure_directory,
-    read_dataset,
     read_model,
 )
-from nnlibs.commons.maths import relu
 from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.rnn.models import RNN
 from nnlibs.lstm.models import LSTM
 from nnlibs.gru.models import GRU
 from nnlibs.flatten.models import Flatten
-from nnlibs.dense.models import Dense
-from prepare_dataset import labeled_dataset
-
-from settings import (
-    dataset as se_dataset,
-    config as se_config,
-    hPars as se_hPars,
-)
-
-
-from nnlibs.commons.maths import softmax
 from nnlibs.dropout.models import Dropout
-################################## HEADERS ################################
-np.set_printoptions(precision=3, threshold=sys.maxsize)
+from nnlibs.dense.models import Dense
+from prepare_dataset import prepare_dataset
+from settings import se_hPars
+
+
+########################## CONFIGURE ##########################
+random.seed(1)
+
+np.set_printoptions(threshold=10)
 
 np.seterr(all='warn')
+np.seterr(under='ignore')
 
-SEED = 1
-np.random.seed(SEED)
+############################ DATASET ##########################
+X_features, Y_label = prepare_dataset(N_SAMPLES=12800)
 
-configure_directory(se_config)
-
-
-################################## DATASETS ################################
-dataset = labeled_dataset(se_dataset)
-#dataset = read_dataset()
-
-
-################################ BUILD MODEL ###############################
-settings = [se_dataset, se_config, se_hPars]
-
-embedding = Embedding(dataset, se_dataset, encode=True)
-
-name = 'Embedding_Flatten_Dense-2-Softmax' # (1)
-layers = [embedding, Flatten(), Dense(16, relu), Dense(2, softmax)]
-
-name = 'Embedding_Flatten_RNN-11-Softmax_Dense-2-Softmax' # (5)
-layers = [embedding, RNN(22), Flatten(), Dense(2, softmax)]
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      X_encode=True,
+                      Y_encode=True,
+                      batch_size=128,
+                      relative_size=(2, 1, 0))
 
 
-model = EpyNN(layers=layers,settings=settings, seed=SEED)
+lstm = LSTM(21)
 
+flatten = Flatten()
 
-################################ TRAIN MODEL ################################
-model.train()
+dense = Dense(2, softmax)
+
+layers = [embedding, lstm, flatten, dense]
+
+model = EpyNN(layers=layers, name='O-GcNAc_lstmNet')
+
+se_hPars['learning_rate'] = 0.1
+se_hPars['schedule'] = 'exp_decay'
+
+model.initialize(loss='BCE', se_hPars=se_hPars, seed=1)
+
+model.train(epochs=20)
 
 model.plot()
+
+
+# flatten = Flatten()
+#
+# hidden_dense1 = Dense(128, relu)
+#
+# hidden_dense2 = Dense(16, relu)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, flatten, hidden_dense1, hidden_dense2, dense]
+#
+# model = EpyNN(layers=layers, name='O-GcNAc_DeepNet')
+#
+# se_hPars['learning_rate'] = 0.01
+# se_hPars['schedule'] = 'steady'
+#
+# model.initialize(loss='BCE', se_hPars=se_hPars, seed=1)
+#
+# model.train(epochs=20)
+#
+# model.plot()

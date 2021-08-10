@@ -18,7 +18,9 @@ def index_vocabulary_auto(X_data):
     :return: Vocabulary size
     :rtype: int
     """
-    words = sorted(list(set(X_data.flatten())))
+    X_data = X_data.flatten().tolist()
+
+    words = sorted(list(set(X_data)))
 
     word_to_idx = {w:i for i,w in enumerate(words)}
     idx_to_word = {i:w for w,i in word_to_idx.items()}
@@ -72,8 +74,6 @@ def one_hot_encode_sequence(sequence, word_to_idx, vocab_size):
     """
     encoding = np.array([one_hot_encode(word_to_idx[word], vocab_size) for word in sequence])
 
-    encoding = encoding
-
     return encoding
 
 
@@ -94,7 +94,7 @@ def one_hot_decode_sequence(sequence, idx_to_word):
     return decoding
 
 
-def encode_dataset(X_dataset, word_to_idx, vocab_size):
+def encode_dataset(X_data, word_to_idx, vocab_size):
     """One-hot encode features from samples in dataset.
 
     :param dataset: Contains samples
@@ -109,16 +109,14 @@ def encode_dataset(X_dataset, word_to_idx, vocab_size):
     :return: One-hot encoded dataset
     :rtype:
     """
-    X_dataset = []
+    X_encoded = []
 
-    for i in range(X_dataset.shape[0]):
+    for i in range(X_data.shape[0]):
 
-        sequence = X_dataset[i]
+        sequence = X_data[i]
 
         encoded_sequence = one_hot_encode_sequence(sequence, word_to_idx, vocab_size)
 
-        X_dataset.append(encoded_sequence)
+        X_encoded.append(encoded_sequence)
 
-    X_dataset = np.array(X_dataset)
-
-    return X_dataset
+    return X_encoded
