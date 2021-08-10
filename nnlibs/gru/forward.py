@@ -58,6 +58,8 @@ def gru_forward(layer, A):
 
         h = hp = layer.fc['h'][:, s] = z*hp + (1-z)*hh
 
-    A = layer.fc['A'] = layer.fc['h']
+    A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
+
+    layer.fc['A'] = A
 
     return A   # To next layer

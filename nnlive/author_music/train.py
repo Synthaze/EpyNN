@@ -1,60 +1,74 @@
-#EpyNN/nnlive/music_author/train.py
-################################## IMPORTS ################################
-# Set default environment and settings
-from nnlibs.initialize import *
-# EpyNN network-model for neural networks
-from nnlibs.network.models import EpyNN
-# Embedding layer for input data
-from nnlibs.embedding.models import Embedding
-# Import models specific to layer architectures
-from nnlibs.dropout.models import Dropout
-from nnlibs.flatten.models import Flatten
-from nnlibs.dense.models import Dense
-from nnlibs.lstm.models import LSTM
-from nnlibs.rnn.models import RNN
-from nnlibs.gru.models import GRU
-# Commons utils and maths
-import nnlibs.commons.library as cl
-import nnlibs.commons.maths as cm
-# Routines for dataset preparation
-import prepare_dataset as pd
-# Local EpyNN settings
-import settings as se
-# Compute with NumPy
+# EpyNN/nnlive/music_author/train.py
+# Standard library imports
+import random
+
+# Related third party imports
 import numpy as np
 
+# Local application/library specific imports
+import nnlibs.initialize
+from nnlibs.commons.maths import relu, softmax
+from nnlibs.commons.library import (
+    configure_directory,
+    read_model,
+)
+from nnlibs.network.models import EpyNN
+from nnlibs.embedding.models import Embedding
+from nnlibs.rnn.models import RNN
+# from nnlibs.lstm.models import LSTM
+# from nnlibs.gru.models import GRU
+from nnlibs.flatten.models import Flatten
+# from nnlibs.dropout.models import Dropout
+from nnlibs.dense.models import Dense
+from prepare_dataset import prepare_dataset
+from settings import se_hPars
 
-################################## HEADERS ################################
-np.set_printoptions(precision=3,threshold=sys.maxsize)
+
+########################## CONFIGURE ##########################
+random.seed(1)
+
+np.set_printoptions(threshold=10)
 
 np.seterr(all='warn')
-
-cm.global_seed(1)
-
-cl.init_dir(se.config)
-# DOCS_HEADERS
-################################## DATASETS ################################
-dataset = pd.prepare_dataset(se.dataset)
-#dataset = cl.read_dataset()
+np.seterr(under='ignore')
 
 
-################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset,encode=True)
+############################ DATASET ##########################
+X_features, Y_label = prepare_dataset(N_SAMPLES=1280)
 
-name = 'Embedding_Flatten_Dense_Dense-2-Softmax' # (1)
-layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      X_encode=True,
+                      Y_encode=True,
+                      batch_size=32,
+                      relative_size=(2, 1, 0))
 
-# name = 'LSTM-128-bin-Softmax' # (2)
-# layers = [embedding,RNN(400,binary=True)]
+# flatten = Flatten()
+#
+# hidden_dense = Dense(64, relu)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, flatten, hidden_dense, dense]
+#
+# model = EpyNN(layers=layers, name='None')
+#
+# model.train(epochs=100)
+#
+se_hPars['learning_rate'] = 0.01
+se_hPars['schedule'] = 'exp_decay'
+se_hPars['decay_k'] = 0.01
 
-# name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
-# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
+rnn = RNN(220, sequences=False)
 
+flatten = Flatten()
 
-model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
+dense = Dense(2, softmax)
 
+layers = [embedding, rnn, flatten, dense]
 
-################################ TRAIN MODEL ################################
-model.train()
+model = EpyNN(layers=layers, name='None')
 
-model.plot()
+model.initialize(loss='BCE', se_hPars=se_hPars)
+
+model.train(epochs=100)

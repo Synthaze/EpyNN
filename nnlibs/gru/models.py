@@ -43,9 +43,11 @@ class GRU(Layer):
                 activate_update=sigmoid,
                 activate_reset=sigmoid,
                 initialization=orthogonal,
-                clip_gradients=True):
+                clip_gradients=True,
+                sequences=False,
+                se_hPars=None):
 
-        super().__init__()
+        super().__init__(se_hPars)
 
         self.initialization = initialization
 
@@ -62,6 +64,8 @@ class GRU(Layer):
         self.d['h'] = hidden_size
 
         self.clip_gradients = clip_gradients
+
+        self.sequences = sequences
 
         return None
 

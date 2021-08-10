@@ -32,56 +32,18 @@ configure_directory(clear=True)    # This is a dummy example
 ############################ DATASET ##########################
 X_features, Y_label = prepare_dataset(N_SAMPLES=100)
 
-
-####################### BUILD AND TRAIN MODEL #################
-### Perceptron with one node in output layer
 embedding = Embedding(X_data=X_features,
                       Y_data=Y_label,
                       relative_size=(2, 1, 0))
 
-dense = Dense()
+
+####################### BUILD AND TRAIN MODEL #################
 name = 'Perceptron_Dense-1-sigmoid'
+
+dense = Dense()
 
 model = EpyNN(layers=[embedding, dense], name=name)
 
 model.train(epochs=100)
 
 model.plot()
-
-
-# ### Perceptron with two nodes in output layer
-# embedding = Embedding(X_data=X_features,
-#                       Y_data=Y_label,
-#                       Y_encode=True,
-#                       relative_size=(2, 1, 0))
-#
-# dense = Dense(2)
-# name = 'Perceptron_Dense-2-sigmoid'
-#
-# model = EpyNN(layers=[embedding, dense], name=name)
-#
-# model.train(epochs=100)
-#
-# model.plot()
-#
-#
-# ### Feed-Forward Neural Network - One hidden layer
-# embedding = Embedding(X_data=X_features,
-#                       Y_data=Y_label,
-#                       Y_encode=True,
-#                       relative_size=(2, 1, 0))
-#
-# dense = Dense(2)
-#
-# hidden_dense = Dense(4, relu)
-#
-# name = 'Perceptron_Dense-1-sigmoid'
-#
-# model = EpyNN(layers=[embedding, hidden_dense, dense], name=name)
-#
-# model.train(epochs=100)
-#
-# model.plot()
-
-
-############################## PREDICT ##########################

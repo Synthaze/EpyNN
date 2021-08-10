@@ -57,9 +57,10 @@ class LSTM(Layer):
                 activate_input=sigmoid,
                 activate_forget=sigmoid,
                 initialization=orthogonal,
-                clip_gradients=True):
+                clip_gradients=True,
+                se_hPars=None):
 
-        super().__init__()
+        super().__init__(se_hPars)
 
         self.initialization = initialization
 

@@ -23,7 +23,7 @@ def download_music():
     if not os.path.exists(data_path):
 
         # Download @url with wget
-        url = 'https://synthase.s3.us-west-2.amazonaws.com/music_author_data.tar'
+        url = 'https://synthase.s3.us-west-2.amazonaws.com/author_music.tar'
         fname = wget.download(url)
 
         # Extract archive
@@ -36,26 +36,39 @@ def download_music():
     return None
 
 
-def clips_music(wav_file, TIME=4, SAMPLING_RATE=4410):
+def clips_music(wav_file, TIME=0.5, SAMPLING_RATE=441):
     """Clip music and proceed with resampling.
 
     :param wav_file: The filename of .wav file which contains the music.
     :type wav_file: str
 
-    :param SAMPLING_RATE: Sampling rate (Hz), default to 4410.
+    :param SAMPLING_RATE: Sampling rate (Hz), default to 441.
     :type SAMPLING_RATE: int
 
-    :param TIME: Sampling time (s), defaults to 4.
+    :param TIME: Sampling time (s), defaults to 0.5.
     :type TIME: int
 
     :return: Clipped and re-sampled music.
     :rtype: list[:class:`numpy.ndarray`]
     """
     # Number of features describing a sample
-    N_FEATURES = SAMPLING_RATE * TIME
+    N_FEATURES = int(SAMPLING_RATE * TIME)
 
     # Retrieve original sampling rate (Hz) and data
     wav_sampling_rate, wav_data = wavfile.read(wav_file)
+
+    # 16-bits wav files - Pass all positive and norm. [0, 1]
+    wav_data = (wav_data + 32768.0) / (32768.0 * 2)
+
+    # Digitize in 4-bits signal
+    bins = [i / 15 for i in range(16)]
+    wav_data = np.digitize(wav_data, bins, right=True)
+
+    # Compute step for re-sampling
+    sampling_step = int(wav_sampling_rate / SAMPLING_RATE)
+
+    # Re-sampling to avoid memory allocation errors
+    wav_resampled = wav_data[::sampling_step]
 
     # Total duration (s) of original data
     wav_time = wav_data.shape[0] / wav_sampling_rate
@@ -64,13 +77,7 @@ def clips_music(wav_file, TIME=4, SAMPLING_RATE=4410):
     N_CLIPS = int(wav_time / TIME)
 
     # Make clips from data
-    clips = [wav_data[i * N_FEATURES:(i+1) * N_FEATURES] for i in range(N_CLIPS)]
-
-    # Compute step for re-sampling
-    sampling_step = int(wav_sampling_rate / SAMPLING_RATE)
-
-    # Re-sampling to avoid memory allocation errors
-    clips = [clip[::sampling_step] for clip in clips]
+    clips = [wav_resampled[i * N_FEATURES:(i+1) * N_FEATURES] for i in range(N_CLIPS)]
 
     return clips
 

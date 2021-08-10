@@ -1,44 +1,20 @@
-#EpyNN/nnlive/music_author/settings.py
-
-dataset = {
-    'N_SAMPLES': None,
-    'dataset_name': 'music_author',
-    'dataset_save': True,
-    'dtrain_relative': 2,
-    'dtest_relative': 1,
-    'dval_relative': 1,
-    'batch_number': 5,
-}
+# EpyNN/nnlibs/settings.py
 
 
-config = {
-    'experiment_name': 'MUSIC_AUTHOR',
-    'logs_frequency': 1,
-    'logs_frequency_display': 5,
-    'model_save': True,
-    'plot_display': True,
-    'plot_save': False,
-    'directory_clear': True,
-    'dataset_target': 1,
-    'metrics_target': 'accuracy',
-    'metrics_list': ['accuracy','recall','precision','BCE','MSE','MAE','RMSLE','KLD'],
-    'metrics_plot': ['accuracy','BCE']
-}
-
-
-hPars = {
-    'training_epochs': 100,
+# HYPERPARAMETERS SETTINGS
+se_hPars = {
+    # Schedule learning rate
     'learning_rate': 0.1,
-    'schedule_mode': 'exp_decay',
-    'decay_k': 0.001,
-    'cycling_n': 1,
-    'descent_d': 1,
-
-    'regularization_l2': 0,
-    'regularization_l1': 0,
-
-    'softmax_temperature': 1,
+    'schedule': 'steady',
+    'decay_k': 0,
+    'cycle_epochs': 0,
+    'cycle_descent': 0,
+    # Tune activation function
     'ELU_alpha': 0.01,
-    'LRELU_alpha': 1,
-    'min_epsilon': 1e-9,
+    'LRELU_alpha': 0.01,
+    'softmax_temperature': 1,
 }
+"""Hyperparameters dictionary settings.
+
+Set hyperparameters for model and layer.
+"""

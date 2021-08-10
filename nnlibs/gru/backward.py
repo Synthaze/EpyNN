@@ -46,7 +46,7 @@ def gru_backward(layer, dA):
     # Loop through steps
     for s in reversed(range(layer.d['s'])):
 
-        dX = layer.bc['dX'][:, s]
+        dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
         dh =  dX + dhn
 

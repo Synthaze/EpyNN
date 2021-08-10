@@ -38,7 +38,7 @@ def features_time(TIME=1, SAMPLING_RATE=128):
     features = np.sin(2 * np.pi * signal_frequency * features)
 
     # Generate white noise
-    white_noise = np.random.normal(0, 1, size=N_FEATURES)
+    white_noise = np.random.normal(0, scale=0.5, size=N_FEATURES)
 
     # Random choice between noisy signal or white noise
     features = random.choice([features + white_noise, white_noise])
@@ -102,6 +102,9 @@ def prepare_dataset(N_SAMPLES=100):
 
         # Retrieve label associated with features
         label = label_features(features, white_noise)
+
+        # From n measurements to n steps with 1 measurements
+        features = np.expand_dims(features, 1)
 
         # Append sample features to X_features
         X_features.append(features)

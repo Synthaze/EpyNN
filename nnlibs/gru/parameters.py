@@ -41,7 +41,7 @@ def gru_initialize_parameters(layer):
     layer.p['Uh'] = layer.initialization(layer.fs['Uh'], rng=layer.np_rng)
     layer.p['Wh'] = layer.initialization(layer.fs['Wh'], rng=layer.np_rng)
     layer.p['bh'] = np.zeros(layer.fs['bh'])
-    print(layer.p['Uz'])
+
     return None
 
 

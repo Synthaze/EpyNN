@@ -64,6 +64,8 @@ def model_initialize(model, params=True):
 
     for layer in reversed(model.layers):
 
+        cprint('Layer: ' + layer.name, attrs=['bold'])
+        
         cprint('backward: ' + layer.name, 'cyan', attrs=['bold'])
         dA = layer.backward(dA)
 

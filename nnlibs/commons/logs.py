@@ -13,6 +13,7 @@ from termcolor import cprint, colored
 from texttable import Texttable
 from pygments import highlight
 from tabulate import tabulate
+import numpy as np
 
 
 def headers_logs(model, colors):
@@ -105,14 +106,14 @@ def remaining_time_logs(model):
     :type model:
     """
     model.cts = time.time()
-    
+
     elapsed_time = round(int(model.cts) - int(model.ts), 2)
 
-    rate = round((model.e+1) / elapsed_time, 2)
+    rate = round((model.e + 1) / (elapsed_time + 1e-10), 2)
 
     ttc = round((model.epochs - model.e + 1) / rate)
 
-    cprint('TIME: %ss RATE: %se/s TTC: %ss' % (elapsed_time, rate, ttc), 'white', attrs=['bold'])
+    cprint('Epoch: %s - TIME: %ss RATE: %se/s TTC: %ss' % (model.e, elapsed_time, rate, ttc), 'white', attrs=['bold'], end='\r')
 
     return None
 

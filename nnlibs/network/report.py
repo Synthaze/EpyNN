@@ -34,8 +34,7 @@ def model_report(model):
         'grey',
     ]
 
-    logs_freq = 10
-    logs_freq_disp = 10
+    logs_freq_disp = 11
 
     if not hasattr(model, 'current_logs'):
         model.current_logs = []
@@ -43,7 +42,7 @@ def model_report(model):
     if model.e == 0:
         model.current_logs = [headers_logs(model, colors)]
 
-    if model.e % logs_freq == 0:
+    if model.e % model.verbose == 0 or model.e == model.epochs - 1:
         model.current_logs.append(current_logs(model, colors))
 
     if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
@@ -57,9 +56,9 @@ def model_report(model):
 
         print (logs, flush=True)
 
-        remaining_time_logs(model)
-
         model.current_logs = [headers_logs(model, colors)]
+
+    remaining_time_logs(model)
 
     return None
 

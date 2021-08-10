@@ -1,63 +1,14 @@
-# EpyNN/nnlive/captcha_mnist/settings.py
-
-
-# DATASET SETTINGS
-dataset = {
-    # Settings for preparation
-    'N_SAMPLES': 1280,
-    'dataset_name': 'dummy',
-    'dataset_save': False,
-    # Settings for embedding
-    'dtrain_relative': 2,
-    'dtest_relative': 1,
-    'dval_relative': 1,
-    'batch_size': 128,
-}
-"""Dictionary settings for dataset preparation.
-"""
-
-
-# GENERAL CONFIGURATION SETTINGS
-config = {
-    # Globals for model training
-    'training_epochs': 1000,
-    'training_loss': 'CCE',
-    'metrics_target': 'accuracy',
-    'dataset_target': 1,
-    # Logs behavior
-    'logs_frequency': 1,
-    'logs_frequency_display': 5,
-    'metrics_list': ['accuracy', 'CCE', 'MSE'],
-    # Plot behavior
-    'metrics_plot': ['accuracy', 'CCE'],
-    # Make and remove on disk
-    'model_save': False,
-    'directory_clear': False,
-}
-"""General configuration dictionary settings.
-
-Target dataset can be picked in:
-[0, 1, 2]    # [dtrain, dtest, dval]
-
-Metrics can be picked in:
-['accuracy', 'CCE', 'MSE', 'MAE', 'RMSLE']
-
-For binary classification, extra-metrics can be picked in:
-['precision', 'recall', 'BCE']
-"""
+# EpyNN/nnlibs/settings.py
 
 
 # HYPERPARAMETERS SETTINGS
-hPars = {
+se_hPars = {
     # Schedule learning rate
     'learning_rate': 0.1,
     'schedule': 'steady',
     'decay_k': 0.001,
     'cycle_epochs': 0,
     'cycle_descent': 0,
-    # Regularization
-    'regularization_l2': 0,
-    'regularization_l1': 0,
     # Tune activation function
     'ELU_alpha': 0.01,
     'LRELU_alpha': 0.01,

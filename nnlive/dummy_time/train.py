@@ -1,74 +1,74 @@
-#EpyNN/nnlive/dummy_time/train.py
-################################## IMPORTS ################################
-# Set default environment and settings
-from nnlibs.initialize import *
-# EpyNN network-model for neural networks
-from nnlibs.network.models import EpyNN
-# Embedding layer for input data
-from nnlibs.embedding.models import Embedding
-# Import models specific to layer architectures
-from nnlibs.flatten.models import Flatten
-from nnlibs.dense.models import Dense
-from nnlibs.lstm.models import LSTM
-from nnlibs.rnn.models import RNN
-from nnlibs.gru.models import GRU
-# Commons utils and maths
-import nnlibs.commons.library as cl
-import nnlibs.commons.maths as cm
-# Routines for dataset preparation
-import prepare_dataset as pd
-# Local EpyNN settings
-import settings as se
-# Compute with NumPy
+# EpyNN/nnlive/dummy_time/train.py
+# Standard library imports
+import random
+
+# Related third party imports
 import numpy as np
 
+# Local application/library specific imports
+import nnlibs.initialize
+from nnlibs.commons.maths import relu, softmax
+from nnlibs.commons.library import (
+    configure_directory,
+    read_model,
+)
+from nnlibs.network.models import EpyNN
+from nnlibs.embedding.models import Embedding
+from nnlibs.flatten.models import Flatten
+from nnlibs.rnn.models import RNN
+from nnlibs.dense.models import Dense
+from prepare_dataset import prepare_dataset
+from settings import se_hPars
 
-################################## HEADERS ################################
-np.set_printoptions(precision=3,threshold=sys.maxsize)
+
+########################## CONFIGURE ##########################
+random.seed(1)
+np.random.seed(1)
+
+np.set_printoptions(threshold=10)
 
 np.seterr(all='warn')
 
-cm.global_seed(1)
-
-cl.init_dir(se.config)
-# DOCS_HEADERS
-################################## DATASETS ################################
-dataset = pd.prepare_dataset(se.dataset)
-#dataset = cl.read_dataset()
+configure_directory()
 
 
-################################ BUILD MODEL ###############################
-embedding = Embedding(dataset,se.dataset,encode=True)
+############################ DATASET ##########################
+X_features, Y_label = prepare_dataset(N_SAMPLES=256)
 
-name = 'Embedding_Flatten_Dense_Dense-2-Softmax' # (1)
-layers = [embedding,Flatten(),Dense(16,cm.relu),Dense()]
-
-# name = 'LSTM-128-bin-Softmax' # (2)
-# layers = [embedding,LSTM(128,binary=True)]
-
-# name = 'Embedding_LSTM-128_Flatten_Dense_Dense-2-Softmax' # (3)
-# layers = [embedding,LSTM(128),Flatten(),Dense(16,cm.relu),Dense()]
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      Y_encode=True,
+                      relative_size=(2, 1, 0))
 
 
-model = EpyNN(name=name,layers=layers,settings=[se.dataset,se.config,se.hPars])
+####################### BUILD AND TRAIN MODEL #################
+name = 'Flatten_Dense-2-softmax'
+
+flatten = Flatten()
+
+dense = Dense(2, softmax)
+
+layers = [embedding, flatten, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1)
+
+model.train(epochs=100)
 
 
-################################ TRAIN MODEL ################################
-model.train()
-
-model.plot()
-
-
-################################# USE MODEL #################################
-model = cl.read_model()
-
-unlabeled_dataset = pd.prepare_unlabeled(N_SAMPLES=1)
-
-X = model.embedding_unlabeled(unlabeled_dataset,encode=True)
+# name = 'RNN-128_Flatten_Dense-2-softmax'
 #
-
-A = model.predict(X)
+# rnn = RNN(128)
 #
-
-P = np.argmax(A,axis=1)
+# flatten = Flatten()
 #
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, rnn, flatten, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='MSE', seed=1)
+#
+# model.train(epochs=100)

@@ -107,28 +107,6 @@ def write_model(model, model_path=None):
     return None
 
 
-# def check_and_write(model,hPars,runData):
-#     """.
-#     """
-#     # Load metrics for target dataset (see ./metrics.py)
-#     metrics = runData.s[runData.m['m']][runData.m['d']]
-#
-#     # Evaluate metrics
-#     if max(metrics) == metrics[-1] and metrics.count(metrics[-1]) == 1 and runData.b['ms']:
-#
-#         if runData.b['ms'] == True:
-#
-#             data = {
-#                         'model': model,
-#                     }
-#
-#             write_pickle(runData.p['ms'],data)
-#
-#             runData.b['s'] = True
-#
-#     return None
-
-
 def read_model(model_path=None):
     """Read EpyNN model from disk.
 
@@ -144,23 +122,6 @@ def read_model(model_path=None):
     model = read_pickle(model_path)['model']
 
     return model
-
-
-def read_dataset(dataset_path=None):
-    """Read dataset from disk.
-
-    :param dataset_path: Dataset location.
-    :type dataset_path: str
-    """
-    if dataset_path:
-        pass
-    else:
-        dataset_path = os.path.join(os.getcwd(), 'datasets', '*')
-        dataset_path = max(glob.glob(dataset_path), key=os.path.getctime)
-
-    dataset = read_pickle(dataset_path)
-
-    return dataset
 
 
 def settings_verification():
