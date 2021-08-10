@@ -1,5 +1,6 @@
 # EpyNN/nnlibs/conv/backward.py
 # Related third party imports
+from nnlibs.commons.io import padding
 import numpy as np
 
 
@@ -59,6 +60,6 @@ def convolution_backward(layer, dA):
 
             layer.bc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += dA
 
-    dA = layer.bc['dA']
+    dA = layer.bc['dA'] = padding(layer.bc['dA'], layer.d['p'], forward=False)
 
     return dA

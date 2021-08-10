@@ -6,7 +6,7 @@ se_hPars = {
     # Schedule learning rate
     'learning_rate': 0.1,
     'schedule': 'steady',
-    'decay_k': 0.001,
+    'decay_k': 0,
     'cycle_epochs': 0,
     'cycle_descent': 0,
     # Tune activation function

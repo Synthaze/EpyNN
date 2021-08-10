@@ -36,16 +36,16 @@ def download_music():
     return None
 
 
-def clips_music(wav_file, TIME=0.5, SAMPLING_RATE=441):
+def clips_music(wav_file, TIME=0.01, SAMPLING_RATE=10000):
     """Clip music and proceed with resampling.
 
     :param wav_file: The filename of .wav file which contains the music.
     :type wav_file: str
 
-    :param SAMPLING_RATE: Sampling rate (Hz), default to 441.
+    :param SAMPLING_RATE: Sampling rate (Hz), default to 10000.
     :type SAMPLING_RATE: int
 
-    :param TIME: Sampling time (s), defaults to 0.5.
+    :param TIME: Sampling time (s), defaults to 0.01.
     :type TIME: int
 
     :return: Clipped and re-sampled music.
@@ -61,7 +61,8 @@ def clips_music(wav_file, TIME=0.5, SAMPLING_RATE=441):
     wav_data = (wav_data + 32768.0) / (32768.0 * 2)
 
     # Digitize in 4-bits signal
-    bins = [i / 15 for i in range(16)]
+    n_bins = 16
+    bins = [i / (n_bins-1) for i in range(n_bins + 1)]
     wav_data = np.digitize(wav_data, bins, right=True)
 
     # Compute step for re-sampling

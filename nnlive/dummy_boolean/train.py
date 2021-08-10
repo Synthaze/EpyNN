@@ -30,20 +30,36 @@ configure_directory(clear=True)    # This is a dummy example
 
 
 ############################ DATASET ##########################
-X_features, Y_label = prepare_dataset(N_SAMPLES=100)
+X_features, Y_label = prepare_dataset(N_SAMPLES=50)
+
+
+####################### BUILD AND TRAIN MODEL #################
 
 embedding = Embedding(X_data=X_features,
                       Y_data=Y_label,
                       relative_size=(2, 1, 0))
 
 
-####################### BUILD AND TRAIN MODEL #################
 name = 'Perceptron_Dense-1-sigmoid'
 
 dense = Dense()
 
 model = EpyNN(layers=[embedding, dense], name=name)
 
-model.train(epochs=100)
+model.train(epochs=10)
 
-model.plot()
+model.plot(path=False)
+
+
+model.write()
+
+
+########################## PREDICTION #########################
+model = read_model()
+
+X_features, _ = prepare_dataset(N_SAMPLES=10)
+
+dset = model.predict(X_features, X_encode=True)
+
+for id, pred, probs, features in zip(dset.ids, dset.P, dset.A, dset.X):
+    print(id, pred, probs, features)

@@ -7,7 +7,7 @@ def index_vocabulary_auto(X_data):
     """Determine vocabulary size and generate dictionnary for one-hot encoding or features or label
 
     :param X_data: Dataset containing samples features or samples label
-    :type X_data: list[list[list]]
+    :type X_data: :class:`numpy.ndarray`
 
     :return: One-hot encoding converter
     :rtype: dict
@@ -32,6 +32,9 @@ def index_vocabulary_auto(X_data):
 
 def scale_features(X_data):
     """.
+
+    :param X_data: .
+    :type X_data: :class:`numpy.ndarray`
     """
     X_data = (X_data-np.min(X_data)) / (np.max(X_data)-np.min(X_data))
 
@@ -97,8 +100,8 @@ def one_hot_decode_sequence(sequence, idx_to_word):
 def encode_dataset(X_data, word_to_idx, vocab_size):
     """One-hot encode features from samples in dataset.
 
-    :param dataset: Contains samples
-    :type dataset: list[list[list,list]]
+    :param X_data: Contains samples
+    :type X_data: :class:`numpy.ndarray`
 
     :param word_to_idx: Converter with word as key and index as value
     :type word_to_idx: dict
@@ -120,3 +123,16 @@ def encode_dataset(X_data, word_to_idx, vocab_size):
         X_encoded.append(encoded_sequence)
 
     return X_encoded
+
+
+def padding(data, padding, forward=True):
+    """.
+    """
+    if forward:
+        shape = ((0, 0), (padding, padding), (padding, padding), (0, 0))
+        data = np.pad(data, shape, mode='constant', constant_values = (0, 0))
+
+    elif not forward:
+        data = data[:, padding:-padding, padding:-padding, :]
+
+    return data

@@ -33,53 +33,84 @@ np.seterr(all='warn')
 np.seterr(under='ignore')
 
 ############################ DATASET ##########################
-X_features, Y_label = prepare_dataset(N_SAMPLES=12800)
+X_features, Y_label = prepare_dataset(N_SAMPLES=1280)
 
+
+####################### BUILD AND TRAIN MODEL #################
 embedding = Embedding(X_data=X_features,
                       Y_data=Y_label,
                       X_encode=True,
                       Y_encode=True,
-                      batch_size=128,
+                      batch_size=32,
                       relative_size=(2, 1, 0))
 
 
-lstm = LSTM(21)
-
-flatten = Flatten()
-
-dense = Dense(2, softmax)
-
-layers = [embedding, lstm, flatten, dense]
-
-model = EpyNN(layers=layers, name='O-GcNAc_lstmNet')
-
-se_hPars['learning_rate'] = 0.1
-se_hPars['schedule'] = 'exp_decay'
-
-model.initialize(loss='BCE', se_hPars=se_hPars, seed=1)
-
-model.train(epochs=20)
-
-model.plot()
 
 
+### Feed-Forward
+
+# name = 'Flatten_Dropout-08_Dense-64-relu_Dropout-07_Dense-2-softmax'
+#
+# se_hPars['learning_rate'] = 0.005
+#
 # flatten = Flatten()
 #
-# hidden_dense1 = Dense(128, relu)
+# dropout1 = Dropout(keep_prob=0.8)
 #
-# hidden_dense2 = Dense(16, relu)
+# hidden_dense = Dense(64, relu)
+#
+# dropout2 = Dropout(keep_prob=0.7)
 #
 # dense = Dense(2, softmax)
 #
-# layers = [embedding, flatten, hidden_dense1, hidden_dense2, dense]
+# layers = [embedding, flatten, dropout1, hidden_dense, dropout2, dense]
 #
-# model = EpyNN(layers=layers, name='O-GcNAc_DeepNet')
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=100, init_logs=False)
+
+
+### Recurrent
+
+# name = 'LSTM_Dense-2-softmax'
+#
+# se_hPars['learning_rate'] = 0.1
+# se_hPars['softmax_temperature'] = 5
+#
+# lstm = LSTM(21)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, lstm, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='BCE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=100, init_logs=False)
+
+
+# name = 'LSTM-21-Seq_Flatten_Dense-64-relu_Dropout-07_Dense-2-softmax'
 #
 # se_hPars['learning_rate'] = 0.01
-# se_hPars['schedule'] = 'steady'
+# se_hPars['softmax_temperature'] = 5
 #
-# model.initialize(loss='BCE', se_hPars=se_hPars, seed=1)
+# lstm = LSTM(21, sequences=True)
 #
-# model.train(epochs=20)
+# flatten = Flatten()
 #
-# model.plot()
+# hidden_dense = Dense(64, relu)
+#
+# dropout2 = Dropout(keep_prob=0.7)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, lstm, flatten, hidden_dense, dropout2, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='BCE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=100, init_logs=False)

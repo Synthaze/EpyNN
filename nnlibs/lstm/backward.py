@@ -52,7 +52,7 @@ def lstm_backward(layer, dA):
     for s in reversed(range(layer.d['s'])):
 
         #
-        dX = layer.bc['dX'][:, s]
+        dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
         #
         dh = dX + dhn

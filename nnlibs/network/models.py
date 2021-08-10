@@ -126,7 +126,9 @@ class EpyNN:
 
         model_hyperparameters(self)
 
+        metrics = metrics.copy()
         metrics.append(self.training_loss.__name__)
+
         self.metrics = {m:[[] for _ in range(3)] for m in metrics}
 
         try:
@@ -165,7 +167,7 @@ class EpyNN:
             initialize_model_report(self, timeout=3)
 
         if not verbose:
-            verbose = epochs // 10
+            verbose = epochs // 10 if epochs >= 10 else 1
 
         self.verbose = verbose
 
@@ -180,13 +182,13 @@ class EpyNN:
 
         return None
 
-    def write(self, model_path=None):
+    def write(self, path=None):
         """Write model on disk.
 
-        :param model_path: ...
-        :type model_path: str
+        :param path: ...
+        :type path: str
         """
-        write_model(self, model_path)
+        write_model(self, path)
 
         return None
 
@@ -235,6 +237,8 @@ class EpyNN:
         :return: Data embedding and output of forward propagation
         :rtype: :class:`nnlibs.commons.models.dataSet`
         """
+        X_data = np.array(X_data)
+
         if X_encode:
             word_to_idx = self.embedding.w2i
             vocab_size = self.embedding.d['v']
@@ -247,6 +251,8 @@ class EpyNN:
 
         dset.A = self.forward(dset.X)
 
-        dset.P = np.argmax(dset.A, axis=1)
+        encoded = (self.embedding.dtrain.Y.shape[1] > 1)
+
+        dset.P = np.argmax(dset.A, axis=1) if encoded else np.around(dset.A)
 
         return dset
