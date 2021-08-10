@@ -17,6 +17,7 @@ from nnlibs.embedding.models import Embedding
 from nnlibs.flatten.models import Flatten
 from nnlibs.rnn.models import RNN
 from nnlibs.gru.models import GRU
+from nnlibs.lstm.models import LSTM
 from nnlibs.dense.models import Dense
 from prepare_dataset import prepare_dataset
 from settings import se_hPars
@@ -24,7 +25,6 @@ from settings import se_hPars
 
 ########################## CONFIGURE ##########################
 random.seed(1)
-np.random.seed(1)
 
 np.set_printoptions(threshold=10)
 
@@ -34,16 +34,20 @@ configure_directory()
 
 
 ############################ DATASET ##########################
-X_features, Y_label = prepare_dataset(N_SAMPLES=128)
-
-embedding = Embedding(X_data=X_features,
-                      Y_data=Y_label,
-                      X_encode=True,
-                      Y_encode=True,
-                      relative_size=(2, 1, 0))
+X_features, Y_label = prepare_dataset(N_SAMPLES=480)
 
 
 ####################### BUILD AND TRAIN MODEL #################
+
+### Feed-Forward
+# embedding = Embedding(X_data=X_features,
+#                       Y_data=Y_label,
+#                       X_encode=True,
+#                       Y_encode=True,
+#                       batch_size=32,
+#                       relative_size=(2, 1, 0))
+#
+#
 # name = 'Flatten_Dense-2-softmax'
 #
 # flatten = Flatten()
@@ -57,64 +61,109 @@ embedding = Embedding(X_data=X_features,
 # model.initialize(loss='MSE', seed=1)
 #
 # model.train(epochs=100)
-
-
-# name = 'rnn-12_Flatten_Dense-2-softmax'
-#
-# se_hPars['learning_rate'] = 0.1
-#
-# rnn = RNN(12)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, rnn, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars)
-#
-# model.train(epochs=10)
 #
 # model.plot(path=False)
-
-
-# name = 'rnn-12_rnn-12_Flatten_Dense-2-softmax'
 #
-# rnn = RNN(12, sequences=True)
 #
-# rnn_bis = RNN(12)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, rnn, rnn_bis, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars)
-#
-# model.train(epochs=10)
-#
-# model.plot(path=False)
-
-
-# name = 'rnn-12_gru-12_Flatten_Dense-4-relu_Dense-2-softmax'
-#
-# rnn = RNN(12, sequences=True)
-#
-# gru = GRU(12, sequences=True)
+# name = 'Flatten_Dense-16-relu_Dense-2-softmax'
 #
 # flatten = Flatten()
 #
-# hidden_dense = Dense(4, relu)
+# hidden_dense = Dense(16, relu)
 #
 # dense = Dense(2, softmax)
 #
-# layers = [embedding, rnn, gru, flatten, hidden_dense, dense]
+# layers = [embedding, flatten, hidden_dense, dense]
 #
 # model = EpyNN(layers=layers, name=name)
 #
-# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars)
+# model.initialize(loss='BCE', seed=1)
 #
 # model.train(epochs=100)
 #
 # model.plot(path=False)
+
+
+### Recurrent
+# embedding = Embedding(X_data=X_features,
+#                       Y_data=Y_label,
+#                       X_encode=True,
+#                       Y_encode=True,
+#                       batch_size=None,
+#                       relative_size=(2, 1, 0))
+
+
+# name = 'RNN-12-Seq_Flatten_Dense-2-softmax'
+#
+# se_hPars['learning_rate'] = 0.01
+# se_hPars['schedule'] = 'exp_decay'
+#
+# rnn = RNN(12, sequences=True)
+#
+# flatten = Flatten()
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, rnn, flatten, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=200)
+#
+# model.plot(path=False)
+
+
+# name = 'LSTM-12-Seq_Flatten_Dense-2-softmax'
+#
+# se_hPars['learning_rate'] = 0.005
+# se_hPars['schedule'] = 'steady'
+#
+# lstm = LSTM(12, sequences=True)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, lstm, flatten, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=200)
+#
+# model.plot(path=False)
+
+
+# name = 'GRU-12-Seq_Flatten_Dense-2-softmax'
+#
+# se_hPars['learning_rate'] = 0.005
+# se_hPars['schedule'] = 'steady'
+#
+# gru = GRU(12, sequences=True)
+#
+# dense = Dense(2, softmax)
+#
+# layers = [embedding, gru, flatten, dense]
+#
+# model = EpyNN(layers=layers, name=name)
+#
+# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+#
+# model.train(epochs=200)
+#
+# model.plot(path=False)
+
+
+# model.write()
+
+
+########################## PREDICTION #########################
+# model = read_model()
+#
+# X_features, _ = prepare_dataset(N_SAMPLES=10)
+#
+# dset = model.predict(X_features, X_encode=True)
+#
+# for id, pred, probs, features in zip(dset.ids, dset.P, dset.A, dset.X):
+#     print(id, pred, probs)

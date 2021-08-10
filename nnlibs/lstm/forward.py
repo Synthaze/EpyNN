@@ -77,6 +77,8 @@ def lstm_forward(layer, A):
         # Calculate hidden state
         h = layer.fc['h'][:, s] = o * layer.activate(C)
 
-    A = layer.fc['A'] = layer.fc['h']
+    A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
+
+    layer.fc['A'] = A
 
     return A    # To next layer

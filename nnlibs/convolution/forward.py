@@ -1,5 +1,6 @@
 # EpyNN/nnlibs/convolution/forward.py
 # Related third party imports
+from nnlibs.commons.io import padding
 import numpy as np
 
 
@@ -15,7 +16,7 @@ def initialize_forward(layer, A):
     :return: Input of forward propagation for current layer
     :rtype: :class:`numpy.ndarray`
     """
-    X = layer.fc['X'] = A
+    X = layer.fc['X'] = padding(A, layer.d['p'])
 
     Z = np.empty(layer.fs['Z'])
 

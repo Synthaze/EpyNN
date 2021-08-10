@@ -58,6 +58,7 @@ class LSTM(Layer):
                 activate_forget=sigmoid,
                 initialization=orthogonal,
                 clip_gradients=True,
+                sequences=False,
                 se_hPars=None):
 
         super().__init__(se_hPars)
@@ -81,6 +82,8 @@ class LSTM(Layer):
         self.d['h'] = hidden_size
 
         self.clip_gradients = clip_gradients
+
+        self.sequences = sequences
 
         return None
 

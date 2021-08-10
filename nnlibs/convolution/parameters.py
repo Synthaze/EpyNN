@@ -3,13 +3,14 @@
 import math
 
 # Related third party imports
+from nnlibs.commons.io import padding
 import numpy as np
 
 
 def convolution_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m , h, w, d)
+    X = padding(A, layer.d['p'])    # Input of current layer of shape (m , h, w, d)
 
     layer.fs['X'] = X.shape
 

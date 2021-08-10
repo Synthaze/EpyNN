@@ -25,7 +25,7 @@ def loss_functions(key=None):
 
 def CCE(Y, A, deriv=False):
     """Categorical Cross-Entropy.
-    http://machinelearningmechanic.com/deep_learning/2019/09/04/cross-entropy-loss-derivative.html
+
     """
     if not deriv:
         loss = -(Y * np.log(A + E_SAFE))
@@ -38,7 +38,7 @@ def CCE(Y, A, deriv=False):
 
 def BCE(Y, A, deriv=False):
     """Binary Cross-Entropy.
-    https://towardsdatascience.com/nothing-but-numpy-understanding-creating-binary-classification-neural-networks-with-e746423c8d5c
+
     """
     if not deriv:
         loss = -(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE))

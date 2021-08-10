@@ -19,7 +19,6 @@ def pyplot_metrics(model, path):
     :param path: Write matplotlib plot
     :type path: bool or NoneType
     """
-
     plt.figure()
 
     for s in model.metrics.keys():
@@ -33,11 +32,6 @@ def pyplot_metrics(model, path):
             y = model.metrics[s][k]
 
             plt.plot(x, y, label=dname + ' ' + s)
-
-    # x = range(len(hPars.l))
-    # y = [ x / max(hPars.l) for x in hPars.l ]
-    #
-    # plt.plot(x,y,label='lr (Norm.)')
 
     plt.legend()
 
