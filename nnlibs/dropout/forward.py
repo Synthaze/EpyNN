@@ -24,15 +24,16 @@ def dropout_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
+    # (2)
+    D = layer.np_rng.uniform(0, 1, layer.fs['D'])
 
-    D = layer.np_rng.standard_normal(layer.fs['D'])
-
+    # (3)
     D = layer.fc['D'] = (D < layer.d['k'])
 
+    # (4)
     A = X * D
-
     A = A / layer.d['k']
 
-    A = layer.fc['A'] = A
+    layer.fc['A'] = A
 
     return A    # To next layer

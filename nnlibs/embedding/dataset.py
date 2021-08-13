@@ -87,8 +87,6 @@ def embedding_prepare(layer, X_data, Y_data):
 
     dtrain, dtest, dval = split_dataset(dataset, se_dataset)
 
-    batch_dtrain = mini_batches(dtrain, se_dataset['batch_size'])
-
     X_train, Y_train = zip(*dtrain)
     X_test, Y_test = zip(*dtest) if dtest else [(), ()]
     X_val, Y_val = zip(*dval) if dval else [(), ()]
@@ -97,12 +95,7 @@ def embedding_prepare(layer, X_data, Y_data):
     dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest')
     dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval')
 
-    for i, batch in enumerate(batch_dtrain):
-        X_batch, Y_batch = zip(*batch)
-        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name='dtrain_' + str(i))
-        batch_dtrain[i] = batch
-
-    embedded_data = (dtrain, dtest, dval, batch_dtrain)
+    embedded_data = (dtrain, dtest, dval)
 
     return embedded_data
 
@@ -137,32 +130,43 @@ def split_dataset(dataset, se_dataset):
     return dtrain, dtest, dval
 
 
-def mini_batches(dataset, batch_size):
+def mini_batches(embedding):
     """Divide dataset in batches.
 
-    :param dataset: Dataset containing samples features and label
-    :type dataset: list[list[list,list[int]]]
-
-    :param batch_size: Number of samples per batch
-    :type se_dataset: int
-
     :return: Batches made from dataset with respect to batch_size
-    :rtype: list[list[list[list,list[int]]]]
+    :rtype: 
     """
-    if not batch_size:
-        batch_size = len(dataset)
 
-    n_batch = len(dataset) // batch_size
+    dtrain = embedding.dtrain
+    dtrain = list(zip(dtrain.X, dtrain.Y))
+    dtrain = np.array(dtrain, dtype=object)
+
+    batch_size = embedding.se_dataset['batch_size']
+
+    if hasattr(embedding, 'np_rng'):
+        embedding.np_rng.shuffle(dtrain)
+    else:
+        np.random.shuffle(dtrain)
+
+    dtrain = dtrain.tolist()
+
+    if not batch_size:
+        batch_size = len(dtrain)
+
+    n_batch = len(dtrain) // batch_size
 
     if not n_batch:
         n_batch = 1
 
-    batch_dataset = []
+    batch_dtrain = []
 
     for i in range(n_batch):
 
-        batch = dataset[i * batch_size:(i+1) * batch_size]
+        batch = dtrain[i * batch_size:(i+1) * batch_size]
 
-        batch_dataset.append(batch)
+        X_batch, Y_batch = zip(*batch)
+        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name=str(i))
 
-    return batch_dataset
+        batch_dtrain.append(batch)
+
+    return batch_dtrain

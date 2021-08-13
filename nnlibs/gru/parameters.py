@@ -6,11 +6,13 @@ import numpy as np
 def gru_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for cells and layer.
     """
-    X = A    # Input of current layer of shape (m, s, v)
+    X = A    # Input of current layer
 
-    layer.d['m'] = X.shape[0]    # Number of samples (m)
-    layer.d['s'] = X.shape[1]    # Length of sequence (s)
-    layer.d['v'] = X.shape[2]    # Vocabulary size (v)
+    layer.fs['X'] = X.shape    # (m, s, v)
+
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
+    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size (v)
 
     vh = (layer.d['v'], layer.d['h'])
     hh = (layer.d['h'], layer.d['h'])
@@ -59,21 +61,24 @@ def gru_compute_gradients(layer):
         #
         X = layer.fc['X'][:, s]       # Current cell input
         hp = layer.fc['h'][:, s - 1]  # Previous cell state
-        #
+
+        # (1)
         dhh = layer.bc['dhh'][:, s]
-        layer.g['dUh'] += np.dot(X.T, dhh)
+        layer.g['dUh'] += np.dot(X.T, dhh)     # (1.1)
         layer.g['dWh'] += np.dot((layer.fc['r'][:, s] * hp).T, dhh)
-        layer.g['dbh'] += np.sum(dhh, axis=0)
-        #
-        dr = layer.bc['dr'][:, s]
-        layer.g['dUr'] += np.dot(X.T, dr)
-        layer.g['dWr'] += np.dot(hp.T, dr)
-        layer.g['dbr'] += np.sum(dr, axis=0)
-        #
+        layer.g['dbh'] += np.sum(dhh, axis=0)  # (1.3)
+
+        # (2)
         dz = layer.bc['dz'][:, s]
-        layer.g['dUz'] += np.dot(X.T, dz)
-        layer.g['dWz'] += np.dot(hp.T, dz)
-        layer.g['dbz'] += np.sum(dz, axis=0)
+        layer.g['dUz'] += np.dot(X.T, dz)     # (2.1)
+        layer.g['dWz'] += np.dot(hp.T, dz)    # (2.2)
+        layer.g['dbz'] += np.sum(dz, axis=0)  # (2.3)
+
+        # (3)
+        dr = layer.bc['dr'][:, s]
+        layer.g['dUr'] += np.dot(X.T, dr)     # (3.1)
+        layer.g['dWr'] += np.dot(hp.T, dr)    # (3.2)
+        layer.g['dbr'] += np.sum(dr, axis=0)  # (3.3)
 
     return None
 

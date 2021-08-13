@@ -6,11 +6,13 @@ import numpy as np
 def lstm_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for cells and layer.
     """
-    X = A    # Input of current layer of shape (m, s, v)
+    X = A    # Input of current layer
 
-    layer.d['m'] = X.shape[0]    # Number of samples (m)
-    layer.d['s'] = X.shape[1]    # Length of sequence (s)
-    layer.d['v'] = X.shape[2]    # Vocabulary size (v)
+    layer.fs['X'] = X.shape    # (m, s, v)
+
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
+    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size (v)
 
     # Parameter Shapes
     vh = (layer.d['v'], layer.d['h'])
@@ -72,29 +74,29 @@ def lstm_compute_gradients(layer):
         X = layer.fc['X'][:, s]
         hp = layer.fc['h'][:, s - 1]
 
-        #
+        # (1)
         do = layer.bc['do'][:, s]
-        layer.g['dUo'] += np.dot(X.T, do)
-        layer.g['dWo'] += np.dot(hp.T, do)
-        layer.g['dbo'] += np.sum(do, axis=0)
+        layer.g['dUo'] += np.dot(X.T, do)     # (1.1)
+        layer.g['dWo'] += np.dot(hp.T, do)    # (1.2)
+        layer.g['dbo'] += np.sum(do, axis=0)  # (1.3)
 
-        #
+        # (2)
         dg = layer.bc['dg'][:, s]
-        layer.g['dUg'] += np.dot(X.T, dg)
-        layer.g['dWg'] += np.dot(hp.T, dg)
-        layer.g['dbg'] += np.sum(dg, axis=0)
+        layer.g['dUg'] += np.dot(X.T, dg)     # (2.1)
+        layer.g['dWg'] += np.dot(hp.T, dg)    # (2.2)
+        layer.g['dbg'] += np.sum(dg, axis=0)  # (2.3)
 
-        #
+        # (3)
         di = layer.bc['di'][:, s]
-        layer.g['dUi'] += np.dot(X.T, di)
-        layer.g['dWi'] += np.dot(hp.T, di)
-        layer.g['dbi'] += np.sum(di, axis=0)
+        layer.g['dUi'] += np.dot(X.T, di)     # (3.1)
+        layer.g['dWi'] += np.dot(hp.T, di)    # (3.2)
+        layer.g['dbi'] += np.sum(di, axis=0)  # (3.3)
 
-        #
+        # (4)
         df = layer.bc['df'][:, s]
-        layer.g['dUf'] += np.dot(X.T, df)
-        layer.g['dWf'] += np.dot(hp.T, df)
-        layer.g['dbf'] += np.sum(df, axis=0)
+        layer.g['dUf'] += np.dot(X.T, df)     # (4.1)
+        layer.g['dWf'] += np.dot(hp.T, df)    # (4.2)
+        layer.g['dbf'] += np.sum(df, axis=0)  # (4.3)
 
     return None
 

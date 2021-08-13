@@ -10,8 +10,8 @@ def embedding_compute_shapes(layer, A):
 
     layer.fs['X'] = X.shape
 
-    layer.d['m'] = layer.fs['X'][0]    #
-    layer.d['n'] = layer.fs['X'][1]    #
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['n'] = layer.fs['X'][1]    # @
 
     return None
 

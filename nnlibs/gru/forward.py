@@ -20,10 +20,9 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    layer.fc['h'] = np.zeros(layer.fs['h'])
-    layer.fc['hh'] = np.zeros_like(layer.fc['h'])
-    layer.fc['z'] = np.zeros_like(layer.fc['h'])
-    layer.fc['r'] = np.zeros_like(layer.fc['h'])
+    cache_keys = ['h', 'hh', 'z', 'r']
+
+    layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     hp = np.zeros_like(layer.fc['h'][:, 0])
 
@@ -39,25 +38,34 @@ def gru_forward(layer, A):
     # Loop through steps
     for s in range(layer.d['s']):
 
+        # (2s)
         X = layer.fc['X'][:, s]
 
+        # (3s)
         r = np.dot(X, layer.p['Ur'])
         r += np.dot(hp, layer.p['Wr'])
         r += layer.p['br']
+
         r = layer.fc['r'][:, s] = layer.activate_reset(r)
 
+        # (4s)
         z = np.dot(X, layer.p['Uz'])
         z += np.dot(hp, layer.p['Wz'])
         z += layer.p['bz']
+
         z = layer.fc['z'][:, s] = layer.activate_update(z)
 
+        # (5s)
         hh = np.dot(X, layer.p['Uh'])
         hh += np.dot(r * hp, layer.p['Wh'])
         hh += layer.p['bh']
+
         hh = layer.fc['hh'][:, s] = layer.activate(hh)
 
+        # (6s)
         h = hp = layer.fc['h'][:, s] = z*hp + (1-z)*hh
 
+    #
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
 
     layer.fc['A'] = A

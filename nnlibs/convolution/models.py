@@ -44,7 +44,8 @@ class Convolution(Layer):
                 stride=1,
                 padding=0,
                 activate=np.abs,
-                initialization=xavier):
+                initialization=xavier,
+                use_bias=False):
 
         super().__init__()
 
@@ -59,6 +60,8 @@ class Convolution(Layer):
         self.d['w'] = f_width
         self.d['s'] = stride
         self.d['p'] = padding
+
+        self.use_bias = use_bias
 
         return None
 

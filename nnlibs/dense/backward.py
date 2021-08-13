@@ -23,10 +23,13 @@ def initialize_backward(layer, dA):
 def dense_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
+    # (1)
     dX = initialize_backward(layer, dA)
 
+    # (2)
     dZ = layer.bc['dZ'] = dX * layer.activate(layer.fc['Z'], deriv=True)
 
+    # (3)
     dA = layer.bc['dA'] = np.dot(dZ, layer.p['W'].T)
 
     return dA    # To previous layer

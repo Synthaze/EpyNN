@@ -9,9 +9,9 @@ import numpy as np
 def pooling_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m .. n)
+    X = A    # Input of current layer of shape (m, ih, iw, id)
 
-    layer.fs['X'] = X.shape
+    layer.fs['X'] = X.shape    # (m, ih, iw, id)
 
     dims = ['m', 'ih', 'iw', 'id']
 

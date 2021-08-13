@@ -6,11 +6,13 @@ import numpy as np
 def rnn_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for cells and layer.
     """
-    X = A    # Input of current layer of shape (m, s, v)
+    X = A    # Input of current layer
 
-    layer.d['m'] = X.shape[0]    # Number of samples (m)
-    layer.d['s'] = X.shape[1]    # Length of sequence (s)
-    layer.d['v'] = X.shape[2]    # Vocabulary size (v)
+    layer.fs['X'] = X.shape    # (m, s, v)
+
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
+    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size (v)
 
     # Shapes for parameters to compute hidden cell state
     vh = layer.fs['U'] = (layer.d['v'], layer.d['h'])
@@ -49,10 +51,11 @@ def rnn_compute_gradients(layer):
         dh = layer.bc['dh'][:, s]     # Current cell state error
         hp = layer.fc['h'][:, s - 1]  # Previous cell state
         X = layer.fc['X'][:, s]       # Current cell input
-        # Gradients
-        layer.g['dU'] += np.dot(X.T, dh)
-        layer.g['dW'] += np.dot(hp.T, dh)
-        layer.g['db'] += np.sum(dh, axis=0)
+
+        # (1)
+        layer.g['dU'] += np.dot(X.T, dh)     # (1.1)
+        layer.g['dW'] += np.dot(hp.T, dh)    # (1.2)
+        layer.g['db'] += np.sum(dh, axis=0)  # (1.3)
 
     return None
 

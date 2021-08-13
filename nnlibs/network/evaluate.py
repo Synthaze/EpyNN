@@ -26,6 +26,8 @@ def model_evaluate(model):
 
         dset.A = model.forward(dset.X)
 
+        dset.P = np.argmax(dset.A, axis=1)
+
         for s in model.metrics.keys():
 
             m = metrics[s](dset.Y, dset.A)
@@ -42,3 +44,22 @@ def model_evaluate(model):
             model.metrics[s][k].append(m)
 
     return None
+
+
+def batch_evaluate(model, Y, A):
+    """Compute metrics for model.
+
+    Will evaluate training, testing and validation sets against metrics set in model.se_config.
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.network.models.EpyNN`
+    """
+    metrics = metrics_functions()
+
+    metrics.update(loss_functions())
+
+    accuracy = np.sum(metrics['accuracy'](Y, A)) / Y.shape[0]
+
+    cost = np.mean(model.training_loss(Y, A).mean(axis=1))
+
+    return accuracy, cost

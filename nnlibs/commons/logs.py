@@ -99,25 +99,6 @@ def current_logs(model, colors):
     return log
 
 
-def remaining_time_logs(model):
-    """.
-
-    :param model:
-    :type model:
-    """
-    model.cts = time.time()
-
-    elapsed_time = round(int(model.cts) - int(model.ts), 2)
-
-    rate = round((model.e + 1) / (elapsed_time + 1e-10), 2)
-
-    ttc = round((model.epochs - model.e + 1) / rate)
-
-    cprint('Epoch: %s - TIME: %ss RATE: %se/s TTC: %ss' % (model.e, elapsed_time, rate, ttc), 'white', attrs=['bold'], end='\r')
-
-    return None
-
-
 def initialize_logs_print(model):
     """.
 

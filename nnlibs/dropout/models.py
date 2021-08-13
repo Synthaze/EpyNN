@@ -59,14 +59,14 @@ class Dropout(Layer):
         return dA
 
     def compute_gradients(self):
-        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_gradients()`.
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_gradients()`. Dummy method, there is no gradients to compute in layer.
         """
         dropout_compute_gradients(self)
 
         return None
 
     def update_parameters(self):
-        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_update_parameters()`.
+        """Wrapper for :func:`nnlibs.dropout.parameters.dropout_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
         dropout_update_parameters(self)
 

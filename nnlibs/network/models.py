@@ -14,6 +14,7 @@ from nnlibs.commons.models import dataSet
 from nnlibs.network.report import (
     model_report,
     initialize_model_report,
+    single_batch_report,
 )
 from nnlibs.commons.plot import (
     pyplot_metrics,
@@ -38,29 +39,29 @@ class EpyNN:
     """
     Definition of a Neural Network prototype following the EpyNN scheme.
 
-    :param layers: Network architecture
+    :param layers: Network architecture.
     :type layers: list[Object]
 
-    :param name: Name of network, defaults to 'Network'
+    :param name: Name of network, defaults to 'EpyNN'.
     :type name: str, optional
     """
 
-    def __init__(self, layers, name='Network'):
+    def __init__(self, layers, name='EpyNN'):
         """Initialize instance variable attributes.
 
-        :ivar layers: Network architecture
+        :ivar layers: Network architecture.
         :vartype layers: list[Object]
 
-        :ivar embedding: Embedding layer
+        :ivar embedding: Embedding layer.
         :vartype embedding: :class:`nnlibs.embedding.models.Embedding`
 
-        :ivar ts: Timestamp identifier
+        :ivar ts: Timestamp identifier.
         :vartype ts: int
 
-        :ivar uname: Network unique identifier
+        :ivar uname: Network unique identifier.
         :vartype uname: str
 
-        :ivar initialized: Model initialization state
+        :ivar initialized: Model initialization state.
         :vartype initialized: bool
         """
         # Layers
@@ -92,33 +93,30 @@ class EpyNN:
     def backward(self, dA):
         """Wrapper for :func:`nnlibs.network.backward.model_backward()`.
 
-        :param dA: Derivative of ....
+        :param dA: Derivative of the loss function for Stochastic Gradient Descent (SGD).
         :type dA: :class:`numpy.ndarray`
-
-        :return: Output of forward propagation through all layers in the Network.
-        :rtype: :class:`numpy.ndarray`
         """
         dA = model_backward(self, dA)
 
         return None
 
     def initialize(self, loss='MSE', se_hPars=se_hPars, metrics=['accuracy'], seed=None, params=True):
-        """Initialize the Network.
+        """Wrapper for :func:`nnlibs.network.initialize.model_initialize()`. Perform a dry epoch including all but not the parameters update step.
 
-        :param loss:
-        :type loss: str
+        :param loss: Loss function to use for training, defaults to 'MSE'. See :module:`nnlibs.commons.loss` for built-in functions.
+        :type loss: str, optional
 
-        :param se_hPars:
-        :type se_hPars: dict[str: float or str]
+        :param se_hPars: Global hyperparameters, defaults to :class:`nnlibs.settings.se_hPars`. If local hyperparameters were assigned to one layer, these remain unchanged.
+        :type se_hPars: dict[str: float or str], optional
 
-        :param metrics:
-        :type metrics: list[str]
+        :param metrics: Metrics to monitor and print on terminal report or plot, defaults to ['accuracy']. See :module:`nnlibs.commons.metrics` for built-in metrics.
+        :type metrics: list[str], optional
 
-        :param seed: For reproducibility in parameters initialization
+        :param seed: Reproducibility in pseudo-random procedures.
         :type seed: int or NoneType, optional
 
-        :param params: Layer parameters initialization.
-        :type params: bool
+        :param params: Layer parameters initialization, defaults to `True`.
+        :type params: bool, optional
         """
         self.training_loss = loss_functions(loss)
         self.se_hPars = se_hPars
@@ -142,19 +140,16 @@ class EpyNN:
         return None
 
     def train(self, epochs, verbose=None, init_logs=True):
-        """Wrapper for :func:`nnlibs.network.training.model_training()`.
+        """Wrapper for :func:`nnlibs.network.training.model_training()`. Apart, it does compute learning rate along learning epochs.
 
-        :param epochs: Number of training iterations
-        :type epochs: dict[str: int or str]
+        :param epochs: Number of training iterations.
+        :type epochs: int
 
-        :param verbose: Print logs every Nth epochs, defaults to None which sets to every tenth of epochs.
-        :type verbose: int or NoneType
+        :param verbose: Print logs every Nth epochs, defaults to `None` which sets to every tenth of epochs.
+        :type verbose: int or NoneType, optional
 
-        :param init_logs:
-        :type init_logs: bool
-
-        :param extend:
-        :type extend: bool
+        :param init_logs: Print data, architecture and hyperparameters logs, defaults to `True`.
+        :type init_logs: bool, optional
         """
         if not self.initialized:
             self.initialize()
@@ -176,7 +171,7 @@ class EpyNN:
         return None
 
     def evaluate(self):
-        """Wrapper for :func:`nnlibs.network.evaluate.model_evaluate()`.
+        """Wrapper for :func:`nnlibs.network.evaluate.model_evaluate()`. Good spot for further implementation of early stopping procedures.
         """
         model_evaluate(self)
 
@@ -185,10 +180,17 @@ class EpyNN:
     def write(self, path=None):
         """Write model on disk.
 
-        :param path: ...
-        :type path: str
+        :param path: Path to write the model on disk, defaults to `None` which writes in the `models` subdirectory created from :func:`nnlibs.commons.library.configure_directory()`.
+        :type path: str or NoneType, optional
         """
         write_model(self, path)
+
+        return None
+
+    def batch_report(self, batch, A):
+        """Wrapper for :func:`nnlibs.network.report.single_batch_report()`.
+        """
+        single_batch_report(self, batch, A)
 
         return None
 
@@ -202,14 +204,14 @@ class EpyNN:
     def plot(self, pyplot=True, gnuplot=False, path=None):
         """Plot metrics from model training.
 
-        :param pyplot: Plot of results on GUI using matplotlib
-        :type pyplot: bool
+        :param pyplot: Plot of results on GUI using matplotlib.
+        :type pyplot: bool, optional
 
-        :param gnuplot: Plot results on terminal using gnuplot
-        :type gnuplot: bool
+        :param gnuplot: Plot results on terminal using gnuplot.
+        :type gnuplot: bool, optional
 
-        :param path: Write matplotlib plot
-        :type path: bool or NoneType
+        :param path: Write matplotlib plot, defaults to `None` which writes in the `plots` subdirectory created from :func:`nnlibs.commons.library.configure_directory()`. To not write the plot at all, set to `False`.
+        :type path: str or bool or NoneType, optional
         """
         if pyplot:
             pyplot_metrics(self, path)
@@ -222,19 +224,16 @@ class EpyNN:
     def predict(self, X_data, X_encode=False, X_scale=False):
         """Perform prediction of label from unlabeled samples in dataset.
 
-        :param dataset: Set of sample features.
-        :type dataset: list[list[int or float or str]]
+        :param X_data: Set of sample features.
+        :type X_data: list[list[int or float or str]] or :class:`numpy.ndarray`
 
-        :param X_encode: One-hot encode sample features.
-        :type X_encode: bool
+        :param X_encode: One-hot encode sample features, defaults to `False`.
+        :type X_encode: bool, optional
 
-        :param X_encode: One-hot encode sample features.
-        :type X_encode: bool
+        :param X_scale: Normalize sample features within [0, 1] along all axis, default to `False`.
+        :type X_scale: bool, optional
 
-        :param X_scale: Normalize sample features within [0, 1]
-        :type X_scale: bool
-
-        :return: Data embedding and output of forward propagation
+        :return: Data embedding and output of forward propagation.
         :rtype: :class:`nnlibs.commons.models.dataSet`
         """
         X_data = np.array(X_data)

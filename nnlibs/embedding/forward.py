@@ -27,6 +27,7 @@ def embedding_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
+    # (2)
     layer.fc['A'] = A
 
     return A   # To next layer

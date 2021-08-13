@@ -29,27 +29,37 @@ def initialize_backward(layer, dA):
 def convolution_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
+    # (1)
     dX = initialize_backward(layer, dA)
 
+    #
     for t in range(layer.d['oh']):
 
+        #
         row = layer.bc['dX'][:, t::layer.d['oh'], :, :]
 
+        #
         for l in range(layer.d['ow']):
 
+            #
             b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
             r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
 
+            #
             block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
 
+            #
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
 
+            #
             dA = block * layer.p['W']
 
+            #
             dA = np.sum(dA, axis=6)
 
+            #
             dA = np.reshape(dA, (
                                 layer.d['m'],
                                 layer.d['ih'] - b - t,
@@ -57,9 +67,9 @@ def convolution_backward(layer, dA):
                                 layer.d['id']
                                 )
                             )
-
             layer.bc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += dA
 
+    #
     dA = layer.bc['dA'] = padding(layer.bc['dA'], layer.d['p'], forward=False)
 
     return dA

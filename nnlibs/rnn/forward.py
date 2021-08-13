@@ -46,6 +46,7 @@ def rnn_forward(layer, A):
 
         h = hp = layer.fc['h'][:, s] = layer.activate(h)
 
+    #
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
 
     layer.fc['A'] = A

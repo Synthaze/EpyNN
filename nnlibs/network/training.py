@@ -9,15 +9,17 @@ def model_training(model):
     """
     for model.e in range(model.e, model.epochs):
 
+        model.embedding.training_batches()
+
         for batch in model.embedding.batch_dtrain:
 
-            X = batch.X
-
-            A = model.forward(X)
+            A = model.forward(batch.X)
 
             dA = model.training_loss(batch.Y, A, deriv=True) / A.shape[1]
 
             model.backward(dA)
+
+            model.batch_report(batch, A)
 
         model.evaluate()
 

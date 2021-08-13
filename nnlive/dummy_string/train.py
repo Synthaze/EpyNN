@@ -85,14 +85,33 @@ X_features, Y_label = prepare_dataset(N_SAMPLES=480)
 
 
 ### Recurrent
-# embedding = Embedding(X_data=X_features,
-#                       Y_data=Y_label,
-#                       X_encode=True,
-#                       Y_encode=True,
-#                       batch_size=None,
-#                       relative_size=(2, 1, 0))
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      X_encode=True,
+                      Y_encode=True,
+                      batch_size=None,
+                      relative_size=(2, 1, 0))
 
+name = 'RNN-12-Seq_Flatten_Dense-2-softmax'
 
+se_hPars['learning_rate'] = 0.01
+se_hPars['schedule'] = 'exp_decay'
+
+# rnn = RNN(12, sequences=True)
+
+rnn = RNN(12)
+
+flatten = Flatten()
+
+dense = Dense(2, softmax)
+
+layers = [embedding, rnn, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+
+model.train(epochs=200, init_logs=False)
 # name = 'RNN-12-Seq_Flatten_Dense-2-softmax'
 #
 # se_hPars['learning_rate'] = 0.01

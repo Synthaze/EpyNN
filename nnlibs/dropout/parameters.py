@@ -10,8 +10,8 @@ def dropout_compute_shapes(layer, A):
 
     layer.fs['X'] = layer.fs['D'] = X.shape
 
-    layer.d['m'] = layer.fs['X'][0]        #
-    layer.d['n'] = X.size // layer.d['m']  #
+    layer.d['m'] = layer.fs['X'][0]        # Number of samples (m)
+    layer.d['n'] = X.size // layer.d['m']  # @
 
     return None
 
