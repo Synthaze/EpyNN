@@ -23,6 +23,7 @@ def initialize_backward(layer, dA):
 def flatten_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
+    # (1)
     dX = initialize_backward(layer, dA)
 
     # (2) Reshape (m, sv) to (m, s, v)

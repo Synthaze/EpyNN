@@ -14,10 +14,12 @@ def model_hyperparameters(model):
     """
     for layer in model.layers:
 
-        if layer.se_hPars == None:
+        if not layer.se_hPars or not layer.se_hPars['Local']:
             se_hPars = layer.se_hPars = model.se_hPars
+            layer.se_hPars['Local'] = False
         else:
             se_hPars = layer.se_hPars
+            layer.se_hPars['Local'] = True
 
     return None
 
@@ -38,16 +40,16 @@ def model_learning_rate(model):
 def schedule_lrate(se_hPars, training_epochs):
     """Learning rate schedule.
 
-    :param se_hPars: Hyperparameters settings for layer
+    :param se_hPars: Hyperparameters settings for layer.
     :type se_hPars: dict
 
-    :param training_epochs: Number of training epochs for model
+    :param training_epochs: Number of training epochs for model.
     :type training_epochs: int
 
-    :return: Updated settings for layer hyperparameters
+    :return: Updated settings for layer hyperparameters.
     :rtype: dict
 
-    :return: Scheduled learning rate for layer
+    :return: Scheduled learning rate for layer.
     :rtype: list
     """
 

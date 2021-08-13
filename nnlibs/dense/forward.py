@@ -26,8 +26,10 @@ def dense_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
+    # (2)
     Z = layer.fc['Z'] = np.dot(X, layer.p['W']) + layer.p['b']
 
+    # (3)
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer

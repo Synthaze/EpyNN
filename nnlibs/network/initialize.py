@@ -13,13 +13,18 @@ from nnlibs.commons.logs import pretty_json
 def model_initialize(model, params=True):
     """Initialize Neural Network.
 
-    :param params:
-    :type params: bool
-
     :param model: An instance of EpyNN network.
     :type model: :class:`nnlibs.network.models.EpyNN`
+
+    :param params: Layer parameters initialization, defaults to `True`.
+    :type params: bool, optional
     """
     model.network = {id(layer):{} for layer in model.layers}
+
+    model.np_rng = np.random.default_rng(seed=model.seed)
+    seed = model.seed + 1
+
+    model.embedding.training_batches()
 
     batch_dtrain = model.embedding.batch_dtrain
 
@@ -27,8 +32,6 @@ def model_initialize(model, params=True):
 
     A = X = sample.X
     Y = sample.Y
-
-    seed = model.seed
 
     cprint('--- EpyNN Check --- ', attrs=['bold'])
 
@@ -39,6 +42,11 @@ def model_initialize(model, params=True):
         model.network[id(layer)]['Activation'] = layer.activation
         model.network[id(layer)]['Dimensions'] = layer.d
 
+        layer.o['seed'] = seed
+        layer.np_rng = np.random.default_rng(seed=layer.o['seed'])
+
+        seed = seed + 1 if seed else None
+
         cprint('Layer: ' + layer.name, attrs=['bold'])
         cprint('compute_shapes: ' + layer.name, 'green', attrs=['bold'])
         layer.compute_shapes(A)
@@ -47,13 +55,8 @@ def model_initialize(model, params=True):
 
         if params:
 
-            layer.o['seed'] = seed
-            layer.np_rng = np.random.default_rng(seed=layer.o['seed'])
-
             cprint('initialize_parameters: ' + layer.name, 'green', attrs=['bold'])
             layer.initialize_parameters()
-
-            seed = seed + 1 if seed else None
 
         cprint('forward: ' + layer.name, 'green', attrs=['bold'])
         A = layer.forward(A)
@@ -65,7 +68,7 @@ def model_initialize(model, params=True):
     for layer in reversed(model.layers):
 
         cprint('Layer: ' + layer.name, attrs=['bold'])
-        
+
         cprint('backward: ' + layer.name, 'cyan', attrs=['bold'])
         dA = layer.backward(dA)
 
@@ -75,7 +78,7 @@ def model_initialize(model, params=True):
         layer.compute_gradients()
 
     model.e = 0
-
+    
     return None
 
 

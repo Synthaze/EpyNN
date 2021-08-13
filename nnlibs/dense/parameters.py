@@ -6,15 +6,15 @@ import numpy as np
 def dense_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (n, m)
+    X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape
+    layer.fs['X'] = X.shape    # (n, m)
 
-    layer.d['m'] = layer.fs['X'][0]
-    layer.d['p'] = layer.fs['X'][1]
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['p'] = layer.fs['X'][1]    # @
 
+    # @
     nm = layer.fs['W'] = (layer.d['p'], layer.d['n'])
-
     n1 = layer.fs['b'] = (1, layer.d['n'])
 
     return None
@@ -34,13 +34,13 @@ def dense_compute_gradients(layer):
     """
     # X - Input of forward propagation
     X = layer.fc['X']
+
     # dZ - Gradient of the cost with respect to the linear output of forward propagation (Z)
     dZ = layer.bc['dZ']
 
-    # dW - Gradient of the cost with respect to weight (W)
-    dW = layer.g['dW'] = np.dot(X.T, dZ)
-    # db - Gradient of the cost with respect to biais (b)
-    db = layer.g['db'] = np.sum(dZ, axis=0)
+    # (1)
+    dW = layer.g['dW'] = np.dot(X.T, dZ)     # (1.1)
+    db = layer.g['db'] = np.sum(dZ, axis=0)  # (1.2)
 
     return None
 

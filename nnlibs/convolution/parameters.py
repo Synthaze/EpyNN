@@ -10,13 +10,13 @@ import numpy as np
 def convolution_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = padding(A, layer.d['p'])    # Input of current layer of shape (m , h, w, d)
+    X = padding(A, layer.d['p'])    # Input of current layer
 
-    layer.fs['X'] = X.shape
+    layer.fs['X'] = X.shape    # (m , ih, iw, id)
 
     dims = ['m', 'ih', 'iw', 'id']
 
-    layer.d.update({d:i for d,i in zip(dims, layer.fs['X'])})
+    layer.d.update({d: i for d, i in zip(dims, layer.fs['X'])})
 
     layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['id'], layer.d['n'])
     layer.fs['b'] = (1, 1, 1, layer.d['n'])
@@ -51,27 +51,35 @@ def convolution_compute_gradients(layer):
 
     dX = layer.bc['dX']
 
+    #
     for t in range(layer.d['oh']):
+        #
         row = dX[:, t::layer.d['oh'], :, :]
 
+        #
         for l in range(layer.d['ow']):
+
+            #
             b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
             r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
 
+            #
             block = row[:, :, l * layer.d['s']::layer.d['oh'], :]
 
+            #
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
 
+            #
             dW = block * layer.Xb[t][l]
-
             dW = np.sum(dW, axis=2)
             dW = np.sum(dW, axis=1)
             dW = np.sum(dW, axis=0)
 
             layer.g['dW'] += dW
 
+            #
             db = np.sum(dW, axis=2, keepdims=True)
             db = np.sum(db, axis=1, keepdims=True)
             db = np.sum(db, axis=0, keepdims=True)

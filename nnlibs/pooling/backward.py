@@ -32,28 +32,37 @@ def pooling_backward(layer, dA):
     # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
+    #
     dA_prev = np.zeros(layer.fs['X'])
 
+    #
     for t in range(layer.d['oh']):
 
+        #
         mask_row = layer.fc['Z'][:, t::layer.d['oh'], :, :]
+
+        #
         row = dX[:, t::layer.d['oh'], :, :]
 
+        #
         for l in range(layer.d['ow']):
-            
+
+            #
             b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
             r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
 
+            #
             mask = mask_row[:, :, l * layer.d['s']::layer.d['ow'], :]
-
             mask = assemble_block(layer, mask, t, b, l, r)
 
+            #
             block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
-
             block = assemble_block(layer, block, t, b, l, r)
 
+            #
             mask = (layer.fc['X'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] == mask)
 
+            #
             layer.fc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += block * mask
 
     dA = layer.fc['dA']
@@ -63,6 +72,8 @@ def pooling_backward(layer, dA):
 
 
 def assemble_block(layer, block, t, b, l, r):
+    """.
+    """
     block = np.repeat(block, layer.d['w'] ** 2, 2)
     block = np.array(np.split(block, block.shape[2] / layer.d['w'], 2))
     block = np.moveaxis(block, 0, 2)

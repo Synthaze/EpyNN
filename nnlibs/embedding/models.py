@@ -8,6 +8,7 @@ from nnlibs.embedding.dataset import (
     embedding_prepare,
     embedding_encode,
     embedding_check,
+    mini_batches,
 )
 from nnlibs.embedding.forward import embedding_forward
 from nnlibs.embedding.backward import embedding_backward
@@ -23,28 +24,22 @@ class Embedding(Layer):
     """
     Definition of an embedding layer prototype.
 
-    :param dataset: Dataset containing samples features and label
-    :type dataset: list[list[list,list[int]]]
+    :param X_data: Dataset containing samples features.
+    :type X_data: list[list[float or str or list[float or str]]]
 
-    :param X_dataset: Dataset containing samples features
-    :type encode: list[list[list]]
+    :param Y_data: Dataset containing samples label.
+    :type Y_data: list[int or list[int]]
 
-    :param Y_dataset: Dataset containing samples label
-    :type encode: list[list[list[int]]]
+    :param relative_size: For training, testing and validation sets.
+    :type relative_size: tuple[int]
 
-    :param se_dataset: Settings for sets preparation
-    :type se_dataset: dict
-
-    :param X_encode: Set to True to one-hot encode features
+    :param X_encode: Set to True to one-hot encode features.
     :type encode: bool
 
-    :param Y_encode: Set to True to one-hot encode labels
+    :param Y_encode: Set to True to one-hot encode labels.
     :type encode: bool
 
-    :param single: Set to True to run only with training set
-    :type single: bool
-
-    :param X_scale: Normalize sample features within [0, 1]
+    :param X_scale: Normalize sample features within [0, 1].
     :type X_scale: bool
     """
 
@@ -75,11 +70,18 @@ class Embedding(Layer):
 
         embedded_data = embedding_prepare(self, X_data, Y_data)
 
-        self.dtrain, self.dtest, self.dval, self.batch_dtrain = embedded_data
+        self.dtrain, self.dtest, self.dval = embedded_data
 
         self.dsets = [self.dtrain, self.dtest, self.dval]
 
         self.dsets = [dset for dset in self.dsets if dset.active]
+
+        return None
+
+    def training_batches(self):
+        """Wrapper for :func:`nnlibs.embedding.dataset.mini_batches()`.
+        """
+        self.batch_dtrain = mini_batches(self)
 
         return None
 

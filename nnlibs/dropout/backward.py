@@ -23,10 +23,11 @@ def initialize_backward(layer, dA):
 def dropout_backward(layer, dA):
     """Backward propagate signal to previous layer.
     """
+    # (1)
     dX = initialize_backward(layer, dA)
 
+    # (2)
     dA = dX * layer.fc['D']
-
     dA /= layer.d['k']
 
     dA = layer.bc['dA'] = dA
