@@ -36,36 +36,37 @@ def initialize_backward(layer, dA):
 
 
 def lstm_backward(layer, dA):
-    """Backward propagate signal through LSTM cells to previous layer.
+    """Backward propagate error through LSTM cells to previous layer.
     """
+    # (1) Initialize cache, hidden and memory cell state gradients
     dX, dhn, dCn = initialize_backward(layer, dA)
 
-    # Loop through steps
+    # Iterate over reversed sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s)
+        # (2s) Slice sequence (m, s, h) with respect to step
         dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
-        # (3s)
+        # (3s) Gradients with respect to hidden cell state
         dh = dX + dhn
 
-        # (4s)
+        # (4s) Gradients with respect to output gate
         do = dh * layer.activate(layer.fc['C'][:, s])
         do = layer.bc['do'][:, s] = do * layer.activate_output(layer.fc['o'][:, s], deriv=True)
 
-        # (5s)
+        # (5s) Gradients with respect to memory cell state
         dC = layer.fc['o'][:, s] * dh * layer.activate(layer.activate(layer.fc['C'][:, s]), deriv=True)
         dC =  layer.bc['dC'][:, s] = dC + dCn
 
-        # (6.1s)
+        # (6.1s) Gradients with respect to candidate
         dg = dC * layer.fc['i'][:, s]
         dg = layer.bc['dg'][:, s] = dg * layer.activate_candidate(layer.fc['g'][:, s], deriv=True)
 
-        # (6.2s)
+        # (6.2s) Gradients with respect to input gate
         di = dC * layer.fc['g'][:, s]
         di = layer.bc['di'][:, s] = di * layer.activate_input(layer.fc['i'][:, s], deriv=True)
 
-        # (7s)
+        # (7s) Gradients with respect to forget gate
         df = dC * layer.fc['C'][:, s - 1]
         df = layer.bc['df'][:, s] = df * layer.activate_forget(layer.fc['f'][:, s], deriv=True)
 

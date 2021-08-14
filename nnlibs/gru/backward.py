@@ -32,29 +32,29 @@ def initialize_backward(layer, dA):
 
 
 def gru_backward(layer, dA):
-    """Backward propagate signal through GRU cells to previous layer.
+    """Backward propagate error through GRU cells to previous layer.
     """
-    # (1)
+    # (1) Initialize cache and hidden cell state gradients
     dX, dhn = initialize_backward(layer, dA)
 
-    # Loop through steps
+    # Iterate over reversed sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s)
+        # (2s) Slice sequence (m, s, h) with respect to step
         dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
-        # (3s)
+        # (3s) Gradients with respect to hidden cell state
         dh =  dX + dhn
 
-        # (4s)
+        # (4s) Gradients with respect to hidden hat (hh) cell state
         dhh = dh * (1-layer.fc['z'][:, s])
         dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['hh'][:, s], deriv=True)
 
-        # (5s)
+        # (5s) Gradients with respect to update gate
         dz = dh * (layer.fc['h'][:, s - 1] - layer.fc['hh'][:, s])
         dz = layer.bc['dz'][:, s] = dz * layer.activate_update(layer.fc['z'][:, s], deriv=True)
 
-        # (6s)
+        # (6s) Gradients with respect to reset gate
         dr = np.dot(dhh, layer.p['Wh'].T)
         dr = dr * layer.fc['h'][:, s - 1]
         dr = layer.bc['dr'][:, s] = dr * layer.activate_reset(layer.fc['r'][:, s], deriv=True)

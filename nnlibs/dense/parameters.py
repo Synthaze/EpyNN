@@ -8,12 +8,12 @@ def dense_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (n, m)
+    layer.fs['X'] = X.shape    # (m, p)
 
     layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
-    layer.d['p'] = layer.fs['X'][1]    # @
+    layer.d['p'] = layer.fs['X'][1]    # Number of nodes previous layer (p)
 
-    # @
+    # Apply to X - W shape is (nodes_previous_layer, nodes_current)
     nm = layer.fs['W'] = (layer.d['p'], layer.d['n'])
     n1 = layer.fs['b'] = (1, layer.d['n'])
 
@@ -23,6 +23,7 @@ def dense_compute_shapes(layer, A):
 def dense_initialize_parameters(layer):
     """Initialize parameters for layer.
     """
+    # W, b - Linear activation X -> Z
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
     layer.p['b'] = np.zeros(layer.fs['b'])
 
@@ -50,7 +51,7 @@ def dense_update_parameters(layer):
     """
     for gradient in layer.g.keys():
         parameter = gradient[1:]
-        #
+        # Update is driven by learning rate and gradients
         layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

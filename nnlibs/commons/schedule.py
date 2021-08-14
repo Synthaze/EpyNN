@@ -4,7 +4,17 @@ import numpy as np
 
 
 def schedule_functions(schedule, hPars):
+    """Roots hyperparameters to relevant scheduler.
 
+    :param schedule: Schedule mode.
+    :type schedule: str
+
+    :param hPars: Contains hyperparameters.
+    :type hPars: tuple
+
+    :return: Scheduled learning rate
+    :rtype: list
+    """
     schedulers = {
         'exp_decay': exp_decay,
         'lin_decay': lin_decay,

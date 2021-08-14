@@ -21,12 +21,12 @@ def initialize_backward(layer, dA):
 
 
 def dense_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagate error to previous layer.
     """
-    # (1)
+    # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    # (2)
+    # (2) Gradients of the loss with respect to Z
     dZ = layer.bc['dZ'] = dX * layer.activate(layer.fc['Z'], deriv=True)
 
     # (3)

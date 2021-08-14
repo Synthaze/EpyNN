@@ -33,20 +33,20 @@ def rnn_forward(layer, A):
     # (1) Initialize cache and cell state
     X, hp = initialize_forward(layer, A)
 
-    # Iterate through sequence to next cell
+    # Iterate over sequence steps
     for s in range(layer.d['s']):
 
-        # (2s) Slice sequence (l, v, m) with respect to step
+        # (2s) Slice sequence (m, s, v) with respect to step
         X = layer.fc['X'][:, s]
 
-        # (3s) Compute cell state
+        # (3s) Activate hidden cell state
         h = np.dot(X, layer.p['U'])
         h += np.dot(hp, layer.p['W'])
         h += layer.p['b']
 
         h = hp = layer.fc['h'][:, s] = layer.activate(h)
 
-    #
+    # Return all or only the last hidden cell state
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
 
     layer.fc['A'] = A

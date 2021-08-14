@@ -24,7 +24,7 @@ def embedding_backward(layer, dA):
     # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    # (2)
+    # (2) Pass backward
     dA = layer.bc['dA'] = dX
 
     return dA    # To previous layer

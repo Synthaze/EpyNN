@@ -19,7 +19,7 @@ def initialize_forward(layer, A):
 
 
 def template_forward(layer, A):
-    """Forward propagation of signal to next layer.
+    """Forward propagate signal to next layer.
     """
     # (1) Initialize cache
     X = initialize_forward(layer, A)

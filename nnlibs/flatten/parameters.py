@@ -4,18 +4,15 @@
 def flatten_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m .. n)
+    X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape
+    layer.fs['X'] = X.shape  # (m, s .. v)
 
-    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
-    layer.d['n'] = layer.fs['X'][1]    # @
+    layer.d['m'] = layer.fs['X'][0]          # Number of samples (m)
+    layer.d['n'] = X.size // layer.d['m']    # Number of features (n)
 
-    for i in range(2, X.ndim):
-        layer.d['n'] *= layer.fs['X'][i]
-
-    #
-    layer.fs['A'] = (layer.d['m'], int(X.size / layer.d['m']))
+    # Shape for output of forward propagation
+    layer.fs['A'] = (layer.d['m'], layer.d['n'])
 
     return None
 
@@ -31,7 +28,7 @@ def flatten_initialize_parameters(layer):
 def flatten_compute_gradients(layer):
     """Compute gradients with respect to weight and bias for layer.
     """
-    # No gradients to update for Flatten layer
+    # No gradients to compute for Flatten layer
 
     return None
 

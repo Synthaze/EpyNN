@@ -31,7 +31,7 @@ def pooling_forward(layer, A):
     # (1) Initialize cache
     X, Z = initialize_forward(layer, A)
 
-    #
+    # Iterate over image rows
     for t in range(layer.d['oh']):
 
         #
@@ -46,7 +46,7 @@ def pooling_forward(layer, A):
                        )
         Z_cols = np.empty(Z_cols_shape)
 
-        #
+        # Iterate over image columns
         for i in range(layer.d['ow']):
 
             #
