@@ -14,14 +14,17 @@ from nnlibs.commons.models import dataSet
 def embedding_check(X_data, Y_data=None, X_scale=False):
     """Pre-processing.
 
-    :param X_data: Dataset containing samples features
-    :type encode: list[list[list]]
+    :param X_data: Set of sample features.
+    :type encode: list[list] or :class:`numpy.ndarray`
 
-    :param Y_data: Dataset containing samples label
-    :type encode: list[list[list[int]]]
+    :param Y_data: Set of samples label.
+    :type encode: list[list[int] or int] or :class:`numpy.ndarray`, optional
 
-    :param X_scale: Set to True to normalize sample features within [0, 1]
-    :type X_scale: bool
+    :param X_scale: Set to True to normalize sample features within [0, 1].
+    :type X_scale: bool, optional
+
+    :return: Sample features and label.
+    :rtype: tuple[:class:`numpy.ndarray`]
     """
     if X_scale:
         X_data = scale_features(X_data)
@@ -39,16 +42,16 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
     :type layer: :class:`nnlibs.embedding.models.Embedding`
 
-    :param X_data: Dataset containing samples features
-    :type encode: list[list[list]]
+    :param X_data: Set of sample features.
+    :type encode: list[list] or :class:`numpy.ndarray`
 
-    :param Y_data: Dataset containing samples label
-    :type encode: list[list[list[int]]]
+    :param Y_data: Set of samples label.
+    :type encode: list[list[int] or int] or :class:`numpy.ndarray`, optional
 
-    :param X_encode: Set to True to one-hot encode features
+    :param X_encode: Set to True to one-hot encode features.
     :type encode: bool
 
-    :param Y_encode: Set to True to one-hot encode labels
+    :param Y_encode: Set to True to one-hot encode labels.
     :type encode: bool
 
     :return:
@@ -72,14 +75,14 @@ def embedding_prepare(layer, X_data, Y_data):
     :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
     :type layer: :class:`nnlibs.embedding.models.Embedding`
 
-    :param X_data: Dataset containing samples features
-    :type encode: list[list[list]]
+    :param X_data: Set of sample features.
+    :type encode: list[list] or :class:`numpy.ndarray`
 
-    :param Y_data: Dataset containing samples label
-    :type encode: list[list[list[int]]]
+    :param Y_data: Set of samples label.
+    :type encode: list[list[int] or int] or :class:`numpy.ndarray`, optional
 
     :return: All training, testing and validations sets along with batched training set
-    :rtype : tuple[:class:`nnlibs.commons.models.dataSet`]
+    :rtype: tuple[:class:`nnlibs.commons.models.dataSet`]
     """
     se_dataset = layer.se_dataset
 
@@ -104,13 +107,13 @@ def split_dataset(dataset, se_dataset):
     """Split dataset in training, testing and validation sets.
 
     :param dataset: Dataset containing samples features and label
-    :type dataset: list[list[list,list[int]]]
+    :type dataset: tuple[list or :class:`numpy.ndarray`]
 
     :param se_dataset: Settings for sets preparation
-    :type se_dataset: dict
+    :type se_dataset: dict[str: int]
 
-    :return:
-    :rtype:
+    :return: Training, testing and validation sets.
+    :rtype: tuple[list]
     """
 
     dtrain_relative = se_dataset['dtrain_relative']
@@ -130,21 +133,24 @@ def split_dataset(dataset, se_dataset):
     return dtrain, dtest, dval
 
 
-def mini_batches(embedding):
-    """Divide dataset in batches.
+def mini_batches(layer):
+    """Shuffle and divide dataset in batches for each training epoch.
+
+    :param layer: An instance of the :class:`nnlibs.embedding.models.Embedding`
+    :type layer: :class:`nnlibs.embedding.models.Embedding`
 
     :return: Batches made from dataset with respect to batch_size
-    :rtype: 
+    :rtype: list[Object]
     """
 
-    dtrain = embedding.dtrain
+    dtrain = layer.dtrain
     dtrain = list(zip(dtrain.X, dtrain.Y))
     dtrain = np.array(dtrain, dtype=object)
 
-    batch_size = embedding.se_dataset['batch_size']
+    batch_size = layer.se_dataset['batch_size']
 
-    if hasattr(embedding, 'np_rng'):
-        embedding.np_rng.shuffle(dtrain)
+    if hasattr(layer, 'np_rng'):
+        layer.np_rng.shuffle(dtrain)
     else:
         np.random.shuffle(dtrain)
 

@@ -3,12 +3,19 @@
 import numpy as np
 
 
-#
+# To prevent from divide floatting points errors
 E_SAFE = 1e-10
 
 
 def loss_functions(key=None):
+    """Callback function for loss.
 
+    :param key: Name of the loss function.
+    :type key: str, optional
+
+    :return: Loss functions or computed loss.
+    :rtype: dict[str: function] or :class:`numpy.ndarray`
+    """
     loss = {
         'CCE': CCE,
         'BCE': BCE,
@@ -26,6 +33,17 @@ def loss_functions(key=None):
 def CCE(Y, A, deriv=False):
     """Categorical Cross-Entropy.
 
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :param deriv: To compute the derivative.
+    :type deriv: bool, optional
+
+    :return: loss.
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         loss = -(Y * np.log(A + E_SAFE))
@@ -39,6 +57,17 @@ def CCE(Y, A, deriv=False):
 def BCE(Y, A, deriv=False):
     """Binary Cross-Entropy.
 
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :param deriv: To compute the derivative.
+    :type deriv: bool, optional
+
+    :return: loss.
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         loss = -(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE))
@@ -51,6 +80,18 @@ def BCE(Y, A, deriv=False):
 
 def MAE(Y, A, deriv=False):
     """Mean Absolute Error.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :param deriv: To compute the derivative.
+    :type deriv: bool, optional
+
+    :return: loss.
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         loss = np.abs(Y - A)
@@ -63,6 +104,18 @@ def MAE(Y, A, deriv=False):
 
 def MSE(Y, A, deriv=False):
     """Mean Square Error.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :param deriv: To compute the derivative.
+    :type deriv: bool, optional
+
+    :return: loss.
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         loss = np.square(Y - A + E_SAFE)
@@ -75,6 +128,18 @@ def MSE(Y, A, deriv=False):
 
 def RMSLE(Y, A, deriv=False):
     """Root Mean Square Logarythmic Error.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :param deriv: To compute the derivative.
+    :type deriv: bool, optional
+
+    :return: loss.
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         loss = np.sqrt(np.square(np.log1p(Y) - np.log1p(A)))

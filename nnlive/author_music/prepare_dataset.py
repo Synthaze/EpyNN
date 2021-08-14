@@ -42,7 +42,7 @@ def clips_music(wav_file, TIME=1, SAMPLING_RATE=10000):
     :param wav_file: The filename of .wav file which contains the music.
     :type wav_file: str
 
-    :param SAMPLING_RATE: Sampling rate (Hz), default to 100.
+    :param SAMPLING_RATE: Sampling rate (Hz), default to 10000.
     :type SAMPLING_RATE: int
 
     :param TIME: Sampling time (s), defaults to 1.
@@ -58,7 +58,9 @@ def clips_music(wav_file, TIME=1, SAMPLING_RATE=10000):
     wav_sampling_rate, wav_data = wavfile.read(wav_file)
 
     # 16-bits wav files - Pass all positive and norm. [0, 1]
-    wav_data = (wav_data + 32768.0) / (32768.0 * 2)
+    # wav_data = (wav_data + 32768.0) / (32768.0 * 2)
+    wav_data = (wav_data + np.abs(np.min(wav_data)))
+    wav_data = wav_data / np.max(wav_data)
 
     # Digitize in 4-bits signal
     n_bins = 16

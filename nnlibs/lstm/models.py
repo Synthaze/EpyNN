@@ -89,6 +89,9 @@ class LSTM(Layer):
 
     def compute_shapes(self, A):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         lstm_compute_shapes(self, A)
 

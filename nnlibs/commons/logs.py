@@ -17,10 +17,10 @@ import numpy as np
 
 
 def headers_logs(model, colors):
-    """.
+    """Generate headers to log training metrics.
 
-    :return:
-    :rtype:
+    :return: Headers with respect to training setup. 
+    :rtype: list[str]
     """
     metrics = model.metrics
 

@@ -4,7 +4,14 @@ import numpy as np
 
 
 def metrics_functions(key=None):
+    """Callback function for metrics.
 
+    :param key: Name of the metrics function.
+    :type key: str, optional
+
+    :return: Metrics functions or computed metrics.
+    :rtype: dict[str: function] or :class:`numpy.ndarray`
+    """
     metrics = {
         'accuracy': accuracy,
         'recall': recall,
@@ -19,6 +26,15 @@ def metrics_functions(key=None):
 
 def accuracy(Y, A):
     """Accuracy of prediction.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :return: Accuracy for each sample.
+    :rtype: :class:`numpy.ndarray`
     """
     encoded = (Y.shape[1] > 1)
 
@@ -32,6 +48,15 @@ def accuracy(Y, A):
 
 def recall(Y, A):
     """Fraction of positive instances retrieved over the total.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :return: Recall for each sample.
+    :rtype: :class:`numpy.ndarray`
     """
     encoded = (Y.shape[1] > 1)
 
@@ -52,6 +77,15 @@ def recall(Y, A):
 
 def precision(Y, A):
     """Fraction of positive samples among retrieved instances.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :return: Precision for each sample.
+    :rtype: :class:`numpy.ndarray`
     """
     encoded = (Y.shape[1] > 1)
 

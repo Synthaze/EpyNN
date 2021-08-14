@@ -62,6 +62,9 @@ class RNN(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.rnn.parameters.rnn_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         rnn_compute_shapes(self, A)
 

@@ -29,6 +29,9 @@ class Dropout(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         dropout_compute_shapes(self, A)
 
