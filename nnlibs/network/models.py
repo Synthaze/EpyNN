@@ -100,7 +100,7 @@ class EpyNN:
 
         return None
 
-    def initialize(self, loss='MSE', se_hPars=se_hPars, metrics=['accuracy'], seed=None, params=True):
+    def initialize(self, loss='MSE', se_hPars=se_hPars, metrics=['accuracy'], seed=None, params=True, end='\n'):
         """Wrapper for :func:`nnlibs.network.initialize.model_initialize()`. Perform a dry epoch including all but not the parameters update step.
 
         :param loss: Loss function to use for training, defaults to 'MSE'. See :module:`nnlibs.commons.loss` for built-in functions.
@@ -130,7 +130,7 @@ class EpyNN:
         self.metrics = {m:[[] for _ in range(3)] for m in metrics}
 
         try:
-            model_initialize(self, params=params)
+            model_initialize(self, params=params, end=end)
         except Exception:
             trace = traceback.format_exc()
             model_initialize_exceptions(self, trace)

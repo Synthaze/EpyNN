@@ -31,7 +31,7 @@ class Convolution(Layer):
     :param stride: Walking step for filters.
     :type stride: int
 
-    :param padding: ...
+    :param padding: Zeros to add on each side of each image.
     :type padding: int
 
     :param initialization: Weight initialization function for convolution layer.
@@ -49,7 +49,6 @@ class Convolution(Layer):
 
         super().__init__()
 
-        ### Init shapes
         self.initialization = initialization
 
         self.activation = { 'activate': activate.__name__ }
@@ -67,6 +66,9 @@ class Convolution(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.convolution.parameters.convolution_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         convolution_compute_shapes(self, A)
 

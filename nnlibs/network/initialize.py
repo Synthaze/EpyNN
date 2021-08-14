@@ -10,7 +10,7 @@ import numpy as np
 from nnlibs.commons.logs import pretty_json
 
 
-def model_initialize(model, params=True):
+def model_initialize(model, params=True, end='\n'):
     """Initialize Neural Network.
 
     :param model: An instance of EpyNN network.
@@ -33,7 +33,7 @@ def model_initialize(model, params=True):
     A = X = sample.X
     Y = sample.Y
 
-    cprint('--- EpyNN Check --- ', attrs=['bold'])
+    cprint('--- EpyNN Check --- ', attrs=['bold'], end=end)
 
     for layer in model.layers:
 
@@ -47,18 +47,18 @@ def model_initialize(model, params=True):
 
         seed = seed + 1 if seed else None
 
-        cprint('Layer: ' + layer.name, attrs=['bold'])
-        cprint('compute_shapes: ' + layer.name, 'green', attrs=['bold'])
+        cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
+        cprint('compute_shapes: ' + layer.name, 'green', attrs=['bold'], end=end)
         layer.compute_shapes(A)
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
         if params:
 
-            cprint('initialize_parameters: ' + layer.name, 'green', attrs=['bold'])
+            cprint('initialize_parameters: ' + layer.name, 'green', attrs=['bold'], end=end)
             layer.initialize_parameters()
 
-        cprint('forward: ' + layer.name, 'green', attrs=['bold'])
+        cprint('forward: ' + layer.name, 'green', attrs=['bold'], end=end)
         A = layer.forward(A)
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
@@ -67,18 +67,20 @@ def model_initialize(model, params=True):
 
     for layer in reversed(model.layers):
 
-        cprint('Layer: ' + layer.name, attrs=['bold'])
+        cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
 
-        cprint('backward: ' + layer.name, 'cyan', attrs=['bold'])
+        cprint('backward: ' + layer.name, 'cyan', attrs=['bold'], end=end)
         dA = layer.backward(dA)
 
         model.network[id(layer)]['BW_Shapes'] = layer.bs
 
-        cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'])
+        cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'], end=end)
         layer.compute_gradients()
 
+    cprint('--- EpyNN Check OK! --- ', attrs=['bold'], end=end)
+
     model.e = 0
-    
+
     return None
 
 

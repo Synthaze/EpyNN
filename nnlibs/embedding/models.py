@@ -87,6 +87,9 @@ class Embedding(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.embedding.parameters.embedding_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         embedding_compute_shapes(self, A)
 

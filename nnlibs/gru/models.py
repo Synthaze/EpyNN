@@ -71,6 +71,9 @@ class GRU(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.gru.parameters.gru_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         gru_compute_shapes(self, A)
 

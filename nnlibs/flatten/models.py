@@ -21,9 +21,12 @@ class Flatten(Layer):
         super().__init__()
 
         return None
-        
+
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         flatten_compute_shapes(self, A)
 

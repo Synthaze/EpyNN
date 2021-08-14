@@ -50,6 +50,9 @@ class Dense(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.dense.parameters.dense_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         dense_compute_shapes(self, A)
 

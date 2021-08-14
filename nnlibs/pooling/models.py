@@ -47,6 +47,9 @@ class Pooling(Layer):
 
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_shapes()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
         """
         pooling_compute_shapes(self, A)
 

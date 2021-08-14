@@ -31,7 +31,6 @@ def model_learning_rate(model):
     :type model: :class:`nnlibs.network.models.EpyNN`
     """
     for layer in model.layers:
-
         layer.se_hPars, layer.lrate = schedule_lrate(layer.se_hPars, model.epochs)
 
     return None
@@ -52,7 +51,6 @@ def schedule_lrate(se_hPars, training_epochs):
     :return: Scheduled learning rate for layer.
     :rtype: list
     """
-
     e = se_hPars['epochs'] = training_epochs
     lr = se_hPars['learning_rate']
     d = se_hPars['cycle_descent']

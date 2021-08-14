@@ -12,4 +12,4 @@ def model_forward(model, X):
 
         A = layer.forward(A)
 
-    return A    # To derivative of ...
+    return A    # To derivative of loss function

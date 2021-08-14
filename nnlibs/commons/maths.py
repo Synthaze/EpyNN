@@ -6,15 +6,20 @@ import random
 import numpy as np
 
 
-#
+# To prevent from divide floatting points errors
 E_SAFE = 1e-10
 
 
 def activation_tune(se_hPars):
-    """.
+    """Set layer's hyperparameters as globals.
+
+    For each forward and backward pass the function is called from within the layer.
     """
     global layer_hPars
+
     layer_hPars = se_hPars
+
+    return None
 
 
 ### Activation functions and derivatives
@@ -279,9 +284,9 @@ def clip_gradient(layer, max_norm=0.25):
     """Clip to avoid vanishing or exploding gradients
 
     :param layer: An instance of active layer
-    :type layer:
+    :type layer: Object
 
-    :param max_norm:
+    :param max_norm: M
     :type max_norm: float
     """
     total_norm = 0
@@ -294,7 +299,7 @@ def clip_gradient(layer, max_norm=0.25):
     total_norm = np.sqrt(total_norm)
 
     # Calculate clipping coeficient
-    clip_coef = max_norm / (total_norm+1e-6)
+    clip_coef = max_norm / (total_norm+E_SAFE)
 
     # If the total norm is larger than the maximum allowable norm, then clip the gradient
     if clip_coef < 1:
