@@ -39,7 +39,7 @@ def pooling_initialize_parameters(layer):
 def pooling_compute_gradients(layer):
     """Compute gradients with respect to weight and bias for layer.
     """
-    # No gradients to update for Pooling layer
+    # No gradients to compute for Pooling layer
 
     return None
 

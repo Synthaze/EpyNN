@@ -20,7 +20,8 @@ class Flatten(Layer):
 
         super().__init__()
 
-
+        return None
+        
     def compute_shapes(self, A):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_shapes()`.
         """

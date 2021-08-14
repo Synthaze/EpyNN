@@ -99,19 +99,19 @@ se_hPars['schedule'] = 'exp_decay'
 
 # rnn = RNN(12, sequences=True)
 
-rnn = RNN(12)
+rnn = RNN(12, sequences=True)
 
 flatten = Flatten()
 
 dense = Dense(2, softmax)
 
-layers = [embedding, rnn, dense]
+layers = [embedding, rnn, flatten, dense]
 
 model = EpyNN(layers=layers, name=name)
 
 model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
 
-model.train(epochs=200, init_logs=False)
+model.train(epochs=200)
 # name = 'RNN-12-Seq_Flatten_Dense-2-softmax'
 #
 # se_hPars['learning_rate'] = 0.01

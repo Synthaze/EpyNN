@@ -28,10 +28,10 @@ def initialize_forward(layer, A):
 def convolution_forward(layer, A):
     """Forward propagate signal to next layer.
     """
-    # (1) Initialize cache
+    # (1) Initialize cache and pad image
     X, Z = initialize_forward(layer, A)
 
-    #
+    # Iterate over image rows
     for t in range(layer.d['oh']):
 
         layer.Xb.append([])
@@ -47,14 +47,14 @@ def convolution_forward(layer, A):
 
         cols = np.empty(cols_shape)
 
-        #
+        # Iterate over image columns
         for i in range(layer.d['ow']):
 
             #
             l = i * layer.d['s']
             r = layer.d['iw'] - (layer.d['iw'] - l) % layer.d['w']
 
-            #
+            # () Extract block of shape (m, b - t, r - l, id)
             block = X[:, t:b, l:r, :]
 
             #
@@ -69,7 +69,7 @@ def convolution_forward(layer, A):
 
             layer.Xb[t].append(block)
 
-            #
+            # () Linear activation
             block = block * layer.p['W']
 
             #
@@ -82,18 +82,10 @@ def convolution_forward(layer, A):
         #
         Z[:, t * layer.d['s'] ::layer.d['oh'], :, :] = cols
 
-    #
-    layer.fc['Z'] = Z if layer.use_bias else Z + layer.p['b']
+    # () Add bias to linear activation product
+    layer.fc['Z'] = Z + layer.p['b'] if layer.use_bias else Z
 
-    #
+    # () Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)
 
-    return A
-
-
-
-    # layer.p['W'] = None
-    #
-    # if layer.p['W'] is None:
-    #     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
-    #     layer.p['b'] = np.zeros(layer.fs['b'])
+    return A    # To nest layer

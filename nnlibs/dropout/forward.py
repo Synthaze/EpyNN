@@ -24,13 +24,13 @@ def dropout_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    # (2)
+    # (2) Generate dropout mask
     D = layer.np_rng.uniform(0, 1, layer.fs['D'])
 
-    # (3)
+    # (3) Apply a step function with respect to keep_prob (k)
     D = layer.fc['D'] = (D < layer.d['k'])
 
-    # (4)
+    # (4) Drop data points
     A = X * D
     A = A / layer.d['k']
 

@@ -21,12 +21,12 @@ def initialize_backward(layer, dA):
 
 
 def dropout_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagate error to previous layer.
     """
-    # (1)
+    # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    # (2)
+    # (2) Apply the dropout mask used in the forward pass
     dA = dX * layer.fc['D']
     dA /= layer.d['k']
 

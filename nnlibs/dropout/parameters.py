@@ -1,17 +1,15 @@
 # EpyNN/nnlibs/dropout/paremeters.py
-# Related third party imports
-import numpy as np
 
 
 def dropout_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m .. n)
+    X = A    # Input of current layer
 
-    layer.fs['X'] = layer.fs['D'] = X.shape
+    layer.fs['X'] = layer.fs['D'] = X.shape  # (m .. n)
 
     layer.d['m'] = layer.fs['X'][0]        # Number of samples (m)
-    layer.d['n'] = X.size // layer.d['m']  # @
+    layer.d['n'] = X.size // layer.d['m']  # Number of 1D features (n)
 
     return None
 

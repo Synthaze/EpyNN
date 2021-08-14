@@ -6,8 +6,8 @@ import numpy as np
 def initialize_backward(layer, dA):
     """Backward cache initialization.
 
-    :param layer: An instance of RNN layer.
-    :type layer: :class:`nnlibs.rnn.models.RNN`
+    :param layer: An instance of pooling layer.
+    :type layer: :class:`nnlibs.pooling.models.Pooling`
 
     :param dA: Output of backward propagation from next layer
     :type dA: :class:`numpy.ndarray`
@@ -18,7 +18,6 @@ def initialize_backward(layer, dA):
     :return: Zeros-output of backward propagation for current layer
     :rtype: :class:`numpy.ndarray`
     """
-    # Cache X (current) from A (prev)
     dX = layer.bc['dX'] = dA
 
     layer.fc['dA'] = np.zeros(layer.fs['X'])
@@ -27,15 +26,12 @@ def initialize_backward(layer, dA):
 
 
 def pooling_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagate error to previous layer.
     """
     # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    #
-    dA_prev = np.zeros(layer.fs['X'])
-
-    #
+    # Iterate over image rows
     for t in range(layer.d['oh']):
 
         #
@@ -44,7 +40,7 @@ def pooling_backward(layer, dA):
         #
         row = dX[:, t::layer.d['oh'], :, :]
 
-        #
+        # Iterate over image columns
         for l in range(layer.d['ow']):
 
             #

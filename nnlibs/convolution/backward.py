@@ -27,25 +27,25 @@ def initialize_backward(layer, dA):
 
 
 def convolution_backward(layer, dA):
-    """Backward propagate signal to previous layer.
+    """Backward propagate error to previous layer.
     """
-    # (1)
+    # (1) Initialize cache
     dX = initialize_backward(layer, dA)
 
-    #
+    # Iterate over image rows
     for t in range(layer.d['oh']):
 
         #
         row = layer.bc['dX'][:, t::layer.d['oh'], :, :]
 
-        #
+        # Iterate over image columns
         for l in range(layer.d['ow']):
 
             #
             b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
             r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
 
-            #
+            # () Extract block
             block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
 
             #
@@ -69,7 +69,7 @@ def convolution_backward(layer, dA):
                             )
             layer.bc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += dA
 
-    #
+    # Remove padding
     dA = layer.bc['dA'] = padding(layer.bc['dA'], layer.d['p'], forward=False)
 
-    return dA
+    return dA    # To previous layer

@@ -14,12 +14,12 @@ def rnn_compute_shapes(layer, A):
     layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
     layer.d['v'] = layer.fs['X'][2]    # Vocabulary size (v)
 
-    # Shapes for parameters to compute hidden cell state
-    vh = layer.fs['U'] = (layer.d['v'], layer.d['h'])
-    hh = layer.fs['W'] = (layer.d['h'], layer.d['h'])
-    h1 = layer.fs['b'] = (layer.d['h'],)
+    # Parameters shape
+    vh = layer.fs['U'] = (layer.d['v'], layer.d['h'])  # U applies to X
+    hh = layer.fs['W'] = (layer.d['h'], layer.d['h'])  # W applies to hp
+    h1 = layer.fs['b'] = (layer.d['h'],)  # Added to the linear activation product
 
-    # Shapes to initialize caches
+    # Shape of cache for hidden cell states
     msh = layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['h'])
 
     return None
@@ -28,7 +28,7 @@ def rnn_compute_shapes(layer, A):
 def rnn_initialize_parameters(layer):
     """Initialize parameters for layer.
     """
-    # Parameters for cell output
+    # U, W, b - Hidden cell state activation
     layer.p['U'] = layer.initialization(layer.fs['U'], rng=layer.np_rng)
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
     layer.p['b'] = np.zeros(layer.fs['b'])
@@ -44,15 +44,15 @@ def rnn_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    # Iterate through reversed sequence
+    # Iterate over reversed sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        #
+        # Retrieve from layer cache
         dh = layer.bc['dh'][:, s]     # Current cell state error
         hp = layer.fc['h'][:, s - 1]  # Previous cell state
         X = layer.fc['X'][:, s]       # Current cell input
 
-        # (1)
+        # (1) Gradients with respect to U, W, b
         layer.g['dU'] += np.dot(X.T, dh)     # (1.1)
         layer.g['dW'] += np.dot(hp.T, dh)    # (1.2)
         layer.g['db'] += np.sum(dh, axis=0)  # (1.3)
@@ -65,7 +65,7 @@ def rnn_update_parameters(layer):
     """
     for gradient in layer.g.keys():
         parameter = gradient[1:]
-        #
+        # Update is driven by learning rate and gradients
         layer.p[parameter] -= layer.lrate[layer.e] * layer.g[gradient]
 
     return None

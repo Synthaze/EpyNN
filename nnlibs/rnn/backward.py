@@ -32,18 +32,18 @@ def initialize_backward(layer, dA):
 
 
 def rnn_backward(layer, dA):
-    """Backward propagate signal through RNN cells to previous layer.
+    """Backward propagate error through RNN cells to previous layer.
     """
-    # (1) Initialize cache and cell state
+    # (1) Initialize cache and hidden cell state gradients
     dX, dhn = initialize_backward(layer, dA)
 
-    # Iterate through reversed sequence to previous cell
+    # Iterate over reversed sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s) Slice sequence (m, s, v) with respect to step
+        # (2s) Slice sequence (m, s, h) with respect to step
         dX = layer.bc['dX'][:, s] if layer.sequences else dX
 
-        # (3s)
+        # (3s) Gradients with respect to hidden cell state
         dh = dX + dhn
         dh = layer.bc['dh'][:, s] = layer.activate(layer.fc['h'][:, s]**2, deriv=True) * dh
 
