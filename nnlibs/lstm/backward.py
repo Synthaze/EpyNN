@@ -9,10 +9,10 @@ def initialize_backward(layer, dA):
     :param layer: An instance of LSTM layer.
     :type layer: :class:`nnlibs.lstm.models.LSTM`
 
-    :param dA: Output of backward propagation from next layer
+    :param dA: Output of backward propagation from next layer.
     :type dA: :class:`numpy.ndarray`
 
-    :return: Input of backward propagation for current layer
+    :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
     :return: Next cell state initialized with zeros.

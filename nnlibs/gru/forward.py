@@ -9,10 +9,10 @@ def initialize_forward(layer, A):
     :param layer: An instance of GRU layer.
     :type layer: :class:`nnlibs.gru.models.GRU`
 
-    :param A: Output of forward propagation from previous layer
+    :param A: Output of forward propagation from previous layer.
     :type A: :class:`numpy.ndarray`
 
-    :return: Input of forward propagation for current layer
+    :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
     :return: Previous cell state initialized with zeros.

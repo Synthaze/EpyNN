@@ -10,13 +10,13 @@ def initialize_backward(layer, dA):
     :param layer: An instance of convolution layer.
     :type layer: :class:`nnlibs.convolution.models.Convolution`
 
-    :param dA: Output of backward propagation from next layer
+    :param dA: Output of backward propagation from next layer.
     :type dA: :class:`numpy.ndarray`
 
-    :return: Input of backward propagation for current layer
+    :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Zeros-output of backward propagation for current layer
+    :return: Zeros-output of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
     dX = layer.bc['dX'] = dA

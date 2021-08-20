@@ -11,18 +11,20 @@ from nnlibs.commons.logs import process_logs
 
 
 def pyplot_metrics(model, path):
-    """Plot metrics from training with matplotlib
+    """Plot metrics/costs from training with matplotlib.
 
-    :param model: An instance of EpyNN network.
+    :param model: An instance of EpyNN network object.
     :type model: :class:`nnlibs.meta.models.EpyNN`
 
-    :param path: Write matplotlib plot
+    :param path: Write matplotlib plot.
     :type path: bool or NoneType
     """
     plt.figure()
 
+    # Iterate over metrics/costs
     for s in model.metrics.keys():
 
+        # Iterate over active datasets
         for k, dset in enumerate(model.embedding.dsets):
 
             dname = dset.name
@@ -42,13 +44,13 @@ def pyplot_metrics(model, path):
 
     plt.show()
 
+    # If path sets to None, set to defaults - Note path can be set to False, which makes it print only
     if path == None:
         path = 'plots'
+        plot_path = os.path.join(os.getcwd(), path, model.uname)  + '.png'
 
     if path:
-        plot_path = os.path.join(os.getcwd(), path, model.uname)  + '.png'
         plt.savefig(plot_path)
-
         process_logs('Make: ' + plot_path, level=1)
 
     plt.close()
@@ -57,24 +59,19 @@ def pyplot_metrics(model, path):
 
 
 def gnuplot_accuracy(model):
-    """Plot metrics from training with gnuplot
+    """Plot metrics from training with gnuplot. Accuracy only.
 
-    :param model: An instance of EpyNN network.
+    :param model: An instance of EpyNN network object.
     :type model: :class:`nnlibs.meta.models.EpyNN`
     """
-    se_config = model.se_config
-
-    set_names = [
-        'Training',
-        'Testing',
-        'Validation',
-    ]
-
     fig = termplotlib.figure()
 
     s = 'accuracy'
 
-    for k, dname in enumerate(set_names):
+    # Iterate over active datasets
+    for k, dset in enumerate(model.embedding.dsets):
+
+        dname = dset.name
 
         x = [x for x in range(len(model.metrics[s][k]))]
 

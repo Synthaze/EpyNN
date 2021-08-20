@@ -4,7 +4,7 @@
 def model_training(model):
     """Perform the training of the Neural Network.
 
-    :param model: An instance of EpyNN network.
+    :param model: An instance of EpyNN network object.
     :type model: :class:`nnlibs.network.models.EpyNN`
     """
     for model.e in range(model.e, model.epochs):

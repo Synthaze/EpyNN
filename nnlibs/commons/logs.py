@@ -17,15 +17,21 @@ import numpy as np
 
 
 def headers_logs(model, colors):
-    """Generate headers to log training metrics.
+    """Generate headers to log epochs, learning rates, training metrics, costs and experiment name.
 
-    :return: Headers with respect to training setup. 
+    :param model: An instance of EpyNN network object.
+    :type model: :class:`nnlibs.network.models.EpyNN`
+
+    :param colors: Colors that may be used to print logs.
+    :type colors: list[str]
+
+    :return: Headers with respect to training setup.
     :rtype: list[str]
     """
-    metrics = model.metrics
+    metrics = model.metrics                   # Contains metrics + cost computed along training epochs
+    len_dsets = len(model.embedding.dsets)    # Number of active datasets (dtrain, dtest, dval or dtrain, dtest or dtrain)
 
-    len_dsets = len(model.embedding.dsets)
-
+    # Initialize headers list with first field: epochs
     headers = [
         colored('epoch', 'white', attrs=['bold']) + '\n',
     ]
@@ -33,26 +39,30 @@ def headers_logs(model, colors):
     for layer in model.layers:
 
         if layer.p != {}:
-
+            # If layer is trainable, then add header for learning rate.
             headers.append(
                 colored('lrate', colors[0], attrs=['bold'])
                 + '\n'
                 + colored(layer.name, colors[0], attrs=[])
             )
 
+    # Iterate over metrics/costs - We need to adapt headers with respect to the number of active datasets
     for i, s in enumerate(list(metrics.keys())):
 
         i = (i+1) % len(colors)
 
+        # This goes from 2 active datasets
         if len_dsets >= 2:
             headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
 
+        # This will go regardless the number of active datasets
         headers.append(
             colored('%s' % s, colors[i], attrs=['bold'])
             + '\n'
             + colored('(1)', colors[i], attrs=['bold'])
         )
 
+        # This goes from 3 active datasets
         if len_dsets == 3:
             headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
 
@@ -62,32 +72,35 @@ def headers_logs(model, colors):
 
 
 def current_logs(model, colors):
-    """.
+    """Build logs with respect to headers for current epoch which includes epoch, learning rates, training metrics, costs and experiment name.
 
-    :param model:
-    :type model:
+    :param model: An instance of EpyNN network object.
+    :type model: :class:`nnlibs.network.models.EpyNN`
 
-    :param colors:
-    :type colors:
+    :param colors: Colors that may be used to print logs.
+    :type colors: list[str]
 
-    :return:
-    :rtype:
+    :return: Logs for current epoch.
+    :rtype: list[str]
     """
-    metrics = model.metrics
-    dsets = model.embedding.dsets
+    metrics = model.metrics          # Contains metrics + cost computed along training epochs
+    dsets = model.embedding.dsets    # Active datasets (dtrain, dtest, dval or dtrain, dtest or dtrain)
 
     log = []
 
-    log.append(colored(model.e, 'white', attrs=['bold']))
+    log.append(colored(model.e, 'white', attrs=['bold']))    # Current epoch
 
     for layer in model.layers:
+        # If layer is trainable, append current learning rate
         if layer.p != {}:
             log.append(colored("{:.2e}".format(layer.lrate[model.e]), 'white', attrs=['bold']))
 
+    # Iterate over metrics/costs
     for i, s in enumerate(metrics.keys()):
 
         i = (i+1) % len(colors)
 
+        # Iterate over each active dataset
         for k in range(len(dsets)):
 
             m = round(metrics[s][k][-1],3)
@@ -100,12 +113,13 @@ def current_logs(model, colors):
 
 
 def initialize_logs_print(model):
-    """.
+    """Print model initialization logs which include information about datasets, model architecture and shapes as well as layers hyperparameters.
 
-    :param model:
-    :type model:
+    :param model: An instance of EpyNN network object.
+    :type model: :class:`nnlibs.network.models.EpyNN`
     """
     cprint ('----------------------- %s -------------------------\n' % model.uname, attrs=['bold'], end='\n\n')
+
 
     cprint ('-------------------------------- Datasets ------------------------------------\n',attrs=['bold'])
 
@@ -130,14 +144,15 @@ def initialize_logs_print(model):
 
 
 def network_logs(network):
-    """.
+    """Build tabular logs of current network architecture and shapes.
 
-    :param network:
-    :type network:
+    :param network: Attribute of an instance of EpyNN network object.
+    :type network: dict[str, dict[str, str or tuple[int]]]
 
-    :return:
-    :rtype:
+    :return: Logs for network architecture and shapes.
+    :rtype: :class:'texttable.Texttable'
     """
+    # List of documented network features
     headers = [
         'ID',
         'Layer',
@@ -151,12 +166,13 @@ def network_logs(network):
 
     logs.add_row(headers)
 
+    # Iterate over values (layers) in network dictionnary
     for i, layer in enumerate(network.values()):
 
         log = []
 
-        log.append(str(i))
-        log.append(layer['Layer'])
+        log.append(str(i))            # Layer index
+        log.append(layer['Layer'])    # Layer name
 
         for key in ['Dimensions', 'Activation', 'FW_Shapes', 'BW_Shapes']:
             log.append('\n'.join([k + ': ' + str(v) for k,v in layer[key].items()]))
@@ -169,14 +185,15 @@ def network_logs(network):
 
 
 def layers_lrate_logs(layers):
-    """.
+    """Build tabular logs for layers hyperparameters related to learning rate.
 
-    :param layers:
-    :type layers:
+    :param layers: Attribute of an instance of EpyNN network object.
+    :type layers: list[Object]
 
-    :return:
-    :rtype:
+    :return: Logs for layers hyperparameters related to learning rate.
+    :rtype: :class:'texttable.Texttable'
     """
+    # List of documented layers hyperparameters related to learning rate
     headers = [
         'Layer',
         'epochs',
@@ -198,12 +215,12 @@ def layers_lrate_logs(layers):
 
         log = []
 
-        se_hPars = layer.se_hPars
+        se_hPars = layer.se_hPars    # Local hyperparameters for layer
 
-        lr_ori = layer.lrate[0]
-        lr_end = layer.lrate[-1]
+        lr_ori = layer.lrate[0]      # Learning rate epoch 0
+        lr_end = layer.lrate[-1]     # Learning rate last epoch
 
-        pc_end = round(lr_end / lr_ori * 100,3) if lr_ori != 0 else 0
+        pc_end = round(lr_end / lr_ori * 100, 3) if lr_ori != 0 else 0
 
         log.append(layer.name)
         log.append(se_hPars['epochs'])
@@ -216,6 +233,7 @@ def layers_lrate_logs(layers):
         log.append("{:.2e}".format(lr_end))
         log.append(pc_end)
 
+        # Document only if layer is trainable
         if layer.p != {}:
             logs.add_row(log)
 
@@ -225,21 +243,20 @@ def layers_lrate_logs(layers):
 
 
 def layers_others_logs(layers):
-    """.
+    """Build tabular logs for layers hyperparameters related to activation functions.
 
-    :param layers:
-    :type layers:
+    :param layers: Attribute of an instance of EpyNN network object.
+    :type layers: list[Object]
 
-    :return:
-    :rtype:
+    :return: Logs for layers hyperparameters related to activation functions.
+    :rtype: :class:'texttable.Texttable'
     """
+    # List of documented layers hyperparameters related to activation functions
     headers = [
         'Layer',
         'LRELU\nalpha',
         'ELU\nalpha',
         'softmax\ntemperature',
-#        'reg.\nl1',
-#        'reg.\nl2',
     ]
 
     logs = Texttable()
@@ -248,7 +265,7 @@ def layers_others_logs(layers):
 
     for layer in layers:
 
-        se_hPars = layer.se_hPars
+        se_hPars = layer.se_hPars    # Local hyperparameters for layer
 
         log = []
 
@@ -256,9 +273,8 @@ def layers_others_logs(layers):
         log.append(se_hPars['LRELU_alpha'])
         log.append(se_hPars['ELU_alpha'])
         log.append(se_hPars['softmax_temperature'])
-#        log.append(se_hPars['regularization_l1'])
-#        log.append(se_hPars['regularization_l2'])
 
+        # Document only if layer is trainable
         if layer.p != {}:
             logs.add_row(log)
 
@@ -268,17 +284,18 @@ def layers_others_logs(layers):
 
 
 def dsets_samples_logs(dsets, se_dataset):
-    """.
+    """Build tabular logs describing datasets.
 
-    :param dsets:
-    :type dsets:
+    :param dsets: Attribute of an instance of embedding layer object. Contains active (non-empty) sets.
+    :type dsets: list[:class:`nnlibs.commons.models.dataSet`]
 
-    :param se_dataset:
-    :type se_dataset:
+    :param se_dataset: Attribute of an instance of embedding layer object.
+    :type se_dataset: dict[str, int or bool]
 
-    :return:
-    :rtype:
+    :return: Logs describing datasets.
+    :rtype: :class:'texttable.Texttable'
     """
+    # List of dataset descriptors.
     headers = [
         'dtrain\n(0)',
         'dtest\n(1)',
@@ -294,9 +311,11 @@ def dsets_samples_logs(dsets, se_dataset):
 
     log = []
 
+    # Active datasets
     for dset in dsets:
         log.append(len(dset.ids))
 
+    # Fill for inactive datasets
     for i in range(3 - len(dsets)):
         log.append('None')
 
@@ -310,11 +329,15 @@ def dsets_samples_logs(dsets, se_dataset):
 
 
 def dsets_labels_logs(dsets):
-    """.
+    """Build tabular logs describing datasets Y dimension.
 
-    :return:
-    :rtype:
+    :param dsets: Attribute of an instance of embedding layer object. Contains active (non-empty) sets.
+    :type dsets: list[:class:`nnlibs.commons.models.dataSet`]
+
+    :return: Logs describing datasets Y dimension.
+    :rtype: :class:'texttable.Texttable'
     """
+    # List of dataset descriptors for Y dimension.
     headers = [
         'N_LABELS',
         'dtrain\n(0)',
@@ -328,11 +351,13 @@ def dsets_labels_logs(dsets):
 
     log = []
 
-    log.append(len(dsets[0].b.keys()))
+    log.append(len(dsets[0].b.keys()))    # Number of classes
 
+    # Active datasets
     for dset in dsets:
         log.append('\n'.join([str(k) + ': ' + str(v) for k,v in sorted(dset.b.items())]))
 
+    # Fill for inactive datasets
     for i in range(3 - len(dsets)):
         log.append('None')
 
@@ -342,31 +367,34 @@ def dsets_labels_logs(dsets):
 
 
 def set_highlighted_excepthook():
-    """.
+    """Lexer to pretty print tracebacks.
     """
+    # Get lexer from pigmentize/minted
     lexer = get_lexer_by_name('pytb' if sys.version_info.major < 3 else 'py3tb')
 
+    # Colorscheme
     formatter = TerminalTrueColorFormatter(bg='dark', style='fruity')
 
+    # Callback function
     def myexcepthook(type, value, tb):
         tbtext = ''.join(traceback.format_exception(type, value, tb))
         sys.stderr.write(highlight(tbtext, lexer, formatter))
 
         return None
 
-    sys.excepthook = myexcepthook
+    sys.excepthook = myexcepthook    # This erase the standard excepthook with the callback
 
     return None
 
 
 def process_logs(msg, level=0):
-    """.
+    """Pretty print of EpyNN events.
 
-    :param msg:
-    :type msg:
+    :param msg: Message to print on terminal.
+    :type msg: str
 
-    :param level:
-    :type level:
+    :param level: Set color for print, defaults to 0 which renders white.
+    :type level: int, optional
     """
     colors = [
         'white',
@@ -385,7 +413,11 @@ def process_logs(msg, level=0):
 
 
 def start_counter(timeout=3):
+    """Timeout between print of initialization logs and beginning of run.
 
+    :param timeout: Time in seconds, defaults to 3.
+    :type timeout: int, optional
+    """
     for i in reversed(range(timeout + 1)):
         cprint('Start in %ss' % str(i), attrs=['bold'], end='\r')
         time.sleep(1)
@@ -393,17 +425,19 @@ def start_counter(timeout=3):
     return None
 
 
-def pretty_json(data):
-    """.
+def pretty_json(network):
+    """Pretty json print for traceback during model initialization.
 
-    :param data:
-    :type data:
+    :param network: Attribute of an instance of EpyNN network object.
+    :type network: dict[str, dict[str, str or tuple[int]]]
 
-    :return:
-    :rtype:
+    :return: Formatted input.
+    :rtype: json
     """
-    data = json.dumps(data, sort_keys=False, indent=4)
+    # Convert dict to json
+    network = json.dumps(network, sort_keys=False, indent=4)
 
-    data = highlight(data, lexers.JsonLexer(), formatters.TerminalFormatter())
+    # Format for pretty print
+    network = highlight(network, lexers.JsonLexer(), formatters.TerminalFormatter())
 
-    return data
+    return network

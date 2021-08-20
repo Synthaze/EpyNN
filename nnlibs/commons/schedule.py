@@ -10,10 +10,10 @@ def schedule_functions(schedule, hPars):
     :type schedule: str
 
     :param hPars: Contains hyperparameters.
-    :type hPars: tuple
+    :type hPars: tuple[int or float]
 
-    :return: Scheduled learning rate
-    :rtype: list
+    :return: Scheduled learning rate.
+    :rtype: list[float]
     """
     schedulers = {
         'exp_decay': exp_decay,
@@ -30,10 +30,10 @@ def exp_decay(hPars):
     """Exponential decay schedule for learning rate.
 
     :param hPars: Contains hyperparameters.
-    :type hPars: tuple
+    :type hPars: tuple[int or float]
 
-    :return: Scheduled learning rate
-    :rtype: list
+    :return: Scheduled learning rate.
+    :rtype: list[float]
     """
     e, lr, n, k, d, epc = hPars
 
@@ -46,10 +46,10 @@ def lin_decay(hPars):
     """Linear decay schedule for learning rate.
 
     :param hPars: Contains hyperparameters.
-    :type hPars: tuple
+    :type hPars: tuple[int or float]
 
-    :return: Scheduled learning rate
-    :rtype: list
+    :return: Scheduled learning rate.
+    :rtype: list[float]
     """
     e, lr, n, k, d, epc = hPars
 
@@ -62,10 +62,10 @@ def steady(hPars):
     """Steady schedule for learning rate.
 
     :param hPars: Contains hyperparameters.
-    :type hPars: tuple
+    :type hPars: tuple[int or float]
 
-    :return: Scheduled learning rate
-    :rtype: list
+    :return: Scheduled learning rate.
+    :rtype: list[float]
     """
     e, lr, n, k, d, epc = hPars
 

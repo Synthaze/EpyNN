@@ -1,7 +1,4 @@
 # EpyNN/nnlibs/commons/models.py
-# Standard library imports
-import time
-
 # Related third party imports
 import numpy as np
 
@@ -15,34 +12,34 @@ class Layer:
         """Initialize instance variable attributes.
 
         :ivar d: Layer **dimensions** containing scalar quantities such as the number of nodes, hidden units, filters or samples.
-        :vartype d: dict[str: int]
+        :vartype d: dict[str, int]
 
         :ivar fs: Layer **forward shapes** for parameters, input, output and processing intermediates.
-        :vartype fs: dict[str: tuple[int]]
+        :vartype fs: dict[str, tuple[int]]
 
         :ivar p: Layer weight and bias **parameters**. These are the trainable parameters.
-        :vartype p: dict[str: :class:`numpy.ndarray`]
+        :vartype p: dict[str, :class:`numpy.ndarray`]
 
         :ivar fc: Layer **forward cache** related for input, output and processing intermediates.
-        :vartype fc: dict[str: :class:`numpy.ndarray`]
+        :vartype fc: dict[str, :class:`numpy.ndarray`]
 
         :ivar bs: Layer **backward shapes** for gradients, input, output and processing intermediates.
-        :vartype bs: dict[str: tuple[int]]
+        :vartype bs: dict[str, tuple[int]]
 
         :ivar g: Layer **gradients** used to update the trainable parameters.
-        :vartype g: dict[str: :class:`numpy.ndarray`]
+        :vartype g: dict[str, :class:`numpy.ndarray`]
 
         :ivar bc: Layer **backward cache** for input, output and processing intermediates.
-        :vartype bc: dict[str: :class:`numpy.ndarray`]
+        :vartype bc: dict[str, :class:`numpy.ndarray`]
 
         :ivar o: Other scalar quantities that do not fit within the above-described attributes (rarely used).
-        :vartype o: dict[str: int]
+        :vartype o: dict[str, int]
 
         :ivar activation: Conveniency attribute containing names of activation gates and corresponding activation functions.
-        :vartype activation: dict[str: str]
+        :vartype activation: dict[str, str]
 
         :ivar se_hPars: Layer **hyper-parameters**.
-        :vartype se_hPars: dict[str: str or int]
+        :vartype se_hPars: dict[str, str or int]
         """
         self.d = {}
         self.fs = {}
@@ -63,10 +60,10 @@ class Layer:
         """Update shapes from cache.
 
         :param cache: Cache from forward or backward propagation.
-        :type cache: dict[str: :class:`numpy.ndarray`]
+        :type cache: dict[str, :class:`numpy.ndarray`]
 
         :param shapes: Corresponding shapes.
-        :type shapes: dict[str: tuple[int]]
+        :type shapes: dict[str, tuple[int]]
         """
         shapes.update({k:v.shape for k,v in cache.items()})
 
@@ -81,7 +78,7 @@ class dataSet:
     :type X_data: list[list[int or float]]
 
     :param Y_data: Set of sample label, defaults to None.
-    :type Y_data: list[list[int] or int], optional
+    :type Y_data: list[list[int] or int] or NoneType, optional
 
     :param name: Name of set, defaults to 'dummy'.
     :type name: str, optional
