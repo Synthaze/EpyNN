@@ -6,7 +6,7 @@ import numpy as np
 def metrics_functions(key=None):
     """Callback function for metrics.
 
-    :param key: Name of the metrics function.
+    :param key: Name of the metrics function, defaults to `None` which returns all functions.
     :type key: str, optional
 
     :return: Metrics functions or computed metrics.
@@ -17,7 +17,7 @@ def metrics_functions(key=None):
         'recall': recall,
         'precision': precision,
     }
-
+    # If key provided, returns output of function
     if key:
         metrics = metrics[key]
 
@@ -58,17 +58,17 @@ def recall(Y, A):
     :return: Recall for each sample.
     :rtype: :class:`numpy.ndarray`
     """
-    encoded = (Y.shape[1] > 1)
+    encoded = (Y.shape[1] > 1)    # Check if one-hot encoding of labels
 
     P = np.argmax(A, axis=1) if encoded else np.around(A)
     y = np.argmax(Y, axis=1) if encoded else y
 
     oy = P + y
 
-    tp = np.sum(np.where(oy == 0, 1, 0))
-    fp = np.sum(np.where(P == 0, 1, 0)) - tp
-    tn = np.sum(np.where(oy == 2, 1, 0))
-    fn = np.sum(P) - tn
+    tp = np.sum(np.where(oy == 0, 1, 0))        # True positive
+    fp = np.sum(np.where(P == 0, 1, 0)) - tp    # False positive
+    tn = np.sum(np.where(oy == 2, 1, 0))        # True negative
+    fn = np.sum(P) - tn                         # False negative
 
     recall = (tp / (tp+fn))
 
@@ -87,17 +87,17 @@ def precision(Y, A):
     :return: Precision for each sample.
     :rtype: :class:`numpy.ndarray`
     """
-    encoded = (Y.shape[1] > 1)
+    encoded = (Y.shape[1] > 1)    # Check if one-hot encoding of labels
 
     P = np.argmax(A, axis=1) if encoded else np.around(A)
     y = np.argmax(Y, axis=1) if encoded else y
 
     oy = P + y
 
-    tp = np.sum(np.where(oy == 0, 1, 0))
-    fp = np.sum(np.where(P == 0, 1, 0)) - tp
-    tn = np.sum(np.where(oy == 2, 1, 0))
-    fn = np.sum(P) - tn
+    tp = np.sum(np.where(oy == 0, 1, 0))        # True positive
+    fp = np.sum(np.where(P == 0, 1, 0)) - tp    # False positive
+    tn = np.sum(np.where(oy == 2, 1, 0))        # True negative
+    fn = np.sum(P) - tn                         # False negative
 
     precision = (tp / (tp+fp))
 

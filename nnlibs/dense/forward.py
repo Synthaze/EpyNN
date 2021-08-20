@@ -9,10 +9,10 @@ def initialize_forward(layer, A):
     :param layer: An instance of dense layer.
     :type layer: :class:`nnlibs.dense.models.Dense`
 
-    :param A: Output of forward propagation from previous layer
+    :param A: Output of forward propagation from previous layer.
     :type A: :class:`numpy.ndarray`
 
-    :return: Input of forward propagation for current layer
+    :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A

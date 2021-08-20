@@ -10,11 +10,11 @@ E_SAFE = 1e-10
 def loss_functions(key=None):
     """Callback function for loss.
 
-    :param key: Name of the loss function.
+    :param key: Name of the loss function, defaults to `None` which returns all functions.
     :type key: str, optional
 
     :return: Loss functions or computed loss.
-    :rtype: dict[str: function] or :class:`numpy.ndarray`
+    :rtype: dict[str, function] or :class:`numpy.ndarray`
     """
     loss = {
         'CCE': CCE,
@@ -23,7 +23,7 @@ def loss_functions(key=None):
         'MAE': MAE,
         'RMSLE': RMSLE,
     }
-
+    # If key provided, returns output of function
     if key:
         loss = loss[key]
 

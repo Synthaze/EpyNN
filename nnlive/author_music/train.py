@@ -47,7 +47,7 @@ embedding = Embedding(X_data=X_features,
                       batch_size=16,
                       relative_size=(2, 1, 0))
 
-
+# Model
 layers = [
     embedding,
     Flatten(),

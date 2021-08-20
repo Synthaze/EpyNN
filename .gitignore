@@ -12,3 +12,5 @@ docs/
 test/
 epynn.sh
 *dat
+nnlibs/statistics.py
+nnlive/statistics.py

@@ -1,7 +1,4 @@
 # EpyNN/nnlibs/commons/maths.py
-# Standard library imports
-import random
-
 # Related third party imports
 import numpy as np
 
@@ -14,9 +11,13 @@ def activation_tune(se_hPars):
     """Set layer's hyperparameters as globals.
 
     For each forward and backward pass the function is called from within the layer.
-    """
-    global layer_hPars
 
+    :param se_hPars: Local hyperparameters for layers.
+    :type se_hPars: dict[str, str or float]
+    """
+    # Declare global
+    global layer_hPars
+    # Set global
     layer_hPars = se_hPars
 
     return None
@@ -27,15 +28,17 @@ def activation_tune(se_hPars):
 # Identity function
 
 def identity(x, deriv=False):
-    """Compute ReLU activation or derivative
+    """Compute identity activation or derivative.
 
-    :param x: Input array to pass in function
+    Note this is for testing purpose, can not be used with backpropagation.
+
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
     if not deriv:
@@ -43,24 +46,24 @@ def identity(x, deriv=False):
 
     else:
         x = np.zeros_like(x)
+
     return x
 
 
 # Rectifier Linear Unit (ReLU)
 
 def relu(x, deriv=False):
-    """Compute ReLU activation or derivative
+    """Compute ReLU activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
     if not deriv:
         x = np.maximum(0, x)
 
@@ -73,18 +76,18 @@ def relu(x, deriv=False):
 # Leaky Rectifier Linear Unit (LReLU)
 
 def lrelu(x, deriv=False):
-    """Compute LReLU activation or derivative
+    """Compute LReLU activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
+    # Retrieve alpha from layers hyperparameters (temporary globals)
     a = layer_hPars['LRELU_alpha']
 
     if not deriv:
@@ -99,18 +102,18 @@ def lrelu(x, deriv=False):
 # Exponential Linear Unit (ELU)
 
 def elu(x, deriv=False):
-    """Compute ELU activation or derivative
+    """Compute ELU activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
+    # Retrieve alpha from layers hyperparameters (temporary globals)
     a = layer_hPars['ELU_alpha']
 
     if not deriv:
@@ -125,19 +128,19 @@ def elu(x, deriv=False):
 # Sigmoid (σ)
 
 def sigmoid(x, deriv=False):
-    """Compute Sigmoid activation or derivative
+    """Compute Sigmoid activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
     if not deriv:
+        # Numerically stable version of sigmoid function
         x = np.where(
                     x >= 0, # condition
                     1 / (1+np.exp(-x)), # For positive values
@@ -154,18 +157,17 @@ def sigmoid(x, deriv=False):
 # Swish
 
 def swish(x, deriv=False):
-    """Compute Swish activation or derivative
+    """Compute Swish activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
     if not deriv:
         x = x * sigmoid(x)
 
@@ -178,23 +180,22 @@ def swish(x, deriv=False):
 # Hyperbolic tangent (tanh)
 
 def tanh(x, deriv=False):
-    """Compute tanh activation or derivative
+    """Compute tanh activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
     if not deriv:
         x = (np.exp(2*x) - 1) / (np.exp(2*x) + 1)
 
     elif deriv:
-        x = 1 - x**2
+        x = 1 - tanh(x)**2
 
     return x
 
@@ -202,21 +203,22 @@ def tanh(x, deriv=False):
 # Softmax
 
 def softmax(x, deriv=False):
-    """Compute softmax activation or derivative
+    """Compute softmax activation or derivative.
 
-    :param x: Input array to pass in function
+    :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
-    :param deriv: To compute derivative
-    :type deriv: bool
+    :param deriv: To compute derivative, defaults to False.
+    :type deriv: bool, optional
 
-    :return: Output array passed in function
+    :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-
+    # Retrieve temperature from layers hyperparameters (temporary globals)
     T = layer_hPars['softmax_temperature']
 
     if not deriv:
+        # Numerically stable version of softmax function
         x_safe = x - np.max(x, axis=1, keepdims=True)
 
         x_exp = np.exp(x_safe / T)
@@ -233,34 +235,41 @@ def softmax(x, deriv=False):
 
 ### Weight initialization
 
+
+# Xavier
+
+
 def xavier(shape, rng=np.random):
-    """Xavier initialization for weight array.
+    """Xavier Normal Distribution initialization for weight array.
 
-    :param shape: Shape of weight array
-    :type shape: tuple
+    :param shape: Shape of weight array.
+    :type shape: tuple[int]
 
-    :param rng: Pseudo-random number generator
+    :param rng: Pseudo-random number generator, defaults to `np.random`.
     :type rng: :class:`numpy.random`
 
-    :return: Initialized weight array
+    :return: Initialized weight array.
     :rtype: class:`numpy.ndarray`
     """
-    W = rng.standard_normal(shape)
-    W /= np.sqrt(shape[1])
+    W = rng.standard_normal(shape)        # Normal distribution, zero-centered
+    W *= np.sqrt(2 / sum(list(shape)))    # Scale
 
     return W
+
+
+# Orthogonal
 
 
 def orthogonal(shape, rng=np.random):
     """Orthogonal initialization for weight array.
 
-    :param shape: Shape of weight array
-    :type shape: tuple
+    :param shape: Shape of weight array.
+    :type shape: tuple[int]
 
-    :param rng: Pseudo-random number generator
+    :param rng: Pseudo-random number generator, defaults to `np.random`.
     :type rng: :class:`numpy.random`
 
-    :return: Initialized weight array
+    :return: Initialized weight array.
     :rtype: class:`numpy.ndarray`
     """
     W = rng.standard_normal(shape)
@@ -270,7 +279,7 @@ def orthogonal(shape, rng=np.random):
     # Compute QR factorization
     q, r = np.linalg.qr(W)
 
-    # Make Q uniform according to https://arxiv.org/pdf/math-ph/0609050.pdf
+    # Make Q uniform according
     d = np.diag(r, 0)
     ph = np.sign(d)
     q *= ph
@@ -280,28 +289,31 @@ def orthogonal(shape, rng=np.random):
     return W
 
 
-def clip_gradient(layer, max_norm=0.25):
-    """Clip to avoid vanishing or exploding gradients
+### Gradients clipping
 
-    :param layer: An instance of active layer
+
+def clip_gradient(layer, max_norm=0.25):
+    """Clip to avoid vanishing or exploding gradients.
+
+    :param layer: An instance of trainable layer.
     :type layer: Object
 
-    :param max_norm: M
-    :type max_norm: float
+    :param max_norm: Maximal clipping coefficient allowed, defaults to 0.25.
+    :type max_norm: float, optional
     """
     total_norm = 0
 
-    # Calculate the L2 norm squared for each gradient and add them to the total norm
+    # Compute L2 norm squared for each gradient
     for grad in layer.g.values():
         grad_norm = np.sum(np.power(grad + E_SAFE, 2))
-        total_norm += grad_norm
+        total_norm += grad_norm    # Add to total norm
 
     total_norm = np.sqrt(total_norm)
 
-    # Calculate clipping coeficient
+    # Compute clipping coeficient
     clip_coef = max_norm / (total_norm+E_SAFE)
 
-    # If the total norm is larger than the maximum allowable norm, then clip the gradient
+    # Clip the gradient if norm is greater than max norm
     if clip_coef < 1:
         for g in layer.g.keys():
             layer.g[g] *= clip_coef
