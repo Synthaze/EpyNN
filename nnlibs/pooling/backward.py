@@ -3,14 +3,14 @@
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of pooling layer.
     :type layer: :class:`nnlibs.pooling.models.Pooling`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
@@ -18,62 +18,27 @@ def initialize_backward(layer, dA):
     :return: Zeros-output of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    layer.fc['dA'] = np.zeros(layer.fs['X'])
-
-    return dX
-
-
-def pooling_backward(layer, dA):
-    """Backward propagate error to previous layer.
-    """
-    # (1) Initialize cache
-    dX = initialize_backward(layer, dA)
-
-    # Iterate over image rows
-    for t in range(layer.d['oh']):
-
-        #
-        mask_row = layer.fc['Z'][:, t::layer.d['oh'], :, :]
-
-        #
-        row = dX[:, t::layer.d['oh'], :, :]
-
-        # Iterate over image columns
-        for l in range(layer.d['ow']):
-
-            #
-            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
-            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
-
-            #
-            mask = mask_row[:, :, l * layer.d['s']::layer.d['ow'], :]
-            mask = assemble_block(layer, mask, t, b, l, r)
-
-            #
-            block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
-            block = assemble_block(layer, block, t, b, l, r)
-
-            #
-            mask = (layer.fc['X'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] == mask)
-
-            #
-            layer.fc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += block * mask
-
-    dA = layer.fc['dA']
+    layer.fc['dX'] = np.zeros(layer.fs['X'])
 
     return dA
 
 
-
-def assemble_block(layer, block, t, b, l, r):
-    """.
+def pooling_backward(layer, dX):
+    """Backward propagate error to previous layer.
     """
-    block = np.repeat(block, layer.d['w'] ** 2, 2)
-    block = np.array(np.split(block, block.shape[2] / layer.d['w'], 2))
-    block = np.moveaxis(block, 0, 2)
-    block = np.array(np.split(block, block.shape[2] / layer.d['w'], 2))
-    block = np.moveaxis(block, 0, 3)
-    block = np.reshape(block, (layer.d['m'], layer.d['ih'] - t - b, layer.d['iw'] - l - r, layer.d['id']))
-    return block
+    # (1) Initialize cache
+    dA = initialize_backward(layer, dX)
+
+    mask = np.repeat(layer.fc['Z'], layer.d['ph'], axis=1)
+    mask = np.repeat(mask, layer.d['pw'], axis=2)
+
+    block = np.repeat(dA, layer.d['ph'], axis=1)
+    block = np.repeat(block, layer.d['pw'], axis=2)
+
+    mask = (layer.fc['X'] == mask)
+
+    dX = layer.fc['dX'] = block * mask
+
+    return dX

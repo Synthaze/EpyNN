@@ -3,14 +3,14 @@
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of GRU layer.
     :type layer: :class:`nnlibs.gru.models.GRU`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
@@ -18,65 +18,67 @@ def initialize_backward(layer, dA):
     :return: Next cell state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    if layer.sequences:
+        dA = dX                         # Full length sequence
+    elif not layer.sequences:
+        dA = np.zeros(layer.fs['h'])    # Empty full length sequence
+        dA[:, -1] = dX                  # Assign to last index
 
     cache_keys = ['dh', 'dhh', 'dz', 'dr', 'dhfhh', 'dhfr', 'dhfzi', 'dhfz', 'dhn']
-
     layer.bc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    layer.bc['dA'] = np.zeros(layer.fs['X'])
+    layer.bc['dA'] = dA
+    layer.bc['dX'] = np.zeros(layer.fs['X'])    # To previous layer
 
-    dhn = np.zeros_like(layer.bc['dh'][:, 0])
+    dhn = layer.bc['dhn'][:, 0]                 # To previous cell
 
-    return dX, dhn
+    return dA, dhn
 
 
-def gru_backward(layer, dA):
+def gru_backward(layer, dX):
     """Backward propagate error through GRU cells to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradients
-    dX, dhn = initialize_backward(layer, dA)
+    dA, dhn = initialize_backward(layer, dX)
 
-    # Iterate over reversed sequence steps
+    # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s) Slice sequence (m, s, h) with respect to step
-        dX = layer.bc['dX'][:, s] if layer.sequences else dX
+        # (2s) Slice sequence (m, s, u) with respect to step
+        dA = layer.bc['dA'][:, s]
 
-        # (3s) Gradients with respect to hidden cell state
-        dh =  dX + dhn
+        # (3s) Gradient of the loss with respect to hidden cell state
+        dh = dA      # Grad. from next layer (dA)
+        dh += dhn    # Grad. from next cell (dhn)
 
-        # (4s) Gradients with respect to hidden hat (hh) cell state
+        # (4s) Gradient of the loss w.r.t hidden hat (hh)
         dhh = dh * (1-layer.fc['z'][:, s])
-        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['hh'][:, s], deriv=True)
+        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
 
-        # (5s) Gradients with respect to update gate
-        dz = dh * (layer.fc['h'][:, s - 1] - layer.fc['hh'][:, s])
-        dz = layer.bc['dz'][:, s] = dz * layer.activate_update(layer.fc['z'][:, s], deriv=True)
+        # (5s) Gradient of the loss w.r.t update gate
+        dz = dh * (layer.fc['hp'][:, s] - layer.fc['hh'][:, s])
+        dz = layer.bc['dz'][:, s] = dz * layer.activate_update(layer.fc['z'][:, s], linear=False, deriv=True)
 
-        # (6s) Gradients with respect to reset gate
+        # (6s) Gradient of the loss w.r.t reset gate
         dr = np.dot(dhh, layer.p['Wh'].T)
-        dr = dr * layer.fc['h'][:, s - 1]
-        dr = layer.bc['dr'][:, s] = dr * layer.activate_reset(layer.fc['r'][:, s], deriv=True)
+        dr = dr * layer.fc['hp'][:, s]
+        dr = layer.bc['dr'][:, s] = dr * layer.activate_reset(layer.fc['r'][:, s], linear=False, deriv=True)
 
-        # (7s)
+        # (7s) Gradient of the loss w.r.t previous hidden state
         dhfhh = np.dot(dhh, layer.p['Wh'].T)
         dhfhh = layer.bc['dhfhh'][:, s] = dhfhh * layer.fc['r'][:, s]
         dhfzi = layer.bc['dhfzi'][:, s] = np.dot(dz, layer.p['Wz'].T)
         dhfz = layer.bc['dhfz'][:, s] = dh * layer.fc['z'][:, s]
         dhfr = layer.bc['dhfr'][:, s] = np.dot(dr, layer.p['Wr'].T)
 
-        dhn = layer.bc['dhn'][:, s] = dhfhh + dhfr + dhfzi + dhfz
+        dhn = layer.bc['dhn'][:, s] = dhfhh + dhfr + dhfzi + dhfz    # To previous cell
 
-        # (8s)
-        dA = np.dot(dr, layer.p['Ur'].T)
-        dA += np.dot(dz, layer.p['Uz'].T)
-        dA += np.dot(dhh, layer.p['Uh'].T)
-        layer.bc['dA'][:, s] = dA
+        # (8s) Gradient of the loss w.r.t to X
+        dX = np.dot(dr, layer.p['Ur'].T)
+        dX += np.dot(dz, layer.p['Uz'].T)
+        dX += np.dot(dhh, layer.p['Uh'].T)
+        layer.bc['dX'][:, s] = dX
 
-        #
-        if not layer.sequences: break
+    dX = layer.bc['dX']
 
-    dA = layer.bc['dA']
-
-    return dA    # To previous layer
+    return dX    # To previous layer

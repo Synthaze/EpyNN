@@ -1,7 +1,4 @@
 # EpyNN/nnlibs/pooling/parameters.py
-# Standard library imports
-import math
-
 # Related third party imports
 import numpy as np
 
@@ -9,21 +6,14 @@ import numpy as np
 def pooling_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m, ih, iw, id)
+    X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m, ih, iw, id)
+    layer.fs['X'] = X.shape             # (m, ih, iw, n)
 
-    dims = ['m', 'ih', 'iw', 'id']
-
-    layer.d.update({d:i for d,i in zip(dims, layer.fs['X'])})
-
-    layer.d['oh'] = math.ceil(min(layer.d['w'], layer.d['ih'] - layer.d['h'] + 1) / layer.d['s'])
-    layer.d['ow'] = math.ceil(min(layer.d['w'], layer.d['iw'] - layer.d['w'] + 1) / layer.d['s'])
-
-    layer.d['zh'] = int(((layer.d['ih'] - layer.d['w']) / layer.d['s']) + 1)
-    layer.d['zw'] = int(((layer.d['iw'] - layer.d['w']) / layer.d['s']) + 1)
-
-    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['id'])
+    layer.d['m'] = layer.fs['X'][0]     #
+    layer.d['ih'] = layer.fs['X'][1]    #
+    layer.d['iw'] = layer.fs['X'][2]    #
+    layer.d['n'] = layer.fs['X'][3]     #
 
     return None
 

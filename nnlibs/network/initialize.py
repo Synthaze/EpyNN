@@ -22,7 +22,7 @@ def model_initialize(model, params=True, end='\n'):
     model.network = {id(layer):{} for layer in model.layers}
 
     model.np_rng = np.random.default_rng(seed=model.seed)
-    seed = model.seed + 1
+    seed = model.seed + 1 if model.seed else None
 
     model.embedding.training_batches()
 
@@ -63,14 +63,14 @@ def model_initialize(model, params=True, end='\n'):
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
-    dA = model.training_loss(Y, A, deriv=True) / A.shape[1]
+    dX = dA = model.training_loss(Y, A, deriv=True)
 
     for layer in reversed(model.layers):
 
         cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
 
         cprint('backward: ' + layer.name, 'cyan', attrs=['bold'], end=end)
-        dA = layer.backward(dA)
+        dX = layer.backward(dX)
 
         model.network[id(layer)]['BW_Shapes'] = layer.bs
 

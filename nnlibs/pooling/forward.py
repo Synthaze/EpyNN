@@ -2,6 +2,9 @@
 # Related third party imports
 import numpy as np
 
+# Local application/library specific imports
+from nnlibs.commons.io import extract_blocks
+
 
 def initialize_forward(layer, A):
     """Forward cache initialization.
@@ -20,60 +23,30 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    Z = layer.fc['Z'] = np.empty(layer.fs['Z'])
+    sizes = (layer.d['ph'], layer.d['pw'])
+    strides = (layer.d['sh'], layer.d['sw'])
 
-    return X, Z
+    Xb = layer.fc['Xb'] = extract_blocks(X, sizes, strides)
+
+    return X, Xb
 
 
 def pooling_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache
-    X, Z = initialize_forward(layer, A)
+    X, Xb = initialize_forward(layer, A)
 
-    # Iterate over image rows
-    for t in range(layer.d['oh']):
+    #
+    Xb = layer.pool(Xb, axis=4)
+    Xb = layer.pool(Xb, axis=3)
 
-        #
-        b = layer.d['ih'] - (layer.d['ih'] - t) % layer.d['w']
+    #
+    Xb = np.moveaxis(Xb, 0, 2)
+    Xb = np.moveaxis(Xb, 0, 2)
 
-        #
-        Z_cols_shape = (
-                       layer.d['m'],
-                       int((b - t) / layer.d['w']),
-                       layer.d['zw'],
-                       layer.d['id']
-                       )
-        Z_cols = np.empty(Z_cols_shape)
+    Z = Xb
 
-        # Iterate over image columns
-        for i in range(layer.d['ow']):
+    A = layer.fc['A'] = layer.fc['Z'] = Z
 
-            #
-            l = i * layer.d['s']
-            r = layer.d['iw'] - (layer.d['iw'] - l) % layer.d['w']
-
-            #
-            block = X[:, t:b, l:r, :]
-
-            #
-            block = np.array(np.split(block, (r - l) / layer.d['w'], 2))
-            block = np.array(np.split(block, (b - t) / layer.d['w'], 2))
-
-            #
-            block = layer.pool(block, 4)
-            block = layer.pool(block, 3)
-
-            #
-            block = np.moveaxis(block, 0, 2)
-            block = np.moveaxis(block, 0, 2)
-
-            #
-            Z_cols[:, :, i::layer.d['ow'], :] = block
-
-        #
-        Z[:, t * layer.d['s']::layer.d['oh'], :, :] = Z_cols
-
-    layer.fc['Z'] = Z
-
-    return Z
+    return A    # To next layer

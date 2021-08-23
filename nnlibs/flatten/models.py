@@ -17,8 +17,11 @@ class Flatten(Layer):
     """
 
     def __init__(self):
-
+        """Initialize instance variable attributes.
+        """
         super().__init__()
+
+        self.trainable = False
 
         return None
 
@@ -41,6 +44,12 @@ class Flatten(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.flatten.forward.flatten_forward()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         self.compute_shapes(A)
         A = flatten_forward(self, A)
@@ -48,13 +57,19 @@ class Flatten(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.flatten.backward.flatten_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
-        dA = flatten_backward(self, dA)
+        dX = flatten_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_gradients()`. Dummy method, there is no gradients to compute in layer.
@@ -66,6 +81,7 @@ class Flatten(Layer):
     def update_parameters(self):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
-        flatten_update_parameters(self)
+        if self.trainable:
+            flatten_update_parameters(self)
 
         return None

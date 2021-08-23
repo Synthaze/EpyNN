@@ -26,10 +26,10 @@ def dense_forward(layer, A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    # (2) Linear activation
+    # (2) Linear activation X -> Z
     Z = layer.fc['Z'] = np.dot(X, layer.p['W']) + layer.p['b']
 
-    # (3) Non-linear activation
+    # (3) Non-linear activation Z -> A
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer

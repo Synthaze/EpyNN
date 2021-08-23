@@ -6,6 +6,7 @@ from nnlibs.commons.maths import (
     sigmoid,
     orthogonal,
     clip_gradient,
+    activation_tune,
 )
 from nnlibs.lstm.forward import lstm_forward
 from nnlibs.lstm.backward import lstm_backward
@@ -21,69 +22,70 @@ class LSTM(Layer):
     """
     Definition of a LSTM layer prototype.
 
-    :param hidden_size: Number of LSTM cells in one LSTM layer.
-    :type nodes: int
+    :param units: Number of unit cells in LSTM layer, defaults to 1.
+    :type units: int, optional
 
-    :param activate: Activation function for output of LSTM cells.
-    :type activate: function
+    :param activate: Non-linear activation of hidden and memory cell states, defaults to `tanh`.
+    :type activate: function, optional
 
-    :param activate_hidden: Activation function for hidden state of LSTM cells.
-    :type activate_hidden: function
+    :param activate_output: Non-linear activation of output gate, defaults to `sigmoid`.
+    :type activate_output: function, optional
 
-    :param activate_output: Activation function for output gate in LSTM cells.
-    :type activate_output: function
+    :param activate_candidate: Non-linear activation of candidate, defaults to `tanh`.
+    :type activate_candidate: function, optional
 
-    :param activate_candidate: Activation function for canidate gate in LSTM cells.
-    :type activate_candidate: function
+    :param activate_input: Non-linear activation of input gate, defaults to `sigmoid`.
+    :type activate_input: function, optional
 
-    :param activate_input: Activation function for input gate in LSTM cells.
-    :type activate_input: function
+    :param activate_forget: Non-linear activation of forget gate, defaults to `sigmoid`.
+    :type activate_forget: function, optional
 
-    :param activate_forget: Activation function for forget gate in LSTM cells.
-    :type activate_forget: function
+    :param initialization: Weight initialization function for LSTM layer, defaults to `orthogonal`.
+    :type initialization: function, optional
 
-    :param initialization: Weight initialization function for LSTM layer.
-    :type initialization: function
+    :param clip_gradients: May prevent from exploding/vanishing gradients, defaults to `False`.
+    :type clip_gradients: bool, optional
 
-    :param binary: Set the LSTM layer from many-to-many to many-to-one mode.
-    :type binary: bool
+    :param sequences: Whether to return only the last hidden state or the full sequence, defaults to `False`.
+    :type sequences: bool, optional
+
+    :param se_hPars: Layer hyper-parameters, defaults to `None` and inherits from model.
+    :type se_hPars: dict[str, str or float] or NoneType, optional
     """
 
     def __init__(self,
-                hidden_size=10,
+                unit_cells=1,
                 activate=tanh,
                 activate_output=sigmoid,
                 activate_candidate=tanh,
                 activate_input=sigmoid,
                 activate_forget=sigmoid,
                 initialization=orthogonal,
-                clip_gradients=True,
+                clip_gradients=False,
                 sequences=False,
                 se_hPars=None):
-
+        """Initialize instance variable attributes.
+        """
         super().__init__(se_hPars)
 
+        self.d['u'] = unit_cells
+        self.activate = activate
+        self.activate_output = activate_output
+        self.activate_candidate = activate_candidate
+        self.activate_input = activate_input
+        self.activate_forget = activate_forget
         self.initialization = initialization
+        self.clip_gradients = clip_gradients
+        self.sequences = sequences
 
         self.activation = {
-            'activate': activate.__name__,
-            'activate_input': activate_input.__name__,
-            'activate_candidate': activate_candidate.__name__,
-            'activate_forget': activate_forget.__name__,
-            'activate_output': activate_output.__name__,
+            'activate': self.activate.__name__,
+            'activate_output': self.activate_output.__name__,
+            'activate_candidate': self.activate_candidate.__name__,
+            'activate_input': self.activate_input.__name__,
+            'activate_forget': self.activate_forget.__name__,
         }
-
-        self.activate = activate
-        self.activate_input = activate_input
-        self.activate_candidate = activate_candidate
-        self.activate_forget = activate_forget
-        self.activate_output = activate_output
-
-        self.d['h'] = hidden_size
-
-        self.clip_gradients = clip_gradients
-
-        self.sequences = sequences
+        self.trainable = True
 
         return None
 
@@ -106,20 +108,34 @@ class LSTM(Layer):
 
     def forward(self, A):
         """Is a wrapper for :func:`nlibs.lstm.forward.lstm_forward()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         self.compute_shapes(A)
-        A = lstm_forward(self, A)
+        activation_tune(self.se_hPars)
+        A = self.fc['A'] = lstm_forward(self, A)
         self.update_shapes(self.fc, self.fs)
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Is a wrapper for :func:`nlibs.lstm.backward.lstm_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
-        dA = lstm_backward(self, dA)
+        activation_tune(self.se_hPars)
+        dX = lstm_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_gradients()`.
@@ -134,6 +150,7 @@ class LSTM(Layer):
     def update_parameters(self):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_update_parameters()`.
         """
-        lstm_update_parameters(self)
+        if self.trainable:
+            lstm_update_parameters(self)
 
         return None

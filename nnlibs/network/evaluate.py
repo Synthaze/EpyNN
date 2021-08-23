@@ -35,11 +35,8 @@ def model_evaluate(model):
             if m.ndim == 0:
                 pass
 
-            elif m.ndim == 1:
-                m = np.sum(m) / len(dset.ids)
-
             else:
-                m = np.mean(m.mean(axis=1))
+                m = np.mean(m)
 
             model.metrics[s][k].append(m)
 
@@ -60,6 +57,6 @@ def batch_evaluate(model, Y, A):
 
     accuracy = np.sum(metrics['accuracy'](Y, A)) / Y.shape[0]
 
-    cost = np.mean(model.training_loss(Y, A).mean(axis=1))
+    cost = np.mean(model.training_loss(Y, A))
 
     return accuracy, cost

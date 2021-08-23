@@ -1,35 +1,28 @@
-# EpyNN/nnlibs/conv/parameters.py
-# Standard library imports
-import math
-
+# EpyNN/nnlibs/convolution/parameters.py
 # Related third party imports
-from nnlibs.commons.io import padding
 import numpy as np
+
+# Local application/library specific imports
+from nnlibs.commons.io import padding
 
 
 def convolution_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = padding(A, layer.d['p'])    # Input of current layer
+    X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m , ih, iw, id)
+    X = padding(X, layer.d['p'])        #
 
-    dims = ['m', 'ih', 'iw', 'id']
+    layer.fs['X'] = X.shape             # (m, ih, iw, n)
 
-    layer.d.update({d: i for d, i in zip(dims, layer.fs['X'])})
+    layer.d['m'] = layer.fs['X'][0]     #
+    layer.d['ih'] = layer.fs['X'][1]    #
+    layer.d['iw'] = layer.fs['X'][2]    #
+    layer.d['id'] = layer.fs['X'][3]    #
 
     # Apply to X_block - W shape is (filter_width, filter_width, image_depth, n_filters)
-    layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['id'], layer.d['n'])
+    layer.fs['W'] = (layer.d['fh'], layer.d['fw'], layer.d['id'], layer.d['n'])
     layer.fs['b'] = (1, 1, 1, layer.d['n'])
-
-    layer.d['oh'] = math.ceil(min(layer.d['w'], layer.d['ih'] - layer.d['w'] + 1) / layer.d['s'])
-    layer.d['ow'] = math.ceil(min(layer.d['w'], layer.d['iw'] - layer.d['w'] + 1) / layer.d['s'])
-
-    layer.d['zh'] = int(((layer.d['ih'] - layer.d['w']) / layer.d['s']) + 1)
-    layer.d['zw'] = int(((layer.d['iw'] - layer.d['w']) / layer.d['s']) + 1)
-
-    # Shape of cache for linear activation product Z
-    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['n'])
 
     return None
 
@@ -52,42 +45,27 @@ def convolution_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    dX = layer.bc['dX']
+    #
+    dZ = layer.bc['dZ']
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
 
-    # Iterate over image rows
-    for t in range(layer.d['oh']):
-        #
-        row = dX[:, t::layer.d['oh'], :, :]
+    # Gradients with respect to W
+    dW = dZ * layer.fc['Xb']
+    dW = np.sum(dW, axis=2)
+    dW = np.sum(dW, axis=1)
+    dW = np.sum(dW, axis=0)
 
-        # Iterate over image columns
-        for l in range(layer.d['ow']):
+    layer.g['dW'] = dW
 
-            #
-            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
-            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
+    # Gradients with respect to b
+    db = dW
+    db = np.sum(db, axis=2, keepdims=True)
+    db = np.sum(db, axis=1, keepdims=True)
+    db = np.sum(db, axis=0, keepdims=True)
 
-            #
-            block = row[:, :, l * layer.d['s']::layer.d['oh'], :]
-
-            #
-            block = np.expand_dims(block, axis=3)
-            block = np.expand_dims(block, axis=3)
-            block = np.expand_dims(block, axis=3)
-
-            # Gradients with respect to W
-            dW = block * layer.Xb[t][l]
-            dW = np.sum(dW, axis=2)
-            dW = np.sum(dW, axis=1)
-            dW = np.sum(dW, axis=0)
-
-            layer.g['dW'] += dW
-
-            # Gradients with respect to b
-            db = np.sum(dW, axis=2, keepdims=True)
-            db = np.sum(db, axis=1, keepdims=True)
-            db = np.sum(db, axis=0, keepdims=True)
-
-            layer.g['db'] += db
+    layer.g['db'] = db if layer.use_bias else 0.
 
     return None
 
