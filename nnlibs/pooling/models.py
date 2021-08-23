@@ -30,18 +30,19 @@ class Pooling(Layer):
 
     def __init__(self,
                 pool_size=(2, 2),
-                stride=2,
+                strides=None,
                 pool=np.max):
 
         super().__init__()
 
-        self.activation = { 'pool': np.max.__name__ }
+        pool_size = pool_size if isinstance(pool_size, tuple) else (pool_size, pool_size)
+
+        self.d['ph'], self.d['pw'] = pool_size
+        self.d['sh'], self.d['sw'] = strides if isinstance(strides, tuple) else pool_size
 
         self.pool = pool
 
-        self.d['w'] = pool_size[0]
-        self.d['h'] = pool_size[1]
-        self.d['s'] = stride
+        self.activation = { 'pool': self.pool.__name__ }
 
         return None
 
@@ -71,13 +72,13 @@ class Pooling(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.pooling.backward.pooling_backward()`.
         """
-        dA = pooling_backward(self, dA)
+        dX = pooling_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.pooling.parameters.pooling_compute_gradients()`. Dummy method, there is no gradients to compute in layer.

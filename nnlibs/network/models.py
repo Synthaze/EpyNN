@@ -96,7 +96,7 @@ class EpyNN:
         :param dA: Derivative of the loss function for Stochastic Gradient Descent (SGD).
         :type dA: :class:`numpy.ndarray`
         """
-        dA = model_backward(self, dA)
+        dX = model_backward(self, dA)
 
         return None
 
@@ -165,6 +165,7 @@ class EpyNN:
             verbose = epochs // 10 if epochs >= 10 else 1
 
         self.verbose = verbose
+        self.cts = time.time()
 
         model_training(self)
 

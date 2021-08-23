@@ -113,13 +113,13 @@ class LSTM(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Is a wrapper for :func:`nlibs.lstm.backward.lstm_backward()`.
         """
-        dA = lstm_backward(self, dA)
+        dX = lstm_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_gradients()`.

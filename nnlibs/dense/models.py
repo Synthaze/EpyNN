@@ -38,13 +38,12 @@ class Dense(Layer):
 
         super().__init__(se_hPars)
 
+        self.d['n'] = nodes
+        self.activate = activate
         self.initialization = initialization
 
-        self.activation = { 'activate': activate.__name__ }
-
-        self.activate = activate
-
-        self.d['n'] = nodes
+        self.activation = { 'activate': self.activate.__name__ }
+        self.trainable = True
 
         return None
 
@@ -74,14 +73,14 @@ class Dense(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.dense.backward.dense_backward()`.
         """
         activation_tune(self.se_hPars)
-        dA = dense_backward(self, dA)
+        dX = dense_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.dense.parameters.dense_compute_gradients()`.
@@ -93,6 +92,7 @@ class Dense(Layer):
     def update_parameters(self):
         """Wrapper for :func:`nnlibs.dense.parameters.dense_update_parameters()`.
         """
-        dense_update_parameters(self)
+        if self.trainable:
+            dense_update_parameters(self)
 
         return None

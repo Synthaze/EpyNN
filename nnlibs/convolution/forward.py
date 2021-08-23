@@ -32,34 +32,35 @@ def convolution_forward(layer, A):
     X, Z = initialize_forward(layer, A)
 
     # Iterate over image rows
-    for t in range(layer.d['oh']):
+    for h in range(layer.d['oh']):
 
         layer.Xb.append([])
 
-        b = layer.d['ih'] - (layer.d['ih'] - t) % layer.d['w']
+        hs = h * layer.d['sh']
+        hf = layer.d['ih'] - (layer.d['ih'] - h) % layer.d['fh']
 
-        cols_shape = (
+        layer.fs['Zw'] = (
                      layer.d['m'],
-                     int((b - t) / layer.d['w']),
+                     int((hf - h) / layer.d['fh']),
                      layer.d['zw'],
                      layer.d['n']
                      )
 
-        cols = np.empty(cols_shape)
+        Zw = np.empty(layer.fs['Zw'])
 
         # Iterate over image columns
-        for i in range(layer.d['ow']):
+        for w in range(layer.d['ow']):
 
             #
-            l = i * layer.d['s']
-            r = layer.d['iw'] - (layer.d['iw'] - l) % layer.d['w']
+            ws = w * layer.d['sw']
+            wsf = layer.d['iw'] - (layer.d['iw'] - ws) % layer.d['fw']
 
             # () Extract block of shape (m, b - t, r - l, id)
-            block = X[:, t:b, l:r, :]
+            block = X[:, h:hf, ws:wsf, :]
 
             #
-            block = np.array(np.split(block, (r - l) / layer.d['w'], 2))
-            block = np.array(np.split(block, (b - t) / layer.d['w'], 2))
+            block = np.array(np.split(block, (wsf - ws) / layer.d['fw'], axis=2))
+            block = np.array(np.split(block, (hf - h) / layer.d['fh'], axis=2))
 
             #
             block = np.moveaxis(block, 2, 0)
@@ -67,7 +68,7 @@ def convolution_forward(layer, A):
             #
             block = np.expand_dims(block, axis=6)
 
-            layer.Xb[t].append(block)
+            layer.Xb[w].append(block)
 
             # () Linear activation
             block = block * layer.p['W']
@@ -77,15 +78,15 @@ def convolution_forward(layer, A):
             block = np.sum(block, axis=4)
             block = np.sum(block, axis=3)
 
-            cols[:, :, i::layer.d['ow'], :] = block
+            Zw[:, :, w::layer.d['ow'], :] = block
 
         #
-        Z[:, t * layer.d['s'] ::layer.d['oh'], :, :] = cols
+        Z[:, hs::layer.d['oh'], :, :] = Zw
 
     # () Add bias to linear activation product
-    layer.fc['Z'] = Z + layer.p['b'] if layer.use_bias else Z
+    Z = layer.fc['Z'] = Z + layer.p['b'] if layer.use_bias else Z
 
     # () Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)
 
-    return A    # To nest layer
+    return A    # To next layer

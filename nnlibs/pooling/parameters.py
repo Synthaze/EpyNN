@@ -9,21 +9,23 @@ import numpy as np
 def pooling_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
-    X = A    # Input of current layer of shape (m, ih, iw, id)
+    X = A    # Input of current layer of shape (m, ih, iw, n)
 
-    layer.fs['X'] = X.shape    # (m, ih, iw, id)
+    layer.fs['X'] = X.shape    # (m, ih, iw, n)
 
-    dims = ['m', 'ih', 'iw', 'id']
+    dims = ['m', 'ih', 'iw', 'n']
 
-    layer.d.update({d:i for d,i in zip(dims, layer.fs['X'])})
+    layer.d.update({d: i for d, i in zip(dims, layer.fs['X'])})
 
-    layer.d['oh'] = math.ceil(min(layer.d['w'], layer.d['ih'] - layer.d['h'] + 1) / layer.d['s'])
-    layer.d['ow'] = math.ceil(min(layer.d['w'], layer.d['iw'] - layer.d['w'] + 1) / layer.d['s'])
+    layer.d['oh'] = math.ceil(min(layer.d['ph'], layer.d['ih'] - layer.d['ph'] + 1) / layer.d['sh'])
+    layer.d['ow'] = math.ceil(min(layer.d['pw'], layer.d['iw'] - layer.d['pw'] + 1) / layer.d['sw'])
 
-    layer.d['zh'] = int(((layer.d['ih'] - layer.d['w']) / layer.d['s']) + 1)
-    layer.d['zw'] = int(((layer.d['iw'] - layer.d['w']) / layer.d['s']) + 1)
+    layer.d['zh'] = math.floor(((layer.d['ih'] - layer.d['ph']) / layer.d['sh'])) + 1
+    layer.d['zw'] = math.floor(((layer.d['iw'] - layer.d['pw']) / layer.d['sw'])) + 1
 
-    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['id'])
+    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['n'])
+
+
 
     return None
 

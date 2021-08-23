@@ -55,19 +55,19 @@ class Template(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Is a wrapper for :func:`nnlibs.template.backward.template_backward()`.
 
-        :param dA: Output of backward propagation from *next* layer.
-        :type dA: :class:`numpy.ndarray`
+        :param dX: Output of backward propagation from *next* layer.
+        :type dX: :class:`numpy.ndarray`
 
         :return: Output of backward propagation for **current** layer.
         :rtype: :class:`numpy.ndarray`
         """
-        dA = template_backward(self, dA)
+        dX = template_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Is a wrapper for :func:`nnlibs.template.parameters.template_compute_gradients()`. Dummy method, there is no gradients to compute in layer.

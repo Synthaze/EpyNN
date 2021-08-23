@@ -4,72 +4,72 @@ from nnlibs.commons.io import padding
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of convolution layer.
     :type layer: :class:`nnlibs.convolution.models.Convolution`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
-
-    :return: Zeros-output of backward propagation for current layer.
-    :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    layer.bc['dA'] = np.zeros(layer.fs['X'])
+    layer.bc['dX'] = np.zeros(layer.fs['X'])
 
-    return dX
+    return dA
 
 
-def convolution_backward(layer, dA):
+def convolution_backward(layer, dX):
     """Backward propagate error to previous layer.
     """
     # (1) Initialize cache
-    dX = initialize_backward(layer, dA)
+    dA = initialize_backward(layer, dX)
+
+    dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
     # Iterate over image rows
-    for t in range(layer.d['oh']):
+    for h in range(layer.d['oh']):
 
         #
-        row = layer.bc['dX'][:, t::layer.d['oh'], :, :]
+        hs = h * layer.d['sh']
+        hsf = (layer.d['ih'] - hs) % layer.d['fh']
+
+        #
+        row = layer.bc['dZ'][:, h::layer.d['oh'], :, :]
 
         # Iterate over image columns
-        for l in range(layer.d['ow']):
+        for w in range(layer.d['ow']):
 
             #
-            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
-            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
+            ws = w * layer.d['sw']
+            wsf = (layer.d['iw'] - ws) % layer.d['fw']
 
             # () Extract block
-            block = row[:, :, l * layer.d['s']::layer.d['ow'], :]
+            block = row[:, :, ws::layer.d['ow'], :]
 
             #
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
             block = np.expand_dims(block, axis=3)
 
-            #
-            dA = block * layer.p['W']
-
-            #
-            dA = np.sum(dA, axis=6)
-
-            #
-            dA = np.reshape(dA, (
+            # () Gradients of the loss with respect to X
+            dX = block * layer.p['W']    # ()
+            dX = np.sum(dX, axis=6)      # ()
+            dX = np.reshape(dX, (
                                 layer.d['m'],
-                                layer.d['ih'] - b - t,
-                                layer.d['iw'] - r - l,
+                                layer.d['ih'] - hsf - h,
+                                layer.d['iw'] - wsf - w,
                                 layer.d['id']
                                 )
-                            )
-            layer.bc['dA'][:, t:layer.d['ih'] - b, l:layer.d['iw'] - r, :] += dA
+                            )            # ()
+
+            layer.bc['dX'][:, h:layer.d['ih'] - hsf, w:layer.d['iw'] - wsf, :] += dX
 
     # Remove padding
-    dA = layer.bc['dA'] = padding(layer.bc['dA'], layer.d['p'], forward=False)
+    dX = layer.bc['dX'] = padding(layer.bc['dX'], layer.d['p'], forward=False)
 
-    return dA    # To previous layer
+    return dX    # To previous layer

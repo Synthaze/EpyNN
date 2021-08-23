@@ -4,7 +4,7 @@ import numpy as np
 
 
 # To prevent from divide floatting points errors
-E_SAFE = 1e-10
+E_SAFE = 1e-16
 
 
 def activation_tune(se_hPars):
@@ -45,7 +45,7 @@ def identity(x, deriv=False):
         pass
 
     else:
-        x = np.zeros_like(x)
+        x = np.ones_like(x)
 
     return x
 
@@ -127,7 +127,7 @@ def elu(x, deriv=False):
 
 # Sigmoid (σ)
 
-def sigmoid(x, deriv=False):
+def sigmoid(x, linear=True, deriv=False):
     """Compute Sigmoid activation or derivative.
 
     :param x: Input array to pass in function.
@@ -139,7 +139,7 @@ def sigmoid(x, deriv=False):
     :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-    if not deriv:
+    if linear:
         # Numerically stable version of sigmoid function
         x = np.where(
                     x >= 0, # condition
@@ -147,39 +147,15 @@ def sigmoid(x, deriv=False):
                     np.exp(x) / (1+np.exp(x)) # For negative values
                     )
 
-    elif deriv:
-        x = sigmoid(x)
+    if deriv:
         x = x * (1-x)
-
-    return x
-
-
-# Swish
-
-def swish(x, deriv=False):
-    """Compute Swish activation or derivative.
-
-    :param x: Input array to pass in function.
-    :type x: class:`numpy.ndarray`
-
-    :param deriv: To compute derivative, defaults to False.
-    :type deriv: bool, optional
-
-    :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
-    """
-    if not deriv:
-        x = x * sigmoid(x)
-
-    elif deriv:
-        pass
 
     return x
 
 
 # Hyperbolic tangent (tanh)
 
-def tanh(x, deriv=False):
+def tanh(x, linear=True, deriv=False):
     """Compute tanh activation or derivative.
 
     :param x: Input array to pass in function.
@@ -191,18 +167,18 @@ def tanh(x, deriv=False):
     :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-    if not deriv:
-        x = (np.exp(2*x) - 1) / (np.exp(2*x) + 1)
+    if linear:
+        x = (np.exp(x)-np.exp(-x)) / (np.exp(x)+np.exp(-x))
 
-    elif deriv:
-        x = 1 - tanh(x)**2
+    if deriv:
+        x = 1 - x**2
 
     return x
 
 
 # Softmax
 
-def softmax(x, deriv=False):
+def softmax(x, linear=True, deriv=False):
     """Compute softmax activation or derivative.
 
     :param x: Input array to pass in function.
@@ -217,7 +193,7 @@ def softmax(x, deriv=False):
     # Retrieve temperature from layers hyperparameters (temporary globals)
     T = layer_hPars['softmax_temperature']
 
-    if not deriv:
+    if linear:
         # Numerically stable version of softmax function
         x_safe = x - np.max(x, axis=1, keepdims=True)
 
@@ -226,8 +202,7 @@ def softmax(x, deriv=False):
 
         x = x_exp / x_sum
 
-    elif deriv:
-        x = softmax(x)
+    if deriv:
         x = x * (1-x)
 
     return x
@@ -237,7 +212,6 @@ def softmax(x, deriv=False):
 
 
 # Xavier
-
 
 def xavier(shape, rng=np.random):
     """Xavier Normal Distribution initialization for weight array.
@@ -258,7 +232,6 @@ def xavier(shape, rng=np.random):
 
 
 # Orthogonal
-
 
 def orthogonal(shape, rng=np.random):
     """Orthogonal initialization for weight array.

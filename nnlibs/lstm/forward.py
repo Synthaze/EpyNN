@@ -23,27 +23,31 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'o', 'i', 'f', 'g', 'C']
+    cache_keys = ['h', 'hp', 'o', 'i', 'f', 'g', 'C', 'Cp']
 
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    hp = np.zeros_like(layer.fc['h'][:, 0])
-    C = np.zeros_like(layer.fc['C'][:, 0])
+    h = layer.fc['h'][:, 0]
+    C = layer.fc['C'][:, 0]
 
-    return X, hp, C
+    return X, h, C
 
 
 def lstm_forward(layer, A):
     """Forward propagate signal through LSTM cells to next layer.
     """
     # (1) Initialize cache, hidden and memory cell states
-    X, hp, C = initialize_forward(layer, A)
+    X, h, C = initialize_forward(layer, A)
 
     # Iterate over sequence steps
     for s in range(layer.d['s']):
 
         # (2s) Slice sequence (m, s, v) with respect to step
         X = layer.fc['X'][:, s]
+
+        #
+        hp = layer.fc['hp'][:, s] = h
+        Cp = layer.fc['Cp'][:, s] = C
 
         # (3s) Compute forget gate
         f = np.dot(X, layer.p['Uf'])
@@ -67,7 +71,7 @@ def lstm_forward(layer, A):
         g = layer.fc['g'][:, s] = layer.activate_candidate(g)
 
         # (5s) Compute memory cell state
-        C = layer.fc['C'][:, s] = C*f + i * g
+        C = layer.fc['C'][:, s] = Cp*f + i*g
 
         # (6s) Compute output gate
         o = np.dot(X, layer.p['Uo'])

@@ -35,7 +35,7 @@ class RNN(Layer):
     """
 
     def __init__(self,
-                hidden_size=10,
+                hidden_size=1,
                 activate=tanh,
                 initialization=xavier,
                 clip_gradients=True,
@@ -87,14 +87,14 @@ class RNN(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.rnn.backward.rnn_backward()`.
         """
         activation_tune(self.se_hPars)
-        dA = rnn_backward(self, dA)
+        dX = rnn_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.rnn.parameters.rnn_compute_gradients()`.

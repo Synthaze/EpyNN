@@ -1,4 +1,6 @@
 # EpyNN/nnlibs/flatten/forward.py
+# Related third party imports
+import numpy as np
 
 
 def initialize_forward(layer, A):
@@ -25,6 +27,6 @@ def flatten_forward(layer,A):
     X = initialize_forward(layer, A)
 
     # (2) Reshape  (m, s .. v) to (m, n)
-    A = layer.fc['A'] = X.reshape(layer.fs['A'])
+    A = layer.fc['A'] = np.reshape(X, layer.fs['A'])
 
     return A   # To next layer

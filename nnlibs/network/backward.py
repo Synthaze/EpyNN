@@ -4,11 +4,14 @@
 def model_backward(model, dA):
     """Backward propagate error from output to input layer.
     """
+    #
+    dX = dA
+
     for layer in reversed(model.layers):
 
-        dA = layer.backward(dA)
+        dX = layer.backward(dX)
 
         layer.compute_gradients()
         layer.update_parameters()
 
-    return None
+    return dX

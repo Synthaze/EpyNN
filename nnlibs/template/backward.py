@@ -1,30 +1,30 @@
 # EpyNN/nnlibs/template/backward.py
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of template layer.
     :type layer: :class:`nnlibs.template.models.Template`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    return dX
+    return dA
 
 
-def template_backward(layer, dA):
+def template_backward(layer, dX):
     """Backward propagate error to previous layer.
     """
     # (1) Initialize cache
-    dX = initialize_backward(layer, dA)
+    dA = initialize_backward(layer, dX)
 
     # (2) Pass backward
-    dA = layer.bc['dA'] = dX
+    dX = layer.bc['dX'] = dA
 
-    return dA    # To previous layer
+    return dX    # To previous layer

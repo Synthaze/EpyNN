@@ -49,7 +49,7 @@ def rnn_compute_gradients(layer):
 
         # Retrieve from layer cache
         dh = layer.bc['dh'][:, s]     # Current cell state error
-        hp = layer.fc['h'][:, s - 1]  # Previous cell state
+        hp = layer.fc['hp'][:, s]     # Previous cell state
         X = layer.fc['X'][:, s]       # Current cell input
 
         # (1) Gradients with respect to U, W, b

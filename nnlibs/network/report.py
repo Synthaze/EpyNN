@@ -57,7 +57,7 @@ def model_report(model):
                         stralign='center',
                         tablefmt="pretty",
                         )
-
+        print('\n')
         print (logs, flush=True)
 
         model.current_logs = [headers_logs(model, colors)]
@@ -106,11 +106,14 @@ def single_batch_report(model, batch, A):
     :param model:
     :type model:
     """
-    model.cts = time.time()
+    current = time.time()
 
-    elapsed_time = round(int(model.cts) - int(model.ts), 2)
+    epoch_time = current - model.cts
+    elapsed_time = round(current - model.ts, 2)
 
-    rate = round((model.e + 1) / (elapsed_time + 1e-10), 2)
+    model.cts = current
+
+    rate = round((model.e + 1) / (epoch_time + 1e-16), 3)
 
     ttc = round((model.epochs - model.e + 1) / rate)
 
@@ -120,6 +123,8 @@ def single_batch_report(model, batch, A):
     cost = round(cost, 5)
 
     batch_counter = batch.name + '/' + model.embedding.batch_dtrain[-1].name
+
+    rate = '{:.2e}'.format(rate)
 
     cprint('Epoch %s - Batch %s - Accuracy: %s Cost: %s - TIME: %ss RATE: %se/s TTC: %ss' % (model.e, batch_counter, accuracy, cost, elapsed_time, rate, ttc), 'white', attrs=['bold'], end='\r')
 

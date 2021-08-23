@@ -32,48 +32,50 @@ def pooling_forward(layer, A):
     X, Z = initialize_forward(layer, A)
 
     # Iterate over image rows
-    for t in range(layer.d['oh']):
+    for h in range(layer.d['oh']):
 
         #
-        b = layer.d['ih'] - (layer.d['ih'] - t) % layer.d['w']
+        hs = h * layer.d['sh']
+        hp = layer.d['ih'] - (layer.d['ih'] - h) % layer.d['ph']
+
+        layer.fs['Zw'] = (
+                     layer.d['m'],
+                     int((hp - h) / layer.d['ph']),
+                     layer.d['zw'],
+                     layer.d['n']
+                     )
 
         #
-        Z_cols_shape = (
-                       layer.d['m'],
-                       int((b - t) / layer.d['w']),
-                       layer.d['zw'],
-                       layer.d['id']
-                       )
-        Z_cols = np.empty(Z_cols_shape)
+        Zw = np.empty(layer.fs['Zw'])
 
         # Iterate over image columns
-        for i in range(layer.d['ow']):
+        for w in range(layer.d['ow']):
 
             #
-            l = i * layer.d['s']
-            r = layer.d['iw'] - (layer.d['iw'] - l) % layer.d['w']
+            ws = w * layer.d['sw']
+            wsp = layer.d['iw'] - (layer.d['iw'] - ws) % layer.d['pw']
+
+            # () Extract block of shape
+            block = X[:, h:hp, ws:wsp]
 
             #
-            block = X[:, t:b, l:r, :]
+            block = np.array(np.split(block, (wsp - ws) / layer.d['pw'], axis=2))
+            block = np.array(np.split(block, (hp - h) / layer.d['ph'], axis=2))
 
             #
-            block = np.array(np.split(block, (r - l) / layer.d['w'], 2))
-            block = np.array(np.split(block, (b - t) / layer.d['w'], 2))
-
-            #
-            block = layer.pool(block, 4)
-            block = layer.pool(block, 3)
+            block = layer.pool(block, axis=4)
+            block = layer.pool(block, axis=3)
 
             #
             block = np.moveaxis(block, 0, 2)
             block = np.moveaxis(block, 0, 2)
 
             #
-            Z_cols[:, :, i::layer.d['ow'], :] = block
+            Zw[:, :, w::layer.d['ow'], :] = block
 
         #
-        Z[:, t * layer.d['s']::layer.d['oh'], :, :] = Z_cols
+        Z[:, hs::layer.d['oh'],:] = Zw
 
-    layer.fc['Z'] = Z
+    A = layer.fc['A'] = layer.fc['Z'] = Z
 
-    return Z
+    return A    # To next layer

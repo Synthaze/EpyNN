@@ -3,33 +3,33 @@
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of dense layer.
     :type layer: :class:`nnlibs.dense.models.Dense`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    return dX
+    return dA
 
 
-def dense_backward(layer, dA):
+def dense_backward(layer, dX):
     """Backward propagate error to previous layer.
     """
     # (1) Initialize cache
-    dX = initialize_backward(layer, dA)
+    dA = initialize_backward(layer, dX)
 
     # (2) Gradients of the loss with respect to Z
-    dZ = layer.bc['dZ'] = dX * layer.activate(layer.fc['Z'], deriv=True)
+    dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    # (3)
-    dA = layer.bc['dA'] = np.dot(dZ, layer.p['W'].T)
+    # (3) Gradients of the loss with respect to X
+    dX = layer.bc['dX'] = np.dot(dZ, layer.p['W'].T)
 
-    return dA    # To previous layer
+    return dX    # To previous layer

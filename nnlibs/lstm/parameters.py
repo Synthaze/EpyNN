@@ -72,7 +72,7 @@ def lstm_compute_gradients(layer):
 
         # Retrieve from layer cache
         X = layer.fc['X'][:, s]
-        hp = layer.fc['h'][:, s - 1]
+        hp = layer.fc['hp'][:, s]
 
         # (1) Gradients with respect to U, W, b
         do = layer.bc['do'][:, s]  # For output gate

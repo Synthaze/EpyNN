@@ -3,30 +3,30 @@
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of flatten layer.
     :type layer: :class:`nnlibs.flatten.models.Flatten`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    return dX
+    return dA
 
 
-def flatten_backward(layer, dA):
+def flatten_backward(layer, dX):
     """Backward propagate error to previous layer.
     """
     # (1)
-    dX = initialize_backward(layer, dA)
+    dA = initialize_backward(layer, dX)
 
     # (2) Reshape (m, sv) to (m, s, v)
-    dA = layer.bc['dA'] = np.reshape(dX, layer.fs['X'])
+    dX = layer.bc['dX'] = np.reshape(dA, layer.fs['X'])
 
-    return dA    # To previous layer
+    return dX    # To previous layer

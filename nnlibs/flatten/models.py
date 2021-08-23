@@ -48,13 +48,13 @@ class Flatten(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.flatten.backward.flatten_backward()`.
         """
-        dA = flatten_backward(self, dA)
+        dX = flatten_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_compute_gradients()`. Dummy method, there is no gradients to compute in layer.

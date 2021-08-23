@@ -53,10 +53,10 @@ class Dropout(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.dropout.backward.dropout_backward()`.
         """
-        dA = dropout_backward(self, dA)
+        dX = dropout_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
         return dA

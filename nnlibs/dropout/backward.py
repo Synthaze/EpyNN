@@ -3,33 +3,33 @@
 import numpy as np
 
 
-def initialize_backward(layer, dA):
+def initialize_backward(layer, dX):
     """Backward cache initialization.
 
     :param layer: An instance of dropout layer.
     :type layer: :class:`nnlibs.dropout.models.Dropout`
 
-    :param dA: Output of backward propagation from next layer.
-    :type dA: :class:`numpy.ndarray`
+    :param dX: Output of backward propagation from next layer.
+    :type dX: :class:`numpy.ndarray`
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
-    dX = layer.bc['dX'] = dA
+    dA = layer.bc['dA'] = dX
 
-    return dX
+    return dA
 
 
-def dropout_backward(layer, dA):
+def dropout_backward(layer, dX):
     """Backward propagate error to previous layer.
     """
     # (1) Initialize cache
-    dX = initialize_backward(layer, dA)
+    dA = initialize_backward(layer, dX)
 
     # (2) Apply the dropout mask used in the forward pass
-    dA = dX * layer.fc['D']
-    dA /= layer.d['k']
+    dX = dA * layer.fc['D']
+    dX /= layer.d['k']
 
-    dA = layer.bc['dA'] = dA
+    dX = layer.bc['dX'] = dX
 
-    return dA    # To previous layer
+    return dX    # To previous layer

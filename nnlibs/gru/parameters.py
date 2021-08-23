@@ -66,7 +66,7 @@ def gru_compute_gradients(layer):
 
         # Retrieve from layer cache
         X = layer.fc['X'][:, s]       # Current cell input
-        hp = layer.fc['h'][:, s - 1]  # Previous cell state
+        hp = layer.fc['hp'][:, s]     # Previous cell state
 
         # (1) Gradients with respect to U, W, b
         dhh = layer.bc['dhh'][:, s]  # For hidden hat (hh) activation

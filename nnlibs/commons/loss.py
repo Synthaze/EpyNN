@@ -4,7 +4,7 @@ import numpy as np
 
 
 # To prevent from divide floatting points errors
-E_SAFE = 1e-10
+E_SAFE = 1e-16
 
 
 def loss_functions(key=None):
@@ -21,7 +21,7 @@ def loss_functions(key=None):
         'BCE': BCE,
         'MSE': MSE,
         'MAE': MAE,
-        'RMSLE': RMSLE,
+        'MSLE': MSLE,
     }
     # If key provided, returns output of function
     if key:
@@ -46,10 +46,10 @@ def CCE(Y, A, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
-        loss = -(Y * np.log(A + E_SAFE))
+        loss = -1. * np.sum(Y * np.log(A), axis=1)
 
     elif deriv:
-        loss = -(Y - A + E_SAFE)
+        loss = (A-Y) / (A - A*A)
 
     return loss
 
@@ -70,10 +70,12 @@ def BCE(Y, A, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
-        loss = -(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE))
+        loss = -1. * np.sum(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE), axis=1)
 
     elif deriv:
-        loss = -(Y/(A+E_SAFE) - (1-Y)/((1-A)+E_SAFE))
+        loss = (A-Y) / (A - A*A)
+
+    loss /= A.shape[1]
 
     return loss
 
@@ -94,16 +96,18 @@ def MAE(Y, A, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
-        loss = np.abs(Y - A)
+        loss = np.sum(np.abs(Y - A), axis=1)
 
     elif deriv:
-        loss = -((Y-A) / np.abs(Y-A))
+        loss = -1. * (Y-A) / np.abs(Y-A)
+
+    loss /= A.shape[1]
 
     return loss
 
 
 def MSE(Y, A, deriv=False):
-    """Mean Square Error.
+    """Mean Squared Error.
 
     :param Y: True labels for a set of samples.
     :type Y: :class:`numpy.ndarray`
@@ -118,16 +122,18 @@ def MSE(Y, A, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
-        loss = np.square(Y - A + E_SAFE)
+        loss = np.sum(np.square(Y - A), axis=1)
 
     elif deriv:
-        loss = -2 * (Y-A)
+        loss = -2. * (Y-A)
+
+    loss /= A.shape[1]
 
     return loss
 
 
-def RMSLE(Y, A, deriv=False):
-    """Root Mean Square Logarythmic Error.
+def MSLE(Y, A, deriv=False):
+    """Mean Squared Logarythmic Error.
 
     :param Y: True labels for a set of samples.
     :type Y: :class:`numpy.ndarray`
@@ -142,12 +148,11 @@ def RMSLE(Y, A, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
-        loss = np.sqrt(np.square(np.log1p(Y) - np.log1p(A)))
+        loss = np.sum(np.square(np.log1p(Y) - np.log1p(A)), axis=1)
 
     elif deriv:
-        loss = -(
-                (np.log1p(Y) - np.log1p(A))
-                / ((A+1) * np.sqrt(np.square(np.log1p(Y) - np.log1p(A))))
-                )
+        loss = -2. * (np.log1p(Y) - np.log1p(A)) / (A + 1.)
+
+    loss /= A.shape[1]
 
     return loss

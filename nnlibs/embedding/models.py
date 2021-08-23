@@ -110,13 +110,13 @@ class Embedding(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.embedding.backward.embedding_backward()`.
         """
-        dA = embedding_backward(self, dA)
+        dX = embedding_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.embedding.parameters.embedding_compute_gradients()`. Dummy method, there is no gradients to compute in layer.

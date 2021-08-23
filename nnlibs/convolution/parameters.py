@@ -19,14 +19,14 @@ def convolution_compute_shapes(layer, A):
     layer.d.update({d: i for d, i in zip(dims, layer.fs['X'])})
 
     # Apply to X_block - W shape is (filter_width, filter_width, image_depth, n_filters)
-    layer.fs['W'] = (layer.d['w'], layer.d['w'], layer.d['id'], layer.d['n'])
-    layer.fs['b'] = (1, 1, 1, layer.d['n'])
+    layer.fs['W'] = (layer.d['fh'], layer.d['fw'], layer.d['id'], layer.d['n'])
+    layer.fs['b'] = (layer.d['n'],)
 
-    layer.d['oh'] = math.ceil(min(layer.d['w'], layer.d['ih'] - layer.d['w'] + 1) / layer.d['s'])
-    layer.d['ow'] = math.ceil(min(layer.d['w'], layer.d['iw'] - layer.d['w'] + 1) / layer.d['s'])
+    layer.d['oh'] = math.ceil(min(layer.d['fh'], layer.d['ih'] - layer.d['fh'] + 1) / layer.d['sh'])
+    layer.d['ow'] = math.ceil(min(layer.d['fw'], layer.d['iw'] - layer.d['fw'] + 1) / layer.d['sw'])
 
-    layer.d['zh'] = int(((layer.d['ih'] - layer.d['w']) / layer.d['s']) + 1)
-    layer.d['zw'] = int(((layer.d['iw'] - layer.d['w']) / layer.d['s']) + 1)
+    layer.d['zh'] = int(((layer.d['ih'] - layer.d['fh']) / layer.d['sh']) + 1)
+    layer.d['zw'] = int(((layer.d['iw'] - layer.d['fw']) / layer.d['sw']) + 1)
 
     # Shape of cache for linear activation product Z
     layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['n'])
@@ -52,22 +52,20 @@ def convolution_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    dX = layer.bc['dX']
-
     # Iterate over image rows
-    for t in range(layer.d['oh']):
+    for h in range(layer.d['oh']):
+
         #
-        row = dX[:, t::layer.d['oh'], :, :]
+        row = layer.bc['dZ'][:, h::layer.d['oh'], :, :]
 
         # Iterate over image columns
-        for l in range(layer.d['ow']):
+        for w in range(layer.d['ow']):
 
             #
-            b = (layer.d['ih'] - t * layer.d['s']) % layer.d['w']
-            r = (layer.d['iw'] - l * layer.d['s']) % layer.d['w']
+            ws = w * layer.d['sw']
 
             #
-            block = row[:, :, l * layer.d['s']::layer.d['oh'], :]
+            block = row[:, :, ws::layer.d['ow'], :]
 
             #
             block = np.expand_dims(block, axis=3)
@@ -75,7 +73,7 @@ def convolution_compute_gradients(layer):
             block = np.expand_dims(block, axis=3)
 
             # Gradients with respect to W
-            dW = block * layer.Xb[t][l]
+            dW = block * layer.Xb[h][w]
             dW = np.sum(dW, axis=2)
             dW = np.sum(dW, axis=1)
             dW = np.sum(dW, axis=0)
@@ -83,9 +81,9 @@ def convolution_compute_gradients(layer):
             layer.g['dW'] += dW
 
             # Gradients with respect to b
-            db = np.sum(dW, axis=2, keepdims=True)
-            db = np.sum(db, axis=1, keepdims=True)
-            db = np.sum(db, axis=0, keepdims=True)
+            db = np.sum(dW, axis=2)
+            db = np.sum(db, axis=1)
+            db = np.sum(db, axis=0)
 
             layer.g['db'] += db
 

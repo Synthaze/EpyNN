@@ -2,7 +2,7 @@
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.commons.maths import (
-    tanh,
+    tanh, relu,
     sigmoid,
     orthogonal,
     clip_gradient,
@@ -95,13 +95,13 @@ class GRU(Layer):
 
         return A
 
-    def backward(self, dA):
+    def backward(self, dX):
         """Wrapper for :func:`nnlibs.gru.backward.gru_backward()`.
         """
-        dA = gru_backward(self, dA)
+        dX = gru_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.gru.parameters.gru_compute_gradients()`.

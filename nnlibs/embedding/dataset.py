@@ -1,4 +1,7 @@
 # EpyNN/nnlibs/embedding/dataset.py
+# Standard library imports
+import warnings
+
 # Related third party imports
 import numpy as np
 
@@ -144,17 +147,15 @@ def mini_batches(layer):
     """
 
     dtrain = layer.dtrain
-    dtrain = list(zip(dtrain.X, dtrain.Y))
-    dtrain = np.array(dtrain, dtype=object)
+    dtrain = list(zip(dtrain.X.tolist(), dtrain.Y.tolist()))
 
     batch_size = layer.se_dataset['batch_size']
 
     if hasattr(layer, 'np_rng'):
+        warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
         layer.np_rng.shuffle(dtrain)
     else:
         np.random.shuffle(dtrain)
-
-    dtrain = dtrain.tolist()
 
     if not batch_size:
         batch_size = len(dtrain)

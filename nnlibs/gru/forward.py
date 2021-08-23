@@ -20,26 +20,29 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'hh', 'z', 'r']
+    cache_keys = ['h', 'hp', 'hh', 'z', 'r']
 
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    hp = np.zeros_like(layer.fc['h'][:, 0])
+    h = layer.fc['h'][:, 0]
 
-    return X, hp
+    return X, h
 
 
 def gru_forward(layer, A):
     """Forward propagate signal through GRU cells to next layer.
     """
     # (1) Initialize cache and cell state
-    X, hp = initialize_forward(layer, A)
+    X, h = initialize_forward(layer, A)
 
     # Iterate over sequence steps
     for s in range(layer.d['s']):
 
         # (2s) Slice sequence (m, s, v) with respect to step
         X = layer.fc['X'][:, s]
+
+        #
+        hp = layer.fc['hp'][:, s] = h
 
         # (3s) Compute reset gate
         r = np.dot(X, layer.p['Ur'])
@@ -63,7 +66,7 @@ def gru_forward(layer, A):
         hh = layer.fc['hh'][:, s] = layer.activate(hh)
 
         # (6s) Activate hidden state (h)
-        h = hp = layer.fc['h'][:, s] = z*hp + (1-z)*hh
+        h = layer.fc['h'][:, s] = z*hp + (1-z)*hh
 
     # Return all or only the last hidden cell state
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
