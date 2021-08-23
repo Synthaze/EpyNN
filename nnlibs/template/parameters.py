@@ -2,14 +2,14 @@
 
 
 def template_compute_shapes(layer, A):
-    """Compute dimensions and forward shapes for layer.
+    """Compute forward shapes and dimensions from input for layer.
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m .. n)
+    layer.fs['X'] = X.shape    # (m, s, v .. )
 
-    layer.d['m'] = layer.fs['X'][0]        # Number of samples (m)
-    layer.d['n'] = X.size // layer.d['m']  # Sample features (.. n)
+    layer.d['m'] = layer.fs['X'][0]          # Number of samples (m)
+    layer.d['n'] = X.size // layer.d['m']    # Number of features (n)
 
     return None
 
@@ -23,7 +23,7 @@ def template_initialize_parameters(layer):
 
 
 def template_compute_gradients(layer):
-    """Compute gradients of the cost with respect to weight and bias for layer.
+    """Compute gradients with respect to weight and bias for layer.
     """
     # No gradients to compute for Template layer
 
@@ -31,7 +31,7 @@ def template_compute_gradients(layer):
 
 
 def template_update_parameters(layer):
-    """Update parameters from gradients and learning rate for layer.
+    """Update parameters from gradients for layer.
     """
     # No parameters to update for Template layer
 

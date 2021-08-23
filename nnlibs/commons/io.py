@@ -129,6 +129,33 @@ def encode_dataset(X_data, word_to_idx, vocab_size):
     return X_encoded
 
 
+
+def extract_blocks(X_data, sizes, strides):
+    """.
+    """
+    ph, pw = sizes
+    sh, sw = strides
+
+    idh = [[i + j for j in range(ph + 1)] for i in range(X_data.shape[1] - ph + 1) if i % sh == 0]
+    idw = [[i + j for j in range(pw + 1)] for i in range(X_data.shape[2] - pw + 1) if i % sw == 0]
+
+    blocks = []
+
+    for h in idh:
+        hs, he = h[0], h[-1]
+
+        blocks.append([])
+
+        for w in idw:
+            ws, we = w[0], w[-1]
+
+            blocks[-1].append(X_data[:, hs:he, ws:we, :])
+
+    blocks = np.array(blocks)
+
+    return blocks
+
+
 def padding(X_data, padding, forward=True):
     """Image padding.
 

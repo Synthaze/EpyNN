@@ -41,6 +41,12 @@ class Flatten(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.flatten.forward.flatten_forward()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         self.compute_shapes(A)
         A = flatten_forward(self, A)
@@ -50,6 +56,12 @@ class Flatten(Layer):
 
     def backward(self, dX):
         """Wrapper for :func:`nnlibs.flatten.backward.flatten_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         dX = flatten_backward(self, dX)
         self.update_shapes(self.bc, self.bs)

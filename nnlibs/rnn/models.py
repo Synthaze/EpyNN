@@ -21,10 +21,10 @@ class RNN(Layer):
     """
     Definition of a RNN layer prototype.
 
-    :param hidden_size: Number of RNN cells in one RNN layer.
-    :type hidden_size: int
+    :param unit_cells: Number of RNN unit_cells in one RNN layer.
+    :type unit_cells: int
 
-    :param activate: Activation function for output of RNN cells.
+    :param activate: Activation function for output of RNN unit_cells.
     :type activate: function
 
     :param initialization: Weight initialization function for RNN layer.
@@ -35,7 +35,7 @@ class RNN(Layer):
     """
 
     def __init__(self,
-                hidden_size=1,
+                unit_cells=1,
                 activate=tanh,
                 initialization=xavier,
                 clip_gradients=True,
@@ -44,7 +44,7 @@ class RNN(Layer):
 
         super().__init__(se_hPars)
 
-        self.d['h'] = hidden_size
+        self.d['u'] = unit_cells
 
         self.activate = activate
 

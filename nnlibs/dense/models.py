@@ -20,25 +20,28 @@ class Dense(Layer):
     """
     Definition of a dense layer prototype.
 
-    :param nodes: Number of nodes for dense layer.
-    :type nodes: int
+    :param units: Number of units in dense layer, defaults to 1.
+    :type units: int, optional
 
-    :param activate: Activation function for output of nodes.
-    :type activate: function
+    :param activate: Function for non-linear activation of inputs by units, defaults to `sigmoid`.
+    :type activate: function, optional
 
-    :param initialization: Weight initialization function for dense layer.
-    :type initialization: function
+    :param initialization: Weight initialization function for dense layer, defaults to `xavier`.
+    :type initialization: function, optional
+
+    :param se_hPars: Layer hyper-parameters, defaults to `None` and inherits from model.
+    :type se_hPars: dict[str, str or float] or NoneType, optional
     """
 
     def __init__(self,
-                nodes=1,
+                units=1,
                 activate=sigmoid,
                 initialization=xavier,
                 se_hPars=None):
 
         super().__init__(se_hPars)
 
-        self.d['n'] = nodes
+        self.d['u'] = units
         self.activate = activate
         self.initialization = initialization
 
@@ -66,6 +69,12 @@ class Dense(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.dense.forward.dense_forward()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         activation_tune(self.se_hPars)
         A = dense_forward(self, A)
@@ -75,6 +84,12 @@ class Dense(Layer):
 
     def backward(self, dX):
         """Wrapper for :func:`nnlibs.dense.backward.dense_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         activation_tune(self.se_hPars)
         dX = dense_backward(self, dX)

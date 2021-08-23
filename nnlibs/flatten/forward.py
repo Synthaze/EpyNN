@@ -26,7 +26,7 @@ def flatten_forward(layer,A):
     # (1) Initialize cache
     X = initialize_forward(layer, A)
 
-    # (2) Reshape  (m, s .. v) to (m, n)
+    # (2) Reshape  (m, s, v .. ) -> (m, n)
     A = layer.fc['A'] = np.reshape(X, layer.fs['A'])
 
-    return A   # To next layer
+    return A    # To next layer

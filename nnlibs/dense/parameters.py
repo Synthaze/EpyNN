@@ -4,7 +4,7 @@ import numpy as np
 
 
 def dense_compute_shapes(layer, A):
-    """Compute forward shapes and dimensions for layer.
+    """Compute forward shapes and dimensions from input for layer.
     """
     X = A    # Input of current layer
 
@@ -21,7 +21,7 @@ def dense_compute_shapes(layer, A):
 
 
 def dense_initialize_parameters(layer):
-    """Initialize parameters for layer.
+    """Initialize parameters from shapes for layer.
     """
     # W, b - Linear activation X -> Z
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
@@ -47,7 +47,7 @@ def dense_compute_gradients(layer):
 
 
 def dense_update_parameters(layer):
-    """Update parameters for layer.
+    """Update parameters from gradients for layer.
     """
     for gradient in layer.g.keys():
         parameter = gradient[1:]

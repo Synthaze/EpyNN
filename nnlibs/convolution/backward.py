@@ -1,7 +1,9 @@
-# EpyNN/nnlibs/conv/backward.py
+# EpyNN/nnlibs/convolution/backward.py
 # Related third party imports
-from nnlibs.commons.io import padding
 import numpy as np
+
+# Local application/library specific imports
+from nnlibs.commons.io import padding
 
 
 def initialize_backward(layer, dX):
@@ -31,45 +33,16 @@ def convolution_backward(layer, dX):
 
     dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    # Iterate over image rows
-    for h in range(layer.d['oh']):
+    block = np.expand_dims(dZ, axis=3)
+    block = np.expand_dims(block, axis=3)
+    block = np.expand_dims(block, axis=3)
 
-        #
-        hs = h * layer.d['sh']
-        hsf = (layer.d['ih'] - hs) % layer.d['fh']
-
-        #
-        row = layer.bc['dZ'][:, h::layer.d['oh'], :, :]
-
-        # Iterate over image columns
-        for w in range(layer.d['ow']):
-
-            #
-            ws = w * layer.d['sw']
-            wsf = (layer.d['iw'] - ws) % layer.d['fw']
-
-            # () Extract block
-            block = row[:, :, ws::layer.d['ow'], :]
-
-            #
-            block = np.expand_dims(block, axis=3)
-            block = np.expand_dims(block, axis=3)
-            block = np.expand_dims(block, axis=3)
-
-            # () Gradients of the loss with respect to X
-            dX = block * layer.p['W']    # ()
-            dX = np.sum(dX, axis=6)      # ()
-            dX = np.reshape(dX, (
-                                layer.d['m'],
-                                layer.d['ih'] - hsf - h,
-                                layer.d['iw'] - wsf - w,
-                                layer.d['id']
-                                )
-                            )            # ()
-
-            layer.bc['dX'][:, h:layer.d['ih'] - hsf, w:layer.d['iw'] - wsf, :] += dX
+    # () Gradients of the loss with respect to X
+    dX = block * layer.p['W']             # ()
+    dX = np.sum(dX, axis=6)               # ()
+    dX = np.reshape(dX, layer.fs['X'])    # ()
 
     # Remove padding
-    dX = layer.bc['dX'] = padding(layer.bc['dX'], layer.d['p'], forward=False)
+    dX = layer.bc['dX'] = padding(dX, layer.d['p'], forward=False)
 
-    return dX    # To previous layer
+    return dX

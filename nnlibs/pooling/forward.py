@@ -2,29 +2,8 @@
 # Related third party imports
 import numpy as np
 
-def extract_blocks(X_data, sizes, strides):
-
-    ph, pw = sizes
-    sh, sw = strides
-
-    idh = [[i + j for j in range(ph + 1)] for i in range(X_data.shape[1] - ph + 1) if i % sh == 0]
-    idw = [[i + j for j in range(pw + 1)] for i in range(X_data.shape[2] - pw + 1) if i % sw == 0]
-
-    blocks = []
-
-    for h in idh:
-        hs, he = h[0], h[-1]
-
-        blocks.append([])
-
-        for w in idw:
-            ws, we = w[0], w[-1]
-
-            blocks[-1].append(X_data[:, hs:he, ws:we, :])
-
-    blocks = np.array(blocks)
-
-    return blocks
+# Local application/library specific imports
+from nnlibs.commons.io import extract_blocks
 
 
 def initialize_forward(layer, A):

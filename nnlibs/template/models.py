@@ -1,6 +1,7 @@
-# EpyNN.nnlibs.template.parameters
+# EpyNN/nnlibs/template/parameters
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
+from nnlibs.commons.maths import activation_tune
 from nnlibs.template.forward import template_forward
 from nnlibs.template.backward import template_backward
 from nnlibs.template.parameters import (
@@ -20,6 +21,8 @@ class Template(Layer):
         """Initialize instance variable attributes. Extended with ``super().__init__()`` which calls :func:`nnlibs.commons.models.Layer.__init__()` defined in the parent class.
         """
         super().__init__()
+
+        self.trainable = True
 
         return None
 
@@ -50,6 +53,7 @@ class Template(Layer):
         :rtype: :class:`numpy.ndarray`
         """
         self.compute_shapes(A)
+        activation_tune(self.se_hPars)
         A = template_forward(self, A)
         self.update_shapes(self.fc, self.fs)
 
@@ -64,6 +68,7 @@ class Template(Layer):
         :return: Output of backward propagation for **current** layer.
         :rtype: :class:`numpy.ndarray`
         """
+        activation_tune(self.se_hPars)
         dX = template_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
@@ -79,6 +84,7 @@ class Template(Layer):
     def update_parameters(self):
         """Is a wrapper for :func:`nnlibs.template.parameters.template_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
-        template_update_parameters(self)
+        if self.trainable:
+            template_update_parameters(self)
 
         return None
