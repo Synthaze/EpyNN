@@ -8,24 +8,24 @@ def dense_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m, p)
+    layer.fs['X'] = X.shape    # (m, n)
 
-    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
-    layer.d['p'] = layer.fs['X'][1]    # Number of nodes previous layer (p)
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples  (m)
+    layer.d['n'] = layer.fs['X'][1]    # Number of features (n)
 
-    # Apply to X - W shape is (nodes_previous_layer, nodes_current)
-    nm = layer.fs['W'] = (layer.d['p'], layer.d['n'])
-    n1 = layer.fs['b'] = (1, layer.d['n'])
+    # Shapes for trainable parameters              Units (u)
+    layer.fs['W'] = (layer.d['n'], layer.d['u'])    # (n, u)
+    layer.fs['b'] = (1, layer.d['u'])               # (1, u)
 
     return None
 
 
 def dense_initialize_parameters(layer):
-    """Initialize parameters from shapes for layer.
+    """Initialize trainable parameters from shapes for layer.
     """
-    # W, b - Linear activation X -> Z
+    # For linear activation of inputs (Z)
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
-    layer.p['b'] = np.zeros(layer.fs['b'])
+    layer.p['b'] = np.zeros(layer.fs['b']) # Z = dot(X, W) + b
 
     return None
 
@@ -33,15 +33,12 @@ def dense_initialize_parameters(layer):
 def dense_compute_gradients(layer):
     """Compute gradients with respect to weight and bias for layer.
     """
-    # X - Input of forward propagation
-    X = layer.fc['X']
+    X = layer.fc['X']      # Input of forward propagation
+    dZ = layer.bc['dZ']    # Gradient of the loss with respect to Z
 
-    # dZ - Gradient of the cost with respect to the linear output of forward propagation (Z)
-    dZ = layer.bc['dZ']
-
-    # (1)
-    dW = layer.g['dW'] = np.dot(X.T, dZ)     # (1.1)
-    db = layer.g['db'] = np.sum(dZ, axis=0)  # (1.2)
+    # (1) Gradient of the loss with respect to W, b
+    dW = layer.g['dW'] = np.dot(X.T, dZ)       # (1.1)
+    db = layer.g['db'] = np.sum(dZ, axis=0)    # (1.2)
 
     return None
 

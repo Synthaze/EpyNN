@@ -4,55 +4,54 @@ import numpy as np
 
 
 def rnn_compute_shapes(layer, A):
-    """Compute forward shapes and dimensions for cells and layer.
+    """Compute forward shapes and dimensions from input for layer.
     """
     X = A    # Input of current layer
 
     layer.fs['X'] = X.shape    # (m, s, v)
 
-    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples  (m)
     layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
-    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size (v)
+    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size    (v)
 
-    # Parameters shape
-    vh = layer.fs['U'] = (layer.d['v'], layer.d['h'])  # U applies to X
-    hh = layer.fs['W'] = (layer.d['h'], layer.d['h'])  # W applies to hp
-    h1 = layer.fs['b'] = (layer.d['h'],)  # Added to the linear activation product
+    # Shapes for trainable parameters         Unit cells (u)
+    layer.fs['U'] = (layer.d['v'], layer.d['u'])    # (v, u)
+    layer.fs['W'] = (layer.d['u'], layer.d['u'])    # (u, u)
+    layer.fs['b'] = (1, layer.d['u'])               # (1, u)
 
-    # Shape of cache for hidden cell states
-    msh = layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['h'])
+    # Shape of hidden cell state (h) with respect to steps (s)
+    layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['u'])
 
     return None
 
 
 def rnn_initialize_parameters(layer):
-    """Initialize parameters for layer.
+    """Initialize trainable parameters from shapes for layer.
     """
-    # U, W, b - Hidden cell state activation
+    # For linear activation of hidden cell state (h)
     layer.p['U'] = layer.initialization(layer.fs['U'], rng=layer.np_rng)
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
-    layer.p['b'] = np.zeros(layer.fs['b'])
+    layer.p['b'] = np.zeros(layer.fs['b']) # dot(X, U) + dot(hp, W) + b
 
     return None
 
 
 def rnn_compute_gradients(layer):
-    """Compute gradients with respect to weight and bias for cells and layer.
+    """Compute gradients with respect to weight and bias for layer.
     """
     # Gradients initialization with respect to parameters
     for parameter in layer.p.keys():
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    # Iterate over reversed sequence steps
+    # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # Retrieve from layer cache
-        dh = layer.bc['dh'][:, s]     # Current cell state error
-        hp = layer.fc['hp'][:, s]     # Previous cell state
-        X = layer.fc['X'][:, s]       # Current cell input
+        dh = layer.bc['dh'][:, s]    # Gradient for current hidden state
+        X = layer.fc['X'][:, s]      # Current cell input
+        hp = layer.fc['hp'][:, s]    # Previous hidden state
 
-        # (1) Gradients with respect to U, W, b
+        # (1) Gradients of the loss with respect to U, W, b
         layer.g['dU'] += np.dot(X.T, dh)     # (1.1)
         layer.g['dW'] += np.dot(hp.T, dh)    # (1.2)
         layer.g['db'] += np.sum(dh, axis=0)  # (1.3)
@@ -61,7 +60,7 @@ def rnn_compute_gradients(layer):
 
 
 def rnn_update_parameters(layer):
-    """Update parameters for layer.
+    """Update parameters from gradients for layer.
     """
     for gradient in layer.g.keys():
         parameter = gradient[1:]

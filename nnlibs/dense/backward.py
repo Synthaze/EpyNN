@@ -26,10 +26,10 @@ def dense_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
 
-    # (2) Gradients of the loss with respect to Z
+    # (2) Gradient of the loss with respect to Z
     dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    # (3) Gradients of the loss with respect to X
+    # (3) Gradient of the loss with respect to X
     dX = layer.bc['dX'] = np.dot(dZ, layer.p['W'].T)
 
     return dX    # To previous layer

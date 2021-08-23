@@ -15,16 +15,15 @@ def initialize_forward(layer, A):
     :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Previous cell state initialized with zeros.
+    :return: Previous hidden cell state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A
 
     cache_keys = ['h', 'hp']
-
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    h = layer.fc['h'][:, 0]
+    h = layer.fc['h'][:, 0]    # Hidden cell state
 
     return X, h
 
@@ -32,7 +31,7 @@ def initialize_forward(layer, A):
 def rnn_forward(layer, A):
     """Forward propagate signal through RNN cells to next layer.
     """
-    # (1) Initialize cache and cell state
+    # (1) Initialize cache and hidden cell state
     X, h = initialize_forward(layer, A)
 
     # Iterate over sequence steps
@@ -41,19 +40,17 @@ def rnn_forward(layer, A):
         # (2s) Slice sequence (m, s, v) with respect to step
         X = layer.fc['X'][:, s]
 
-        #
+        # (3s) Retrieve previous hidden cell state
         hp = layer.fc['hp'][:, s] = h
 
-        # (3s) Activate hidden cell state
+        # (4s) Activate current hidden cell state
         h = np.dot(X, layer.p['U'])
         h += np.dot(hp, layer.p['W'])
         h += layer.p['b']
 
         h = layer.fc['h'][:, s] = layer.activate(h)
 
-    # Return all or only the last hidden cell state
+    # Return the last hidden cell state or the full sequence
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
-
-    layer.fc['A'] = A
 
     return A   # To next layer

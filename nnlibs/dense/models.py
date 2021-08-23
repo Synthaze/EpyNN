@@ -23,7 +23,7 @@ class Dense(Layer):
     :param units: Number of units in dense layer, defaults to 1.
     :type units: int, optional
 
-    :param activate: Function for non-linear activation of inputs by units, defaults to `sigmoid`.
+    :param activate: Non-linear activation of units, defaults to `sigmoid`.
     :type activate: function, optional
 
     :param initialization: Weight initialization function for dense layer, defaults to `xavier`.
@@ -34,11 +34,12 @@ class Dense(Layer):
     """
 
     def __init__(self,
-                units=1,
-                activate=sigmoid,
-                initialization=xavier,
-                se_hPars=None):
-
+                 units=1,
+                 activate=sigmoid,
+                 initialization=xavier,
+                 se_hPars=None):
+        """Initialize instance variable attributes.
+        """
         super().__init__(se_hPars)
 
         self.d['u'] = units

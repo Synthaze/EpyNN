@@ -8,7 +8,7 @@ def flatten_compute_shapes(layer, A):
 
     layer.fs['X'] = X.shape    # (m, s, v .. )
 
-    layer.d['m'] = layer.fs['X'][0]          # Number of samples (m)
+    layer.d['m'] = layer.fs['X'][0]          # Number of samples  (m)
     layer.d['n'] = X.size // layer.d['m']    # Number of features (n)
 
     # Shape for output of forward propagation
@@ -18,7 +18,7 @@ def flatten_compute_shapes(layer, A):
 
 
 def flatten_initialize_parameters(layer):
-    """Initialize parameters from shapes for layer.
+    """Initialize trainable parameters from shapes for layer.
     """
     # No parameters to initialize for Flatten layer
 

@@ -19,6 +19,9 @@ class Template(Layer):
 
     def __init__(self):
         """Initialize instance variable attributes. Extended with ``super().__init__()`` which calls :func:`nnlibs.commons.models.Layer.__init__()` defined in the parent class.
+
+        :ivar trainable: Whether layer's parameters should be trainable.
+        :vartype trainable: bool
         """
         super().__init__()
 

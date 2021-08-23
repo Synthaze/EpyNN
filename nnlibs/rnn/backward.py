@@ -15,21 +15,22 @@ def initialize_backward(layer, dX):
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Next cell state initialized with zeros.
+    :return: Next hidden cell state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
     """
-    dA = layer.bc['dA'] = dX if layer.sequences else np.zeros(layer.fs['h'])
-
-    if not layer.sequences:
-        dA[:, -1] = dX
+    if layer.sequences:
+        dA = dX                         # Full length sequence
+    elif not layer.sequences:
+        dA = np.zeros(layer.fs['h'])    # Empty full length sequence
+        dA[:, -1] = dX                  # Assign to last index
 
     cache_keys = ['dh', 'dhn']
-
     layer.bc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    layer.bc['dX'] = np.zeros(layer.fs['X'])
+    layer.bc['dA'] = dA
+    layer.bc['dX'] = np.zeros(layer.fs['X'])    # To previous layer
 
-    dhn = layer.bc['dhn'][:, 0]
+    dhn = layer.bc['dhn'][:, 0]                 # To previous cell
 
     return dA, dhn
 
@@ -37,21 +38,23 @@ def initialize_backward(layer, dX):
 def rnn_backward(layer, dX):
     """Backward propagate error through RNN cells to previous layer.
     """
-    # (1) Initialize cache and hidden cell state gradients
+    # (1) Initialize cache and hidden cell state gradient
     dA, dhn = initialize_backward(layer, dX)
 
-    # Iterate over reversed sequence steps
+    # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s) Slice sequence (m, s, h) with respect to step
+        # (2s) Slice sequence (m, s, u) with respect to step
         dA = layer.bc['dA'][:, s]
 
         # (3s) Gradient of the loss with respect to hidden cell state
-        dh = dA + dhn
-        dh = layer.bc['dh'][:, s] = dh * layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
+        dh = dA      # Grad. from next layer (dA)
+        dh += dhn    # Grad. from next cell (dhn)
+        dh *= layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
+        layer.bc['dh'][:, s] = dh
 
-        # (4s) Gradient of the loss with respect to next hidden state at s-1
-        dhn = layer.bc['dhn'][:, s] = np.dot(dh, layer.p['W'].T)
+        # (4s) Gradient of the loss w.r.t previous hidden state
+        dhn = np.dot(dh, layer.p['W'].T)     # To previous cell
 
         # (5s) Gradient of the loss with respect to X
         layer.bc['dX'][:, s] = np.dot(dh, layer.p['U'].T)

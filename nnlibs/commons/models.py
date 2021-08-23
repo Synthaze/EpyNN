@@ -85,9 +85,9 @@ class dataSet:
     """
 
     def __init__(self,
-                X_data,
-                Y_data=None,
-                name='dummy'):
+                 X_data,
+                 Y_data=None,
+                 name='dummy'):
         """Initialize dataSet object.
 
         :ivar active: `True` if X_data is not empty.

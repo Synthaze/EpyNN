@@ -21,19 +21,20 @@ def initialize_backward(layer, dX):
     :return: Next memory state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
     """
-    dA = layer.bc['dA'] = dX if layer.sequences else np.zeros(layer.fs['h'])
-
-    if not layer.sequences:
-        dA[:, -1] = dX
+    if layer.sequences:
+        dA = dX                         # Full length sequence
+    elif not layer.sequences:
+        dA = np.zeros(layer.fs['h'])    # Empty full length sequence
+        dA[:, -1] = dX                  # Assign to last index
 
     cache_keys = ['dh', 'do', 'dg', 'di', 'df', 'dz', 'dC', 'dCn', 'dhn']
-
     layer.bc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    layer.bc['dX'] = np.zeros(layer.fs['X'])
+    layer.bc['dA'] = dA
+    layer.bc['dX'] = np.zeros(layer.fs['X'])    # To previous layer
 
-    dhn = layer.bc['dhn'][:, 0]
-    dCn = layer.bc['dCn'][:, 0]
+    dhn = layer.bc['dhn'][:, 0]                 # To previous cell
+    dCn = layer.bc['dCn'][:, 0]                 # To previous cell
 
     return dA, dhn, dCn
 
@@ -44,47 +45,48 @@ def lstm_backward(layer, dX):
     # (1) Initialize cache, hidden and memory cell state gradients
     dA, dhn, dCn = initialize_backward(layer, dX)
 
-    # Iterate over reversed sequence steps
+    # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        # (2s) Slice sequence (m, s, h) with respect to step
+        # (2s) Slice sequence (m, s, u) with respect to step
         dA = layer.bc['dA'][:, s]
 
-        # (3s) Gradients with respect to hidden cell state
-        dh = dA + dhn
+        # (3s) Gradient of the loss with respect to hidden cell state
+        dh = dA      # Grad. from next layer (dA)
+        dh += dhn    # Grad. from next cell (dhn)
 
-        # (4s) Gradients with respect to output gate
+        # (4s) Gradient of the loss w.r.t output gate
         do = dh * layer.activate(layer.fc['C'][:, s])
         do = layer.bc['do'][:, s] = do * layer.activate_output(layer.fc['o'][:, s], linear=False, deriv=True)
 
-        # (5s) Gradients with respect to memory cell state
+        # (5s) Gradient of the loss w.r.t memory cell state
         dC = dh * layer.fc['o'][:, s] * layer.activate(layer.fc['C'][:, s], deriv=True)
         dC =  layer.bc['dC'][:, s] = dC + dCn
 
-        # (6.1s) Gradients with respect to candidate
+        # (6.1s) Gradient of the loss w.r.t candidate
         dg = dC * layer.fc['i'][:, s]
         dg = layer.bc['dg'][:, s] = dg * layer.activate_candidate(layer.fc['g'][:, s], linear=False, deriv=True)
 
-        # (6.2s) Gradients with respect to input gate
+        # (6.2s) Gradient of the loss w.r.t input gate
         di = dC * layer.fc['g'][:, s]
         di = layer.bc['di'][:, s] = di * layer.activate_input(layer.fc['i'][:, s], linear=False, deriv=True)
 
-        # (7s) Gradients with respect to forget gate
+        # (7s) Gradient of the loss w.r.t forget gate
         df = dC * layer.fc['Cp'][:, s]
         df = layer.bc['df'][:, s] = df * layer.activate_forget(layer.fc['f'][:, s], linear=False, deriv=True)
 
-        # (8s) Gradient of the loss with respect to next hidden state at s-1
+        # (8s) Gradient of the loss w.r.t previous hidden state
         dhn = np.dot(do, layer.p['Wo'].T)
         dhn += np.dot(dg, layer.p['Wg'].T)
         dhn += np.dot(di, layer.p['Wi'].T)
         dhn += np.dot(df, layer.p['Wf'].T)
 
-        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['h']]
+        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['h']]       # To previous cell
 
-        # (9s) Gradient of the loss with respect to next memory state at s-1
-        dCn = layer.bc['dCn'][:, s] = layer.fc['f'][:, s] * dC
+        # (9s) Gradient of the loss w.r.t previous memory state
+        dCn = layer.bc['dCn'][:, s] = layer.fc['f'][:, s] * dC    # To previous cell
 
-        # (10s) Gradient of the loss with respect to X
+        # (10s) Gradient of the loss w.r.t X
         dX = np.dot(dg, layer.p['Ug'].T)
         dX += np.dot(do, layer.p['Uo'].T)
         dX += np.dot(di, layer.p['Ui'].T)

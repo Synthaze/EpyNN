@@ -17,8 +17,11 @@ class Flatten(Layer):
     """
 
     def __init__(self):
-
+        """Initialize instance variable attributes.
+        """
         super().__init__()
+
+        self.trainable = False
 
         return None
 
@@ -78,6 +81,7 @@ class Flatten(Layer):
     def update_parameters(self):
         """Wrapper for :func:`nnlibs.flatten.parameters.flatten_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
-        flatten_update_parameters(self)
+        if self.trainable:
+            flatten_update_parameters(self)
 
         return None
