@@ -36,10 +36,10 @@ class Pooling(Layer):
         super().__init__()
 
         pool_size = pool_size if isinstance(pool_size, tuple) else (pool_size, pool_size)
+        strides = strides if isinstance(strides, tuple) else pool_size
 
         self.d['ph'], self.d['pw'] = pool_size
-        self.d['sh'], self.d['sw'] = strides if isinstance(strides, tuple) else pool_size
-
+        self.d['sh'], self.d['sw'] = strides
         self.pool = pool
 
         self.activation = { 'pool': self.pool.__name__ }

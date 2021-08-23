@@ -1,7 +1,4 @@
 # EpyNN/nnlibs/pooling/parameters.py
-# Standard library imports
-import math
-
 # Related third party imports
 import numpy as np
 
@@ -13,19 +10,10 @@ def pooling_compute_shapes(layer, A):
 
     layer.fs['X'] = X.shape    # (m, ih, iw, n)
 
-    dims = ['m', 'ih', 'iw', 'n']
-
-    layer.d.update({d: i for d, i in zip(dims, layer.fs['X'])})
-
-    layer.d['oh'] = math.ceil(min(layer.d['ph'], layer.d['ih'] - layer.d['ph'] + 1) / layer.d['sh'])
-    layer.d['ow'] = math.ceil(min(layer.d['pw'], layer.d['iw'] - layer.d['pw'] + 1) / layer.d['sw'])
-
-    layer.d['zh'] = math.floor(((layer.d['ih'] - layer.d['ph']) / layer.d['sh'])) + 1
-    layer.d['zw'] = math.floor(((layer.d['iw'] - layer.d['pw']) / layer.d['sw'])) + 1
-
-    layer.fs['Z'] = (layer.d['m'], layer.d['zh'], layer.d['zw'], layer.d['n'])
-
-
+    layer.d['m'] = layer.fs['X'][0]     #
+    layer.d['ih'] = layer.fs['X'][1]    #
+    layer.d['iw'] = layer.fs['X'][2]    #
+    layer.d['n'] = layer.fs['X'][3]     #
 
     return None
 

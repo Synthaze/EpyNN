@@ -2,6 +2,30 @@
 # Related third party imports
 import numpy as np
 
+def extract_blocks(X_data, sizes, strides):
+
+    ph, pw = sizes
+    sh, sw = strides
+
+    idh = [[i + j for j in range(ph + 1)] for i in range(X_data.shape[1] - ph + 1) if i % sh == 0]
+    idw = [[i + j for j in range(pw + 1)] for i in range(X_data.shape[2] - pw + 1) if i % sw == 0]
+
+    blocks = []
+
+    for h in idh:
+        hs, he = h[0], h[-1]
+
+        blocks.append([])
+
+        for w in idw:
+            ws, we = w[0], w[-1]
+
+            blocks[-1].append(X_data[:, hs:he, ws:we, :])
+
+    blocks = np.array(blocks)
+
+    return blocks
+
 
 def initialize_forward(layer, A):
     """Forward cache initialization.
@@ -20,61 +44,29 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    Z = layer.fc['Z'] = np.empty(layer.fs['Z'])
+    sizes = (layer.d['ph'], layer.d['pw'])
+    strides = (layer.d['sh'], layer.d['sw'])
 
-    return X, Z
+    Xb = layer.fc['Xb'] = extract_blocks(X, sizes, strides)
+
+    return X, Xb
 
 
 def pooling_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache
-    X, Z = initialize_forward(layer, A)
+    X, Xb = initialize_forward(layer, A)
 
-    # Iterate over image rows
-    for h in range(layer.d['oh']):
+    #
+    Xb = layer.pool(Xb, axis=4)
+    Xb = layer.pool(Xb, axis=3)
 
-        #
-        hs = h * layer.d['sh']
-        hp = layer.d['ih'] - (layer.d['ih'] - h) % layer.d['ph']
+    #
+    Xb = np.moveaxis(Xb, 0, 2)
+    Xb = np.moveaxis(Xb, 0, 2)
 
-        layer.fs['Zw'] = (
-                     layer.d['m'],
-                     int((hp - h) / layer.d['ph']),
-                     layer.d['zw'],
-                     layer.d['n']
-                     )
-
-        #
-        Zw = np.empty(layer.fs['Zw'])
-
-        # Iterate over image columns
-        for w in range(layer.d['ow']):
-
-            #
-            ws = w * layer.d['sw']
-            wsp = layer.d['iw'] - (layer.d['iw'] - ws) % layer.d['pw']
-
-            # () Extract block of shape
-            block = X[:, h:hp, ws:wsp]
-
-            #
-            block = np.array(np.split(block, (wsp - ws) / layer.d['pw'], axis=2))
-            block = np.array(np.split(block, (hp - h) / layer.d['ph'], axis=2))
-
-            #
-            block = layer.pool(block, axis=4)
-            block = layer.pool(block, axis=3)
-
-            #
-            block = np.moveaxis(block, 0, 2)
-            block = np.moveaxis(block, 0, 2)
-
-            #
-            Zw[:, :, w::layer.d['ow'], :] = block
-
-        #
-        Z[:, hs::layer.d['oh'],:] = Zw
+    Z = Xb
 
     A = layer.fc['A'] = layer.fc['Z'] = Z
 

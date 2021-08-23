@@ -99,7 +99,7 @@ def MAE(Y, A, deriv=False):
         loss = np.sum(np.abs(Y - A), axis=1)
 
     elif deriv:
-        loss = -1. * (Y-A) / np.abs(Y-A)
+        loss = -1. * (Y-A) / (np.abs(Y-A)+E_SAFE)
 
     loss /= A.shape[1]
 

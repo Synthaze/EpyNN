@@ -68,7 +68,7 @@ def convolution_forward(layer, A):
             #
             block = np.expand_dims(block, axis=6)
 
-            layer.Xb[w].append(block)
+            layer.Xb[h].append(block)
 
             # () Linear activation
             block = block * layer.p['W']
