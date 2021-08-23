@@ -15,15 +15,24 @@ class Dropout(Layer):
     """
     Definition of a dropout layer prototype.
 
-    :param keep_prob: Probability to keep active one unit from previous layer.
-    :type keep_prob: float
+    :param drop_prob: Probability to drop one data point from previous layer to next layer, defaults to 0.5.
+    :type drop_prob: float, optional
+
+    :param axis: Compute and apply dropout mask along defined axis, defaults to all axis.
+    :type axis: int or tuple[int], optional
     """
 
-    def __init__(self, keep_prob=0.5):
-
+    def __init__(self, drop_prob=0.5, axis=()):
+        """Initialize instance variable attributes.
+        """
         super().__init__()
 
-        self.d['k'] = keep_prob
+        axis = axis if isinstance(axis, tuple) else (axis,)
+        print(isinstance(axis, tuple))
+        self.d['d'] = drop_prob
+        self.d['a'] = axis
+
+        self.trainable = False
 
         return None
 
@@ -46,20 +55,32 @@ class Dropout(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.dropout.forward.dropout_forward()`.
+
+        :param A: Output of forward propagation from previous layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         self.compute_shapes(A)
-        A = dropout_forward(self, A)
+        A = self.fc['A'] = dropout_forward(self, A)
         self.update_shapes(self.fc, self.fs)
 
         return A
 
     def backward(self, dX):
         """Wrapper for :func:`nnlibs.dropout.backward.dropout_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         dX = dropout_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 
-        return dA
+        return dX
 
     def compute_gradients(self):
         """Wrapper for :func:`nnlibs.dropout.parameters.dropout_compute_gradients()`. Dummy method, there is no gradients to compute in layer.
@@ -71,6 +92,7 @@ class Dropout(Layer):
     def update_parameters(self):
         """Wrapper for :func:`nnlibs.dropout.parameters.dropout_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
-        dropout_update_parameters(self)
+        if self.trainable:
+            dropout_update_parameters(self)
 
         return None

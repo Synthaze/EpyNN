@@ -28,12 +28,12 @@ def dropout_forward(layer, A):
     D = layer.np_rng.uniform(0, 1, layer.fs['D'])
 
     # (3) Apply a step function with respect to keep_prob (k)
-    D = layer.fc['D'] = (D < layer.d['k'])
+    D = layer.fc['D'] = (D > layer.d['d'])
 
     # (4) Drop data points
     A = X * D
-    A = A / layer.d['k']
 
-    layer.fc['A'] = A
+    # (5) Scale up signal
+    A /= layer.d['s']
 
     return A    # To next layer

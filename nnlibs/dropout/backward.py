@@ -28,8 +28,10 @@ def dropout_backward(layer, dX):
 
     # (2) Apply the dropout mask used in the forward pass
     dX = dA * layer.fc['D']
-    dX /= layer.d['k']
 
-    dX = layer.bc['dX'] = dX
+    # (3) Scale up gradients
+    dX /= layer.d['s']
+
+    layer.bc['dX'] = dX
 
     return dX    # To previous layer
