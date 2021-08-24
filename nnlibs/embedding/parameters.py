@@ -3,11 +3,11 @@
 
 
 def embedding_compute_shapes(layer, A):
-    """Compute forward shapes and dimensions for layer.
+    """Compute forward shapes and dimensions from input for layer.
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape  #  (m .. n)
+    layer.fs['X'] = X.shape    #  (m, .. )
 
     layer.d['m'] = layer.fs['X'][0]        # Number of samples (m)
     layer.d['n'] = X.size // layer.d['m']  # Number of features (n)
@@ -16,7 +16,7 @@ def embedding_compute_shapes(layer, A):
 
 
 def embedding_initialize_parameters(layer):
-    """Initialize parameters for layer.
+    """Initialize parameters from shapes for layer.
     """
     # No parameters to initialize for Embedding layer
 
@@ -32,7 +32,7 @@ def embedding_compute_gradients(layer):
 
 
 def embedding_update_parameters(layer):
-    """Update parameters for layer.
+    """Update parameters from gradients for layer.
     """
     # No parameters to update for Embedding layer
 

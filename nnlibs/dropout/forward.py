@@ -17,7 +17,7 @@ def initialize_forward(layer, A):
 
     return X
 
-
+import numpy as np
 def dropout_forward(layer, A):
     """Forward propagate signal to next layer.
     """
@@ -34,6 +34,6 @@ def dropout_forward(layer, A):
     A = X * D
 
     # (5) Scale up signal
-    A /= layer.d['s']
+    A /= (1 - layer.d['d'])
 
     return A    # To next layer

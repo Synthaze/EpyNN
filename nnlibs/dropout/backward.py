@@ -30,7 +30,7 @@ def dropout_backward(layer, dX):
     dX = dA * layer.fc['D']
 
     # (3) Scale up gradients
-    dX /= layer.d['s']
+    dX /= (1 - layer.d['d'])
 
     layer.bc['dX'] = dX
 

@@ -20,6 +20,12 @@ def initialize_forward(layer, A):
 
     :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
+
+    :return: Input of forward propagation for current layer.
+    :rtype: :class:`numpy.ndarray`
+
+    :return: Input blocks of forward propagation for current layer.
+    :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = padding(A, layer.d['p'])
 
@@ -37,26 +43,20 @@ def convolution_forward(layer, A):
     # (1) Initialize cache and pad image
     X, Xb = initialize_forward(layer, A)
 
-    #
-    Xb = np.moveaxis(Xb, 2, 0)
-
-    #
+    # (m, mh, mw, fh, fw, d) -> (m, mh, mw, fh, fw, d, u)
     Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)
 
-    # () Linear activation
-    Xb = Xb * layer.p['W']
+    # (2) Linear activation Xb -> Zb
+    Zb = Xb * layer.p['W']
 
-    #
-    Xb = np.sum(Xb, axis=5)
-    Xb = np.sum(Xb, axis=4)
-    Xb = np.sum(Xb, axis=3)
+    # (3) Sum block products
+    Z = Zb                           # (m, mh, mw, fh, fw, d, u)
+    Z = np.sum(Z, axis=(5, 4, 3))    # (m, mh, mw, u)
 
-    Z = layer.fc['Z'] = Xb
+    # (4) Add bias to linear activation product
+    Z = layer.fc['Z'] = Z  if layer.use_bias else Z
 
-    # () Add bias to linear activation product
-    Z = Z + layer.p['b'] if layer.use_bias else Z
-
-    # () Non-linear activation
+    # (5) Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer

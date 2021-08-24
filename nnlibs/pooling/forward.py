@@ -18,15 +18,18 @@ def initialize_forward(layer, A):
     :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return:
+    :return: Input of forward propagation for current layer.
+    :rtype: :class:`numpy.ndarray`
+
+    :return: Input blocks of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A
 
-    sizes = (layer.d['ph'], layer.d['pw'])
+    pool_size = (layer.d['ph'], layer.d['pw'])
     strides = (layer.d['sh'], layer.d['sw'])
 
-    Xb = layer.fc['Xb'] = extract_blocks(X, sizes, strides)
+    Xb = extract_blocks(X, pool_size, strides)
 
     return X, Xb
 
@@ -34,16 +37,11 @@ def initialize_forward(layer, A):
 def pooling_forward(layer, A):
     """Forward propagate signal to next layer.
     """
-    # (1) Initialize cache
+    # (1) Initialize cache and extract X blocks
     X, Xb = initialize_forward(layer, A)
 
-    #
-    Xb = layer.pool(Xb, axis=4)
-    Xb = layer.pool(Xb, axis=3)
-
-    #
-    Xb = np.moveaxis(Xb, 0, 2)
-    Xb = np.moveaxis(Xb, 0, 2)
+    # (2) Block pooling with respect to features depth (d)
+    Xb = layer.pool(Xb, axis=(4, 3))    # (width, height)
 
     Z = Xb
 

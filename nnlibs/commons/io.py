@@ -129,31 +129,28 @@ def encode_dataset(X_data, word_to_idx, vocab_size):
     return X_encoded
 
 
-
-def extract_blocks(X_data, sizes, strides):
+def extract_blocks(X, sizes, strides):
     """.
     """
-    ph, pw = sizes
+    wh, ww = sizes
     sh, sw = strides
 
-    idh = [[i + j for j in range(ph + 1)] for i in range(X_data.shape[1] - ph + 1) if i % sh == 0]
-    idw = [[i + j for j in range(pw + 1)] for i in range(X_data.shape[2] - pw + 1) if i % sw == 0]
+    Xh = X.shape[1] - wh + 1
+    Xw = X.shape[2] - ww + 1
 
-    blocks = []
+    Xb = X
 
-    for h in idh:
-        hs, he = h[0], h[-1]
+    Xb = np.array([Xb[ :, :, w:w + ww, :]
+                   for w in range(Xw)
+                   if w % sw == 0])
 
-        blocks.append([])
+    Xb = np.array([Xb[:, :, h:h + wh, :, :]
+                   for h in range(Xh)
+                   if h % sh == 0])
 
-        for w in idw:
-            ws, we = w[0], w[-1]
+    Xb = np.moveaxis(Xb, 2, 0)
 
-            blocks[-1].append(X_data[:, hs:he, ws:we, :])
-
-    blocks = np.array(blocks)
-
-    return blocks
+    return Xb
 
 
 def padding(X_data, padding, forward=True):
@@ -168,12 +165,12 @@ def padding(X_data, padding, forward=True):
     :param forward: Set to False to remove padding, defaults to `True`.
     :type forward: bool, optional
     """
-    if forward:
+    if padding and forward:
         # Pad image
         shape = ((0, 0), (padding, padding), (padding, padding), (0, 0))
-        X_data = np.pad(X_data, shape, mode='constant', constant_values = (0, 0))
+        X_data = np.pad(X_data, shape, mode='constant', constant_values=(0, 0))
 
-    elif not forward:
+    elif padding and not forward:
         # Remove padding
         X_data = X_data[:, padding:-padding, padding:-padding, :]
 

@@ -14,13 +14,8 @@ def initialize_backward(layer, dX):
 
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
-
-    :return: Zeros-output of backward propagation for current layer.
-    :rtype: :class:`numpy.ndarray`
     """
     dA = layer.bc['dA'] = dX
-
-    layer.fc['dX'] = np.zeros(layer.fs['X'])
 
     return dA
 
@@ -31,14 +26,19 @@ def pooling_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
 
-    mask = np.repeat(layer.fc['Z'], layer.d['ph'], axis=1)
+    # (2) Recover dimensions for error
+    dA = np.repeat(dA, layer.d['ph'], axis=1)
+    dA = np.repeat(dA, layer.d['pw'], axis=2)
+
+    # (3) Recover dimension for mask
+    mask = layer.fc['Z']
+    mask = np.repeat(mask, layer.d['ph'], axis=1)
     mask = np.repeat(mask, layer.d['pw'], axis=2)
 
-    block = np.repeat(dA, layer.d['ph'], axis=1)
-    block = np.repeat(block, layer.d['pw'], axis=2)
-
+    # (4) Mapping pooling output to input
     mask = (layer.fc['X'] == mask)
 
-    dX = layer.fc['dX'] = block * mask
+    # (5) Preserve gradients
+    dX = layer.fc['dX'] = dA * mask
 
     return dX

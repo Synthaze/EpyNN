@@ -20,8 +20,6 @@ def initialize_backward(layer, dX):
     """
     dA = layer.bc['dA'] = dX
 
-    layer.bc['dX'] = np.zeros(layer.fs['X'])
-
     return dA
 
 
@@ -31,18 +29,20 @@ def convolution_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
 
+    # (2) Gradient of the loss with respect to Z
     dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    block = np.expand_dims(dZ, axis=3)
-    block = np.expand_dims(block, axis=3)
-    block = np.expand_dims(block, axis=3)
+    # (3) Expand dZ (m, mh, mw, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, fw, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, fw, d, u)
 
-    # () Gradients of the loss with respect to X
-    dX = block * layer.p['W']             # ()
-    dX = np.sum(dX, axis=6)               # ()
-    dX = np.reshape(dX, layer.fs['X'])    # ()
+    # (4) Gradients of the loss with respect to X
+    dX = dZ * layer.p['W']                # (4.1) X blocks
+    dX = np.sum(dX, axis=6)               # (4.2) X
+    dX = np.reshape(dX, layer.fs['X'])    # (4.3) Reshape dX
 
-    # Remove padding
+    # Remove zeros-padding of feature planes (h, w)
     dX = layer.bc['dX'] = padding(dX, layer.d['p'], forward=False)
 
     return dX

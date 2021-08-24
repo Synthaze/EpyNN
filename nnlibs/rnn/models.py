@@ -41,12 +41,12 @@ class RNN(Layer):
     """
 
     def __init__(self,
-                unit_cells=1,
-                activate=tanh,
-                initialization=xavier,
-                clip_gradients=True,
-                sequences=False,
-                se_hPars=None):
+                 unit_cells=1,
+                 activate=tanh,
+                 initialization=xavier,
+                 clip_gradients=True,
+                 sequences=False,
+                 se_hPars=None):
         """Initialize instance variable attributes.
         """
         super().__init__(se_hPars)

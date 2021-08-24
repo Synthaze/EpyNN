@@ -44,13 +44,13 @@ class Embedding(Layer):
     """
 
     def __init__(self,
-                X_data=None,
-                Y_data=None,
-                relative_size=(2, 1, 1),
-                batch_size=None,
-                X_encode=False,
-                Y_encode=False,
-                X_scale=False):
+                 X_data=None,
+                 Y_data=None,
+                 relative_size=(2, 1, 1),
+                 batch_size=None,
+                 X_encode=False,
+                 Y_encode=False,
+                 X_scale=False):
 
         super().__init__()
 
@@ -75,6 +75,8 @@ class Embedding(Layer):
         self.dsets = [self.dtrain, self.dtest, self.dval]
 
         self.dsets = [dset for dset in self.dsets if dset.active]
+
+        self.trainable = False
 
         return None
 
@@ -104,6 +106,12 @@ class Embedding(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.embedding.forward.embedding_forward()`.
+
+        :param A: Output of forward propagation from *previous* layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for **current** layer.
+        :rtype: :class:`numpy.ndarray`
         """
         A = embedding_forward(self, A)
         self.update_shapes(self.fc, self.fs)
@@ -112,6 +120,12 @@ class Embedding(Layer):
 
     def backward(self, dX):
         """Wrapper for :func:`nnlibs.embedding.backward.embedding_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
         dX = embedding_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
@@ -128,6 +142,7 @@ class Embedding(Layer):
     def update_parameters(self):
         """Wrapper for :func:`nnlibs.embedding.parameters.embedding_update_parameters()`. Dummy method, there is no parameters to update in layer.
         """
-        embedding_update_parameters(self)
+        if self.trainable:
+            embedding_update_parameters(self)
 
         return None
