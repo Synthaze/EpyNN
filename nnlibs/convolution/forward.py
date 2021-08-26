@@ -33,23 +33,25 @@ def convolution_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache and pad image
-    X = initialize_forward(layer, A)
+    X = initialize_forward(layer, A)    # (m, h, w, d)
 
-    #
+    # Filter size (fh, fw) and strides (sh, sw)
     Xb = np.array([[X[ :, h:h + layer.d['fh'], w:w + layer.d['fw'], :]
+                    # Inner loop w -> ow * fw    # (ow, m, h, fw, d)
                     for w in range(layer.d['w'] - layer.d['fw'] + 1)
                     if w % layer.d['sw'] == 0]
-                    for h in range(layer.d['h'] - layer.d['fh'] + 1)
-                    if h % layer.d['sh'] == 0])
+                # Outer loop h -> oh * fh        # (oh, ow, m, fh, fw, d)
+                for h in range(layer.d['h'] - layer.d['fh'] + 1)
+                if h % layer.d['sh'] == 0])
 
-    #
-    Xb = np.moveaxis(Xb, 2, 0)
+    # Bring back m along axis 0   # (oh, ow, m, fh, fw, d)
+    Xb = np.moveaxis(Xb, 2, 0)    # (m, oh, ow, fh, fw, d)
 
-    # (m, mh, mw, fh, fw, d) -> (m, mh, mw, fh, fw, d, u)
-    Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)
+    # Add dimension for filter units (u) on axis 6      # (m, oh, ow, fh, fw, d)
+    Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)    # (m, oh, ow, fh, fw, d, u)
 
     # (2) Linear activation Xb -> Zb
-    Zb = Xb * layer.p['W']
+    Zb = Xb * layer.p['W'] # (m, oh, ow, fh, fw, d, u) * (fh, fw, d, u)
 
     # (3) Sum block products
     Z = Zb                   # (m, oh, ow, fh, fw, d, u)

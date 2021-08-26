@@ -36,7 +36,7 @@ def initialize_backward(layer, dX):
 
 
 def gru_backward(layer, dX):
-    """Backward propagate error through GRU cells to previous layer.
+    """Backward propagate error gradients through GRU cells to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradients
     dA, dhn = initialize_backward(layer, dX)

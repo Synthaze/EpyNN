@@ -36,7 +36,7 @@ def initialize_backward(layer, dX):
 
 
 def rnn_backward(layer, dX):
-    """Backward propagate error through RNN cells to previous layer.
+    """Backward propagate error gradients through RNN cells to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradient
     dA, dhn = initialize_backward(layer, dX)

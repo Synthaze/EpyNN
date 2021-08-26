@@ -21,7 +21,7 @@ def initialize_backward(layer, dX):
 
 
 def pooling_backward(layer, dX):
-    """Backward propagate error to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
@@ -44,12 +44,12 @@ def pooling_backward(layer, dX):
 
     dX = np.zeros_like(layer.fc['X'])
 
-    for h in range(dA.shape[1]):
+    for h in range(layer.d['oh']):
 
         hs = h * layer.d['sh']
         he = hs + layer.d['ph']
 
-        for w in range(dA.shape[2]):
+        for w in range(layer.d['ow']):
 
             ws = w * layer.d['sw']
             we = ws + layer.d['pw']

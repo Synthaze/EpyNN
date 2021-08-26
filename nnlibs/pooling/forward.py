@@ -43,7 +43,8 @@ def pooling_forward(layer, A):
     Xb = np.moveaxis(Xb, 2, 0)
 
     #
-    Z = layer.pool(Xb, axis=(4, 3))
+    Z = layer.pool(Xb, axis=4)
+    Z = layer.pool(Z, axis=3)
 
     #
     A = layer.fc['A'] = layer.fc['Z'] = Z

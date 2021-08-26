@@ -21,7 +21,7 @@ def initialize_backward(layer, dX):
 
 
 def flatten_backward(layer, dX):
-    """Backward propagate error to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1)
     dA = initialize_backward(layer, dX)

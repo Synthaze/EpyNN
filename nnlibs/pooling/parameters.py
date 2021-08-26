@@ -15,6 +15,7 @@ def pooling_compute_shapes(layer, A):
     layer.d['w'] = layer.fs['X'][2]    # Width of features map  (w)
     layer.d['d'] = layer.fs['X'][3]    # Depth of features map  (d)
 
+    # Output height (oh) and width (ow)
     layer.d['oh'] = math.floor((layer.d['h']-layer.d['ph']) / layer.d['sh']) + 1
     layer.d['ow'] = math.floor((layer.d['w']-layer.d['pw']) / layer.d['sw']) + 1
 

@@ -11,12 +11,16 @@ def convolution_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape         # (m, h, w, d)
+    layer.fs['X'] = X.shape    # (m, h, w, d)
 
     layer.d['m'] = layer.fs['X'][0]     # Number of samples  (m)
     layer.d['h'] = layer.fs['X'][1]     # Height of features (h)
     layer.d['w'] = layer.fs['X'][2]     # Width of features  (w)
     layer.d['d'] = layer.fs['X'][3]     # Depth of features  (d)
+
+    # Output height (oh) and width (ow)
+    layer.d['oh'] = math.floor((layer.d['h']-layer.d['fh']) / layer.d['sh']) + 1
+    layer.d['ow'] = math.floor((layer.d['w']-layer.d['fw']) / layer.d['sw']) + 1
 
     # Shapes for trainable parameters
     # filter_height (fh), filter_width (fw), features_depth (d), unit_filters (u)
@@ -48,9 +52,9 @@ def convolution_compute_gradients(layer):
     dZ = layer.bc['dZ']     # Gradient of the loss with respect to Z
 
     # Expand dZ dimensions with respect to Xb
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fw, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fh, fw, d, u)
 
     # (1) Gradients of the loss with respect to W
     dW = dZ * Xb               # (1.1)
@@ -58,7 +62,7 @@ def convolution_compute_gradients(layer):
     dW = np.sum(dW, axis=1)    # (1.2.2)
     dW = np.sum(dW, axis=0)    # (1.2.3)
 
-    layer.g['dW'] = dW
+    layer.g['dW'] = dW         # (fh, fw, d, u)
 
     # (2) Gradients of the loss with respect to b
     db = dW                    # (2.1)
