@@ -129,30 +129,6 @@ def encode_dataset(X_data, word_to_idx, vocab_size):
     return X_encoded
 
 
-def extract_blocks(X, sizes, strides):
-    """.
-    """
-    wh, ww = sizes
-    sh, sw = strides
-
-    Xh = X.shape[1] - wh + 1
-    Xw = X.shape[2] - ww + 1
-
-    Xb = X
-
-    Xb = np.array([Xb[ :, :, w:w + ww, :]
-                   for w in range(Xw)
-                   if w % sw == 0])
-
-    Xb = np.array([Xb[:, :, h:h + wh, :, :]
-                   for h in range(Xh)
-                   if h % sh == 0])
-
-    Xb = np.moveaxis(Xb, 2, 0)
-
-    return Xb
-
-
 def padding(X_data, padding, forward=True):
     """Image padding.
 
@@ -175,3 +151,27 @@ def padding(X_data, padding, forward=True):
         X_data = X_data[:, padding:-padding, padding:-padding, :]
 
     return X_data
+
+
+def extract_blocks(X, sizes, strides):
+    """.
+    """
+    wh, ww = sizes
+    sh, sw = strides
+
+    Xh = X.shape[1] - wh + 1
+    Xw = X.shape[2] - ww + 1
+
+    Xb = X
+
+    Xb = np.array([Xb[ :, :, w:w + ww, :]
+                   for w in range(Xw)
+                   if w % sw == 0])
+
+    Xb = np.array([Xb[:, :, h:h + wh, :, :]
+                   for h in range(Xh)
+                   if h % sh == 0])
+
+    Xb = np.moveaxis(Xb, 2, 0)
+
+    return Xb

@@ -53,7 +53,7 @@ def gru_backward(layer, dX):
 
         # (4s) Gradient of the loss w.r.t hidden hat (hh)
         dhh = dh * (1-layer.fc['z'][:, s])
-        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
+        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['hh'][:, s], linear=False, deriv=True)
 
         # (5s) Gradient of the loss w.r.t update gate
         dz = dh * (layer.fc['hp'][:, s] - layer.fc['hh'][:, s])

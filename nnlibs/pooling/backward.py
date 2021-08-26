@@ -26,19 +26,38 @@ def pooling_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
 
-    # (2) Recover dimensions for error
-    dA = np.repeat(dA, layer.d['ph'], axis=1)
-    dA = np.repeat(dA, layer.d['pw'], axis=2)
+    # dA.shape = (m, oh, ow, d)
+    dA = np.repeat(dA, layer.d['zh'], axis=1)      # (m, zh * oh, ow, d)
+    dA = np.repeat(dA, layer.d['zw'], axis=2)      # (m, zh * oh, zw * ow, d)
+    dA = np.pad(dA, layer.bs['p'], mode='constant', constant_values=0)
 
-    # (3) Recover dimension for mask
+    # Z.shape = (m, oh, ow, d)
     mask = layer.fc['Z']
-    mask = np.repeat(mask, layer.d['ph'], axis=1)
-    mask = np.repeat(mask, layer.d['pw'], axis=2)
+    mask = np.repeat(mask, layer.d['zh'], axis=1)  # (m, zh * oh, ow, d)
+    mask = np.repeat(mask, layer.d['zw'], axis=2)  # (m, zh * oh, zw * ow, d)
+    mask = np.pad(mask, layer.bs['p'], mode='constant', constant_values=0)
 
-    # (4) Mapping pooling output to input
+    #
     mask = (layer.fc['X'] == mask)
 
-    # (5) Preserve gradients
-    dX = layer.fc['dX'] = dA * mask
+    dA = dA * mask
+
+    dX = np.zeros_like(layer.fc['X'])
+
+    for h in range(dA.shape[1]):
+
+        hs = h * layer.d['sh']
+        he = hs + layer.d['ph']
+
+        for w in range(dA.shape[2]):
+
+            ws = w * layer.d['sw']
+            we = ws + layer.d['pw']
+
+            dXb = dA[:, hs:he, ws:we, :]
+
+            dX[:, hs:he, ws:we, :] += dXb
+
+    layer.bc['dX'] = dX
 
     return dX

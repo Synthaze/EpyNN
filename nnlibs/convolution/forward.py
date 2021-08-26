@@ -3,10 +3,7 @@
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.io import (
-    padding,
-    extract_blocks,
-)
+from nnlibs.commons.io import padding, extract_blocks
 
 
 def initialize_forward(layer, A):
@@ -29,19 +26,24 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = padding(A, layer.d['p'])
 
-    sizes = (layer.d['fh'], layer.d['fw'])
-    strides = (layer.d['sh'], layer.d['sw'])
-
-    Xb = extract_blocks(X, sizes, strides)
-
-    return X, Xb
+    return X
 
 
 def convolution_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache and pad image
-    X, Xb = initialize_forward(layer, A)
+    X = initialize_forward(layer, A)
+
+    #
+    Xb = np.array([[X[ :, h:h + layer.d['fh'], w:w + layer.d['fw'], :]
+                    for w in range(layer.d['w'] - layer.d['fw'] + 1)
+                    if w % layer.d['sw'] == 0]
+                    for h in range(layer.d['h'] - layer.d['fh'] + 1)
+                    if h % layer.d['sh'] == 0])
+
+    #
+    Xb = np.moveaxis(Xb, 2, 0)
 
     # (m, mh, mw, fh, fw, d) -> (m, mh, mw, fh, fw, d, u)
     Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)
@@ -50,11 +52,13 @@ def convolution_forward(layer, A):
     Zb = Xb * layer.p['W']
 
     # (3) Sum block products
-    Z = Zb                           # (m, mh, mw, fh, fw, d, u)
-    Z = np.sum(Z, axis=(5, 4, 3))    # (m, mh, mw, u)
+    Z = Zb                   # (m, oh, ow, fh, fw, d, u)
+    Z = np.sum(Z, axis=5)    # (m, oh, ow, fh, fw, u)
+    Z = np.sum(Z, axis=4)    # (m, oh, mw, fh, u)
+    Z = np.sum(Z, axis=3)    # (m, oh, ow, u)
 
     # (4) Add bias to linear activation product
-    Z = layer.fc['Z'] = Z  if layer.use_bias else Z
+    Z = layer.fc['Z'] = Z + layer.p['b']
 
     # (5) Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)

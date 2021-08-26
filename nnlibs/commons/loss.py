@@ -45,6 +45,7 @@ def CCE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+
     if not deriv:
         loss = -1. * np.sum(Y * np.log(A), axis=1)
 

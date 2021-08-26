@@ -37,6 +37,7 @@ def model_initialize(model, params=True, end='\n'):
 
     for layer in model.layers:
 
+        layer.check_fw = False
         layer.name = layer.__class__.__name__
         model.network[id(layer)]['Layer'] = layer.name
         model.network[id(layer)]['Activation'] = layer.activation
@@ -63,9 +64,13 @@ def model_initialize(model, params=True, end='\n'):
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
+        layer.check_fw = True
+
     dX = dA = model.training_loss(Y, A, deriv=True)
 
     for layer in reversed(model.layers):
+
+        layer.check_bw = False
 
         cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
 
@@ -77,6 +82,8 @@ def model_initialize(model, params=True, end='\n'):
         cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'], end=end)
         layer.compute_gradients()
 
+        layer.check_bw = True
+
     cprint('--- EpyNN Check OK! --- ', attrs=['bold'], end=end)
 
     model.e = 0
@@ -87,10 +94,39 @@ def model_initialize(model, params=True, end='\n'):
 def model_initialize_exceptions(model,trace):
     """Handle error in model initialization and show logs.
     """
-    for layer in model.network.keys():
-        pretty_json(model.network[layer])
 
-    cprint('/!\\ Initialization of EpyNN model failed','red',attrs=['bold'])
+    layers_fw = [layer for layer in model.layers if hasattr(layer, 'check_fw')]
+    layers_bw = reversed([layer for layer in model.layers if hasattr(layer, 'check_bw')])
+
+    cprint('\n/!\\ Initialization of EpyNN model failed', 'red', attrs=['bold'])
+
+    # for layer in layers_fw:
+    #     layer.update_shapes(layer.fc, layer.fs)
+    #     if layer.check_fw:
+    #         cprint('\n%s FW OK' % layer.name, 'white',  attrs=['bold'])
+    #         print('Output shape FW:', layer.fs['A'])
+    #     if not layer.check_fw:
+    #         cprint('\n%s layer has crashed' % layer.name, 'red',  attrs=['bold'])
+    #         cprint('\nDimensions (layer.d):', 'white',  attrs=['bold'])
+    #         print(', '.join([k + ': ' + str(v) for k, v in layer.d.items()]))
+    #         cprint('\nForward shapes (layer.fs):', 'green',  attrs=['bold'])
+    #         print('\n'.join([k + ': ' + str(v) for k, v in layer.fs.items()]))
+    #         break
+    #
+    # for layer in layers_bw:
+    #     layer.update_shapes(layer.bc, layer.bs)
+    #     if layer.check_bw:
+    #         cprint('\n%s BW OK' % layer.name, 'white',  attrs=['bold'])
+    #         print('Output shape BW:', layer.bs['dX'])
+    #     if not layer.check_bw:
+    #         cprint('\n%s BW has crashed' % layer.name, 'red',  attrs=['bold'])
+    #         cprint('\nDimensions (layer.d):', 'white',  attrs=['bold'])
+    #         print(', '.join([k + ': ' + str(v) for k, v in layer.d.items()]))
+    #         cprint('\nForward shapes (layer.fs):', 'green',  attrs=['bold'])
+    #         print('\n'.join([k + ': ' + str(v) for k, v in layer.fs.items()]))
+    #         cprint('\nBackward shapes (layers.bs):', 'cyan',  attrs=['bold'])
+    #         print('\n'.join([k + ': ' + str(v) for k, v in layer.bs.items()]))
+    #         break
 
     print(trace)
 

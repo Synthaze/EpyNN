@@ -8,6 +8,7 @@
 *png
 *pdf
 *eps
+nncheck/
 docs/
 test/
 epynn.sh

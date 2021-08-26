@@ -1,17 +1,15 @@
 # EpyNN/nnlibs/convolution/parameters.py
+# Standard library imports
+import math
+
 # Related third party imports
 import numpy as np
-
-# Local application/library specific imports
-from nnlibs.commons.io import padding
 
 
 def convolution_compute_shapes(layer, A):
     """Compute forward shapes and dimensions for layer.
     """
     X = A    # Input of current layer
-
-    X = padding(X, layer.d['p'])    # Zeros-padding of feature planes (h, w)
 
     layer.fs['X'] = X.shape         # (m, h, w, d)
 

@@ -1,6 +1,6 @@
 # EpyNN/nnlibs/pooling/parameters.py
-# Local application/library specific imports
-from nnlibs.commons.io import extract_blocks
+# Standard library imports
+import math
 
 
 def pooling_compute_shapes(layer, A):
@@ -14,6 +14,17 @@ def pooling_compute_shapes(layer, A):
     layer.d['h'] = layer.fs['X'][1]    # Height of features map (h)
     layer.d['w'] = layer.fs['X'][2]    # Width of features map  (w)
     layer.d['d'] = layer.fs['X'][3]    # Depth of features map  (d)
+
+    layer.d['oh'] = math.floor((layer.d['h']-layer.d['ph']) / layer.d['sh']) + 1
+    layer.d['ow'] = math.floor((layer.d['w']-layer.d['pw']) / layer.d['sw']) + 1
+
+    layer.d['zh'] = layer.d['h'] // layer.d['oh']
+    layer.d['zw'] = layer.d['w'] // layer.d['ow']
+
+    layer.d['p1'] = layer.d['h'] - layer.d['zh'] * layer.d['oh']
+    layer.d['p2'] = layer.d['w'] - layer.d['zw'] * layer.d['ow']
+
+    layer.bs['p'] = ((0, 0), (0, layer.d['p1']), (0, layer.d['p2']), (0, 0))
 
     return None
 

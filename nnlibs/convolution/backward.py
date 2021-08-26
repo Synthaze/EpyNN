@@ -2,9 +2,6 @@
 # Related third party imports
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.io import padding
-
 
 def initialize_backward(layer, dX):
     """Backward cache initialization.
@@ -32,17 +29,24 @@ def convolution_backward(layer, dX):
     # (2) Gradient of the loss with respect to Z
     dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    # (3) Expand dZ (m, mh, mw, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, fw, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, mh, mw, fh, fw, d, u)
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
 
-    # (4) Gradients of the loss with respect to X
-    dX = dZ * layer.p['W']                # (4.1) X blocks
-    dX = np.sum(dX, axis=6)               # (4.2) X
-    dX = np.reshape(dX, layer.fs['X'])    # (4.3) Reshape dX
+    dX = np.zeros_like(layer.fc['X'])
 
-    # Remove zeros-padding of feature planes (h, w)
-    dX = layer.bc['dX'] = padding(dX, layer.d['p'], forward=False)
+    for h in range(dA.shape[1]):
+
+        hs = h * layer.d['sh']
+        he = hs + layer.d['fh']
+
+        for w in range(dA.shape[2]):
+
+            ws = w * layer.d['sw']
+            we = ws + layer.d['fw']
+
+            dXb = dZ[:, h, w, :] * layer.p['W']
+
+            dX[:, hs:he, ws:we, :] += np.sum(dXb, axis=4)
 
     return dX

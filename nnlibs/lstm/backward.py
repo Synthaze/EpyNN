@@ -81,7 +81,7 @@ def lstm_backward(layer, dX):
         dhn += np.dot(di, layer.p['Wi'].T)
         dhn += np.dot(df, layer.p['Wf'].T)
 
-        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['h']]       # To previous cell
+        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['u']]       # To previous cell
 
         # (9s) Gradient of the loss w.r.t previous memory state
         dCn = layer.bc['dCn'][:, s] = layer.fc['f'][:, s] * dC    # To previous cell

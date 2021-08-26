@@ -2,9 +2,6 @@
 # Related third party imports
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.io import extract_blocks
-
 
 def initialize_forward(layer, A):
     """Forward cache initialization.
@@ -26,25 +23,29 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    pool_size = (layer.d['ph'], layer.d['pw'])
-    strides = (layer.d['sh'], layer.d['sw'])
-
-    Xb = extract_blocks(X, pool_size, strides)
-
-    return X, Xb
+    return X
 
 
 def pooling_forward(layer, A):
     """Forward propagate signal to next layer.
     """
-    # (1) Initialize cache and extract X blocks
-    X, Xb = initialize_forward(layer, A)
+    # (1) Initialize cache
+    X = initialize_forward(layer, A)
 
-    # (2) Block pooling with respect to features depth (d)
-    Xb = layer.pool(Xb, axis=(4, 3))    # (width, height)
+    #
+    Xb = np.array([[X[ :, h:h + layer.d['ph'], w:w + layer.d['pw'], :]
+                    for w in range(layer.d['w'] - layer.d['pw'] + 1)
+                    if w % layer.d['sw'] == 0]
+                    for h in range(layer.d['h'] - layer.d['ph'] + 1)
+                    if h % layer.d['sh'] == 0])
 
-    Z = Xb
+    #
+    Xb = np.moveaxis(Xb, 2, 0)
 
+    #
+    Z = layer.pool(Xb, axis=(4, 3))
+
+    #
     A = layer.fc['A'] = layer.fc['Z'] = Z
 
     return A    # To next layer
