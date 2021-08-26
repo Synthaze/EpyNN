@@ -11,13 +11,11 @@ def dropout_compute_shapes(layer, A):
     layer.fs['X'] = X.shape    # (m, .. )
 
     layer.d['m'] = layer.fs['X'][0]          # Number of samples  (m)
+    layer.d['n'] = X.size // layer.d['m']    # Number of features (n)
 
     # Shape for dropout mask
-    layer.fs['D'] = [1 if i in layer.d['a'] else layer.fs['X'][i] for i in range(X.ndim)]
-
-    # Scaling factor for signal
-    layer.d['s'] = np.zeros(layer.fs['D']).size / X.size
-    layer.d['s'] *= (1 - layer.d['d'])
+    layer.fs['D'] = [1 if ax in layer.d['a'] else layer.fs['X'][ax]
+                     for ax in range(X.ndim)]
 
     return None
 

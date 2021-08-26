@@ -1,12 +1,10 @@
 # EpyNN/nnlibs/convolution/models.py
-# Related third party imports
-import numpy as np
-
 # Local application/library specific imports
 from nnlibs.commons.models import Layer
 from nnlibs.commons.maths import (
     relu,
     xavier,
+    activation_tune,
 )
 from nnlibs.convolution.forward import convolution_forward
 from nnlibs.convolution.backward import convolution_backward
@@ -22,42 +20,50 @@ class Convolution(Layer):
     """
     Definition of a convolution layer prototype.
 
-    :param n_filters: Number of filters in convolution layer.
-    :type n_filters: int
+    :param unit_filters: Number of unit filters in convolution layer, defaults to 1.
+    :type unit_filters: int, optional
 
-    :param f_width: Filter width for filters in convolution layer.
-    :type f_width: int
+    :param filter_size: Height and width for convolution window, defaults to `(3, 3)`.
+    :type filter_size: int or tuple[int], optional
 
-    :param activate: Activation function for convolution layer.
-    :type activate: function
+    :param strides: Height and width to shift the convolution window by, defaults to `None` which equals `filter_size`.
+    :type strides: int or tuple[int], optional
 
-    :param stride: Walking step for filters.
-    :type stride: int
+    :param padding: Number of zeros to pad each features plane with, defaults to 0.
+    :type padding: int, optional
 
-    :param padding: Zeros to add on each side of each image.
-    :type padding: int
+    :param activate: Non-linear activation of unit filters, defaults to `relu`.
+    :type activate: function, optional
 
-    :param initialization: Weight initialization function for convolution layer.
-    :type initialization: bool
+    :param initialization: Weight initialization function for convolution layer, defaults to `xavier`.
+    :type initialization: function, optional
+
+    :param use_bias: Wether the layer uses bias, defaults to `True`.
+    :type use_bias: bool, optional
+
+    :param se_hPars: Layer hyper-parameters, defaults to `None` and inherits from model.
+    :type se_hPars: dict[str, str or float] or NoneType, optional
     """
 
     def __init__(self,
-                n_filters=1,
-                filter_size=(3, 3),
-                strides=None,
-                padding=0,
-                activate=relu,
-                initialization=xavier,
-                use_bias=True):
-
+                 unit_filters=1,
+                 filter_size=(3, 3),
+                 strides=None,
+                 padding=0,
+                 activate=relu,
+                 initialization=xavier,
+                 use_bias=True,
+                 se_hPars=None):
+        """Initialize instance variable attributes.
+        """
         super().__init__()
 
         filter_size = filter_size if isinstance(filter_size, tuple) else (filter_size, filter_size)
         strides = strides if isinstance(strides, tuple) else filter_size
 
-        self.d['n'] = n_filters
+        self.d['u'] = unit_filters
         self.d['fh'], self.d['fw'] = filter_size
-        self.d['sh'], self.d['sw'] = strides if isinstance(strides, tuple) else filter_size
+        self.d['sh'], self.d['sw'] = strides
         self.d['p'] = padding
         self.activate = activate
         self.initialization = initialization
@@ -87,8 +93,14 @@ class Convolution(Layer):
 
     def forward(self, A):
         """Wrapper for :func:`nnlibs.convolution.forward.convolution_forward()`.
+
+        :param A: Output of forward propagation from *previous* layer.
+        :type A: :class:`numpy.ndarray`
+
+        :return: Output of forward propagation for **current** layer.
+        :rtype: :class:`numpy.ndarray`
         """
-        self.compute_shapes(A)
+        activation_tune(self.se_hPars)
         A = convolution_forward(self, A)
         self.update_shapes(self.fc, self.fs)
 
@@ -96,7 +108,14 @@ class Convolution(Layer):
 
     def backward(self, dX):
         """Wrapper for :func:`nnlibs.convolution.backward.convolution_backward()`.
+
+        :param dX: Output of backward propagation from next layer.
+        :type dX: :class:`numpy.ndarray`
+
+        :return: Output of backward propagation for current layer.
+        :rtype: :class:`numpy.ndarray`
         """
+        activation_tune(self.se_hPars)
         dX = convolution_backward(self, dX)
         self.update_shapes(self.bc, self.bs)
 

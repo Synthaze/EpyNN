@@ -2,9 +2,6 @@
 # Related third party imports
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.io import extract_blocks
-
 
 def initialize_forward(layer, A):
     """Forward cache initialization.
@@ -18,35 +15,38 @@ def initialize_forward(layer, A):
     :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return:
+    :return: Input of forward propagation for current layer.
+    :rtype: :class:`numpy.ndarray`
+
+    :return: Input blocks of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
     """
     X = layer.fc['X'] = A
 
-    sizes = (layer.d['ph'], layer.d['pw'])
-    strides = (layer.d['sh'], layer.d['sw'])
-
-    Xb = layer.fc['Xb'] = extract_blocks(X, sizes, strides)
-
-    return X, Xb
+    return X
 
 
 def pooling_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache
-    X, Xb = initialize_forward(layer, A)
+    X = initialize_forward(layer, A)
 
     #
-    Xb = layer.pool(Xb, axis=4)
-    Xb = layer.pool(Xb, axis=3)
+    Xb = np.array([[X[ :, h:h + layer.d['ph'], w:w + layer.d['pw'], :]
+                    for w in range(layer.d['w'] - layer.d['pw'] + 1)
+                    if w % layer.d['sw'] == 0]
+                    for h in range(layer.d['h'] - layer.d['ph'] + 1)
+                    if h % layer.d['sh'] == 0])
 
     #
-    Xb = np.moveaxis(Xb, 0, 2)
-    Xb = np.moveaxis(Xb, 0, 2)
+    Xb = np.moveaxis(Xb, 2, 0)
 
-    Z = Xb
+    #
+    Z = layer.pool(Xb, axis=4)
+    Z = layer.pool(Z, axis=3)
 
+    #
     A = layer.fc['A'] = layer.fc['Z'] = Z
 
     return A    # To next layer

@@ -40,7 +40,7 @@ def initialize_backward(layer, dX):
 
 
 def lstm_backward(layer, dX):
-    """Backward propagate error through LSTM cells to previous layer.
+    """Backward propagate error gradients through LSTM cells to previous layer.
     """
     # (1) Initialize cache, hidden and memory cell state gradients
     dA, dhn, dCn = initialize_backward(layer, dX)
@@ -81,7 +81,7 @@ def lstm_backward(layer, dX):
         dhn += np.dot(di, layer.p['Wi'].T)
         dhn += np.dot(df, layer.p['Wf'].T)
 
-        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['h']]       # To previous cell
+        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['u']]       # To previous cell
 
         # (9s) Gradient of the loss w.r.t previous memory state
         dCn = layer.bc['dCn'][:, s] = layer.fc['f'][:, s] * dC    # To previous cell

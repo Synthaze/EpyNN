@@ -36,7 +36,7 @@ def initialize_backward(layer, dX):
 
 
 def gru_backward(layer, dX):
-    """Backward propagate error through GRU cells to previous layer.
+    """Backward propagate error gradients through GRU cells to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradients
     dA, dhn = initialize_backward(layer, dX)
@@ -53,7 +53,7 @@ def gru_backward(layer, dX):
 
         # (4s) Gradient of the loss w.r.t hidden hat (hh)
         dhh = dh * (1-layer.fc['z'][:, s])
-        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
+        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['hh'][:, s], linear=False, deriv=True)
 
         # (5s) Gradient of the loss w.r.t update gate
         dz = dh * (layer.fc['hp'][:, s] - layer.fc['hh'][:, s])

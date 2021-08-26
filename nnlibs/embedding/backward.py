@@ -19,7 +19,7 @@ def initialize_backward(layer, dX):
 
 
 def embedding_backward(layer, dX):
-    """Backward propagate error to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)

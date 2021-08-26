@@ -1,25 +1,37 @@
 # EpyNN/nnlibs/pooling/parameters.py
-# Related third party imports
-import numpy as np
+# Standard library imports
+import math
 
 
 def pooling_compute_shapes(layer, A):
-    """Compute forward shapes and dimensions for layer.
+    """Compute forward shapes and dimensions from input for layer.
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape             # (m, ih, iw, n)
+    layer.fs['X'] = X.shape    # (m, h, w, d)
 
-    layer.d['m'] = layer.fs['X'][0]     #
-    layer.d['ih'] = layer.fs['X'][1]    #
-    layer.d['iw'] = layer.fs['X'][2]    #
-    layer.d['n'] = layer.fs['X'][3]     #
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples      (m)
+    layer.d['h'] = layer.fs['X'][1]    # Height of features map (h)
+    layer.d['w'] = layer.fs['X'][2]    # Width of features map  (w)
+    layer.d['d'] = layer.fs['X'][3]    # Depth of features map  (d)
+
+    # Output height (oh) and width (ow)
+    layer.d['oh'] = math.floor((layer.d['h']-layer.d['ph']) / layer.d['sh']) + 1
+    layer.d['ow'] = math.floor((layer.d['w']-layer.d['pw']) / layer.d['sw']) + 1
+
+    layer.d['zh'] = layer.d['h'] // layer.d['oh']
+    layer.d['zw'] = layer.d['w'] // layer.d['ow']
+
+    layer.d['p1'] = layer.d['h'] - layer.d['zh'] * layer.d['oh']
+    layer.d['p2'] = layer.d['w'] - layer.d['zw'] * layer.d['ow']
+
+    layer.bs['p'] = ((0, 0), (0, layer.d['p1']), (0, layer.d['p2']), (0, 0))
 
     return None
 
 
 def pooling_initialize_parameters(layer):
-    """Initialize parameters for layer.
+    """Initialize parameters from shapes for layer.
     """
     # No parameters to initialize for Pooling layer
 
@@ -35,7 +47,7 @@ def pooling_compute_gradients(layer):
 
 
 def pooling_update_parameters(layer):
-    """Update parameters for layer.
+    """Update parameters from gradients for layer.
     """
     # No parameters to update for Pooling layer
 

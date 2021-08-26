@@ -6,9 +6,6 @@ import sys
 from termcolor import cprint
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.logs import pretty_json
-
 
 def model_initialize(model, params=True, end='\n'):
     """Initialize Neural Network.
@@ -37,6 +34,7 @@ def model_initialize(model, params=True, end='\n'):
 
     for layer in model.layers:
 
+        layer.check = False
         layer.name = layer.__class__.__name__
         model.network[id(layer)]['Layer'] = layer.name
         model.network[id(layer)]['Activation'] = layer.activation
@@ -44,38 +42,46 @@ def model_initialize(model, params=True, end='\n'):
 
         layer.o['seed'] = seed
         layer.np_rng = np.random.default_rng(seed=layer.o['seed'])
-
         seed = seed + 1 if seed else None
 
         cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
         cprint('compute_shapes: ' + layer.name, 'green', attrs=['bold'], end=end)
+
         layer.compute_shapes(A)
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
         if params:
-
             cprint('initialize_parameters: ' + layer.name, 'green', attrs=['bold'], end=end)
+
             layer.initialize_parameters()
 
         cprint('forward: ' + layer.name, 'green', attrs=['bold'], end=end)
         A = layer.forward(A)
+        print('shape:', layer.fs['A'])
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
+
+        delattr(layer, 'check')
 
     dX = dA = model.training_loss(Y, A, deriv=True)
 
     for layer in reversed(model.layers):
 
-        cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
+        layer.check = False
 
+        cprint('Layer: ' + layer.name, attrs=['bold'], end=end)
         cprint('backward: ' + layer.name, 'cyan', attrs=['bold'], end=end)
         dX = layer.backward(dX)
 
-        model.network[id(layer)]['BW_Shapes'] = layer.bs
+        print('shape:', layer.bs['dX'])
 
+        model.network[id(layer)]['BW_Shapes'] = layer.bs
         cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'], end=end)
+
         layer.compute_gradients()
+
+        delattr(layer, 'check')
 
     cprint('--- EpyNN Check OK! --- ', attrs=['bold'], end=end)
 
@@ -87,10 +93,31 @@ def model_initialize(model, params=True, end='\n'):
 def model_initialize_exceptions(model,trace):
     """Handle error in model initialization and show logs.
     """
-    for layer in model.network.keys():
-        pretty_json(model.network[layer])
 
-    cprint('/!\\ Initialization of EpyNN model failed','red',attrs=['bold'])
+    cprint('\n/!\\ Initialization of EpyNN model failed - debug', 'red', attrs=['bold'])
+
+    layer = [layer for layer in model.layers if hasattr(layer, 'check')][0]
+
+
+    try:
+        layer.update_shapes(layer.fc, layer.fs)
+        layer.update_shapes(layer.bc, layer.bs)
+
+        cprint('%s layer: ' % layer.name, 'red', attrs=['bold'])
+
+        cprint('Known dimensions', 'white', attrs=['bold'])
+        print(', '.join([k + ': ' + str(v) for k, v in layer.d.items()]))
+
+        cprint('Known forward shapes', 'green', attrs=['bold'])
+        print('\n'.join([k + ': ' + str(v) for k, v in layer.fs.items()]))
+
+        cprint('Known backward shape', 'cyan', attrs=['bold'])
+        print('\n'.join([k + ': ' + str(v) for k, v in layer.bs.items()]))
+
+    except:
+        pass
+
+    cprint('System trace', 'red', attrs=['bold'])
 
     print(trace)
 

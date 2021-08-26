@@ -1,9 +1,9 @@
 # EpyNN/nnlibs/convolution/parameters.py
+# Standard library imports
+import math
+
 # Related third party imports
 import numpy as np
-
-# Local application/library specific imports
-from nnlibs.commons.io import padding
 
 
 def convolution_compute_shapes(layer, A):
@@ -11,18 +11,21 @@ def convolution_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    X = padding(X, layer.d['p'])        #
+    layer.fs['X'] = X.shape    # (m, h, w, d)
 
-    layer.fs['X'] = X.shape             # (m, ih, iw, n)
+    layer.d['m'] = layer.fs['X'][0]     # Number of samples  (m)
+    layer.d['h'] = layer.fs['X'][1]     # Height of features (h)
+    layer.d['w'] = layer.fs['X'][2]     # Width of features  (w)
+    layer.d['d'] = layer.fs['X'][3]     # Depth of features  (d)
 
-    layer.d['m'] = layer.fs['X'][0]     #
-    layer.d['ih'] = layer.fs['X'][1]    #
-    layer.d['iw'] = layer.fs['X'][2]    #
-    layer.d['id'] = layer.fs['X'][3]    #
+    # Output height (oh) and width (ow)
+    layer.d['oh'] = math.floor((layer.d['h']-layer.d['fh']) / layer.d['sh']) + 1
+    layer.d['ow'] = math.floor((layer.d['w']-layer.d['fw']) / layer.d['sw']) + 1
 
-    # Apply to X_block - W shape is (filter_width, filter_width, image_depth, n_filters)
-    layer.fs['W'] = (layer.d['fh'], layer.d['fw'], layer.d['id'], layer.d['n'])
-    layer.fs['b'] = (1, 1, 1, layer.d['n'])
+    # Shapes for trainable parameters
+    # filter_height (fh), filter_width (fw), features_depth (d), unit_filters (u)
+    layer.fs['W'] = (layer.d['fh'], layer.d['fw'], layer.d['d'], layer.d['u'])
+    layer.fs['b'] = (layer.d['u'], )
 
     return None
 
@@ -30,9 +33,9 @@ def convolution_compute_shapes(layer, A):
 def convolution_initialize_parameters(layer):
     """Initialize parameters for layer.
     """
-    # W, b - Linear activation X_block -> Z_block
+    # For linear activation of inputs (Z)
     layer.p['W'] = layer.initialization(layer.fs['W'], rng=layer.np_rng)
-    layer.p['b'] = np.zeros(layer.fs['b'])
+    layer.p['b'] = np.zeros(layer.fs['b']) # Z = X * W + b
 
     return None
 
@@ -45,25 +48,27 @@ def convolution_compute_gradients(layer):
         gradient = 'd' + parameter
         layer.g[gradient] = np.zeros_like(layer.p[parameter])
 
-    #
-    dZ = layer.bc['dZ']
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
+    Xb = layer.fc['Xb']     # Input blocks of forward propagation
+    dZ = layer.bc['dZ']     # Gradient of the loss with respect to Z
 
-    # Gradients with respect to W
-    dW = dZ * layer.fc['Xb']
-    dW = np.sum(dW, axis=2)
-    dW = np.sum(dW, axis=1)
-    dW = np.sum(dW, axis=0)
+    # Expand dZ dimensions with respect to Xb
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fw, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fh, fw, d, u)
 
-    layer.g['dW'] = dW
+    # (1) Gradients of the loss with respect to W
+    dW = dZ * Xb               # (1.1)
+    dW = np.sum(dW, axis=2)    # (1.2.1)
+    dW = np.sum(dW, axis=1)    # (1.2.2)
+    dW = np.sum(dW, axis=0)    # (1.2.3)
 
-    # Gradients with respect to b
-    db = dW
-    db = np.sum(db, axis=2, keepdims=True)
-    db = np.sum(db, axis=1, keepdims=True)
-    db = np.sum(db, axis=0, keepdims=True)
+    layer.g['dW'] = dW         # (fh, fw, d, u)
+
+    # (2) Gradients of the loss with respect to b
+    db = dW                    # (2.1)
+    db = np.sum(db, axis=2)    # (2.2.1)
+    db = np.sum(db, axis=1)    # (2.2.2)
+    db = np.sum(db, axis=0)    # (2.2.3)
 
     layer.g['db'] = db if layer.use_bias else 0.
 

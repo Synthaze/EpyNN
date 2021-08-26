@@ -21,7 +21,7 @@ def initialize_backward(layer, dX):
 
 
 def dropout_backward(layer, dX):
-    """Backward propagate error to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)
@@ -30,7 +30,7 @@ def dropout_backward(layer, dX):
     dX = dA * layer.fc['D']
 
     # (3) Scale up gradients
-    dX /= layer.d['s']
+    dX /= (1 - layer.d['d'])
 
     layer.bc['dX'] = dX
 

@@ -28,7 +28,7 @@ class Dropout(Layer):
         super().__init__()
 
         axis = axis if isinstance(axis, tuple) else (axis,)
-        print(isinstance(axis, tuple))
+
         self.d['d'] = drop_prob
         self.d['a'] = axis
 

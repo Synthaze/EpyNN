@@ -2,9 +2,6 @@
 # Related third party imports
 import numpy as np
 
-# Local application/library specific imports
-from nnlibs.commons.io import padding
-
 
 def initialize_backward(layer, dX):
     """Backward cache initialization.
@@ -20,29 +17,40 @@ def initialize_backward(layer, dX):
     """
     dA = layer.bc['dA'] = dX
 
-    layer.bc['dX'] = np.zeros(layer.fs['X'])
-
     return dA
 
 
 def convolution_backward(layer, dX):
-    """Backward propagate error to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache
-    dA = initialize_backward(layer, dX)
+    dA = initialize_backward(layer, dX)    # (m, oh, ow, u)
 
+    # (2) Gradient of the loss with respect to Z
     dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
 
-    block = np.expand_dims(dZ, axis=3)
-    block = np.expand_dims(block, axis=3)
-    block = np.expand_dims(block, axis=3)
+    # (3) Restore filter units kernel dimensions
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fw, d, u)
+    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fh, fw, d, u)
 
-    # () Gradients of the loss with respect to X
-    dX = block * layer.p['W']             # ()
-    dX = np.sum(dX, axis=6)               # ()
-    dX = np.reshape(dX, layer.fs['X'])    # ()
+    # (4)
+    dX = np.zeros_like(layer.fc['X'])  # (m, h, w, d)
 
-    # Remove padding
-    dX = layer.bc['dX'] = padding(dX, layer.d['p'], forward=False)
+    for h in range(layer.d['oh']):
+
+        hs = h * layer.d['sh']
+        he = hs + layer.d['fh']
+
+        for w in range(layer.d['ow']):
+
+            ws = w * layer.d['sw']
+            we = ws + layer.d['fw']
+
+            dXb = dZ[:, h, w, :] * layer.p['W']
+
+            dX[:, hs:he, ws:we, :] += np.sum(dXb, axis=4)
+
+    layer.bc['dX'] = dX
 
     return dX

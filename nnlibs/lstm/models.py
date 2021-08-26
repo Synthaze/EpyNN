@@ -54,16 +54,16 @@ class LSTM(Layer):
     """
 
     def __init__(self,
-                unit_cells=1,
-                activate=tanh,
-                activate_output=sigmoid,
-                activate_candidate=tanh,
-                activate_input=sigmoid,
-                activate_forget=sigmoid,
-                initialization=orthogonal,
-                clip_gradients=False,
-                sequences=False,
-                se_hPars=None):
+                 unit_cells=1,
+                 activate=tanh,
+                 activate_output=sigmoid,
+                 activate_candidate=tanh,
+                 activate_input=sigmoid,
+                 activate_forget=sigmoid,
+                 initialization=orthogonal,
+                 clip_gradients=False,
+                 sequences=False,
+                 se_hPars=None):
         """Initialize instance variable attributes.
         """
         super().__init__(se_hPars)
