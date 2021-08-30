@@ -7,7 +7,10 @@ import time
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.io import encode_dataset
+from nnlibs.commons.io import (
+    encode_dataset,
+    scale_features,
+)
 from nnlibs.commons.library import write_model
 from nnlibs.commons.loss import loss_functions
 from nnlibs.commons.models import dataSet

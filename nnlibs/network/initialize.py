@@ -58,7 +58,7 @@ def model_initialize(model, params=True, end='\n'):
 
         cprint('forward: ' + layer.name, 'green', attrs=['bold'], end=end)
         A = layer.forward(A)
-        print('shape:', layer.fs['A'])
+        print('shape:', layer.fs['A'], end=end)
 
         model.network[id(layer)]['FW_Shapes'] = layer.fs
 
@@ -74,7 +74,7 @@ def model_initialize(model, params=True, end='\n'):
         cprint('backward: ' + layer.name, 'cyan', attrs=['bold'], end=end)
         dX = layer.backward(dX)
 
-        print('shape:', layer.bs['dX'])
+        print('shape:', layer.bs['dX'], end=end)
 
         model.network[id(layer)]['BW_Shapes'] = layer.bs
         cprint('compute_gradients: ' + layer.name, 'cyan', attrs=['bold'], end=end)
