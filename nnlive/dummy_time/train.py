@@ -38,63 +38,121 @@ X_features, Y_label = prepare_dataset(N_SAMPLES=1024)
 
 
 ####################### BUILD AND TRAIN MODEL #################
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      Y_encode=True,
+                      relative_size=(2, 1, 0))
 
 ### Feed-forward
-# embedding = Embedding(X_data=X_features,
-#                       Y_data=Y_label,
-#                       Y_encode=True,
-#                       relative_size=(2, 1, 0))
+
+# Model
+name = 'Flatten_Dense-64-relu_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.005
+
+flatten = Flatten()
+
+hidden_dense = Dense(64, relu)
+
+dense = Dense(2, softmax)
+
+layers = [embedding, flatten, hidden_dense, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+
+model.train(epochs=100, init_logs=False)
+
+model.plot(path=False)
 
 
-# name = 'Flatten_Dropout-08_Dense-64-relu_Dropout-07_Dense-2-softmax'
-#
-# se_hPars['learning_rate'] = 0.005
-#
-# flatten = Flatten()
-#
-# dropout1 = Dropout(keep_prob=1)
-#
-# hidden_dense = Dense(64, relu)
-#
-# dropout2 = Dropout(keep_prob=0.7)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, flatten, dropout1, hidden_dense, dropout2, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
-#
-# model.train(epochs=100, init_logs=False)
+# Model
+name = 'Flatten_Dropout-02_Dense-64-relu_Dropout-05_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.005
+
+flatten = Flatten()
+
+dropout1 = Dropout(drop_prob=0.2)
+
+hidden_dense = Dense(64, relu)
+
+dropout2 = Dropout(drop_prob=0.5)
+
+dense = Dense(2, softmax)
+
+layers = [embedding, flatten, dropout1, hidden_dense, dropout2, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+
+model.train(epochs=100, init_logs=False)
+
+model.plot(path=False)
 
 
 ### Recurrent
-# embedding = Embedding(X_data=X_features,
-#                       Y_data=Y_label,
-#                       Y_encode=True,
-#                       relative_size=(2, 1, 0))
-#
-#
-# name = 'RNN-128_Flatten_Dense-2-softmax'
-#
-# se_hPars['learning_rate'] = 0.001
-# se_hPars['softmax_temperature'] = 5
-#
-# rnn = RNN(128)
-#
-# flatten = Flatten()
-#
-# hidden_dense = Dense(64, relu)
-#
-# dropout2 = Dropout(keep_prob=0.7)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, rnn, hidden_dense, dropout2, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='BCE', seed=1, se_hPars=se_hPars.copy())
-#
-# model.train(epochs=100)
+
+# Model
+name = 'RNN-10_Flatten_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.01
+se_hPars['softmax_temperature'] = 5
+
+rnn = RNN(10)
+
+dense = Dense(2, softmax)
+
+layers = [embedding, rnn, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy())
+
+model.train(epochs=100, init_logs=False)
+
+
+# Model (SGD)
+embedding = Embedding(X_data=X_features,
+                      Y_data=Y_label,
+                      Y_encode=True,
+                      batch_size=32,
+                      relative_size=(2, 1, 0))
+
+name = 'RNN-10_Flatten_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.01
+se_hPars['softmax_temperature'] = 5
+
+rnn = RNN(10)
+
+dense = Dense(2, softmax)
+
+layers = [embedding, rnn, dense]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, se_hPars=se_hPars.copy(), end='\r')
+
+model.train(epochs=100, init_logs=False)
+
+model.plot(path=False)
+
+
+### Write/read model
+
+model.write()
+
+model = read_model()
+
+
+### Predict
+
+X_features, _ = prepare_dataset(N_SAMPLES=10)
+
+dset = model.predict(X_features)
+
+for n, pred, probs in zip(dset.ids, dset.P, dset.A):
+    print(n, pred, probs)

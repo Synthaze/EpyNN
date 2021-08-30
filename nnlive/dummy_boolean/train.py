@@ -7,7 +7,6 @@ import numpy as np
 
 # Local application/library specific imports
 import nnlibs.initialize
-from nnlibs.commons.maths import relu
 from nnlibs.commons.library import (
     configure_directory,
     read_model,
@@ -16,7 +15,6 @@ from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.dense.models import Dense
 from prepare_dataset import prepare_dataset
-# from settings import se_hPars
 
 
 ########################## CONFIGURE ##########################
@@ -40,26 +38,30 @@ embedding = Embedding(X_data=X_features,
                       relative_size=(2, 1, 0))
 
 
+### Feed-Forward
+
+# Model
 name = 'Perceptron_Dense-1-sigmoid'
 
 dense = Dense()
 
 model = EpyNN(layers=[embedding, dense], name=name)
 
-model.train(epochs=10)
+model.train(epochs=100)
 
 model.plot(path=False)
 
 
-model.write()
-
-
 ########################## PREDICTION #########################
+model.write()
+# model.write(path=/your/custom/path)
+
 model = read_model()
+# model = read_model(path=/your/custom/path)
 
 X_features, _ = prepare_dataset(N_SAMPLES=10)
 
-dset = model.predict(X_features, X_encode=True)
+dset = model.predict(X_features)
 
-for id, pred, probs, features in zip(dset.ids, dset.P, dset.A, dset.X):
-    print(id, pred, probs, features)
+for n, pred, probs, features in zip(dset.ids, dset.P, dset.A, dset.X):
+    print(n, pred, probs, features)

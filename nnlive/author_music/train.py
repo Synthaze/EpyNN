@@ -15,12 +15,14 @@ from nnlibs.commons.library import (
 from nnlibs.network.models import EpyNN
 from nnlibs.embedding.models import Embedding
 from nnlibs.rnn.models import RNN
-# from nnlibs.lstm.models import LSTM
 from nnlibs.gru.models import GRU
 from nnlibs.flatten.models import Flatten
 from nnlibs.dropout.models import Dropout
 from nnlibs.dense.models import Dense
-from prepare_dataset import prepare_dataset
+from prepare_dataset import (
+    prepare_dataset,
+    download_music,
+)
 from settings import se_hPars
 
 
@@ -34,12 +36,12 @@ np.seterr(under='ignore')
 
 
 ############################ DATASET ##########################
-X_features, Y_label = prepare_dataset(N_SAMPLES=1280)
+download_music()
+
+X_features, Y_label = prepare_dataset(N_SAMPLES=256)
 
 
 ####################### BUILD AND TRAIN MODEL #################
-
-### Feed-forward
 embedding = Embedding(X_data=X_features,
                       Y_data=Y_label,
                       X_encode=True,
@@ -47,85 +49,90 @@ embedding = Embedding(X_data=X_features,
                       batch_size=16,
                       relative_size=(2, 1, 0))
 
+
+### Feed-forward
+
 # Model
+name = 'Flatten_Dense-64-relu_Dense-2-softmax'
+
+# se_hPars['learning_rate'] = 0.00001
+# se_hPars['learning_rate'] = 1
+se_hPars['learning_rate'] = 0.01
+se_hPars['softmax_temperature'] = 1
+
 layers = [
     embedding,
     Flatten(),
-    Dense(800, relu),
     Dense(64, relu),
+    Dropout(0.5),
     Dense(2, softmax),
 ]
 
-model = EpyNN(layers=layers)
+model = EpyNN(layers=layers, name=name)
 
-model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy(), end='\r')
+model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
 
-model.train(epochs=10, init_logs=False)
-# name = 'Flatten_Dense-64-relu_Dropout-08_Dense-2-softmax'
-#
-# se_hPars['learning_rate'] = 0.005
-# se_hPars['softmax_temperature'] = 5
-#
-# flatten = Flatten()
-#
-# hidden_dense = Dense(64, relu)
-#
-# dropout2 = Dropout(keep_prob=0.8)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, flatten, hidden_dense, dropout2, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='BCE', seed=1, metrics=['accuracy', 'recall'], se_hPars=se_hPars.copy())
-#
-# model.train(epochs=100, init_logs=False)
+model.train(epochs=5, init_logs=False)
 
-print(len(X_features))
+
 ### Recurrent
-name = 'RNN-100_Flatten_Dense-64-relu_Dropout-08_Dense-2-softmax'
 
-se_hPars['learning_rate'] = 0.1
+# Model
+name = 'RNN-1-Seq_Flatten_Dense-64-relu_Dropout05_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.01
 se_hPars['softmax_temperature'] = 1
-se_hPars['schedule'] = 'exp_decay'
 
-rnn = RNN(2, sequences=True)
-
-flatten = Flatten()
-
-hidden_dense = Dense(64, relu)
-
-dropout2 = Dropout(keep_prob=0.8)
-
-dense = Dense(2, softmax)
-
-layers = [embedding, rnn, flatten, dense]
+layers = [
+    embedding,
+    RNN(1, sequences=True),
+    Flatten(),
+    Dense(64, relu),
+    Dropout(0.5),
+    Dense(2, softmax),
+]
 
 model = EpyNN(layers=layers, name=name)
 
-model.initialize(loss='BCE', seed=1, metrics=['accuracy', 'recall'], se_hPars=se_hPars.copy())
+model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
 
-model.train(epochs=3, init_logs=False)
+model.train(epochs=5, init_logs=False)
 
 
-# name = 'GRU-100_Flatten_Dense-64-relu_Dropout-08_Dense-2-softmax'
-#
-# se_hPars['learning_rate'] = 0.0025
-# se_hPars['softmax_temperature'] = 5
-#
-# rnn = GRU(100)
-#
-# hidden_dense = Dense(64, relu)
-#
-# dropout2 = Dropout(keep_prob=0.8)
-#
-# dense = Dense(2, softmax)
-#
-# layers = [embedding, rnn, hidden_dense, dropout2, dense]
-#
-# model = EpyNN(layers=layers, name=name)
-#
-# model.initialize(loss='BCE', seed=1, metrics=['accuracy', 'recall'], se_hPars=se_hPars.copy())
-#
-# model.train(epochs=100, init_logs=False)
+# Model
+name = 'GRU-1-Seq_Flatten_Dense-64-relu_Dropout05_Dense-2-softmax'
+
+se_hPars['learning_rate'] = 0.01
+se_hPars['softmax_temperature'] = 1
+
+layers = [
+    embedding,
+    GRU(1, sequences=True),
+    Flatten(),
+    Dense(64, relu),
+    Dropout(0.5),
+    Dense(2, softmax),
+]
+
+model = EpyNN(layers=layers, name=name)
+
+model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
+
+model.train(epochs=5, init_logs=False)
+
+
+### Write/read model
+
+model.write()
+
+model = read_model()
+
+
+### Predict
+
+X_features, _ = prepare_dataset(N_SAMPLES=10)
+
+dset = model.predict(X_features, X_encode=True)
+
+for n, pred, probs in zip(dset.ids, dset.P, dset.A):
+    print(n, pred, probs)

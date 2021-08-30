@@ -6,13 +6,13 @@ import random
 import numpy as np
 
 
-def features_image(WIDTH=10, HEIGHT=10):
+def features_image(WIDTH=28, HEIGHT=28):
     """Generate dummy image features.
 
-    :param WIDTH: Image width, defaults to 10.
+    :param WIDTH: Image width, defaults to 28.
     :type WIDTH: int
 
-    :param HEIGHT: Image height, defaults to 10.
+    :param HEIGHT: Image height, defaults to 28.
     :type HEIGHT: int
 
     :return: Random image features of size N_FEATURES.
@@ -36,11 +36,13 @@ def features_image(WIDTH=10, HEIGHT=10):
     # Random choice of shades for N_FEATURES iterations
     features = [random.choice(GSCALE) for j in range(N_FEATURES)]
 
-    mask_on_features = [max(GSCALE) if random.randint(0, N_FEATURES - 1) < N_FEATURES // 10 else feature for feature in features]
-
-    # Vectorization of features and masked features
+    # Vectorization of features
     features = np.array(features).reshape(HEIGHT, WIDTH, DEPTH)
-    mask_on_features = np.array(mask_on_features).reshape(features.shape)
+
+    # Masked features
+    mask_on_features = features.copy()
+    mask_on_features[np.random.randint(0, HEIGHT)] = np.zeros_like(features[0])
+    mask_on_features[:, np.random.randint(0, WIDTH)] = np.zeros_like(features[:, 0])
 
     # Random choice between random image or masked image
     features = random.choice([features, mask_on_features])
