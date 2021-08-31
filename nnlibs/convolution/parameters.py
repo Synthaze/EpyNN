@@ -65,12 +65,12 @@ def convolution_compute_gradients(layer):
     layer.g['dW'] = dW         # (fh, fw, d, u)
 
     # (2) Gradients of the loss with respect to b
-    db = dW                    # (2.1)
+    db = dZ                    # (2.1)
     db = np.sum(db, axis=2)    # (2.2.1)
     db = np.sum(db, axis=1)    # (2.2.2)
     db = np.sum(db, axis=0)    # (2.2.3)
 
-    layer.g['db'] = db if layer.use_bias else 0.
+    layer.g['db'] = db.squeeze() if layer.use_bias else 0.
 
     return None
 
