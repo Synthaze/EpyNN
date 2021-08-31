@@ -1,7 +1,7 @@
 # EpyNN/nnlibs/commons/loss.py
 # Related third party imports
 import numpy as np
-
+from nnlibs.commons.maths import sigmoid
 
 # To prevent from divide floatting points errors
 E_SAFE = 1e-16

@@ -20,7 +20,7 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'hp']
+    cache_keys = ['h_', 'h', 'hp']
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     h = layer.fc['h'][:, 0]    # Hidden cell state
@@ -29,7 +29,7 @@ def initialize_forward(layer, A):
 
 
 def rnn_forward(layer, A):
-    """Forward propagate signal through RNN cells to next layer.
+    """Forward propagate signal to next layer.
     """
     # (1) Initialize cache and hidden cell state
     X, h = initialize_forward(layer, A)
@@ -44,11 +44,13 @@ def rnn_forward(layer, A):
         hp = layer.fc['hp'][:, s] = h
 
         # (4s) Activate current hidden cell state
-        h = np.dot(X, layer.p['U'])
-        h += np.dot(hp, layer.p['W'])
-        h += layer.p['b']
+        h_ = layer.fc['h_'][:, s] = (
+            np.dot(X, layer.p['U'])
+            + np.dot(hp, layer.p['W'])
+            + layer.p['b']
+        )
 
-        h = layer.fc['h'][:, s] = layer.activate(h)
+        h = layer.fc['h'][:, s] = layer.activate(h_)
 
     # Return the last hidden cell state or the full sequence
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]

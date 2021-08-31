@@ -24,7 +24,7 @@ def initialize_backward(layer, dX):
         dA = np.zeros(layer.fs['h'])    # Empty full length sequence
         dA[:, -1] = dX                  # Assign to last index
 
-    cache_keys = ['dh', 'dhh', 'dz', 'dr', 'dhfhh', 'dhfr', 'dhfzi', 'dhfz', 'dhn']
+    cache_keys = ['dh', 'dhh', 'dz', 'dr', 'dhn']
     layer.bc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     layer.bc['dA'] = dA
@@ -36,7 +36,7 @@ def initialize_backward(layer, dX):
 
 
 def gru_backward(layer, dX):
-    """Backward propagate error gradients through GRU cells to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradients
     dA, dhn = initialize_backward(layer, dX)
@@ -48,36 +48,45 @@ def gru_backward(layer, dX):
         dA = layer.bc['dA'][:, s]
 
         # (3s) Gradient of the loss with respect to hidden cell state
-        dh = dA      # Grad. from next layer (dA)
-        dh += dhn    # Grad. from next cell (dhn)
+        dh = layer.bc['dh'][:, s] = (
+            (dA + dhn)
+        )
 
         # (4s) Gradient of the loss w.r.t hidden hat (hh)
-        dhh = dh * (1-layer.fc['z'][:, s])
-        dhh = layer.bc['dhh'][:, s] = dhh * layer.activate(layer.fc['hh'][:, s], linear=False, deriv=True)
+        dhh = layer.bc['dhh'][:, s] = (
+            dh
+            * (1-layer.fc['z'][:, s])
+            * layer.activate(layer.fc['hh_'][:, s], deriv=True)
+        )
 
         # (5s) Gradient of the loss w.r.t update gate
-        dz = dh * (layer.fc['hp'][:, s] - layer.fc['hh'][:, s])
-        dz = layer.bc['dz'][:, s] = dz * layer.activate_update(layer.fc['z'][:, s], linear=False, deriv=True)
+        dz = layer.bc['dz'][:, s] = (
+            dh
+            * (layer.fc['hp'][:, s]-layer.fc['hh'][:, s])
+            * layer.activate_update(layer.fc['z_'][:, s], deriv=True)
+        )
 
         # (6s) Gradient of the loss w.r.t reset gate
-        dr = np.dot(dhh, layer.p['Wh'].T)
-        dr = dr * layer.fc['hp'][:, s]
-        dr = layer.bc['dr'][:, s] = dr * layer.activate_reset(layer.fc['r'][:, s], linear=False, deriv=True)
+        dr = layer.bc['dr'][:, s] = (
+            np.dot(dhh, layer.p['Wh'].T)
+            * layer.fc['hp'][:, s]
+            * layer.activate_reset(layer.fc['r_'][:, s], deriv=True)
+        )
 
         # (7s) Gradient of the loss w.r.t previous hidden state
-        dhfhh = np.dot(dhh, layer.p['Wh'].T)
-        dhfhh = layer.bc['dhfhh'][:, s] = dhfhh * layer.fc['r'][:, s]
-        dhfzi = layer.bc['dhfzi'][:, s] = np.dot(dz, layer.p['Wz'].T)
-        dhfz = layer.bc['dhfz'][:, s] = dh * layer.fc['z'][:, s]
-        dhfr = layer.bc['dhfr'][:, s] = np.dot(dr, layer.p['Wr'].T)
-
-        dhn = layer.bc['dhn'][:, s] = dhfhh + dhfr + dhfzi + dhfz    # To previous cell
+        dhn = layer.bc['dhn'][:, s] = (
+            np.dot(dhh, layer.p['Wh'].T) * layer.fc['r'][:, s]
+            + np.dot(dz, layer.p['Wz'].T)
+            + dh * layer.fc['z'][:, s]
+            + np.dot(dr, layer.p['Wr'].T)
+        )
 
         # (8s) Gradient of the loss w.r.t to X
-        dX = np.dot(dr, layer.p['Ur'].T)
-        dX += np.dot(dz, layer.p['Uz'].T)
-        dX += np.dot(dhh, layer.p['Uh'].T)
-        layer.bc['dX'][:, s] = dX
+        dX = layer.bc['dX'][:, s] = (
+            np.dot(dr, layer.p['Ur'].T)
+            + np.dot(dz, layer.p['Uz'].T)
+            + np.dot(dhh, layer.p['Uh'].T)
+        )
 
     dX = layer.bc['dX']
 

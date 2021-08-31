@@ -40,7 +40,7 @@ def initialize_backward(layer, dX):
 
 
 def lstm_backward(layer, dX):
-    """Backward propagate error gradients through LSTM cells to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache, hidden and memory cell state gradients
     dA, dhn, dCn = initialize_backward(layer, dX)
@@ -52,46 +52,67 @@ def lstm_backward(layer, dX):
         dA = layer.bc['dA'][:, s]
 
         # (3s) Gradient of the loss with respect to hidden cell state
-        dh = dA      # Grad. from next layer (dA)
-        dh += dhn    # Grad. from next cell (dhn)
+        dh = layer.bc['dh'][:, s] = (
+            (dA + dhn)
+        )
 
         # (4s) Gradient of the loss w.r.t output gate
-        do = dh * layer.activate(layer.fc['C'][:, s])
-        do = layer.bc['do'][:, s] = do * layer.activate_output(layer.fc['o'][:, s], linear=False, deriv=True)
+        do = layer.bc['do'][:, s] = (
+            dh
+            * layer.activate(layer.fc['C'][:, s])
+            * layer.activate_output(layer.fc['o_'][:, s], deriv=True)
+        )
 
         # (5s) Gradient of the loss w.r.t memory cell state
-        dC = dh * layer.fc['o'][:, s] * layer.activate(layer.fc['C'][:, s], deriv=True)
-        dC =  layer.bc['dC'][:, s] = dC + dCn
+        dC = layer.bc['dC'][:, s] = (
+            dh
+            * layer.fc['o'][:, s]
+            * layer.activate(layer.fc['C'][:, s], deriv=True)
+            + dCn
+        )
 
         # (6.1s) Gradient of the loss w.r.t candidate
-        dg = dC * layer.fc['i'][:, s]
-        dg = layer.bc['dg'][:, s] = dg * layer.activate_candidate(layer.fc['g'][:, s], linear=False, deriv=True)
+        dg = layer.bc['dg'][:, s] = (
+            dC
+            * layer.fc['i'][:, s]
+            * layer.activate_candidate(layer.fc['g_'][:, s], deriv=True)
+        )
 
         # (6.2s) Gradient of the loss w.r.t input gate
-        di = dC * layer.fc['g'][:, s]
-        di = layer.bc['di'][:, s] = di * layer.activate_input(layer.fc['i'][:, s], linear=False, deriv=True)
+        di = layer.bc['di'][:, s] = (
+            dC
+            * layer.fc['g'][:, s]
+            * layer.activate_input(layer.fc['i_'][:, s], deriv=True)
+        )
 
         # (7s) Gradient of the loss w.r.t forget gate
-        df = dC * layer.fc['Cp'][:, s]
-        df = layer.bc['df'][:, s] = df * layer.activate_forget(layer.fc['f'][:, s], linear=False, deriv=True)
+        df = layer.bc['df'][:, s] = (
+            dC
+            * layer.fc['Cp'][:, s]
+            * layer.activate_forget(layer.fc['f_'][:, s], deriv=True)
+        )
 
-        # (8s) Gradient of the loss w.r.t previous hidden state
-        dhn = np.dot(do, layer.p['Wo'].T)
-        dhn += np.dot(dg, layer.p['Wg'].T)
-        dhn += np.dot(di, layer.p['Wi'].T)
-        dhn += np.dot(df, layer.p['Wf'].T)
+        # (8s) Gradient of the loss w.r.t previous memory state
+        dCn = layer.bc['dCn'][:, s] = (
+            dC
+            * layer.fc['f'][:, s]
+        )
 
-        dhn = layer.bc['dhn'][:, s] = dhn[:, :layer.d['u']]       # To previous cell
-
-        # (9s) Gradient of the loss w.r.t previous memory state
-        dCn = layer.bc['dCn'][:, s] = layer.fc['f'][:, s] * dC    # To previous cell
+        # (9s) Gradient of the loss w.r.t previous hidden state
+        dhn = layer.bc['dhn'][:, s] = (
+            np.dot(do, layer.p['Wo'].T)
+            + np.dot(dg, layer.p['Wg'].T)
+            + np.dot(di, layer.p['Wi'].T)
+            + np.dot(df, layer.p['Wf'].T)
+        )
 
         # (10s) Gradient of the loss w.r.t X
-        dX = np.dot(dg, layer.p['Ug'].T)
-        dX += np.dot(do, layer.p['Uo'].T)
-        dX += np.dot(di, layer.p['Ui'].T)
-        dX += np.dot(df, layer.p['Uf'].T)
-        layer.bc['dX'][:, s] = dX
+        dX = layer.bc['dX'][:, s] = (
+            np.dot(dg, layer.p['Ug'].T)
+            + np.dot(do, layer.p['Uo'].T)
+            + np.dot(di, layer.p['Ui'].T)
+            + np.dot(df, layer.p['Uf'].T)
+        )
 
     dX = layer.bc['dX']
 
