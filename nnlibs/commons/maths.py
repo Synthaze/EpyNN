@@ -44,7 +44,7 @@ def identity(x, deriv=False):
     if not deriv:
         pass
 
-    else:
+    elif deriv:
         x = np.ones_like(x)
 
     return x
@@ -127,7 +127,7 @@ def elu(x, deriv=False):
 
 # Sigmoid (σ)
 
-def sigmoid(x, linear=True, deriv=False):
+def sigmoid(x, deriv=False):
     """Compute Sigmoid activation or derivative.
 
     :param x: Input array to pass in function.
@@ -139,7 +139,7 @@ def sigmoid(x, linear=True, deriv=False):
     :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-    if linear:
+    if not deriv:
         # Numerically stable version of sigmoid function
         x = np.where(
                     x >= 0, # condition
@@ -147,15 +147,15 @@ def sigmoid(x, linear=True, deriv=False):
                     np.exp(x) / (1+np.exp(x)) # For negative values
                     )
 
-    if deriv:
-        x = x * (1-x)
+    elif deriv:
+        x = sigmoid(x) * (1-sigmoid(x))
 
     return x
 
 
 # Hyperbolic tangent (tanh)
 
-def tanh(x, linear=True, deriv=False):
+def tanh(x, deriv=False):
     """Compute tanh activation or derivative.
 
     :param x: Input array to pass in function.
@@ -167,18 +167,18 @@ def tanh(x, linear=True, deriv=False):
     :return: Output array passed in function.
     :rtype: class:`numpy.ndarray`
     """
-    if linear:
+    if not deriv:
         x = (np.exp(x)-np.exp(-x)) / (np.exp(x)+np.exp(-x))
 
-    if deriv:
-        x = 1 - x**2
+    elif deriv:
+        x = 1 - tanh(x)**2
 
     return x
 
 
 # Softmax
 
-def softmax(x, linear=True, deriv=False):
+def softmax(x, deriv=False):
     """Compute softmax activation or derivative.
 
     :param x: Input array to pass in function.
@@ -193,7 +193,7 @@ def softmax(x, linear=True, deriv=False):
     # Retrieve temperature from layers hyperparameters (temporary globals)
     T = layer_hPars['softmax_temperature']
 
-    if linear:
+    if not deriv:
         # Numerically stable version of softmax function
         x_safe = x - np.max(x, axis=1, keepdims=True)
 
@@ -202,8 +202,8 @@ def softmax(x, linear=True, deriv=False):
 
         x = x_exp / x_sum
 
-    if deriv:
-        x = x * (1-x)
+    elif deriv:
+        x = softmax(x) * (1-softmax(x))
 
     return x
 

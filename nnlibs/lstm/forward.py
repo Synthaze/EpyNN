@@ -23,7 +23,7 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'hp', 'o', 'i', 'f', 'g', 'C', 'Cp']
+    cache_keys = ['h', 'hp', 'o_', 'o', 'i_', 'i', 'f_', 'f', 'g_', 'g', 'C', 'Cp']
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     h = layer.fc['h'][:, 0]    # Hidden cell state
@@ -33,7 +33,7 @@ def initialize_forward(layer, A):
 
 
 def lstm_forward(layer, A):
-    """Forward propagate signal through LSTM cells to next layer.
+    """Forward propagate signal to next layer.
     """
     # (1) Initialize cache, hidden and memory cell states
     X, h, C = initialize_forward(layer, A)
@@ -49,35 +49,43 @@ def lstm_forward(layer, A):
         Cp = layer.fc['Cp'][:, s] = C    # Memory
 
         # (4s) Activate forget gate
-        f = np.dot(X, layer.p['Uf'])
-        f += np.dot(hp, layer.p['Wf'])
-        f += layer.p['bf']
+        f_ = layer.fc['f_'][:, s] = (
+            np.dot(X, layer.p['Uf'])
+            + np.dot(hp, layer.p['Wf'])
+            + layer.p['bf']
+        )
 
-        f = layer.fc['f'][:, s] = layer.activate_forget(f)
+        f = layer.fc['f'][:, s] = layer.activate_forget(f_)
 
         # (5.1s) Activate input gate
-        i = np.dot(X, layer.p['Ui'])
-        i += np.dot(hp, layer.p['Wi'])
-        i += layer.p['bi']
+        i_ = layer.fc['i_'][:, s] = (
+            np.dot(X, layer.p['Ui'])
+            + np.dot(hp, layer.p['Wi'])
+            + layer.p['bi']
+        )
 
-        i = layer.fc['i'][:, s] = layer.activate_input(i)
+        i = layer.fc['i'][:, s] = layer.activate_input(i_)
 
         # (5.2s) Activate candidate
-        g = np.dot(X, layer.p['Ug'])
-        g += np.dot(hp, layer.p['Wg'])
-        g += layer.p['bg']
+        g_ = layer.fc['g_'][:, s] = (
+            np.dot(X, layer.p['Ug'])
+            + np.dot(hp, layer.p['Wg'])
+            + layer.p['bg']
+        )
 
-        g = layer.fc['g'][:, s] = layer.activate_candidate(g)
+        g = layer.fc['g'][:, s] = layer.activate_candidate(g_)
 
-        # (6s) Compute current memory cell state
+        # (6s) Activate output gate
+        o_ = layer.fc['o_'][:, s] = (
+            np.dot(X, layer.p['Uo'])
+            + np.dot(hp, layer.p['Wo'])
+            + layer.p['bo']
+        )
+
+        o = layer.fc['o'][:, s] = layer.activate_output(o_)
+
+        # (7s) Compute current memory cell state
         C = layer.fc['C'][:, s] = Cp*f + i*g
-
-        # (7s) Activate output gate
-        o = np.dot(X, layer.p['Uo'])
-        o += np.dot(hp, layer.p['Wo'])
-        o += layer.p['bo']
-
-        o = layer.fc['o'][:, s] = layer.activate_output(o)
 
         # (8s) Compute current hidden cell state
         h = layer.fc['h'][:, s] = o * layer.activate(C)

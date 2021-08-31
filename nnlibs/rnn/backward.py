@@ -36,7 +36,7 @@ def initialize_backward(layer, dX):
 
 
 def rnn_backward(layer, dX):
-    """Backward propagate error gradients through RNN cells to previous layer.
+    """Backward propagate error gradients to previous layer.
     """
     # (1) Initialize cache and hidden cell state gradient
     dA, dhn = initialize_backward(layer, dX)
@@ -48,13 +48,13 @@ def rnn_backward(layer, dX):
         dA = layer.bc['dA'][:, s]
 
         # (3s) Gradient of the loss with respect to hidden cell state
-        dh = dA      # Grad. from next layer (dA)
-        dh += dhn    # Grad. from next cell (dhn)
-        dh *= layer.activate(layer.fc['h'][:, s], linear=False, deriv=True)
-        layer.bc['dh'][:, s] = dh
+        dh = layer.bc['dh'][:, s] = (
+            (dA + dhn)
+            * layer.activate(layer.fc['h_'][:, s], deriv=True)
+        )
 
         # (4s) Gradient of the loss w.r.t previous hidden state
-        dhn = np.dot(dh, layer.p['W'].T)     # To previous cell
+        dhn = np.dot(dh, layer.p['W'].T)
 
         # (5s) Gradient of the loss with respect to X
         layer.bc['dX'][:, s] = np.dot(dh, layer.p['U'].T)

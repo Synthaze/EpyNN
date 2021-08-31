@@ -27,7 +27,10 @@ def dense_forward(layer, A):
     X = initialize_forward(layer, A)
 
     # (2) Linear activation X -> Z
-    Z = layer.fc['Z'] = np.dot(X, layer.p['W']) + layer.p['b']
+    Z = layer.fc['Z'] = (
+        np.dot(X, layer.p['W'])
+        + layer.p['b']
+    )
 
     # (3) Non-linear activation Z -> A
     A = layer.fc['A'] = layer.activate(Z)

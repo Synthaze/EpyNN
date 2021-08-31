@@ -20,7 +20,7 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'hp', 'hh', 'z', 'r']
+    cache_keys = ['h', 'hp', 'hh_', 'hh', 'z', 'z_', 'r', 'r_']
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     h = layer.fc['h'][:, 0]    # Hidden cell state
@@ -29,7 +29,7 @@ def initialize_forward(layer, A):
 
 
 def gru_forward(layer, A):
-    """Forward propagate signal through GRU cells to next layer.
+    """Forward propagate signal to next layer.
     """
     # (1) Initialize cache and hidden cell state
     X, h = initialize_forward(layer, A)
@@ -44,25 +44,31 @@ def gru_forward(layer, A):
         hp = layer.fc['hp'][:, s] = h
 
         # (4s) Activate reset gate
-        r = np.dot(X, layer.p['Ur'])
-        r += np.dot(hp, layer.p['Wr'])
-        r += layer.p['br']
+        r_ = layer.fc['r_'][:, s] = (
+            np.dot(X, layer.p['Ur'])
+            + np.dot(hp, layer.p['Wr'])
+            + layer.p['br']
+        )
 
-        r = layer.fc['r'][:, s] = layer.activate_reset(r)
+        r = layer.fc['r'][:, s] = layer.activate_reset(r_)
 
         # (5s) Activate update gate
-        z = np.dot(X, layer.p['Uz'])
-        z += np.dot(hp, layer.p['Wz'])
-        z += layer.p['bz']
+        z_ = layer.fc['z_'][:, s] = (
+            np.dot(X, layer.p['Uz'])
+            + np.dot(hp, layer.p['Wz'])
+            + layer.p['bz']
+        )
 
-        z = layer.fc['z'][:, s] = layer.activate_update(z)
+        z = layer.fc['z'][:, s] = layer.activate_update(z_)
 
         # (6s) Activate hidden hat (hh)
-        hh = np.dot(X, layer.p['Uh'])
-        hh += np.dot(r * hp, layer.p['Wh'])
-        hh += layer.p['bh']
+        hh_ = layer.fc['hh_'][:, s] = (
+            np.dot(X, layer.p['Uh'])
+            + np.dot(r * hp, layer.p['Wh'])
+            + layer.p['bh']
+        )
 
-        hh = layer.fc['hh'][:, s] = layer.activate(hh)
+        hh = layer.fc['hh'][:, s] = layer.activate(hh_)
 
         # (7s) Compute current hidden cell state
         h = layer.fc['h'][:, s] = z*hp + (1-z)*hh
