@@ -27,7 +27,10 @@ def convolution_backward(layer, dX):
     dA = initialize_backward(layer, dX)    # (m, oh, ow, u)
 
     # (2) Gradient of the loss with respect to Z
-    dZ = layer.bc['dZ'] = dA * layer.activate(layer.fc['Z'], deriv=True)
+    dZ = layer.bc['dZ'] = (
+        dA
+        * layer.activate(layer.fc['Z'], deriv=True)
+    )
 
     # (3) Restore filter units kernel dimensions
     dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)

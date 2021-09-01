@@ -8,19 +8,19 @@ def lstm_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m, s, v)
+    layer.fs['X'] = X.shape    # (m, s, e)
 
-    layer.d['m'] = layer.fs['X'][0]    # Number of samples  (m)
-    layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
-    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size    (v)
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['s'] = layer.fs['X'][1]    # Steps in sequence (s)
+    layer.d['e'] = layer.fs['X'][2]    # Elements per step (e)
 
     # Parameter Shapes             Unit cells (u)
-    vu = (layer.d['v'], layer.d['u'])    # (v, u)
+    eu = (layer.d['e'], layer.d['u'])    # (v, u)
     uu = (layer.d['u'], layer.d['u'])    # (u, u)
     u1 = (1, layer.d['u'])               # (1, u)
     # Forget gate    Input gate       Candidate        Output gate
-    layer.fs['Uf'] = layer.fs['Ui'] = layer.fs['Ug'] = layer.fs['Uo'] = vu
-    layer.fs['Wf'] = layer.fs['Wi'] = layer.fs['Wg'] = layer.fs['Wo'] = uu
+    layer.fs['Uf'] = layer.fs['Ui'] = layer.fs['Ug'] = layer.fs['Uo'] = eu
+    layer.fs['Vf'] = layer.fs['Vi'] = layer.fs['Vg'] = layer.fs['Vo'] = uu
     layer.fs['bf'] = layer.fs['bi'] = layer.fs['bg'] = layer.fs['bo'] = u1
 
     # Shape of hidden (h) and memory (C) cell state with respect to steps (s)
@@ -34,23 +34,23 @@ def lstm_initialize_parameters(layer):
     """
     # For linear activation of forget gate (f)
     layer.p['Uf'] = layer.initialization(layer.fs['Uf'], rng=layer.np_rng)
-    layer.p['Wf'] = layer.initialization(layer.fs['Wf'], rng=layer.np_rng)
-    layer.p['bf'] = np.zeros(layer.fs['bf']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vf'] = layer.initialization(layer.fs['Vf'], rng=layer.np_rng)
+    layer.p['bf'] = np.zeros(layer.fs['bf']) # dot(X, U) + dot(hp, V) + b
 
     # For linear activation of input gate (i)
     layer.p['Ui'] = layer.initialization(layer.fs['Ui'], rng=layer.np_rng)
-    layer.p['Wi'] = layer.initialization(layer.fs['Wi'], rng=layer.np_rng)
-    layer.p['bi'] = np.zeros(layer.fs['bi']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vi'] = layer.initialization(layer.fs['Vi'], rng=layer.np_rng)
+    layer.p['bi'] = np.zeros(layer.fs['bi']) # dot(X, U) + dot(hp, V) + b
 
     # For linear activation of candidate (g)
     layer.p['Ug'] = layer.initialization(layer.fs['Ug'], rng=layer.np_rng)
-    layer.p['Wg'] = layer.initialization(layer.fs['Wg'], rng=layer.np_rng)
-    layer.p['bg'] = np.zeros(layer.fs['bg']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vg'] = layer.initialization(layer.fs['Vg'], rng=layer.np_rng)
+    layer.p['bg'] = np.zeros(layer.fs['bg']) # dot(X, U) + dot(hp, V) + b
 
     # For linear activation of output gate (o)
     layer.p['Uo'] = layer.initialization(layer.fs['Uo'], rng=layer.np_rng)
-    layer.p['Wo'] = layer.initialization(layer.fs['Wo'], rng=layer.np_rng)
-    layer.p['bo'] = np.zeros(layer.fs['bo']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vo'] = layer.initialization(layer.fs['Vo'], rng=layer.np_rng)
+    layer.p['bo'] = np.zeros(layer.fs['bo']) # dot(X, U) + dot(hp, V) + b
 
     return None
 
@@ -69,29 +69,29 @@ def lstm_compute_gradients(layer):
         X = layer.fc['X'][:, s]      # Current cell input
         hp = layer.fc['hp'][:, s]    # Previous hidden state
 
-        # (1) Gradients of the loss with respect to U, W, b
-        do = layer.bc['do'][:, s]             # Gradient output gate
-        layer.g['dUo'] += np.dot(X.T, do)     # (1.1)
-        layer.g['dWo'] += np.dot(hp.T, do)    # (1.2)
-        layer.g['dbo'] += np.sum(do, axis=0)  # (1.3)
+        # (1) Gradients of the loss with respect to U, V, b
+        do_ = layer.bc['do_'][:, s]            # Gradient output gate
+        layer.g['dUo'] += np.dot(X.T, do_)     # (1.1)
+        layer.g['dVo'] += np.dot(hp.T, do_)    # (1.2)
+        layer.g['dbo'] += np.sum(do_, axis=0)  # (1.3)
 
-        # (2) Gradients of the loss with respect to U, W, b
-        dg = layer.bc['dg'][:, s]             # Gradient candidate
-        layer.g['dUg'] += np.dot(X.T, dg)     # (2.1)
-        layer.g['dWg'] += np.dot(hp.T, dg)    # (2.2)
-        layer.g['dbg'] += np.sum(dg, axis=0)  # (2.3)
+        # (2) Gradients of the loss with respect to U, V, b
+        dg_ = layer.bc['dg_'][:, s]            # Gradient candidate
+        layer.g['dUg'] += np.dot(X.T, dg_)     # (2.1)
+        layer.g['dVg'] += np.dot(hp.T, dg_)    # (2.2)
+        layer.g['dbg'] += np.sum(dg_, axis=0)  # (2.3)
 
-        # (3) Gradients of the loss with respect to U, W, b
-        di = layer.bc['di'][:, s]             # Gradient input gate
-        layer.g['dUi'] += np.dot(X.T, di)     # (3.1)
-        layer.g['dWi'] += np.dot(hp.T, di)    # (3.2)
-        layer.g['dbi'] += np.sum(di, axis=0)  # (3.3)
+        # (3) Gradients of the loss with respect to U, V, b
+        di_ = layer.bc['di_'][:, s]            # Gradient input gate
+        layer.g['dUi'] += np.dot(X.T, di_)     # (3.1)
+        layer.g['dVi'] += np.dot(hp.T, di_)    # (3.2)
+        layer.g['dbi'] += np.sum(di_, axis=0)  # (3.3)
 
-        # (4) Gradients of the loss with respect to U, W, b
-        df = layer.bc['df'][:, s]             # Gradient forget gate
-        layer.g['dUf'] += np.dot(X.T, df)     # (4.1)
-        layer.g['dWf'] += np.dot(hp.T, df)    # (4.2)
-        layer.g['dbf'] += np.sum(df, axis=0)  # (4.3)
+        # (4) Gradients of the loss with respect to U, V, b
+        df_ = layer.bc['df_'][:, s]             # Gradient forget gate
+        layer.g['dUf'] += np.dot(X.T, df_)     # (4.1)
+        layer.g['dVf'] += np.dot(hp.T, df_)    # (4.2)
+        layer.g['dbf'] += np.sum(df_, axis=0)  # (4.3)
 
     return None
 

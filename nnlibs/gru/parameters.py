@@ -8,20 +8,20 @@ def gru_compute_shapes(layer, A):
     """
     X = A    # Input of current layer
 
-    layer.fs['X'] = X.shape    # (m, s, v)
+    layer.fs['X'] = X.shape    # (m, s, e)
 
-    layer.d['m'] = layer.fs['X'][0]    # Number of samples  (m)
-    layer.d['s'] = layer.fs['X'][1]    # Length of sequence (s)
-    layer.d['v'] = layer.fs['X'][2]    # Vocabulary size    (v)
+    layer.d['m'] = layer.fs['X'][0]    # Number of samples (m)
+    layer.d['s'] = layer.fs['X'][1]    # Steps in sequence (s)
+    layer.d['e'] = layer.fs['X'][2]    # Elements per step (e)
 
     # Parameter Shapes             Unit cells (u)
-    vu = (layer.d['v'], layer.d['u'])    # (v, u)
+    eu = (layer.d['e'], layer.d['u'])    # (e, u)
     uu = (layer.d['u'], layer.d['u'])    # (u, u)
     u1 = (1, layer.d['u'])               # (1, u)
     # Update gate    Reset gate       Hidden hat
-    layer.fs['Uz'] = layer.fs['Ur'] = layer.fs['Uh'] = vu
-    layer.fs['Wz'] = layer.fs['Wr'] = layer.fs['Wh'] = uu
-    layer.fs['bz'] = layer.fs['br'] = layer.fs['bh'] = u1
+    layer.fs['Uz'] = layer.fs['Ur'] = layer.fs['Uhh'] = eu
+    layer.fs['Vz'] = layer.fs['Vr'] = layer.fs['Vhh'] = uu
+    layer.fs['bz'] = layer.fs['br'] = layer.fs['bhh'] = u1
 
     # Shape of hidden cell state (h) with respect to steps (s)
     layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['u'])
@@ -34,18 +34,18 @@ def gru_initialize_parameters(layer):
     """
     # For linear activation of update gate (z)
     layer.p['Uz'] = layer.initialization(layer.fs['Uz'], rng=layer.np_rng)
-    layer.p['Wz'] = layer.initialization(layer.fs['Wz'], rng=layer.np_rng)
-    layer.p['bz'] = np.zeros(layer.fs['bz']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vz'] = layer.initialization(layer.fs['Vz'], rng=layer.np_rng)
+    layer.p['bz'] = np.zeros(layer.fs['bz']) # dot(X, U) + dot(hp, V) + b
 
     # For linear activation of reset gate (r)
     layer.p['Ur'] = layer.initialization(layer.fs['Ur'], rng=layer.np_rng)
-    layer.p['Wr'] = layer.initialization(layer.fs['Wr'], rng=layer.np_rng)
-    layer.p['br'] = np.zeros(layer.fs['br']) # dot(X, U) + dot(hp, W) + b
+    layer.p['Vr'] = layer.initialization(layer.fs['Vr'], rng=layer.np_rng)
+    layer.p['br'] = np.zeros(layer.fs['br']) # dot(X, U) + dot(hp, V) + b
 
     # For linear activation of hidden hat (hh)
-    layer.p['Uh'] = layer.initialization(layer.fs['Uh'], rng=layer.np_rng)
-    layer.p['Wh'] = layer.initialization(layer.fs['Wh'], rng=layer.np_rng)
-    layer.p['bh'] = np.zeros(layer.fs['bh']) # dot(X, U) + dot(r * hp, W) + b
+    layer.p['Uhh'] = layer.initialization(layer.fs['Uhh'], rng=layer.np_rng)
+    layer.p['Vhh'] = layer.initialization(layer.fs['Vhh'], rng=layer.np_rng)
+    layer.p['bhh'] = np.zeros(layer.fs['bhh']) # dot(X, U) + dot(r * hp, V) + b
 
     return None
 
@@ -64,23 +64,23 @@ def gru_compute_gradients(layer):
         X = layer.fc['X'][:, s]      # Current cell input
         hp = layer.fc['hp'][:, s]    # Previous hidden state
 
-        # (1) Gradients of the loss with respect to U, W, b
-        dhh = layer.bc['dhh'][:, s]            # Gradient hidden hat (hh)
-        layer.g['dUh'] += np.dot(X.T, dhh)     # (1.1)
-        layer.g['dWh'] += np.dot((layer.fc['r'][:, s] * hp).T, dhh)
-        layer.g['dbh'] += np.sum(dhh, axis=0)  # (1.3)
+        # (1) Gradients of the loss with respect to U, V, b
+        dhh_ = layer.bc['dhh_'][:, s]           # Gradient hidden hat (hh)
+        layer.g['dUhh'] += np.dot(X.T, dhh_)     # (1.1)
+        layer.g['dVhh'] += np.dot((layer.fc['r'][:, s] * hp).T, dhh_)
+        layer.g['dbhh'] += np.sum(dhh_, axis=0)  # (1.3)
 
-        # (2) Gradients of the loss with respect to U, W, b
-        dz = layer.bc['dz'][:, s]             # Gradient update gate
-        layer.g['dUz'] += np.dot(X.T, dz)     # (2.1)
-        layer.g['dWz'] += np.dot(hp.T, dz)    # (2.2)
-        layer.g['dbz'] += np.sum(dz, axis=0)  # (2.3)
+        # (2) Gradients of the loss with respect to U, V, b
+        dz_ = layer.bc['dz_'][:, s]            # Gradient update gate
+        layer.g['dUz'] += np.dot(X.T, dz_)     # (2.1)
+        layer.g['dVz'] += np.dot(hp.T, dz_)    # (2.2)
+        layer.g['dbz'] += np.sum(dz_, axis=0)  # (2.3)
 
-        # (3) Gradients of the loss with respect to U, W, b
-        dr = layer.bc['dr'][:, s]             # Gradient reset gate
-        layer.g['dUr'] += np.dot(X.T, dr)     # (3.1)
-        layer.g['dWr'] += np.dot(hp.T, dr)    # (3.2)
-        layer.g['dbr'] += np.sum(dr, axis=0)  # (3.3)
+        # (3) Gradients of the loss with respect to U, V, b
+        dr_ = layer.bc['dr_'][:, s]            # Gradient reset gate
+        layer.g['dUr'] += np.dot(X.T, dr_)     # (3.1)
+        layer.g['dVr'] += np.dot(hp.T, dr_)    # (3.2)
+        layer.g['dbr'] += np.sum(dr_, axis=0)  # (3.3)
 
     return None
 

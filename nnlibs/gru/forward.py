@@ -46,7 +46,7 @@ def gru_forward(layer, A):
         # (4s) Activate reset gate
         r_ = layer.fc['r_'][:, s] = (
             np.dot(X, layer.p['Ur'])
-            + np.dot(hp, layer.p['Wr'])
+            + np.dot(hp, layer.p['Vr'])
             + layer.p['br']
         )
 
@@ -55,7 +55,7 @@ def gru_forward(layer, A):
         # (5s) Activate update gate
         z_ = layer.fc['z_'][:, s] = (
             np.dot(X, layer.p['Uz'])
-            + np.dot(hp, layer.p['Wz'])
+            + np.dot(hp, layer.p['Vz'])
             + layer.p['bz']
         )
 
@@ -63,9 +63,9 @@ def gru_forward(layer, A):
 
         # (6s) Activate hidden hat (hh)
         hh_ = layer.fc['hh_'][:, s] = (
-            np.dot(X, layer.p['Uh'])
-            + np.dot(r * hp, layer.p['Wh'])
-            + layer.p['bh']
+            np.dot(X, layer.p['Uhh'])
+            + np.dot(r * hp, layer.p['Vhh'])
+            + layer.p['bhh']
         )
 
         hh = layer.fc['hh'][:, s] = layer.activate(hh_)

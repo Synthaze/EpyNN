@@ -46,7 +46,7 @@ def rnn_forward(layer, A):
         # (4s) Activate current hidden cell state
         h_ = layer.fc['h_'][:, s] = (
             np.dot(X, layer.p['U'])
-            + np.dot(hp, layer.p['W'])
+            + np.dot(hp, layer.p['V'])
             + layer.p['b']
         )
 

@@ -27,4 +27,4 @@ def embedding_backward(layer, dX):
     # (2) Pass backward
     dX = layer.bc['dX'] = dA
 
-    return dX    # To previous layer
+    return None    # No previous layer

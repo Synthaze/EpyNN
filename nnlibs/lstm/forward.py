@@ -23,20 +23,20 @@ def initialize_forward(layer, A):
     """
     X = layer.fc['X'] = A
 
-    cache_keys = ['h', 'hp', 'o_', 'o', 'i_', 'i', 'f_', 'f', 'g_', 'g', 'C', 'Cp']
+    cache_keys = ['h', 'hp', 'o_', 'o', 'i_', 'i', 'f_', 'f', 'g_', 'g', 'C_', 'Cp_', 'C']
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
     h = layer.fc['h'][:, 0]    # Hidden cell state
-    C = layer.fc['C'][:, 0]    # Memory cell state
+    C_ = layer.fc['C_'][:, 0]  # Memory cell state
 
-    return X, h, C
+    return X, h, C_
 
 
 def lstm_forward(layer, A):
     """Forward propagate signal to next layer.
     """
     # (1) Initialize cache, hidden and memory cell states
-    X, h, C = initialize_forward(layer, A)
+    X, h, C_ = initialize_forward(layer, A)
 
     # Iterate over sequence steps
     for s in range(layer.d['s']):
@@ -46,12 +46,12 @@ def lstm_forward(layer, A):
 
         # (3s) Retrieve previous cell states
         hp = layer.fc['hp'][:, s] = h    # Hidden
-        Cp = layer.fc['Cp'][:, s] = C    # Memory
+        Cp_ = layer.fc['Cp_'][:, s] = C_    # Memory
 
         # (4s) Activate forget gate
         f_ = layer.fc['f_'][:, s] = (
             np.dot(X, layer.p['Uf'])
-            + np.dot(hp, layer.p['Wf'])
+            + np.dot(hp, layer.p['Vf'])
             + layer.p['bf']
         )
 
@@ -60,7 +60,7 @@ def lstm_forward(layer, A):
         # (5.1s) Activate input gate
         i_ = layer.fc['i_'][:, s] = (
             np.dot(X, layer.p['Ui'])
-            + np.dot(hp, layer.p['Wi'])
+            + np.dot(hp, layer.p['Vi'])
             + layer.p['bi']
         )
 
@@ -69,7 +69,7 @@ def lstm_forward(layer, A):
         # (5.2s) Activate candidate
         g_ = layer.fc['g_'][:, s] = (
             np.dot(X, layer.p['Ug'])
-            + np.dot(hp, layer.p['Wg'])
+            + np.dot(hp, layer.p['Vg'])
             + layer.p['bg']
         )
 
@@ -78,17 +78,22 @@ def lstm_forward(layer, A):
         # (6s) Activate output gate
         o_ = layer.fc['o_'][:, s] = (
             np.dot(X, layer.p['Uo'])
-            + np.dot(hp, layer.p['Wo'])
+            + np.dot(hp, layer.p['Vo'])
             + layer.p['bo']
         )
 
         o = layer.fc['o'][:, s] = layer.activate_output(o_)
 
         # (7s) Compute current memory cell state
-        C = layer.fc['C'][:, s] = Cp*f + i*g
+        C_ = layer.fc['C_'][:, s] = (
+            Cp_ * f
+            + i * g
+        )
+
+        C = layer.fc['C'][:, s] = layer.activate(C_)
 
         # (8s) Compute current hidden cell state
-        h = layer.fc['h'][:, s] = o * layer.activate(C)
+        h = layer.fc['h'][:, s] = o * C
 
     # Return the last hidden cell state or the full sequence
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
