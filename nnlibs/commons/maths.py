@@ -142,10 +142,10 @@ def sigmoid(x, deriv=False):
     if not deriv:
         # Numerically stable version of sigmoid function
         x = np.where(
-                    x >= 0, # condition
-                    1 / (1+np.exp(-x)), # For positive values
-                    np.exp(x) / (1+np.exp(x)) # For negative values
-                    )
+            x >= 0, # condition
+            1 / (1+np.exp(-x)), # For positive values
+            np.exp(x) / (1+np.exp(x)) # For negative values
+        )
 
     elif deriv:
         x = sigmoid(x) * (1-sigmoid(x))
