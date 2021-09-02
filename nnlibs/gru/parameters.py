@@ -71,16 +71,16 @@ def gru_compute_gradients(layer):
         layer.g['dbhh'] += np.sum(dhh_, axis=0)  # (1.3) dL/dbhh
 
         # (2) Gradients of the loss with respect to U, V, b
-        dz_ = layer.bc['dz_'][:, s]            # Gradient w.r.t update gate z_
-        layer.g['dUz'] += np.dot(X.T, dz_)     # (2.1) dL/dUz
-        layer.g['dVz'] += np.dot(hp.T, dz_)    # (2.2) dL/dVz
-        layer.g['dbz'] += np.sum(dz_, axis=0)  # (2.3) dL/dbz
+        dz_ = layer.bc['dz_'][:, s]             # Gradient w.r.t update gate z_
+        layer.g['dUz'] += np.dot(X.T, dz_)      # (2.1) dL/dUz
+        layer.g['dVz'] += np.dot(hp.T, dz_)     # (2.2) dL/dVz
+        layer.g['dbz'] += np.sum(dz_, axis=0)   # (2.3) dL/dbz
 
         # (3) Gradients of the loss with respect to U, V, b
-        dr_ = layer.bc['dr_'][:, s]            # Gradient w.r.t reset gate r_
-        layer.g['dUr'] += np.dot(X.T, dr_)     # (3.1) dL/dUr
-        layer.g['dVr'] += np.dot(hp.T, dr_)    # (3.2) dL/dVr
-        layer.g['dbr'] += np.sum(dr_, axis=0)  # (3.3) dL/dbr
+        dr_ = layer.bc['dr_'][:, s]             # Gradient w.r.t reset gate r_
+        layer.g['dUr'] += np.dot(X.T, dr_)      # (3.1) dL/dUr
+        layer.g['dVr'] += np.dot(hp.T, dr_)     # (3.2) dL/dVr
+        layer.g['dbr'] += np.sum(dr_, axis=0)   # (3.3) dL/dbr
 
     return None
 

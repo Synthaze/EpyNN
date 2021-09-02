@@ -3,7 +3,6 @@
 import tarfile
 import random
 import glob
-import gzip
 import wget
 import os
 
