@@ -19,10 +19,7 @@ from nnlibs.network.report import (
     initialize_model_report,
     single_batch_report,
 )
-from nnlibs.commons.plot import (
-    pyplot_metrics,
-    gnuplot_accuracy,
-)
+from nnlibs.commons.plot import pyplot_metrics
 from nnlibs.network.initialize import (
     model_initialize,
     model_initialize_exceptions,
@@ -205,23 +202,17 @@ class EpyNN:
 
         return None
 
-    def plot(self, pyplot=True, gnuplot=False, path=None):
+    def plot(self, pyplot=True, path=None):
         """Plot metrics from model training.
 
         :param pyplot: Plot of results on GUI using matplotlib.
         :type pyplot: bool, optional
-
-        :param gnuplot: Plot results on terminal using gnuplot.
-        :type gnuplot: bool, optional
 
         :param path: Write matplotlib plot, defaults to `None` which writes in the `plots` subdirectory created from :func:`nnlibs.commons.library.configure_directory()`. To not write the plot at all, set to `False`.
         :type path: str or bool or NoneType, optional
         """
         if pyplot:
             pyplot_metrics(self, path)
-
-        if gnuplot:
-            gnuplot_accuracy(self)
 
         return None
 
