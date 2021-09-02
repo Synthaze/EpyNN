@@ -61,7 +61,7 @@ def recall(Y, A):
     encoded = (Y.shape[1] > 1)    # Check if one-hot encoding of labels
 
     P = np.argmax(A, axis=1) if encoded else np.around(A)
-    y = np.argmax(Y, axis=1) if encoded else y
+    y = np.argmax(Y, axis=1) if encoded else Y
 
     oy = P + y
 
@@ -90,7 +90,7 @@ def precision(Y, A):
     encoded = (Y.shape[1] > 1)    # Check if one-hot encoding of labels
 
     P = np.argmax(A, axis=1) if encoded else np.around(A)
-    y = np.argmax(Y, axis=1) if encoded else y
+    y = np.argmax(Y, axis=1) if encoded else Y
 
     oy = P + y
 
