@@ -37,8 +37,8 @@ def dense_compute_gradients(layer):
     dZ = layer.bc['dZ']    # Gradient of the loss with respect to Z
 
     # (1) Gradient of the loss with respect to W, b
-    dW = layer.g['dW'] = np.dot(X.T, dZ)       # (1.1)
-    db = layer.g['db'] = np.sum(dZ, axis=0)    # (1.2)
+    dW = layer.g['dW'] = np.dot(X.T, dZ)       # (1.1) dL/dW
+    db = layer.g['db'] = np.sum(dZ, axis=0)    # (1.2) dL/db
 
     return None
 

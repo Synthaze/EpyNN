@@ -32,22 +32,22 @@ def lstm_compute_shapes(layer, A):
 def lstm_initialize_parameters(layer):
     """Initialize trainable parameters from shapes for layer.
     """
-    # For linear activation of forget gate (f)
+    # For linear activation of forget gate (f_)
     layer.p['Uf'] = layer.initialization(layer.fs['Uf'], rng=layer.np_rng)
     layer.p['Vf'] = layer.initialization(layer.fs['Vf'], rng=layer.np_rng)
     layer.p['bf'] = np.zeros(layer.fs['bf']) # dot(X, U) + dot(hp, V) + b
 
-    # For linear activation of input gate (i)
+    # For linear activation of input gate (i_)
     layer.p['Ui'] = layer.initialization(layer.fs['Ui'], rng=layer.np_rng)
     layer.p['Vi'] = layer.initialization(layer.fs['Vi'], rng=layer.np_rng)
     layer.p['bi'] = np.zeros(layer.fs['bi']) # dot(X, U) + dot(hp, V) + b
 
-    # For linear activation of candidate (g)
+    # For linear activation of candidate (g_)
     layer.p['Ug'] = layer.initialization(layer.fs['Ug'], rng=layer.np_rng)
     layer.p['Vg'] = layer.initialization(layer.fs['Vg'], rng=layer.np_rng)
     layer.p['bg'] = np.zeros(layer.fs['bg']) # dot(X, U) + dot(hp, V) + b
 
-    # For linear activation of output gate (o)
+    # For linear activation of output gate (o_)
     layer.p['Uo'] = layer.initialization(layer.fs['Uo'], rng=layer.np_rng)
     layer.p['Vo'] = layer.initialization(layer.fs['Vo'], rng=layer.np_rng)
     layer.p['bo'] = np.zeros(layer.fs['bo']) # dot(X, U) + dot(hp, V) + b
@@ -66,32 +66,32 @@ def lstm_compute_gradients(layer):
     # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        X = layer.fc['X'][:, s]      # Current cell input
-        hp = layer.fc['hp'][:, s]    # Previous hidden state
+        X = layer.fc['X'][:, s]      # Input for current step
+        hp = layer.fc['hp'][:, s]    # Previous hidden cell state
 
         # (1) Gradients of the loss with respect to U, V, b
-        do_ = layer.bc['do_'][:, s]            # Gradient output gate
-        layer.g['dUo'] += np.dot(X.T, do_)     # (1.1)
-        layer.g['dVo'] += np.dot(hp.T, do_)    # (1.2)
-        layer.g['dbo'] += np.sum(do_, axis=0)  # (1.3)
+        do_ = layer.bc['do_'][:, s]            # Gradient w.r.t output gate o_
+        layer.g['dUo'] += np.dot(X.T, do_)     # (1.1) dL/dUo
+        layer.g['dVo'] += np.dot(hp.T, do_)    # (1.2) dL/dVo
+        layer.g['dbo'] += np.sum(do_, axis=0)  # (1.3) dL/dbo
 
         # (2) Gradients of the loss with respect to U, V, b
-        dg_ = layer.bc['dg_'][:, s]            # Gradient candidate
-        layer.g['dUg'] += np.dot(X.T, dg_)     # (2.1)
-        layer.g['dVg'] += np.dot(hp.T, dg_)    # (2.2)
-        layer.g['dbg'] += np.sum(dg_, axis=0)  # (2.3)
+        dg_ = layer.bc['dg_'][:, s]            # Gradient w.r.t candidate g_
+        layer.g['dUg'] += np.dot(X.T, dg_)     # (2.1) dL/dUg
+        layer.g['dVg'] += np.dot(hp.T, dg_)    # (2.2) dL/dVg
+        layer.g['dbg'] += np.sum(dg_, axis=0)  # (2.3) dL/dbg
 
         # (3) Gradients of the loss with respect to U, V, b
-        di_ = layer.bc['di_'][:, s]            # Gradient input gate
-        layer.g['dUi'] += np.dot(X.T, di_)     # (3.1)
-        layer.g['dVi'] += np.dot(hp.T, di_)    # (3.2)
-        layer.g['dbi'] += np.sum(di_, axis=0)  # (3.3)
+        di_ = layer.bc['di_'][:, s]            # Gradient w.r.t input gate i_
+        layer.g['dUi'] += np.dot(X.T, di_)     # (3.1) dL/dUi
+        layer.g['dVi'] += np.dot(hp.T, di_)    # (3.2) dL/dVi
+        layer.g['dbi'] += np.sum(di_, axis=0)  # (3.3) dL/dbi
 
         # (4) Gradients of the loss with respect to U, V, b
-        df_ = layer.bc['df_'][:, s]             # Gradient forget gate
-        layer.g['dUf'] += np.dot(X.T, df_)     # (4.1)
-        layer.g['dVf'] += np.dot(hp.T, df_)    # (4.2)
-        layer.g['dbf'] += np.sum(df_, axis=0)  # (4.3)
+        df_ = layer.bc['df_'][:, s]            # Gradient w.r.t forget gate f_
+        layer.g['dUf'] += np.dot(X.T, df_)     # (4.1) dL/dUf
+        layer.g['dVf'] += np.dot(hp.T, df_)    # (4.2) dL/dVf
+        layer.g['dbf'] += np.sum(df_, axis=0)  # (4.3) dL/dbf
 
     return None
 

@@ -30,7 +30,7 @@ def dense_forward(layer, A):
     Z = layer.fc['Z'] = (
         np.dot(X, layer.p['W'])
         + layer.p['b']
-    )
+    )   # This is the weighted sum
 
     # (3) Non-linear activation Z -> A
     A = layer.fc['A'] = layer.activate(Z)

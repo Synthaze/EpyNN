@@ -32,17 +32,17 @@ def gru_compute_shapes(layer, A):
 def gru_initialize_parameters(layer):
     """Initialize trainable parameters from shapes for layer.
     """
-    # For linear activation of update gate (z)
+    # For linear activation of update gate (z_)
     layer.p['Uz'] = layer.initialization(layer.fs['Uz'], rng=layer.np_rng)
     layer.p['Vz'] = layer.initialization(layer.fs['Vz'], rng=layer.np_rng)
     layer.p['bz'] = np.zeros(layer.fs['bz']) # dot(X, U) + dot(hp, V) + b
 
-    # For linear activation of reset gate (r)
+    # For linear activation of reset gate (r_)
     layer.p['Ur'] = layer.initialization(layer.fs['Ur'], rng=layer.np_rng)
     layer.p['Vr'] = layer.initialization(layer.fs['Vr'], rng=layer.np_rng)
     layer.p['br'] = np.zeros(layer.fs['br']) # dot(X, U) + dot(hp, V) + b
 
-    # For linear activation of hidden hat (hh)
+    # For linear activation of hidden hat (hh_)
     layer.p['Uhh'] = layer.initialization(layer.fs['Uhh'], rng=layer.np_rng)
     layer.p['Vhh'] = layer.initialization(layer.fs['Vhh'], rng=layer.np_rng)
     layer.p['bhh'] = np.zeros(layer.fs['bhh']) # dot(X, U) + dot(r * hp, V) + b
@@ -61,26 +61,26 @@ def gru_compute_gradients(layer):
     # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        X = layer.fc['X'][:, s]      # Current cell input
-        hp = layer.fc['hp'][:, s]    # Previous hidden state
+        X = layer.fc['X'][:, s]      # Input for current step
+        hp = layer.fc['hp'][:, s]    # Previous hidden cell state
 
         # (1) Gradients of the loss with respect to U, V, b
-        dhh_ = layer.bc['dhh_'][:, s]           # Gradient hidden hat (hh)
-        layer.g['dUhh'] += np.dot(X.T, dhh_)     # (1.1)
+        dhh_ = layer.bc['dhh_'][:, s]            # Gradient w.r.t hidden hat hh_
+        layer.g['dUhh'] += np.dot(X.T, dhh_)     # (1.1) dL/dUhh
         layer.g['dVhh'] += np.dot((layer.fc['r'][:, s] * hp).T, dhh_)
-        layer.g['dbhh'] += np.sum(dhh_, axis=0)  # (1.3)
+        layer.g['dbhh'] += np.sum(dhh_, axis=0)  # (1.3) dL/dbhh
 
         # (2) Gradients of the loss with respect to U, V, b
-        dz_ = layer.bc['dz_'][:, s]            # Gradient update gate
-        layer.g['dUz'] += np.dot(X.T, dz_)     # (2.1)
-        layer.g['dVz'] += np.dot(hp.T, dz_)    # (2.2)
-        layer.g['dbz'] += np.sum(dz_, axis=0)  # (2.3)
+        dz_ = layer.bc['dz_'][:, s]            # Gradient w.r.t update gate z_
+        layer.g['dUz'] += np.dot(X.T, dz_)     # (2.1) dL/dUz
+        layer.g['dVz'] += np.dot(hp.T, dz_)    # (2.2) dL/dVz
+        layer.g['dbz'] += np.sum(dz_, axis=0)  # (2.3) dL/dbz
 
         # (3) Gradients of the loss with respect to U, V, b
-        dr_ = layer.bc['dr_'][:, s]            # Gradient reset gate
-        layer.g['dUr'] += np.dot(X.T, dr_)     # (3.1)
-        layer.g['dVr'] += np.dot(hp.T, dr_)    # (3.2)
-        layer.g['dbr'] += np.sum(dr_, axis=0)  # (3.3)
+        dr_ = layer.bc['dr_'][:, s]            # Gradient w.r.t reset gate r_
+        layer.g['dUr'] += np.dot(X.T, dr_)     # (3.1) dL/dUr
+        layer.g['dVr'] += np.dot(hp.T, dr_)    # (3.2) dL/dVr
+        layer.g['dbr'] += np.sum(dr_, axis=0)  # (3.3) dL/dbr
 
     return None
 

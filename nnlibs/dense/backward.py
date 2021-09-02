@@ -30,9 +30,9 @@ def dense_backward(layer, dX):
     dZ = layer.bc['dZ'] = (
         dA
         * layer.activate(layer.fc['Z'], deriv=True)
-    )
+    )   # dL/dZ
 
     # (3) Gradient of the loss with respect to X
-    dX = layer.bc['dX'] = np.dot(dZ, layer.p['W'].T)
+    dX = layer.bc['dX'] = np.dot(dZ, layer.p['W'].T)   # dL/dX
 
     return dX    # To previous layer
