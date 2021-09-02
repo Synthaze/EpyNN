@@ -37,7 +37,7 @@ def gru_forward(layer, A):
     # Iterate over sequence steps
     for s in range(layer.d['s']):
 
-        # (2s) Slice sequence (m, s, v) with respect to step
+        # (2s) Slice sequence (m, s, e) with respect to step
         X = layer.fc['X'][:, s]
 
         # (3s) Retrieve previous hidden cell state
@@ -48,30 +48,33 @@ def gru_forward(layer, A):
             np.dot(X, layer.p['Ur'])
             + np.dot(hp, layer.p['Vr'])
             + layer.p['br']
-        )
+        )   # (4.1s)
 
-        r = layer.fc['r'][:, s] = layer.activate_reset(r_)
+        r = layer.fc['r'][:, s] = layer.activate_reset(r_)    # (4.2s)
 
         # (5s) Activate update gate
         z_ = layer.fc['z_'][:, s] = (
             np.dot(X, layer.p['Uz'])
             + np.dot(hp, layer.p['Vz'])
             + layer.p['bz']
-        )
+        )   # (5.1s)
 
-        z = layer.fc['z'][:, s] = layer.activate_update(z_)
+        z = layer.fc['z'][:, s] = layer.activate_update(z_)   # (5.2s)
 
-        # (6s) Activate hidden hat (hh)
+        # (6s) Activate hidden hat
         hh_ = layer.fc['hh_'][:, s] = (
             np.dot(X, layer.p['Uhh'])
             + np.dot(r * hp, layer.p['Vhh'])
             + layer.p['bhh']
-        )
+        )   # (6.1s)
 
-        hh = layer.fc['hh'][:, s] = layer.activate(hh_)
+        hh = layer.fc['hh'][:, s] = layer.activate(hh_)       # (6.2s)
 
         # (7s) Compute current hidden cell state
-        h = layer.fc['h'][:, s] = z*hp + (1-z)*hh
+        h = layer.fc['h'][:, s] = (
+            z*hp
+            + (1-z)*hh
+        )
 
     # Return the last hidden cell state or the full sequence
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]

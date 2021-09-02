@@ -28,7 +28,7 @@ def rnn_compute_shapes(layer, A):
 def rnn_initialize_parameters(layer):
     """Initialize trainable parameters from shapes for layer.
     """
-    # For linear activation of hidden cell state (h)
+    # For linear activation of hidden cell state (h_)
     layer.p['U'] = layer.initialization(layer.fs['U'], rng=layer.np_rng)
     layer.p['V'] = layer.initialization(layer.fs['V'], rng=layer.np_rng)
     layer.p['b'] = np.zeros(layer.fs['b']) # dot(X, U) + dot(hp, V) + b
@@ -47,14 +47,14 @@ def rnn_compute_gradients(layer):
     # Reverse iteration over sequence steps
     for s in reversed(range(layer.d['s'])):
 
-        dh_ = layer.bc['dh_'][:, s]    # Gradient for current hidden state
-        X = layer.fc['X'][:, s]      # Current cell input
-        hp = layer.fc['hp'][:, s]    # Previous hidden state
+        dh_ = layer.bc['dh_'][:, s]  # Gradient w.r.t hidden cell state h_
+        X = layer.fc['X'][:, s]      # Input for current step
+        hp = layer.fc['hp'][:, s]    # Previous hidden cell state
 
         # (1) Gradients of the loss with respect to U, V, b
-        layer.g['dU'] += np.dot(X.T, dh_)    # (1.1)
-        layer.g['dV'] += np.dot(hp.T, dh_)   # (1.2)
-        layer.g['db'] += np.sum(dh_, axis=0)  # (1.3)
+        layer.g['dU'] += np.dot(X.T, dh_)     # (1.1) dL/dU
+        layer.g['dV'] += np.dot(hp.T, dh_)    # (1.2) dL/dV
+        layer.g['db'] += np.sum(dh_, axis=0)  # (1.3) dL/db
 
     return None
 
