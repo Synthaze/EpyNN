@@ -20,7 +20,8 @@ jobs:
         echo $CONDA/bin >> $GITHUB_PATH
     - name: Install dependencies
       run: |
-        conda create --name epynn --file requirements.txt
+        conda create --name epynn
+        conda install --name epynn -c python-wget==3.2
     - name: Lint with flake8
       run: |
         conda install flake8
