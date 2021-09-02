@@ -3,10 +3,10 @@
 import tarfile
 import random
 import gzip
-import wget
 import os
 
 # Related third party imports
+import wget
 import numpy as np
 
 # Local application/library specific imports

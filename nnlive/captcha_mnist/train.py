@@ -19,7 +19,10 @@ from nnlibs.pooling.models import Pooling
 from nnlibs.flatten.models import Flatten
 from nnlibs.dropout.models import Dropout
 from nnlibs.dense.models import Dense
-from prepare_dataset import prepare_dataset
+from prepare_dataset import (
+    prepare_dataset,
+    download_mnist,
+)
 from settings import se_hPars
 
 

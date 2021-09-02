@@ -2,8 +2,10 @@
 # Standard library imports
 import tarfile
 import random
-import wget
 import os
+
+# Related third party imports
+import wget
 
 # Local application/library specific imports
 from nnlibs.commons.library import read_file

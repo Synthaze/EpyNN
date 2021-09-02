@@ -3,11 +3,10 @@
 import tarfile
 import random
 import glob
-import gzip
-import wget
 import os
 
 # Related third party imports
+import wget
 import numpy as np
 from scipy.io import wavfile
 
