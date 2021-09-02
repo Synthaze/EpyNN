@@ -12,4 +12,4 @@ termcolor==1.1.0
 texttable==1.6.4
 jupyter==1.0.0
 scipy==1.6.3
-wget==3.2
+wget
