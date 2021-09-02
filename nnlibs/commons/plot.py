@@ -3,7 +3,6 @@
 import os
 
 # Related third party imports
-import termplotlib
 from matplotlib import pyplot as plt
 
 # Local application/library specific imports
@@ -54,31 +53,5 @@ def pyplot_metrics(model, path):
         process_logs('Make: ' + plot_path, level=1)
 
     plt.close()
-
-    return None
-
-
-def gnuplot_accuracy(model):
-    """Plot metrics from training with gnuplot. Accuracy only.
-
-    :param model: An instance of EpyNN network object.
-    :type model: :class:`nnlibs.meta.models.EpyNN`
-    """
-    fig = termplotlib.figure()
-
-    s = 'accuracy'
-
-    # Iterate over active datasets
-    for k, dset in enumerate(model.embedding.dsets):
-
-        dname = dset.name
-
-        x = [x for x in range(len(model.metrics[s][k]))]
-
-        y = model.metrics[s][k]
-
-        fig.plot(x, y, label=dname + ' ' + s, width=50, height=15)
-
-        fig.show()
 
     return None
