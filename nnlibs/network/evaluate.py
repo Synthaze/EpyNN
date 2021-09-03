@@ -53,10 +53,8 @@ def batch_evaluate(model, Y, A):
     """
     metrics = metrics_functions()
 
-    metrics.update(loss_functions())
-
     accuracy = np.sum(metrics['accuracy'](Y, A)) / Y.shape[0]
 
-    cost = np.mean(model.training_loss(Y, A))
+    cost = np.mean(model.training_loss.call(Y, A))
 
     return accuracy, cost

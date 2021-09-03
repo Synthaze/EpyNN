@@ -60,17 +60,10 @@ def lstm_backward(layer, dX):
         dhn = layer.bc['dhn'][:, s] = dh   # (3.1) dL/dhn
         dCn = layer.bc['dCn'][:, s] = dC   # (3.2) dL/dCn
 
-        # (3s) Gradient of the loss w.r.t hidden cell state h_
+        # (4s) Gradient of the loss w.r.t hidden cell state h_
         dh_ = layer.bc['dh_'][:, s] = (
             (dA + dhn)
         )   # dL/dh_
-
-        # (4s) Gradient of the loss w.r.t output gate o_
-        do_ = layer.bc['do_'][:, s] = (
-            dh_
-            * layer.fc['C'][:, s]
-            * layer.activate_output(layer.fc['o_'][:, s], deriv=True)
-        )   # dL/do_
 
         # (5s) Gradient of the loss w.r.t memory cell state C_
         dC_ = layer.bc['dC_'][:, s] = (
@@ -80,34 +73,41 @@ def lstm_backward(layer, dX):
             + dCn
         )   # dL/dC_
 
-        # (6s) Gradient of the loss w.r.t candidate g_
+        # (6s) Gradient of the loss w.r.t output gate o_
+        do_ = layer.bc['do_'][:, s] = (
+            dh_
+            * layer.fc['C'][:, s]
+            * layer.activate_output(layer.fc['o_'][:, s], deriv=True)
+        )   # dL/do_
+
+        # (7s) Gradient of the loss w.r.t candidate g_
         dg_ = layer.bc['dg_'][:, s] = (
             dC_
             * layer.fc['i'][:, s]
             * layer.activate_candidate(layer.fc['g_'][:, s], deriv=True)
         )   # dL/dg_
 
-        # (7s) Gradient of the loss w.r.t input gate i_
+        # (8s) Gradient of the loss w.r.t input gate i_
         di_ = layer.bc['di_'][:, s] = (
             dC_
             * layer.fc['g'][:, s]
             * layer.activate_input(layer.fc['i_'][:, s], deriv=True)
         )   # dL/di_
 
-        # (7s) Gradient of the loss w.r.t forget gate f_
+        # (9s) Gradient of the loss w.r.t forget gate f_
         df_ = layer.bc['df_'][:, s] = (
             dC_
             * layer.fc['Cp_'][:, s]
             * layer.activate_forget(layer.fc['f_'][:, s], deriv=True)
         )   # dL/df_
 
-        # (8s) Gradient of the loss w.r.t memory cell state C
+        # (10s) Gradient of the loss w.r.t memory cell state C
         dC = layer.bc['dC'][:, s] = (
             dC_
             * layer.fc['f'][:, s]
         )   # dL/dC
 
-        # (9s) Gradient of the loss w.r.t hidden cell state h
+        # (11s) Gradient of the loss w.r.t hidden cell state h
         dh = layer.bc['dh'][:, s] = (
             np.dot(do_, layer.p['Vo'].T)
             + np.dot(dg_, layer.p['Vg'].T)
@@ -115,7 +115,7 @@ def lstm_backward(layer, dX):
             + np.dot(df_, layer.p['Vf'].T)
         )   # dL/dh
 
-        # (10s) Gradient of the loss w.r.t hidden cell state X
+        # (12s) Gradient of the loss w.r.t hidden cell state X
         dX = layer.bc['dX'][:, s] = (
             np.dot(dg_, layer.p['Ug'].T)
             + np.dot(do_, layer.p['Uo'].T)

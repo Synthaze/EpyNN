@@ -1,10 +1,37 @@
 # EpyNN/nnlibs/commons/loss.py
 # Related third party imports
 import numpy as np
-from nnlibs.commons.maths import sigmoid
+
 
 # To prevent from divide floatting points errors
 E_SAFE = 1e-16
+
+
+class Loss:
+    """.
+    """
+
+    def __init__(self, loss, output_layer):
+
+        self.iloss = loss
+        self.loss = loss_functions(key=loss)
+
+        output_activation = output_layer.activation['activate']
+        self.softmax = True if output_activation == 'softmax' else False
+
+        return None
+
+    def call(self, Y, A, deriv=False):
+
+        N = A.shape[1]
+
+        losses = self.loss(Y, A, deriv=deriv)
+
+        if deriv and self.softmax:
+            if self.iloss != 'CCE':
+                losses *= (1 + 1/(N-1))
+
+        return losses
 
 
 def loss_functions(key=None):
@@ -45,12 +72,13 @@ def CCE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+    N = A.shape[1]
 
     if not deriv:
-        loss = -1. * np.sum(Y * np.log(A), axis=1)
+        loss = -1. * np.sum(Y * np.log(A+E_SAFE), axis=1)
 
     elif deriv:
-        loss = (A-Y) / (A - A*A)
+        loss = 1. * (A-Y) / (A - A*A + E_SAFE)
 
     return loss
 
@@ -70,13 +98,13 @@ def BCE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+    N = A.shape[1]
+
     if not deriv:
-        loss = -1. * np.sum(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE), axis=1)
+        loss = -1. / N * np.sum(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE), axis=1)
 
     elif deriv:
-        loss = (A-Y) / (A - A*A)
-
-    loss /= A.shape[1]
+        loss = 1. / N * (A-Y) / (A - A*A + E_SAFE)
 
     return loss
 
@@ -96,13 +124,13 @@ def MAE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+    N = A.shape[1]
+
     if not deriv:
-        loss = np.sum(np.abs(Y - A), axis=1)
+        loss =  1. / N * np.sum(np.abs(Y-A), axis=1)
 
     elif deriv:
-        loss = -1. * (Y-A) / (np.abs(Y-A)+E_SAFE)
-
-    loss /= A.shape[1]
+        loss = -1. / N * (Y-A) / (np.abs(Y-A)+E_SAFE)
 
     return loss
 
@@ -122,13 +150,13 @@ def MSE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+    N = A.shape[1]
+
     if not deriv:
-        loss = np.sum(np.square(Y - A), axis=1)
+        loss =  1. / N * np.sum((Y - A)**2, axis=1)
 
     elif deriv:
-        loss = -2. * (Y-A)
-
-    loss /= A.shape[1]
+        loss = -2. / N * (Y-A)
 
     return loss
 
@@ -148,12 +176,12 @@ def MSLE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
+    N = A.shape[1]
+
     if not deriv:
-        loss = np.sum(np.square(np.log1p(Y) - np.log1p(A)), axis=1)
+        loss = 1. / N * np.sum(np.square(np.log1p(Y) - np.log1p(A)), axis=1)
 
     elif deriv:
-        loss = -2. * (np.log1p(Y) - np.log1p(A)) / (A + 1.)
-
-    loss /= A.shape[1]
+        loss = -2. / N * (np.log1p(Y) - np.log1p(A)) / (A + 1.)
 
     return loss
