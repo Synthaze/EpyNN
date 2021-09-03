@@ -50,10 +50,10 @@ def prepare_dataset(N_SAMPLES=100):
     n_label = 0
 
     # Positive data are Homo sapiens O-GlcNAcylated peptide sequences from oglcnac.mcw.edu
-    path_positive = 'data/21_positive.dat'
+    path_positive = os.path.join('data', '21_positive.dat')
 
     # Negative data are peptide sequences presumably not O-GlcNAcylated
-    path_negative = 'data/21_negative.dat'
+    path_negative = os.path.join('data', '21_negative.dat')
 
     # Read text files, each containing one sequence per line
     positive = [[list(x), p_label] for x in read_file(path_positive).splitlines()]
