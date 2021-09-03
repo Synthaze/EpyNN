@@ -64,7 +64,7 @@ def model_initialize(model, params=True, end='\n'):
 
         delattr(layer, 'check')
 
-    dX = dA = model.training_loss(Y, A, deriv=True)
+    dX = dA = model.training_loss.call(Y, A, deriv=True)
 
     for layer in reversed(model.layers):
 
@@ -96,10 +96,10 @@ def model_initialize_exceptions(model,trace):
 
     cprint('\n/!\\ Initialization of EpyNN model failed - debug', 'red', attrs=['bold'])
 
-    layer = [layer for layer in model.layers if hasattr(layer, 'check')][0]
-
-
     try:
+
+        layer = [layer for layer in model.layers if hasattr(layer, 'check')][0]
+
         layer.update_shapes(layer.fc, layer.fs)
         layer.update_shapes(layer.bc, layer.bs)
 

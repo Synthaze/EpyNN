@@ -12,7 +12,7 @@ from nnlibs.commons.io import (
     scale_features,
 )
 from nnlibs.commons.library import write_model
-from nnlibs.commons.loss import loss_functions
+from nnlibs.commons.loss import Loss
 from nnlibs.commons.models import dataSet
 from nnlibs.network.report import (
     model_report,
@@ -67,6 +67,7 @@ class EpyNN:
         # Layers
         self.layers = layers
         self.embedding = self.layers[0]
+        self.output = self.layers[-1]
 
         # Identification
         self.ts = int(time.time())
@@ -118,14 +119,14 @@ class EpyNN:
         :param params: Layer parameters initialization, defaults to `True`.
         :type params: bool, optional
         """
-        self.training_loss = loss_functions(loss)
+        self.training_loss = Loss(loss, self.output)
         self.se_hPars = se_hPars
         self.seed = seed
 
         model_hyperparameters(self)
 
         metrics = metrics.copy()
-        metrics.append(self.training_loss.__name__)
+        metrics.append(loss)
 
         self.metrics = {m:[[] for _ in range(3)] for m in metrics}
 
