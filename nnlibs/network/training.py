@@ -15,7 +15,7 @@ def model_training(model):
 
             A = model.forward(batch.X)
 
-            dA = model.training_loss.call(batch.Y, A, deriv=True)
+            dA = model.training_loss(batch.Y, A, deriv=True)
 
             model.backward(dA)
 
