@@ -64,7 +64,7 @@ def model_initialize(model, params=True, end='\n'):
 
         delattr(layer, 'check')
 
-    dX = dA = model.training_loss.call(Y, A, deriv=True)
+    dX = dA = model.training_loss(Y, A, deriv=True)
 
     for layer in reversed(model.layers):
 

@@ -23,6 +23,31 @@ def activation_tune(se_hPars):
     return None
 
 
+def hadamard(dA, dLinear):
+    """Element-wise matrix multiplication with support for softmax derivative.
+
+    This is implemented for Dense layer and is compatible with other layers satisfying requirements.
+
+    :param dA: Input of backward propagation of shape (m, n).
+    :type dA: :class:`numpy.ndarray`
+
+    :param dLinear: Linear activation product passed through the derivative of the non-linear activation function with shape (m, n) or (m, n, n).
+    :type dLinear: :class:`numpy.ndarray`
+    """
+
+    # Non-softmax processing
+    if dLinear.ndim == 2:
+        dZ = dA * dLinear
+
+    # Softmax processing
+    elif dLinear.ndim == 3:
+        dA = np.expand_dims(dA, 2)
+        dZ = dA * dLinear
+        dZ = np.sum(dZ, axis=1)
+
+    return dZ
+
+
 ### Activation functions and derivatives
 
 # Identity function
@@ -178,7 +203,7 @@ def tanh(x, deriv=False):
 
 # Softmax
 
-def softmax(x, deriv=False):
+def softmax(x, deriv=False, CCE=False):
     """Compute softmax activation or derivative.
 
     :param x: Input array to pass in function.
@@ -203,7 +228,8 @@ def softmax(x, deriv=False):
         x = x_exp / x_sum
 
     elif deriv:
-        x = softmax(x) * (1-softmax(x))
+
+        x = np.array([np.diag(x) - np.outer(x, x) for x in softmax(x)])
 
     return x
 

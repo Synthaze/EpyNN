@@ -2,6 +2,9 @@
 # Related third party imports
 import numpy as np
 
+# Local application/library specific imports
+from nnlibs.commons.maths import hadamard
+
 
 def initialize_backward(layer, dX):
     """Backward cache initialization.
@@ -27,10 +30,10 @@ def dense_backward(layer, dX):
     dA = initialize_backward(layer, dX)
 
     # (2) Gradient of the loss with respect to Z
-    dZ = layer.bc['dZ'] = (
-        dA
-        * layer.activate(layer.fc['Z'], deriv=True)
-    )   # dL/dZ
+    dZ = layer.bc['dZ'] = hadamard(
+         dA,
+         layer.activate(layer.fc['Z'], deriv=True)
+    )    # dL/dZ
 
     # (3) Gradient of the loss with respect to X
     dX = layer.bc['dX'] = np.dot(dZ, layer.p['W'].T)   # dL/dX
