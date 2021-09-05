@@ -118,7 +118,8 @@ class EpyNN:
         :param params: Layer parameters initialization, defaults to `True`.
         :type params: bool, optional
         """
-        self.training_loss = loss_functions(loss)
+        self.output = self.layers[-1].activation['activate']
+        self.training_loss = loss_functions(loss, self.output)
         self.se_hPars = se_hPars
         self.seed = seed
 

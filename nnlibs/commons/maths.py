@@ -203,7 +203,7 @@ def tanh(x, deriv=False):
 
 # Softmax
 
-def softmax(x, deriv=False, CCE=False):
+def softmax(x, deriv=False):
     """Compute softmax activation or derivative.
 
     :param x: Input array to pass in function.
