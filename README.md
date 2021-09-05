@@ -2,5 +2,3 @@
 =======
 
 https://epynn.net/
-
-![EpyNN logo](epynn.svg)
