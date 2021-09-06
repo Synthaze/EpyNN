@@ -22,3 +22,4 @@ EpyNN.egg-info/
 pyproject.toml
 setup.py
 MANIFEST.in
+__pycache__/
