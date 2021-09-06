@@ -23,4 +23,3 @@ pyproject.toml
 setup.py
 MANIFEST.in
 __pycache__/
-setup.cfg
