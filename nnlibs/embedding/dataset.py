@@ -9,7 +9,7 @@ import numpy as np
 from nnlibs.commons.io import (
     encode_dataset,
     scale_features,
-    index_vocabulary_auto,
+    index_elements_auto,
 )
 from nnlibs.commons.models import dataSet
 
@@ -30,6 +30,7 @@ def embedding_check(X_data, Y_data=None, X_scale=False):
     :rtype: tuple[:class:`numpy.ndarray`]
     """
     if X_scale:
+        # Array-wide normalization in [0, 1]
         X_data = scale_features(X_data)
 
     X_data = np.array(X_data)
@@ -62,8 +63,8 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     """
     # Features one-hot encoding
     if X_encode:
-        layer.w2i, layer.i2w, layer.d['v'] = index_vocabulary_auto(X_data)
-        X_data = encode_dataset(X_data, layer.w2i, layer.d['v'])
+        layer.e2i, layer.i2e, layer.d['e'] = index_elements_auto(X_data)
+        X_data = encode_dataset(X_data, layer.e2i, layer.d['e'])
     # Label one-hot encoding
     if Y_encode:
         num_classes = len(list(set(Y_data.flatten())))
@@ -87,16 +88,20 @@ def embedding_prepare(layer, X_data, Y_data):
     :return: All training, testing and validations sets along with batched training set
     :rtype: tuple[:class:`nnlibs.commons.models.dataSet`]
     """
+    # Embedding parameters
     se_dataset = layer.se_dataset
 
+    # Pair-wise features-label list
     dataset = list(zip(X_data, Y_data))
 
+    # Split and separate features and label
     dtrain, dtest, dval = split_dataset(dataset, se_dataset)
 
     X_train, Y_train = zip(*dtrain)
     X_test, Y_test = zip(*dtest) if dtest else [(), ()]
     X_val, Y_val = zip(*dval) if dval else [(), ()]
 
+    # Instantiate dataSet objects
     dtrain = dataSet(X_data=X_train, Y_data=Y_train, name='dtrain')
     dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest')
     dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval')
@@ -118,17 +123,19 @@ def split_dataset(dataset, se_dataset):
     :return: Training, testing and validation sets.
     :rtype: tuple[list]
     """
-
+    # Retrieve relative sizes
     dtrain_relative = se_dataset['dtrain_relative']
     dtest_relative = se_dataset['dtest_relative']
     dval_relative = se_dataset['dval_relative']
 
+    # Compute absolute sizes with respect to full dataset
     sum_relative = sum([dtrain_relative, dtest_relative, dval_relative])
 
     dtrain_length = round(dtrain_relative / sum_relative * len(dataset))
     dtest_length = round(dtest_relative / sum_relative * len(dataset))
     dval_length = round(dval_relative / sum_relative * len(dataset))
 
+    # Slice full dataset
     dtrain = dataset[:dtrain_length]
     dtest = dataset[dtrain_length:dtrain_length + dtest_length]
     dval = dataset[dtrain_length + dtest_length:]
@@ -145,18 +152,20 @@ def mini_batches(layer):
     :return: Batches made from dataset with respect to batch_size
     :rtype: list[Object]
     """
-
+    # Retrieve training set and make pair-wise features-label dataset
     dtrain = layer.dtrain
     dtrain = list(zip(dtrain.X.tolist(), dtrain.Y.tolist()))
 
     batch_size = layer.se_dataset['batch_size']
 
+    # Shuffle dataset
     if hasattr(layer, 'np_rng'):
         warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
         layer.np_rng.shuffle(dtrain)
     else:
         np.random.shuffle(dtrain)
 
+    # Compute number of batches w.r.t. batch_size
     if not batch_size:
         batch_size = len(dtrain)
 
@@ -167,13 +176,17 @@ def mini_batches(layer):
 
     batch_dtrain = []
 
+    # Iterate over number of batches
     for i in range(n_batch):
 
+        # Slice training set
         batch = dtrain[i * batch_size:(i+1) * batch_size]
 
+        # Separate features and label
         X_batch, Y_batch = zip(*batch)
-        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name=str(i))
 
+        # Append to list of training batches
+        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name=str(i))
         batch_dtrain.append(batch)
 
     return batch_dtrain

@@ -22,11 +22,12 @@ from nnlibs.commons.logs import (
 
 
 def model_report(model):
-    """.
+    """Report selected metrics for datasets at current epoch.
 
-    :param model:
-    :type model:
+    :param model: An instance of EpyNN network object.
+    :type model: :class:`nnlibs.network.models.EpyNN`
     """
+    # You may edit the colorscheme to fulfill your preference
     colors = [
         'white',
         'green',
@@ -38,18 +39,22 @@ def model_report(model):
         'grey',
     ]
 
-    logs_freq_disp = 11
+    # Rows in tabular report excluding headers
+    size_table = 11
 
-    if not hasattr(model, 'current_logs'):
-        model.current_logs = []
-
-    if model.e == 0:
+    # Initialize list of rows with headers
+    if model.e == 0 or not hasattr(model, 'current_logs'):
         model.current_logs = [headers_logs(model, colors)]
 
-    if model.e % model.verbose == 0 or model.e == model.epochs - 1:
+    # Check if last epoch
+    eLast = (model.e == model.epochs - 1)
+
+    # Append row one every verboseth epoch or if last epoch
+    if model.e % model.verbose == 0 or eLast:
         model.current_logs.append(current_logs(model, colors))
 
-    if len(model.current_logs) == logs_freq_disp + 1 or model.e == model.epochs - 1:
+    # Report on terminal
+    if len(model.current_logs) == size_table + 1 or eLast:
 
         logs = tabulate(model.current_logs,
                         headers="firstrow",
@@ -57,37 +62,87 @@ def model_report(model):
                         stralign='center',
                         tablefmt="pretty",
                         )
+
         print('\n')
         print (logs, flush=True)
 
-        model.current_logs = [headers_logs(model, colors)]
+        # Clear-up
+        del model.current_logs
+
+    return None
+
+
+def single_batch_report(model, batch, A):
+    """Report accuracy and cost for current batch.
+
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.network.models.EpyNN`
+
+    :param batch: An instance of batch dataSet.
+    :type batch: :class:`nnlibs.commons.models.dataSet`
+
+    :param A: Output of forward propagation for batch.
+    :type A: :class:`numpy.ndarray`
+    """
+    current = time.time()
+
+    # Time for one epoch based on current batch
+    epoch_time = (current - model.cts) * len(model.embedding.batch_dtrain)
+    model.cts = current
+
+    # Epochs per second
+    rate = round((model.e + 1) / (epoch_time + 1e-16), 3)
+
+    # Time until completion
+    ttc = round((model.epochs - model.e + 1) / rate)
+
+    # Total elapsed time
+    elapsed_time = round(current - model.ts, 2)
+
+    # Accuracy and cost
+    accuracy, cost = batch_evaluate(model, batch.Y, A)
+    accuracy = round(accuracy, 3)
+    cost = round(cost, 5)
+
+    # Current batch numerical identifier
+    batch_counter = batch.name + '/' + model.embedding.batch_dtrain[-1].name
+
+    # Format and print data
+    rate = '{:.2e}'.format(rate)
+
+    log = ('Epoch %s - Batch %s - Accuracy: %s Cost: %s - TIME: %ss RATE: %se/s TTC: %ss'
+           % (model.e, batch_counter, accuracy, cost, elapsed_time, rate, ttc))
+
+    cprint('{: <100}'.format(log), 'white', attrs=['bold'], end='\r', flush=True)
 
     return None
 
 
 def initialize_model_report(model, timeout):
-    """.
+    """Report exhaustive initialization logs for datasets,
+    model architecture and shapes, layers hyperparameters.
 
-    :param model:
-    :type model:
+    :param model: An instance of EpyNN network.
+    :type model: :class:`nnlibs.network.models.EpyNN`
+
+    :param timeout: Time to hold on initialization logs.
+    :type timeout: int
     """
-    model.current_logs = []
-
     model.init_logs = []
 
-    #
+    # Dataset initialization logs
     dsets = model.embedding.dsets
     se_dataset = model.embedding.se_dataset
 
     model.init_logs.append(dsets_samples_logs(dsets, se_dataset))
     model.init_logs.append(dsets_labels_logs(dsets))
 
-    #
+    # Model architecture and shapes initialization logs
     network = model.network
 
     model.init_logs.append(network_logs(network))
 
-    #
+    # Model and layer hyperparameters initialization logs
     layers = model.layers
 
     model.init_logs.append(layers_lrate_logs(layers))
@@ -96,36 +151,5 @@ def initialize_model_report(model, timeout):
     initialize_logs_print(model)
 
     start_counter(timeout)
-
-    return None
-
-
-def single_batch_report(model, batch, A):
-    """.
-
-    :param model:
-    :type model:
-    """
-    current = time.time()
-
-    epoch_time = current - model.cts
-    elapsed_time = round(current - model.ts, 2)
-
-    model.cts = current
-
-    rate = round((model.e + 1) / (epoch_time + 1e-16), 3)
-
-    ttc = round((model.epochs - model.e + 1) / rate)
-
-    accuracy, cost = batch_evaluate(model, batch.Y, A)
-
-    accuracy = round(accuracy, 3)
-    cost = round(cost, 5)
-
-    batch_counter = batch.name + '/' + model.embedding.batch_dtrain[-1].name
-
-    rate = '{:.2e}'.format(rate)
-
-    cprint('Epoch %s - Batch %s - Accuracy: %s Cost: %s - TIME: %ss RATE: %se/s TTC: %ss' % (model.e, batch_counter, accuracy, cost, elapsed_time, rate, ttc), 'white', attrs=['bold'], end='\r')
 
     return None

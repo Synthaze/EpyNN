@@ -3,8 +3,8 @@
 import numpy as np
 
 
-def index_vocabulary_auto(X_data):
-    """Determine vocabulary size and generate dictionnary for one-hot encoding or features or label.
+def index_elements_auto(X_data):
+    """Determine elements size and generate dictionnary for one-hot encoding or features or label.
 
     :param X_data: Dataset containing samples features or samples label.
     :type X_data: :class:`numpy.ndarray`
@@ -18,16 +18,16 @@ def index_vocabulary_auto(X_data):
     :return: Vocabulary size.
     :rtype: int
     """
-    X_data = X_data.flatten().tolist()    # All vocabulary elements in 1D list
+    X_data = X_data.flatten().tolist()       # All elements in 1D list
 
-    words = sorted(list(set(X_data)))     # Unique vocabulary list
-    vocab_size = len(words)               # Number of words
+    elements = sorted(list(set(X_data)))     # Unique elements list
+    elements_size = len(elements)            # Number of elements
 
     # Converters to encode and decode sequences
-    word_to_idx = {w: i for i, w in enumerate(words)}
-    idx_to_word = {i: w for w, i in word_to_idx.items()}
+    element_to_idx = {w: i for i, w in enumerate(elements)}
+    idx_to_element = {i: w for w, i in element_to_idx.items()}
 
-    return word_to_idx, idx_to_word, vocab_size
+    return element_to_idx, idx_to_element, elements_size
 
 
 def scale_features(X_data):
@@ -44,73 +44,73 @@ def scale_features(X_data):
     return X_data
 
 
-def one_hot_encode(i, vocab_size):
+def one_hot_encode(i, elements_size):
     """Generate one-hot encoding array.
 
     :param i: One-hot index for current word.
     :type i: int
 
-    :param vocab_size: Number of keys in the word to index encoder.
-    :type vocab_size: int
+    :param elements_size: Number of keys in the word to index encoder.
+    :type elements_size: int
 
     :return: One-hot encoding array for current word.
     :rtype: :class:`numpy.ndarray`
     """
-    one_hot = np.zeros(vocab_size)
+    one_hot = np.zeros(elements_size)
 
     one_hot[i] = 1.0    # Set 1 at index assigned to word
 
     return one_hot
 
 
-def one_hot_encode_sequence(sequence, word_to_idx, vocab_size):
+def one_hot_encode_sequence(sequence, element_to_idx, elements_size):
     """One-hot encode sequence.
 
     :param sequence: Sequential data.
     :type sequence: list or :class:`numpy.ndarray`
 
-    :param word_to_idx: Converter with word as key and index as value.
-    :type word_to_idx: dict[str or int or float, int]
+    :param element_to_idx: Converter with word as key and index as value.
+    :type element_to_idx: dict[str or int or float, int]
 
-    :param vocab_size: Number of keys in converter.
-    :type vocab_size: int
+    :param elements_size: Number of keys in converter.
+    :type elements_size: int
 
     :return: One-hot encoded sequence.
     :rtype: :class:`numpy.ndarray`
     """
-    encoding = np.array([one_hot_encode(word_to_idx[word], vocab_size) for word in sequence])
+    encoding = np.array([one_hot_encode(element_to_idx[word], elements_size) for word in sequence])
 
     return encoding
 
 
-def one_hot_decode_sequence(sequence, idx_to_word):
+def one_hot_decode_sequence(sequence, idx_to_element):
     """One-hot decode sequence.
 
     :param sequence: One-hot encoded sequence.
     :type sequence: list or :class:`numpy.ndarray`
 
-    :param idx_to_word: Converter with index as key and word as value.
-    :type idx_to_word: dict[int, str or int or float]
+    :param idx_to_element: Converter with index as key and word as value.
+    :type idx_to_element: dict[int, str or int or float]
 
     :return: One-hot decoded sequence.
     :rtype: list[str or int or float]
     """
-    decoding = [idx_to_word[np.argmax(encoded)] for encoded in sequence]
+    decoding = [idx_to_element[np.argmax(encoded)] for encoded in sequence]
 
     return decoding
 
 
-def encode_dataset(X_data, word_to_idx, vocab_size):
+def encode_dataset(X_data, element_to_idx, elements_size):
     """One-hot encode a set of sequences.
 
     :param X_data: Contains sequences.
     :type X_data: :class:`numpy.ndarray`
 
-    :param word_to_idx: Converter with word as key and index as value.
-    :type word_to_idx: dict[str or int or float, int]
+    :param element_to_idx: Converter with word as key and index as value.
+    :type element_to_idx: dict[str or int or float, int]
 
-    :param vocab_size: Number of keys in converter.
-    :type vocab_size: int
+    :param elements_size: Number of keys in converter.
+    :type elements_size: int
 
     :return: One-hot encoded dataset.
     :rtype: list[:class:`numpy.ndarray`]
@@ -122,7 +122,7 @@ def encode_dataset(X_data, word_to_idx, vocab_size):
 
         sequence = X_data[i]    # Retrieve sequence
 
-        encoded_sequence = one_hot_encode_sequence(sequence, word_to_idx, vocab_size)
+        encoded_sequence = one_hot_encode_sequence(sequence, element_to_idx, elements_size)
 
         X_encoded.append(encoded_sequence)    # Append to dataset of encoded sequences
 
@@ -151,27 +151,3 @@ def padding(X_data, padding, forward=True):
         X_data = X_data[:, padding:-padding, padding:-padding, :]
 
     return X_data
-
-
-def extract_blocks(X, sizes, strides):
-    """.
-    """
-    wh, ww = sizes
-    sh, sw = strides
-
-    Xh = X.shape[1] - wh + 1
-    Xw = X.shape[2] - ww + 1
-
-    Xb = X
-
-    Xb = np.array([Xb[ :, :, w:w + ww, :]
-                   for w in range(Xw)
-                   if w % sw == 0])
-
-    Xb = np.array([Xb[:, :, h:h + wh, :, :]
-                   for h in range(Xh)
-                   if h % sh == 0])
-
-    Xb = np.moveaxis(Xb, 2, 0)
-
-    return Xb

@@ -21,6 +21,7 @@ from nnlibs.network.report import (
 )
 from nnlibs.commons.plot import pyplot_metrics
 from nnlibs.network.initialize import (
+    model_assign_seeds,
     model_initialize,
     model_initialize_exceptions,
 )
@@ -93,7 +94,7 @@ class EpyNN:
     def backward(self, dA):
         """Wrapper for :func:`nnlibs.network.backward.model_backward()`.
 
-        :param dA: Derivative of the loss function for Stochastic Gradient Descent (SGD).
+        :param dA: Derivative of the loss function with respect to the output of forward propagation.
         :type dA: :class:`numpy.ndarray`
         """
         dX = model_backward(self, dA)
@@ -109,7 +110,7 @@ class EpyNN:
         :param se_hPars: Global hyperparameters, defaults to :class:`nnlibs.settings.se_hPars`. If local hyperparameters were assigned to one layer, these remain unchanged.
         :type se_hPars: dict[str: float or str], optional
 
-        :param metrics: Metrics to monitor and print on terminal report or plot, defaults to ['accuracy']. See :module:`nnlibs.commons.metrics` for built-in metrics.
+        :param metrics: Metrics to monitor and print on terminal report or plot, defaults to ['accuracy']. See :module:`nnlibs.commons.metrics` for built-in metrics. Note that it also accept loss functions string identifiers.
         :type metrics: list[str], optional
 
         :param seed: Reproducibility in pseudo-random procedures.
@@ -117,25 +118,41 @@ class EpyNN:
 
         :param params: Layer parameters initialization, defaults to `True`.
         :type params: bool, optional
+
+        :param end: Wether to print every line for initialization steps or overwrite, default to `\\n`.
+        :type end: str in ['\\n', '\\r'], optional
         """
-        self.output = self.layers[-1].activation['activate']
-        self.training_loss = loss_functions(loss, self.output)
-        self.se_hPars = se_hPars
-        self.seed = seed
+        # Initialize model summary
+        self.network = {id(layer):{} for layer in self.layers}
 
-        model_hyperparameters(self)
-
+        # Initialize storage for selected metrics evaluation
         metrics = metrics.copy()
         metrics.append(loss)
 
         self.metrics = {m:[[] for _ in range(3)] for m in metrics}
 
+        # Check consistency output activation and loss
+        self.output = self.layers[-1].activation['activate']
+        self.training_loss = loss_functions(loss, self.output)
+
+        # Assign model and layers hyperparameters
+        self.se_hPars = se_hPars
+        model_hyperparameters(self)
+
+        # Seed model and layers
+        self.seed = seed
+        model_assign_seeds(self)
+
         try:
+            # Attempt to initialize model
             model_initialize(self, params=params, end=end)
+
         except Exception:
+            # Handle errors and provide debug info
             trace = traceback.format_exc()
             model_initialize_exceptions(self, trace)
 
+        # Termination
         self.initialized = True
 
         return None
@@ -152,19 +169,25 @@ class EpyNN:
         :param init_logs: Print data, architecture and hyperparameters logs, defaults to `True`.
         :type init_logs: bool, optional
         """
+        # Model initialization
         if not self.initialized:
             self.initialize()
 
+        # Handling training intiation or continuation scenarii
         self.epochs = epochs if not self.e else epochs + self.e + 1
 
+        # Compute learning rate schedule for layers in model
         model_learning_rate(self)
 
         if init_logs:
+            # From model.initialize() method
             initialize_model_report(self, timeout=3)
 
         if not verbose:
+            # By defaut, store full evaluation one every tenth of epochs
             verbose = epochs // 10 if epochs >= 10 else 1
 
+        # Start training
         self.verbose = verbose
         self.cts = time.time()
 
@@ -204,7 +227,7 @@ class EpyNN:
         return None
 
     def plot(self, pyplot=True, path=None):
-        """Plot metrics from model training.
+        """Wrapper for :func:`nnlibs.commons.plot.pyplot_metrics()`. Plot metrics from model training.
 
         :param pyplot: Plot of results on GUI using matplotlib.
         :type pyplot: bool, optional
@@ -235,19 +258,24 @@ class EpyNN:
         X_data = np.array(X_data)
 
         if X_encode:
-            word_to_idx = self.embedding.w2i
-            vocab_size = self.embedding.d['v']
-            X_data = encode_dataset(X_data, word_to_idx, vocab_size)
+            # One-hot encoding using embedding layer cache
+            element_to_idx = self.embedding.e2i
+            elements_size = self.embedding.d['e']
+            X_data = encode_dataset(X_data, element_to_idx, elements_size)
 
         if X_scale:
+            # Array-wide normalization in [0, 1]
             X_data = scale_features(X_data)
 
         dset = dataSet(X_data)
 
+        # Predict
         dset.A = self.forward(dset.X)
 
+        # Check label encoding
         encoded = (self.embedding.dtrain.Y.shape[1] > 1)
 
+        # Make decisions
         dset.P = np.argmax(dset.A, axis=1) if encoded else np.around(dset.A)
 
         return dset
