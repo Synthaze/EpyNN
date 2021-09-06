@@ -153,40 +153,36 @@ def mini_batches(layer):
     :rtype: list[Object]
     """
     # Retrieve training set and make pair-wise features-label dataset
-    dtrain = layer.dtrain
-    dtrain = list(zip(dtrain.X.tolist(), dtrain.Y.tolist()))
+    dtrain_zip = layer.dtrain_zip
 
     batch_size = layer.se_dataset['batch_size']
 
     # Shuffle dataset
     if hasattr(layer, 'np_rng'):
         warnings.filterwarnings("ignore", category=np.VisibleDeprecationWarning)
-        layer.np_rng.shuffle(dtrain)
+        layer.np_rng.shuffle(dtrain_zip)
     else:
-        np.random.shuffle(dtrain)
+        np.random.shuffle(dtrain_zip)
 
     # Compute number of batches w.r.t. batch_size
     if not batch_size:
-        batch_size = len(dtrain)
+        batch_size = len(dtrain_zip)
 
-    n_batch = len(dtrain) // batch_size
+    n_batch = len(dtrain_zip) // batch_size
 
     if not n_batch:
         n_batch = 1
 
-    batch_dtrain = []
+    # Slice to make sure split will result in equal division
+    dtrain_zip = dtrain_zip[: n_batch * batch_size]
 
-    # Iterate over number of batches
-    for i in range(n_batch):
+    X_train, Y_train = zip(*dtrain_zip)
 
-        # Slice training set
-        batch = dtrain[i * batch_size:(i+1) * batch_size]
+    X_train = np.split(np.array(X_train), n_batch, axis=0)
+    Y_train = np.split(np.array(Y_train), n_batch, axis=0)
 
-        # Separate features and label
-        X_batch, Y_batch = zip(*batch)
-
-        # Append to list of training batches
-        batch = dataSet(X_data=X_batch, Y_data=Y_batch, name=str(i))
-        batch_dtrain.append(batch)
+    # Set into dataSet object
+    batch_dtrain = [dataSet(X_data=X_batch, Y_data=Y_batch, name=str(i))
+                    for i, (X_batch, Y_batch) in enumerate(zip(X_train, Y_train))]
 
     return batch_dtrain

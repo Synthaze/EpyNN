@@ -3,7 +3,7 @@
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.io import padding, extract_blocks
+from nnlibs.commons.io import padding
 
 
 def initialize_forward(layer, A):
@@ -35,34 +35,45 @@ def convolution_forward(layer, A):
     # (1) Initialize cache and pad image
     X = initialize_forward(layer, A)    # (m, h, w, d)
 
-    # Filter size (fh, fw) and strides (sh, sw)
+    # (2) Slice input w.r.t. filter size (fh, fw) and strides (sh, sw)
     Xb = np.array([[X[ :, h:h + layer.d['fh'], w:w + layer.d['fw'], :]
-                    # Inner loop w -> ow * fw    # (ow, m, h, fw, d)
+                    # Inner loop
+                    # (m, h, w, d) ->
+                    # (ow, m, h, fw, d)
                     for w in range(layer.d['w'] - layer.d['fw'] + 1)
                     if w % layer.d['sw'] == 0]
-                # Outer loop h -> oh * fh        # (oh, ow, m, fh, fw, d)
+                # Outer loop
+                # (ow, m, h, fw, d) ->
+                # (oh, ow, m, fh, fw, d)
                 for h in range(layer.d['h'] - layer.d['fh'] + 1)
                 if h % layer.d['sh'] == 0])
 
-    # Bring back m along axis 0   # (oh, ow, m, fh, fw, d)
-    Xb = np.moveaxis(Xb, 2, 0)    # (m, oh, ow, fh, fw, d)
+    # (3) Bring back m along axis 0
+    Xb = np.moveaxis(Xb, 2, 0)
+    # (oh, ow, m, fh, fw, d) ->
+    # (m, oh, ow, fh, fw, d)
 
-    # Add dimension for filter units (u) on axis 6      # (m, oh, ow, fh, fw, d)
-    Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)    # (m, oh, ow, fh, fw, d, u)
+    # (4) Add dimension for filter units (u) on axis 6
+    Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)
+    # (m, oh, ow, fh, fw, d) ->
+    # (m, oh, ow, fh, fw, d, u)
 
-    # (2) Linear activation Xb -> Zb
-    Zb = Xb * layer.p['W'] # (m, oh, ow, fh, fw, d, u) * (fh, fw, d, u)
+    # (5) Linear activation Xb -> Zb
+    Zb = Xb * layer.p['W']
+    # (m, oh, ow, fh, fw, d, u) - Xb
+    #            (fh, fw, d, u) - W
 
-    # (3) Sum block products
-    Z = Zb                   # (m, oh, ow, fh, fw, d, u)
-    Z = np.sum(Z, axis=5)    # (m, oh, ow, fh, fw, u)
-    Z = np.sum(Z, axis=4)    # (m, oh, mw, fh, u)
-    Z = np.sum(Z, axis=3)    # (m, oh, ow, u)
+    # (6) Sum block products
+    Z = np.sum(Zb, axis=(5, 4, 3))
+    # (m, oh, ow, fh, fw, d, u) - Zb
+    # (m, oh, ow, fh, fw, u)    - np.sum(Zb, axis=5)
+    # (m, oh, mw, fh, u)        - np.sum(Zb, axis=(5, 4))
+    # (m, oh, ow, u)            - np.sum(Zb, axis=(5, 4, 3))
 
-    # (4) Add bias to linear activation product
+    # (7) Add bias to linear activation product
     Z = layer.fc['Z'] = Z + layer.p['b']
 
-    # (5) Non-linear activation
+    # (8) Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer

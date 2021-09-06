@@ -26,33 +26,45 @@ def convolution_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)    # (m, oh, ow, u)
 
-    # (2) Gradient of the loss with respect to Z
+    # (2) Gradient of the loss w.r.t. Z
     dZ = layer.bc['dZ'] = (
         dA
         * layer.activate(layer.fc['Z'], deriv=True)
-    )
+    )   # dL/dZ
 
-    # (3) Restore filter units kernel dimensions
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fw, d, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fh, fw, d, u)
+    # (3) Restore kernel dimensions
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
+    dZ = np.expand_dims(dZ, axis=3)
+    # (m, oh, ow, d, u) ->
+    # (m, oh, ow, fw, d, u) ->
+    # (m, oh, ow, fh, fw, d, u)
 
-    # (4)
-    dX = np.zeros_like(layer.fc['X'])  # (m, h, w, d)
+    # (4) Initialize backward output dL/dX
+    dX = np.zeros_like(layer.fc['X'])      # (m, h, w, d)
 
+    # Iterate over forward output height
     for h in range(layer.d['oh']):
 
         hs = h * layer.d['sh']
         he = hs + layer.d['fh']
 
+        # Iterate over forward output width
         for w in range(layer.d['ow']):
 
             ws = w * layer.d['sw']
             we = ws + layer.d['fw']
 
+            # (5hw) Gradient of the loss w.r.t Xb
             dXb = dZ[:, h, w, :] * layer.p['W']
+            # (m, oh, ow, fh, fw, d, u) - dZ
+            #         (m, fh, fw, d, u) - dZ[:, h, w, :]
+            #            (fh, fw, d, u) - W
 
+            # (6hw) Sum over units axis
             dX[:, hs:he, ws:we, :] += np.sum(dXb, axis=4)
+            # (m, fh, fw, d, u) - dXb
+            # (m, fh, fw, d)    - np.sum(dXb, axis=4)
 
     layer.bc['dX'] = dX
 
