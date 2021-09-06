@@ -8,7 +8,7 @@ E_SAFE = 1e-16
 
 
 def activation_tune(se_hPars):
-    """Set layer's hyperparameters as globals.
+    """Set layer's hyperparameters as temporary globals.
 
     For each forward and backward pass the function is called from within the layer.
 
@@ -235,7 +235,6 @@ def softmax(x, deriv=False):
 
 
 ### Weight initialization
-
 
 # Xavier
 

@@ -20,17 +20,19 @@ def pyplot_metrics(model, path):
     """
     plt.figure()
 
+    metrics = model.metrics    # Contains metrics and cost
+
     # Iterate over metrics/costs
-    for s in model.metrics.keys():
+    for s in metrics.keys():
 
         # Iterate over active datasets
         for k, dset in enumerate(model.embedding.dsets):
 
             dname = dset.name
 
-            x = [x for x in range(len(model.metrics[s][k]))]
+            x = [x for x in range(len(metrics[s][k]))]    # X range
 
-            y = model.metrics[s][k]
+            y = metrics[s][k]    # Y values from metrics[idx_dataset][idx_metrics]
 
             plt.plot(x, y, label=dname + ' ' + s)
 

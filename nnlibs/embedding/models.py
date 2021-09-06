@@ -51,7 +51,8 @@ class Embedding(Layer):
                  X_encode=False,
                  Y_encode=False,
                  X_scale=False):
-
+        """Initialize instance variable attributes.
+        """
         super().__init__()
 
         self.se_dataset = {
@@ -72,8 +73,8 @@ class Embedding(Layer):
 
         self.dtrain, self.dtest, self.dval = embedded_data
 
+        # Keep non-empty datasets
         self.dsets = [self.dtrain, self.dtest, self.dval]
-
         self.dsets = [dset for dset in self.dsets if dset.active]
 
         self.trainable = False

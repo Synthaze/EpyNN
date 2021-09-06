@@ -16,6 +16,10 @@ def loss_functions(key=None, output_activation=None):
     :param output_activation: Name of the activation function for output layer.
     :type output_activation: str, optional
 
+    :raises Exception: If key is `CCE` and output activation is different from softmax.
+
+    :raises Exception: If key is either `CCE`, `BCE` or `MSLE`and output activation is tanh.
+
     :return: Loss functions or computed loss.
     :rtype: dict[str, function] or :class:`numpy.ndarray`
     """
@@ -56,7 +60,7 @@ def MSE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
-    U = A.shape[1]
+    U = A.shape[1]    # Number of output nodes
 
     if not deriv:
         loss =  1. / U * np.sum((Y - A)**2, axis=1)
@@ -82,7 +86,7 @@ def MAE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
-    U = A.shape[1]
+    U = A.shape[1]    # Number of output nodes
 
     if not deriv:
         loss =  1. / U * np.sum(np.abs(Y-A), axis=1)
@@ -108,7 +112,7 @@ def MSLE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
-    U = A.shape[1]
+    U = A.shape[1]    # Number of output nodes
 
     if not deriv:
         loss = 1. / U * np.sum(np.square(np.log1p(Y) - np.log1p(A)), axis=1)
@@ -134,7 +138,7 @@ def CCE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
-    U = A.shape[1]
+    U = A.shape[1]    # Number of output nodes
 
     if not deriv:
         loss = -1. * np.sum(Y * np.log(A+E_SAFE), axis=1)
@@ -160,7 +164,7 @@ def BCE(Y, A, deriv=False):
     :return: loss.
     :rtype: :class:`numpy.ndarray`
     """
-    U = A.shape[1]
+    U = A.shape[1]    # Number of output nodes
 
     if not deriv:
         loss = -1. / U * np.sum(Y*np.log(A+E_SAFE) + (1-Y)*np.log((1-A)+E_SAFE), axis=1)
