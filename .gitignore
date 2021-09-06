@@ -17,3 +17,8 @@ epynn.sh
 nnlibs/statistics.py
 nnlive/statistics.py
 *.ai
+dist/
+EpyNN.egg-info/
+pyproject.toml
+setup.py
+MANIFEST.in
