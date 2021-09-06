@@ -34,6 +34,8 @@ np.set_printoptions(threshold=10)
 np.seterr(all='warn')
 np.seterr(under='ignore')
 
+configure_directory()
+
 
 ############################ DATASET ##########################
 download_music()
