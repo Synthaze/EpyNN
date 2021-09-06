@@ -128,7 +128,7 @@ class dataSet:
             self.X = np.array(X_data)
 
         # Set of sample label
-        if Y_data and self.active:
+        if (hasattr(Y_data, 'shape') or Y_data) and self.active:
 
             # Vectorize Y_data in NumPy array
             Y_data = np.array(Y_data)

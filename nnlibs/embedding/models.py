@@ -73,6 +73,8 @@ class Embedding(Layer):
 
         self.dtrain, self.dtest, self.dval = embedded_data
 
+        self.dtrain_zip = list(zip(self.dtrain.X, self.dtrain.Y))
+
         # Keep non-empty datasets
         self.dsets = [self.dtrain, self.dtest, self.dval]
         self.dsets = [dset for dset in self.dsets if dset.active]
