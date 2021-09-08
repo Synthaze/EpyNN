@@ -23,3 +23,5 @@ pyproject.toml
 setup.py
 MANIFEST.in
 __pycache__/
+__init__.py
+bin/
