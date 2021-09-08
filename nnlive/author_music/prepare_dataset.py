@@ -55,9 +55,10 @@ def clips_music(wav_file, TIME=1, SAMPLING_RATE=10000):
 
     # Retrieve original sampling rate (Hz) and data
     wav_sampling_rate, wav_data = wavfile.read(wav_file)
-
+    
     # 16-bits wav files - Pass all positive and norm. [0, 1]
     # wav_data = (wav_data + 32768.0) / (32768.0 * 2)
+    wav_data = wav_data.astype('int64')
     wav_data = (wav_data + np.abs(np.min(wav_data)))
     wav_data = wav_data / np.max(wav_data)
 
