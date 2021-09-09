@@ -57,10 +57,8 @@ embedding = Embedding(X_data=X_features,
 # Model
 name = 'Flatten_Dense-64-relu_Dense-2-softmax'
 
-# se_hPars['learning_rate'] = 0.00001
-# se_hPars['learning_rate'] = 1
 se_hPars['learning_rate'] = 0.01
-se_hPars['softmax_temperature'] = 1
+se_hPars['softmax_temperature'] = 5
 
 layers = [
     embedding,
@@ -74,7 +72,7 @@ model = EpyNN(layers=layers, name=name)
 
 model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
 
-model.train(epochs=5, init_logs=False)
+model.train(epochs=20, init_logs=False)
 
 
 ### Recurrent
@@ -98,7 +96,7 @@ model = EpyNN(layers=layers, name=name)
 
 model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
 
-model.train(epochs=5, init_logs=False)
+model.train(epochs=3, init_logs=False)
 
 
 # Model

@@ -57,8 +57,8 @@ class Embedding(Layer):
 
         self.se_dataset = {
             'dtrain_relative': relative_size[0],
-            'dtest_relative': relative_size[1],
-            'dval_relative': relative_size[2],
+            'dval_relative': relative_size[1],
+            'dtest_relative': relative_size[2],
             'batch_size': batch_size,
             'X_scale': X_scale,
             'X_encode': X_encode,
@@ -71,21 +71,25 @@ class Embedding(Layer):
 
         embedded_data = embedding_prepare(self, X_data, Y_data)
 
-        self.dtrain, self.dtest, self.dval = embedded_data
-
-        self.dtrain_zip = list(zip(self.dtrain.X, self.dtrain.Y))
+        self.dtrain, self.dval, self.dtest = embedded_data
 
         # Keep non-empty datasets
-        self.dsets = [self.dtrain, self.dtest, self.dval]
+        self.dsets = [self.dtrain, self.dval, self.dtest]
         self.dsets = [dset for dset in self.dsets if dset.active]
 
         self.trainable = False
 
         return None
 
-    def training_batches(self):
+    def training_batches(self, init=False):
         """Wrapper for :func:`nnlibs.embedding.dataset.mini_batches()`.
+
+        :param init: Wether to prepare a zip of X and Y data, defaults to False.
+        :type init: bool, optional
         """
+        if init:
+            self.dtrain_zip = list(zip(self.dtrain.X, self.dtrain.Y))
+
         self.batch_dtrain = mini_batches(self)
 
         return None

@@ -20,13 +20,13 @@ def model_initialize(model, params=True, end='\n'):
     :type end: str in ['\\n', '\\r']
     """
     # Retrieve sample batch
-    model.embedding.training_batches()
+    model.embedding.training_batches(init=True)
     batch_dtrain = model.embedding.batch_dtrain
     batch = batch_dtrain[0]
     A = batch.X  # Features
     Y = batch.Y  # Labels
 
-    cprint('--- EpyNN Check --- ', attrs=['bold'], end=end)
+    cprint('{: <100}'.format('--- EpyNN Check --- '), attrs=['bold'], end=end)
 
     # Iterate over layers
     for layer in model.layers:
@@ -95,7 +95,7 @@ def model_initialize(model, params=True, end='\n'):
         # Clear check
         delattr(layer, 'check')
 
-    cprint('--- EpyNN Check OK! --- ', attrs=['bold'], end=end)
+    cprint('{: <100}'.format('--- EpyNN Check OK! --- '), attrs=['bold'], end=end)
 
     # Initialize current epoch to zero
     model.e = 0

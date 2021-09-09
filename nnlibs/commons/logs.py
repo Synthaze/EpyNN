@@ -84,7 +84,7 @@ def current_logs(model, colors):
     :rtype: list[str]
     """
     metrics = model.metrics          # Contains metrics + cost computed along training epochs
-    dsets = model.embedding.dsets    # Active datasets (dtrain, dtest, dval or dtrain, dtest or dtrain)
+    dsets = model.embedding.dsets    # Active datasets (dtrain, dval, dtest or dtrain, dval or dtrain)
 
     log = []
 
@@ -298,8 +298,8 @@ def dsets_samples_logs(dsets, se_dataset):
     # List of dataset descriptors.
     headers = [
         'dtrain\n(0)',
-        'dtest\n(1)',
-        'dval\n(2)',
+        'dval\n(1)',
+        'dtest\n(2)',
         'batch\nsize',
     ]
 
@@ -341,8 +341,8 @@ def dsets_labels_logs(dsets):
     headers = [
         'N_LABELS',
         'dtrain\n(0)',
-        'dtest\n(1)',
-        'dval\n(2)',
+        'dval\n(1)',
+        'dtest\n(2)',
     ]
 
     logs = Texttable()
