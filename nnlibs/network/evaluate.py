@@ -22,7 +22,7 @@ def model_evaluate(model):
 
     dsets = model.embedding.dsets
 
-    # Iterate over dsets [dtrain, dtest, dval]
+    # Iterate over dsets [dtrain, dval, dtest]
     for k, dset in enumerate(dsets):
 
         # Check if one-hot encoding

@@ -95,18 +95,18 @@ def embedding_prepare(layer, X_data, Y_data):
     dataset = list(zip(X_data, Y_data))
 
     # Split and separate features and label
-    dtrain, dtest, dval = split_dataset(dataset, se_dataset)
+    dtrain, dval, dtest = split_dataset(dataset, se_dataset)
 
     X_train, Y_train = zip(*dtrain)
-    X_test, Y_test = zip(*dtest) if dtest else [(), ()]
     X_val, Y_val = zip(*dval) if dval else [(), ()]
+    X_test, Y_test = zip(*dtest) if dtest else [(), ()]
 
     # Instantiate dataSet objects
     dtrain = dataSet(X_data=X_train, Y_data=Y_train, name='dtrain')
-    dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest')
     dval = dataSet(X_data=X_val, Y_data=Y_val, name='dval')
+    dtest = dataSet(X_data=X_test, Y_data=Y_test, name='dtest')
 
-    embedded_data = (dtrain, dtest, dval)
+    embedded_data = (dtrain, dval, dtest)
 
     return embedded_data
 
@@ -125,20 +125,20 @@ def split_dataset(dataset, se_dataset):
     """
     # Retrieve relative sizes
     dtrain_relative = se_dataset['dtrain_relative']
-    dtest_relative = se_dataset['dtest_relative']
     dval_relative = se_dataset['dval_relative']
+    dtest_relative = se_dataset['dtest_relative']
 
     # Compute absolute sizes with respect to full dataset
-    sum_relative = sum([dtrain_relative, dtest_relative, dval_relative])
+    sum_relative = sum([dtrain_relative, dval_relative, dtest_relative])
 
     dtrain_length = round(dtrain_relative / sum_relative * len(dataset))
-    dtest_length = round(dtest_relative / sum_relative * len(dataset))
     dval_length = round(dval_relative / sum_relative * len(dataset))
+    dtest_length = round(dtest_relative / sum_relative * len(dataset))
 
     # Slice full dataset
     dtrain = dataset[:dtrain_length]
-    dtest = dataset[dtrain_length:dtrain_length + dtest_length]
     dval = dataset[dtrain_length + dtest_length:]
+    dtest = dataset[dtrain_length:dtrain_length + dtest_length]
 
     return dtrain, dtest, dval
 
