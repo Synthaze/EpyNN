@@ -24,9 +24,6 @@ class Pooling(Layer):
     :param strides: Height and width to shift the pooling window by, defaults to `None` which equals `pool_size`.
     :type strides: int or tuple[int], optional
 
-    :param stride: Walking step for filters in pooling layer.
-    :type stride: int, optional
-
     :param pool: Pooling activation of units, defaults to :func:`np.max`.
     :type stride: function, optional
     """

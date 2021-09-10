@@ -24,23 +24,26 @@ class Embedding(Layer):
     """
     Definition of an embedding layer prototype.
 
-    :param X_data: Dataset containing samples features.
-    :type X_data: list[list[float or str or list[float or str]]]
+    :param X_data: Dataset containing samples features, defaults to `None` which returns an empty layer.
+    :type X_data: list[list[float or str or list[float or str]]] or NoneType, optional
 
-    :param Y_data: Dataset containing samples label.
-    :type Y_data: list[int or list[int]]
+    :param Y_data: Dataset containing samples label, defaults to `None`.
+    :type Y_data: list[int or list[int]] or NoneType, optional
 
-    :param relative_size: For training, testing and validation sets.
-    :type relative_size: tuple[int]
+    :param relative_size: For training, validation and testing sets. Defaults to `(2, 1, 1)`
+    :type relative_size: tuple[int], optional
 
-    :param X_encode: Set to True to one-hot encode features.
-    :type encode: bool
+    :param batch_size: For training batches, defaults to None which makes a single batch out of the training data.
+    :type batch_size: int or NoneType, optional
 
-    :param Y_encode: Set to True to one-hot encode labels.
-    :type encode: bool
+    :param X_encode: Set to True to one-hot encode features, default to `False`.
+    :type encode: bool, optional
 
-    :param X_scale: Normalize sample features within [0, 1].
-    :type X_scale: bool
+    :param Y_encode: Set to True to one-hot encode labels, default to `False`.
+    :type encode: bool, optional
+
+    :param X_scale: Normalize sample features within [0, 1], default to `False`.
+    :type X_scale: bool, optional
     """
 
     def __init__(self,
