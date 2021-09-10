@@ -46,7 +46,7 @@ def pooling_forward(layer, A):
                 if h % layer.d['sh'] == 0])
 
     # (3) Bring back m along axis 0
-    Xb = np.moveaxis(Xb, 2, 0)
+    Xb = layer.fc['Xb'] = np.moveaxis(Xb, 2, 0)
     # (oh, ow, m, ph, pw, d) ->
     # (m, oh, ow, ph, pw, d)
 

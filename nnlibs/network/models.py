@@ -104,13 +104,13 @@ class EpyNN:
     def initialize(self, loss='MSE', se_hPars=se_hPars, metrics=['accuracy'], seed=None, params=True, end='\n'):
         """Wrapper for :func:`nnlibs.network.initialize.model_initialize()`. Perform a dry epoch including all but not the parameters update step.
 
-        :param loss: Loss function to use for training, defaults to 'MSE'. See :module:`nnlibs.commons.loss` for built-in functions.
+        :param loss: Loss function to use for training, defaults to 'MSE'. See :py:mod:`nnlibs.commons.loss` for built-in functions.
         :type loss: str, optional
 
         :param se_hPars: Global hyperparameters, defaults to :class:`nnlibs.settings.se_hPars`. If local hyperparameters were assigned to one layer, these remain unchanged.
         :type se_hPars: dict[str: float or str], optional
 
-        :param metrics: Metrics to monitor and print on terminal report or plot, defaults to ['accuracy']. See :module:`nnlibs.commons.metrics` for built-in metrics. Note that it also accept loss functions string identifiers.
+        :param metrics: Metrics to monitor and print on terminal report or plot, defaults to ['accuracy']. See :py:mod:`nnlibs.commons.metrics` for built-in metrics. Note that it also accept loss functions string identifiers.
         :type metrics: list[str], optional
 
         :param seed: Reproducibility in pseudo-random procedures.

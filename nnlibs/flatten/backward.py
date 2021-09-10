@@ -26,7 +26,7 @@ def flatten_backward(layer, dX):
     # (1)
     dA = initialize_backward(layer, dX)
 
-    # (2) Reverse reshape (m, n) -> (m, s, v .. )
+    # (2) Reverse reshape (m, n) -> (m, ...)
     dX = layer.bc['dX'] = np.reshape(dA, layer.fs['X'])
 
     return dX    # To previous layer

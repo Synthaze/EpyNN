@@ -52,23 +52,14 @@ def convolution_compute_gradients(layer):
     dZ = layer.bc['dZ']     # Gradient of the loss with respect to Z
 
     # Expand dZ dimensions with respect to Xb
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, d, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fw, d, u)
-    dZ = np.expand_dims(dZ, axis=3)    # (m, oh, ow, fh, fw, d, u)
+    dZb = dZ
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, d, u)
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, fw, d, u)
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, fh, fw, d, u)
 
-    # (1) Gradients of the loss with respect to W
-    dW = dZ * Xb               # (1.1)
-    dW = np.sum(dW, axis=2)    # (1.2.1)
-    dW = np.sum(dW, axis=1)    # (1.2.2)
-    dW = np.sum(dW, axis=0)    # (1.2.3)
-
-    layer.g['dW'] = dW         # (fh, fw, d, u)
-
-    # (2) Gradients of the loss with respect to b
-    db = dZ                    # (2.1)
-    db = np.sum(db, axis=2)    # (2.2.1)
-    db = np.sum(db, axis=1)    # (2.2.2)
-    db = np.sum(db, axis=0)    # (2.2.3)
+    # (1) Gradient of the loss with respect to W, b
+    dW = layer.g['dW'] = np.sum(dZb * Xb, axis=(2, 1, 0))   # (1.1) dL/dW
+    db = layer.g['db'] = np.sum(dZb, axis=(2, 1, 0))        # (1.2) dL/db
 
     layer.g['db'] = db.squeeze() if layer.use_bias else 0.
 

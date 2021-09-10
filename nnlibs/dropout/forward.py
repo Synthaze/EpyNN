@@ -27,7 +27,7 @@ def dropout_forward(layer, A):
     # (2) Generate dropout mask
     D = layer.np_rng.uniform(0, 1, layer.fs['D'])
 
-    # (3) Apply a step function with respect to keep_prob (k)
+    # (3) Apply a step function with respect to drop_prob (k)
     D = layer.fc['D'] = (D > layer.d['d'])
 
     # (4) Drop data points

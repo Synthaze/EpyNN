@@ -26,46 +26,16 @@ def pooling_backward(layer, dX):
     # (1) Initialize cache
     dA = initialize_backward(layer, dX)    # (m, oh, ow, d)
 
-    # (2) dA shape (m, oh, ow, d) to X shape (m, h, w, d)
-    dAx = dA
-    dAx = np.repeat(dAx, layer.d['zh'], axis=1)
-    dAx = np.repeat(dAx, layer.d['zw'], axis=2)
-    dAx = np.pad(dAx, layer.bs['p'], mode='constant', constant_values=0)
-    # (m, oh, ow, d)                       -> np.repeat(dAx, zh, axis=1)
-    # (m, zh * oh, ow, d)                  -> np.repeat(dAx, zw, axis=2)
-    # (m, zh * oh, zw * ow, d)             -> padding
-    # (m, zh * oh + p1, zw * ow + p2, d)   <->
-    # (m, h, w, d)
+    # (3) Restore pooling block axes
+    dZb = dA
+    dZb = np.expand_dims(dZb, axis=3)
+    dZb = np.expand_dims(dZb, axis=3)
+    # (m, oh, ow, d)         ->
+    # (m, oh, ow, 1, d)      ->
+    # (m, oh, ow, 1, 1, d)
 
-    # (3) Z shape (m, oh, ow, d) to X shape (m, h, w, d)
-    Zx = layer.fc['Z']
-    Zx = np.repeat(Zx, layer.d['zh'], axis=1)
-    Zx = np.repeat(Zx, layer.d['zw'], axis=2)
-    Zx = np.pad(Zx, layer.bs['p'], mode='constant', constant_values=0)
-    # (m, oh, ow, d)                       -> np.repeat(Zx, zh, axis=1)
-    # (m, zh * oh, ow, d)                  -> np.repeat(Zx, zw, axis=2)
-    # (m, zh * oh, zw * ow, d)             -> padding
-    # (m, zh * oh + p1, zw * ow + p2, d)   <->
-    # (m, h, w, d)
-
-    # (4) Map coordinates in X corresponding to the pooled values in Z
-    mask = (layer.fc['X'] == Zx)
-    # e.g.
-    # X    = [[[[0], [2], [3], [1]]]] with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-    # Z    = [[[[3],]]]               with shape = (1, 1, 1, 1) <-> (m, oh, ow, d)
-    # Zx   = [[[[3], [3], [3], [3]]]] with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-    # mask = [[[[0], [0], [1], [0]]]] with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-
-    # (5) Retain or set values to zero in dL/dA w.r.t mask
-    mdAx = dAx * mask
-    # dA    = [[[[-1],]]]                  with shape = (1, 1, 1, 1) <-> (m, oh, ow, d)
-    # dAx   = [[[[-1], [-1], [-1], [-1]]]] with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-    # mask  = [[[[0], [0], [1], [0]]]]     with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-    # mdAx  = [[[[0], [0], [-1], [0]]]]    with shape = (1, 1, 4, 1) <-> (m, h, w, d)
-
-    # (6) Initialize backward output dL/dX
-    dX = np.zeros_like(layer.fc['X'])
-    # (m, h, w, d)
+    # (4) Initialize backward output dL/dX
+    dX = np.zeros_like(layer.fc['X'])      # (m, h, w, d)
 
     # Iterate over forward output height
     for h in range(layer.d['oh']):
@@ -79,11 +49,39 @@ def pooling_backward(layer, dX):
             ws = w * layer.d['sw']
             we = ws + layer.d['pw']
 
-            # (7) Slice block from masked dA having same shape as X
-            dXb = mdAx[:, hs:he, ws:we, :]
+            # (5hw) Retrieve input block
+            Xb = layer.fc['Xb'][:, h, w, :, :, :]
+            # (m, oh, ow, ph, pw, d)  - Xb (array of blocks)
+            # (m, ph, pw, d)          - Xb (single block)
 
-            # (8) Increment dL/dX with dL/dXb at consistent coordinates
+            # (6hw) Retrieve pooled value and restore block shape
+            Zb = layer.fc['Z'][:, h:h+1, w:w+1, :]
+            Zb = np.repeat(Zb, layer.d['ph'], axis=1)
+            Zb = np.repeat(Zb, layer.d['pw'], axis=2)
+            # (m, oh, ow, d)    - Z
+            # (m,  1,  1, d)    - Zb -> np.repeat(Zb, pw, axis=1)
+            # (m, ph,  1, d)         -> np.repeat(Zb, pw, axis=2)
+            # (m, ph, pw, d)
+
+            # (7hw) Match pooled value in Zb against Xb
+            mask = (Zb == Xb)
+
+            # (8hw) Retrieve gradient w.r.t pooled Xb and restore block shape
+            dXb = dZb[:, h, w, :]
+            dXb = np.repeat(dXb, layer.d['ph'], 1)
+            dXb = np.repeat(dXb, layer.d['pw'], 2)
+            # (m, oh, ow,  1,  1, d) - dZb
+            #         (m,  1,  1, d) - dXb -> np.repeat(dXb, ph, axis=1)
+            #         (m, ph,  1, d)       -> np.repeat(dXb, pw, axis=2)
+            #         (m, ph, pw, d)
+
+            # (9hw) Keep dXb values for coordinates where Zb = Xb (mask)
+            dXb = dXb * mask
+
+            # (10hw) Gradient of the loss w.r.t Xb
             dX[:, hs:he, ws:we, :] += dXb
+            # (m, ph, pw, d) - dX[:, hs:he, ws:we, :]
+            # (m, ph, pw, d) - dXb
 
     layer.bc['dX'] = dX
 

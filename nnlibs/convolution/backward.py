@@ -33,9 +33,10 @@ def convolution_backward(layer, dX):
     )   # dL/dZ
 
     # (3) Restore kernel dimensions
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
-    dZ = np.expand_dims(dZ, axis=3)
+    dZb = dZ
+    dZb = np.expand_dims(dZb, axis=3)
+    dZb = np.expand_dims(dZb, axis=3)
+    dZb = np.expand_dims(dZb, axis=3)
     # (m, oh, ow, d, u) ->
     # (m, oh, ow, fw, d, u) ->
     # (m, oh, ow, fh, fw, d, u)
@@ -56,9 +57,9 @@ def convolution_backward(layer, dX):
             we = ws + layer.d['fw']
 
             # (5hw) Gradient of the loss w.r.t Xb
-            dXb = dZ[:, h, w, :] * layer.p['W']
-            # (m, oh, ow, fh, fw, d, u) - dZ
-            #         (m, fh, fw, d, u) - dZ[:, h, w, :]
+            dXb = dZb[:, h, w, :] * layer.p['W']
+            # (m, oh, ow, fh, fw, d, u) - dZb
+            #         (m, fh, fw, d, u) - dZb[:, h, w, :]
             #            (fh, fw, d, u) - W
 
             # (6hw) Sum over units axis

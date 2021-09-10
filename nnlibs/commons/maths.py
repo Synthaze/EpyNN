@@ -216,7 +216,7 @@ def softmax(x, deriv=False):
     :rtype: class:`numpy.ndarray`
     """
     # Retrieve temperature from layers hyperparameters (temporary globals)
-    T = layer_hPars['softmax_temperature']
+    T = 1 #layer_hPars['softmax_temperature']
 
     if not deriv:
         # Numerically stable version of softmax function
