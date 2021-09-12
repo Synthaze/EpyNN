@@ -72,7 +72,7 @@ model = EpyNN(layers=layers, name=name)
 
 model.initialize(loss='MSE', seed=1, metrics=['accuracy', 'recall', 'precision'], se_hPars=se_hPars.copy())
 
-model.train(epochs=20, init_logs=False)
+model.train(epochs=10, init_logs=False)
 
 
 ### Recurrent
