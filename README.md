@@ -4,7 +4,7 @@
 
 If you use EpyNN in academia, please cite:
 
-Malard F., Danner L., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *submitted*.
+Malard F., Danner L., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *Submitted*.
 
 ## Documentation
 
@@ -37,6 +37,12 @@ While not enhancing, extending or replacing EpyNN’s documentation, series of l
 * [Data preparation - Examples](https://epynn.net/data_examples.html)
 * [Network training - Examples](https://epynn.net/run_examples.html)
 
+### Purpose
+
+EpyNN is intended for **teachers**, **students**, **scientists**, or more generally anyone with minimal skills in Python programming **who wish to understand** and build from basic implementations of Neural Network architectures.
+
+Although EpyNN can be used for production, it is meant to be a library of **homogeneous architecture templates** and **practical examples** which is expected to save an important amount of time for people who wish to learn, teach or **develop from scratch**, by themselves.
+
 ### Reliability
 
 EpyNN has been cross-validated against TensorFlow/Keras API and provides identical results for identical configurations in the limit of float64 precision.
@@ -66,7 +72,7 @@ export PYTHONPATH=$PYTHONPATH:$PWD
 
 ```
 
-Permanent export of EpyNN directory path in ```$PYTHONPATH``` for **Linux**:
+**Linux:** Permanent export of EpyNN directory path in ```$PYTHONPATH```.
 
 ```bash
 # Append export instruction to the end of .bashrc file
@@ -76,7 +82,7 @@ echo "export PYTHONPATH=$PYTHONPATH:$PWD" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Permanent export of EpyNN directory path in ```$PYTHONPATH``` for **MacOS**:
+**MacOS:** Permanent export of EpyNN directory path in ```$PYTHONPATH```.
 
 ```bash
 # Append export instruction to the end of .bash_profile file
