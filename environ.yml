@@ -18,4 +18,5 @@ dependencies:
 - termcolor==1.1.0
 - texttable==1.6.4
 - jupyter==1.0.0
+- nbconvert==5.4.1
 - scipy==1.6.3
