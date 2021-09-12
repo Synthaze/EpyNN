@@ -37,9 +37,9 @@ def convolution_backward(layer, dX):
     dZb = np.expand_dims(dZb, axis=3)
     dZb = np.expand_dims(dZb, axis=3)
     dZb = np.expand_dims(dZb, axis=3)
-    # (m, oh, ow, d, u) ->
-    # (m, oh, ow, fw, d, u) ->
-    # (m, oh, ow, fh, fw, d, u)
+    # (m, oh, ow, 1, u)         ->
+    # (m, oh, ow, 1, 1, u)     ->
+    # (m, oh, ow, 1, 1, 1, u)
 
     # (4) Initialize backward output dL/dX
     dX = np.zeros_like(layer.fc['X'])      # (m, h, w, d)
@@ -58,8 +58,8 @@ def convolution_backward(layer, dX):
 
             # (5hw) Gradient of the loss w.r.t Xb
             dXb = dZb[:, h, w, :] * layer.p['W']
-            # (m, oh, ow, fh, fw, d, u) - dZb
-            #         (m, fh, fw, d, u) - dZb[:, h, w, :]
+            # (m, oh, ow,  1,  1, 1, u) - dZb
+            #         (m,  1,  1, 1, u) - dZb[:, h, w, :]
             #            (fh, fw, d, u) - W
 
             # (6hw) Sum over units axis

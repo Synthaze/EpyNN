@@ -1,3 +1,3 @@
 # EpyNN - Changelog
 
-## 0.9b0
+## Past releases

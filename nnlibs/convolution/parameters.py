@@ -53,9 +53,9 @@ def convolution_compute_gradients(layer):
 
     # Expand dZ dimensions with respect to Xb
     dZb = dZ
-    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, d, u)
-    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, fw, d, u)
-    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, fh, fw, d, u)
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, 1, u)
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, 1, 1, u)
+    dZb = np.expand_dims(dZb, axis=3)    # (m, oh, ow, 1, 1, 1, u)
 
     # (1) Gradient of the loss with respect to W, b
     dW = layer.g['dW'] = np.sum(dZb * Xb, axis=(2, 1, 0))   # (1.1) dL/dW

@@ -56,17 +56,17 @@ def convolution_forward(layer, A):
     # (4) Add dimension for filter units (u) on axis 6
     Xb = layer.fc['Xb'] = np.expand_dims(Xb, axis=6)
     # (m, oh, ow, fh, fw, d) ->
-    # (m, oh, ow, fh, fw, d, u)
+    # (m, oh, ow, fh, fw, d, 1)
 
     # (5) Linear activation Xb -> Zb
     Zb = Xb * layer.p['W']
-    # (m, oh, ow, fh, fw, d, u) - Xb
+    # (m, oh, ow, fh, fw, d, 1) - Xb
     #            (fh, fw, d, u) - W
 
     # (6) Sum block products
     Z = np.sum(Zb, axis=(5, 4, 3))
     # (m, oh, ow, fh, fw, d, u) - Zb
-    # (m, oh, ow, fh, fw, u)    - np.sum(Zb, axis=5)
+    # (m, oh, ow, fh, fw, u)    - np.sum(Zb, axis=(5))
     # (m, oh, mw, fh, u)        - np.sum(Zb, axis=(5, 4))
     # (m, oh, ow, u)            - np.sum(Zb, axis=(5, 4, 3))
 

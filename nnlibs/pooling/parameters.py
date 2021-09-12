@@ -19,16 +19,6 @@ def pooling_compute_shapes(layer, A):
     layer.d['oh'] = math.floor((layer.d['h']-layer.d['ph']) / layer.d['sh']) + 1
     layer.d['ow'] = math.floor((layer.d['w']-layer.d['pw']) / layer.d['sw']) + 1
 
-    # Dimension reduction factors for height (zh) and width (zw)
-    layer.d['zh'] = layer.d['h'] // layer.d['oh']
-    layer.d['zw'] = layer.d['w'] // layer.d['ow']
-
-    # Padding corresponding to the remainder for height (p1) and width (p2)
-    layer.d['p1'] = layer.d['h'] % layer.d['oh']
-    layer.d['p2'] = layer.d['w'] % layer.d['ow']
-
-    layer.bs['p'] = ((0, 0), (0, layer.d['p1']), (0, layer.d['p2']), (0, 0))
-
     return None
 
 

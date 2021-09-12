@@ -94,7 +94,7 @@ def single_batch_report(model, batch, A):
     rate = round((model.e + 1) / (epoch_time + 1e-16), 3)
 
     # Time until completion
-    ttc = round((model.epochs - model.e + 1) / rate)
+    ttc = round((model.epochs - model.e + 1) / (rate + 1e-16))
 
     # Total elapsed time
     elapsed_time = round(current - model.ts, 2)
