@@ -10,6 +10,12 @@ Malard F., Danner L., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational p
 
 Please visit https://epynn.net/ for extensive documentation.
 
+### Purpose
+
+EpyNN is intended for **teachers**, **students**, **scientists**, or more generally anyone with minimal skills in Python programming **who wish to understand** and build from basic implementations of Neural Network architectures.
+
+Although EpyNN can be used for production, it is meant to be a library of **homogeneous architecture templates** and **practical examples** which is expected to save an important amount of time for people who wish to learn, teach or **develop from scratch**, by themselves.
+
 ### Content
 
 EpyNN features **scalable**, **minimalistic** and **homogeneous** implementations of major Neural Network architectures in **pure Python/Numpy** including:
@@ -36,12 +42,6 @@ While not enhancing, extending or replacing EpyNN’s documentation, series of l
 
 * [Data preparation - Examples](https://epynn.net/data_examples.html)
 * [Network training - Examples](https://epynn.net/run_examples.html)
-
-### Purpose
-
-EpyNN is intended for **teachers**, **students**, **scientists**, or more generally anyone with minimal skills in Python programming **who wish to understand** and build from basic implementations of Neural Network architectures.
-
-Although EpyNN can be used for production, it is meant to be a library of **homogeneous architecture templates** and **practical examples** which is expected to save an important amount of time for people who wish to learn, teach or **develop from scratch**, by themselves.
 
 ### Reliability
 
