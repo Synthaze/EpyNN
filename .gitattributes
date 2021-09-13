@@ -1,1 +1,3 @@
 *.ipynb linguist-documentation
+nnlive/dummy_boolean/train.ipynb linguist-language=iPython
+
