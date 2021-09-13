@@ -1,3 +1,6 @@
-*.ipynb linguist-documentation
-nnlive/dummy_boolean/train.ipynb linguist-language=iPython
-
+nnlive/dummy_string/*.ipynb linguist-documentation
+nnlive/dummy_time/*.ipynb linguist-documentation
+nnlive/dummy_image/*.ipynb linguist-documentation
+nnlive/music_author/*.ipynb linguist-documentation
+nnlive/ptm_protein/*.ipynb linguist-documentation
+nnlive/captcha_mnist/*.ipynb linguist-documentation
