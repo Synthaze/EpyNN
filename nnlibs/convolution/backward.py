@@ -45,19 +45,19 @@ def convolution_backward(layer, dX):
     dX = np.zeros_like(layer.fc['X'])      # (m, h, w, d)
 
     # Iterate over forward output height
-    for h in range(layer.d['oh']):
+    for oh in range(layer.d['oh']):
 
-        hs = h * layer.d['sh']
+        hs = oh * layer.d['sh']
         he = hs + layer.d['fh']
 
         # Iterate over forward output width
-        for w in range(layer.d['ow']):
+        for ow in range(layer.d['ow']):
 
-            ws = w * layer.d['sw']
+            ws = ow * layer.d['sw']
             we = ws + layer.d['fw']
 
             # (5hw) Gradient of the loss w.r.t Xb
-            dXb = dZb[:, h, w, :] * layer.p['W']
+            dXb = dZb[:, oh, ow, :] * layer.p['W']
             # (m, oh, ow,  1,  1, 1, u) - dZb
             #         (m,  1,  1, 1, u) - dZb[:, h, w, :]
             #            (fh, fw, d, u) - W

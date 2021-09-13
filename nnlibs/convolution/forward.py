@@ -58,22 +58,22 @@ def convolution_forward(layer, A):
     # (m, oh, ow, fh, fw, d) ->
     # (m, oh, ow, fh, fw, d, 1)
 
-    # (5) Linear activation Xb -> Zb
+    # (5.1) Linear activation Xb -> Zb
     Zb = Xb * layer.p['W']
     # (m, oh, ow, fh, fw, d, 1) - Xb
     #            (fh, fw, d, u) - W
 
-    # (6) Sum block products
+    # (5.2) Sum block products
     Z = np.sum(Zb, axis=(5, 4, 3))
     # (m, oh, ow, fh, fw, d, u) - Zb
     # (m, oh, ow, fh, fw, u)    - np.sum(Zb, axis=(5))
     # (m, oh, mw, fh, u)        - np.sum(Zb, axis=(5, 4))
     # (m, oh, ow, u)            - np.sum(Zb, axis=(5, 4, 3))
 
-    # (7) Add bias to linear activation product
+    # (5.3) Add bias to linear activation product
     Z = layer.fc['Z'] = Z + layer.p['b']
 
-    # (8) Non-linear activation
+    # (6) Non-linear activation
     A = layer.fc['A'] = layer.activate(Z)
 
     return A    # To next layer
