@@ -50,7 +50,7 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     :type encode: list[list] or :class:`numpy.ndarray`
 
     :param Y_data: Set of samples label.
-    :type encode: list[list[int] or int] or :class:`numpy.ndarray`, optional
+    :type encode: list[list[int] or int] or :class:`numpy.ndarray`
 
     :param X_encode: Set to True to one-hot encode features.
     :type encode: bool
@@ -58,8 +58,11 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     :param Y_encode: Set to True to one-hot encode labels.
     :type encode: bool
 
-    :return:
-    :rtype :
+    :return: Encoded set of samples features, if applicable.
+    :rtype : :class:`numpy.ndarray`
+
+    :return: Encoded set of samples label, if applicable.
+    :rtype : :class:`numpy.ndarray`
     """
     # Features one-hot encoding
     if X_encode:
@@ -83,9 +86,9 @@ def embedding_prepare(layer, X_data, Y_data):
     :type encode: list[list] or :class:`numpy.ndarray`
 
     :param Y_data: Set of samples label.
-    :type encode: list[list[int] or int] or :class:`numpy.ndarray`, optional
+    :type encode: list[list[int] or int] or :class:`numpy.ndarray`
 
-    :return: All training, testing and validations sets along with batched training set
+    :return: All training, validation and testing sets along with batched training set
     :rtype: tuple[:class:`nnlibs.commons.models.dataSet`]
     """
     # Embedding parameters

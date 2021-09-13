@@ -18,7 +18,7 @@ def loss_functions(key=None, output_activation=None):
 
     :raises Exception: If key is `CCE` and output activation is different from softmax.
 
-    :raises Exception: If key is either `CCE`, `BCE` or `MSLE`and output activation is tanh.
+    :raises Exception: If key is either `CCE`, `BCE` or `MSLE` and output activation is tanh.
 
     :return: Loss functions or computed loss.
     :rtype: dict[str, function] or :class:`numpy.ndarray`
@@ -57,7 +57,7 @@ def MSE(Y, A, deriv=False):
     :param deriv: To compute the derivative.
     :type deriv: bool, optional
 
-    :return: loss.
+    :return: Loss.
     :rtype: :class:`numpy.ndarray`
     """
     U = A.shape[1]    # Number of output nodes
@@ -83,7 +83,7 @@ def MAE(Y, A, deriv=False):
     :param deriv: To compute the derivative.
     :type deriv: bool, optional
 
-    :return: loss.
+    :return: Loss.
     :rtype: :class:`numpy.ndarray`
     """
     U = A.shape[1]    # Number of output nodes
@@ -109,7 +109,7 @@ def MSLE(Y, A, deriv=False):
     :param deriv: To compute the derivative.
     :type deriv: bool, optional
 
-    :return: loss.
+    :return: Loss.
     :rtype: :class:`numpy.ndarray`
     """
     U = A.shape[1]    # Number of output nodes
@@ -135,7 +135,7 @@ def CCE(Y, A, deriv=False):
     :param deriv: To compute the derivative.
     :type deriv: bool, optional
 
-    :return: loss.
+    :return: Loss.
     :rtype: :class:`numpy.ndarray`
     """
     U = A.shape[1]    # Number of output nodes
@@ -161,7 +161,7 @@ def BCE(Y, A, deriv=False):
     :param deriv: To compute the derivative.
     :type deriv: bool, optional
 
-    :return: loss.
+    :return: Loss.
     :rtype: :class:`numpy.ndarray`
     """
     U = A.shape[1]    # Number of output nodes

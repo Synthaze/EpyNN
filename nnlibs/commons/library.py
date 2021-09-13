@@ -89,7 +89,7 @@ def write_model(model, model_path=None):
     """Write EpyNN model on disk.
 
     :param model: An instance of EpyNN network object.
-    :type model: :class:`nnlibs.meta.models.EpyNN`
+    :type model: :class:`nnlibs.network.models.EpyNN`
 
     :param model_path: Where to write model, defaults to `None` which sets path in `models` directory.
     :type model_path: str or NoneType, optional
@@ -133,7 +133,7 @@ def read_model(model_path=None):
 
 
 def settings_verification():
-    """Import default settings if not present in working directory.
+    """Import default :class:`nnlibs.settings.se_hPars` if not present in working directory.
     """
     # Absolute path of nnlibs directory
     init_path = str(pathlib.Path(__file__).parent.parent.absolute())
