@@ -1,16 +1,16 @@
-# EpyNN/nnlibs/lstm/models.py
+# EpyNN/nnnlibs/lstm/models.py
 # Local application/library specific imports
-from nnlibs.commons.models import Layer
-from nnlibs.commons.maths import (
+from nnnlibs.commons.models import Layer
+from nnnlibs.commons.maths import (
     tanh,
     sigmoid,
     orthogonal,
     clip_gradient,
     activation_tune,
 )
-from nnlibs.lstm.forward import lstm_forward
-from nnlibs.lstm.backward import lstm_backward
-from nnlibs.lstm.parameters import (
+from nnnlibs.lstm.forward import lstm_forward
+from nnnlibs.lstm.backward import lstm_backward
+from nnnlibs.lstm.parameters import (
     lstm_compute_shapes,
     lstm_initialize_parameters,
     lstm_compute_gradients,
@@ -90,7 +90,7 @@ class LSTM(Layer):
         return None
 
     def compute_shapes(self, A):
-        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_shapes()`.
+        """Is a wrapper for :func:`nnlibs.lstm.parameters.lstm_compute_shapes()`.
 
         :param A: Output of forward propagation from previous layer.
         :type A: :class:`numpy.ndarray`
@@ -100,14 +100,14 @@ class LSTM(Layer):
         return None
 
     def initialize_parameters(self):
-        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_initialize_parameters()`.
+        """Is a wrapper for :func:`nnlibs.lstm.parameters.lstm_initialize_parameters()`.
         """
         lstm_initialize_parameters(self)
 
         return None
 
     def forward(self, A):
-        """Is a wrapper for :func:`nlibs.lstm.forward.lstm_forward()`.
+        """Is a wrapper for :func:`nnlibs.lstm.forward.lstm_forward()`.
 
         :param A: Output of forward propagation from previous layer.
         :type A: :class:`numpy.ndarray`
@@ -123,7 +123,7 @@ class LSTM(Layer):
         return A
 
     def backward(self, dX):
-        """Is a wrapper for :func:`nlibs.lstm.backward.lstm_backward()`.
+        """Is a wrapper for :func:`nnlibs.lstm.backward.lstm_backward()`.
 
         :param dX: Output of backward propagation from next layer.
         :type dX: :class:`numpy.ndarray`
@@ -138,7 +138,7 @@ class LSTM(Layer):
         return dX
 
     def compute_gradients(self):
-        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_compute_gradients()`.
+        """Is a wrapper for :func:`nnlibs.lstm.parameters.lstm_compute_gradients()`.
         """
         lstm_compute_gradients(self)
 
@@ -148,7 +148,7 @@ class LSTM(Layer):
         return None
 
     def update_parameters(self):
-        """Is a wrapper for :func:`nlibs.lstm.parameters.lstm_update_parameters()`.
+        """Is a wrapper for :func:`nnlibs.lstm.parameters.lstm_update_parameters()`.
         """
         if self.trainable:
             lstm_update_parameters(self)

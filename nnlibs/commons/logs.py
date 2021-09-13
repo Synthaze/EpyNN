@@ -150,7 +150,7 @@ def network_logs(network):
     :type network: dict[str, dict[str, str or tuple[int]]]
 
     :return: Logs for network architecture and shapes.
-    :rtype: :class:'texttable.Texttable'
+    :rtype: :class:`texttable.Texttable`
     """
     # List of documented network features
     headers = [
@@ -191,7 +191,7 @@ def layers_lrate_logs(layers):
     :type layers: list[Object]
 
     :return: Logs for layers hyperparameters related to learning rate.
-    :rtype: :class:'texttable.Texttable'
+    :rtype: :class:`texttable.Texttable`
     """
     # List of documented layers hyperparameters related to learning rate
     headers = [
@@ -249,7 +249,7 @@ def layers_others_logs(layers):
     :type layers: list[Object]
 
     :return: Logs for layers hyperparameters related to activation functions.
-    :rtype: :class:'texttable.Texttable'
+    :rtype: :class:`texttable.Texttable`
     """
     # List of documented layers hyperparameters related to activation functions
     headers = [
@@ -293,7 +293,7 @@ def dsets_samples_logs(dsets, se_dataset):
     :type se_dataset: dict[str, int or bool]
 
     :return: Logs describing datasets.
-    :rtype: :class:'texttable.Texttable'
+    :rtype: :class:`texttable.Texttable`
     """
     # List of dataset descriptors.
     headers = [
@@ -335,7 +335,7 @@ def dsets_labels_logs(dsets):
     :type dsets: list[:class:`nnlibs.commons.models.dataSet`]
 
     :return: Logs describing datasets Y dimension.
-    :rtype: :class:'texttable.Texttable'
+    :rtype: :class:`texttable.Texttable`
     """
     # List of dataset descriptors for Y dimension.
     headers = [

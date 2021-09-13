@@ -38,7 +38,7 @@ Model and function rules and definition:
 * [Activation - Functions](https://epynn.net/activation.html)
 * [Loss - Functions](https://epynn.net/loss.html)
 
-While not enhancing, extending or replacing EpyNN’s documentation, series of live examples in Python and Jupyter notebook formats are offered online and within the archive, including:
+While not enhancing, extending or replacing EpyNN's documentation, series of live examples in Python and Jupyter notebook formats are offered online and within the archive, including:
 
 * [Data preparation - Examples](https://epynn.net/data_examples.html)
 * [Network training - Examples](https://epynn.net/run_examples.html)

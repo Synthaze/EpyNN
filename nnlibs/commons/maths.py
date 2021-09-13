@@ -64,7 +64,7 @@ def identity(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         pass
@@ -87,7 +87,7 @@ def relu(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         x = np.maximum(0, x)
@@ -110,7 +110,7 @@ def lrelu(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     # Retrieve alpha from layers hyperparameters (temporary globals)
     a = layer_hPars['LRELU_alpha']
@@ -136,7 +136,7 @@ def elu(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     # Retrieve alpha from layers hyperparameters (temporary globals)
     a = layer_hPars['ELU_alpha']
@@ -162,7 +162,7 @@ def sigmoid(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         # Numerically stable version of sigmoid function
@@ -190,7 +190,7 @@ def tanh(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     if not deriv:
         x = (np.exp(x)-np.exp(-x)) / (np.exp(x)+np.exp(-x))
@@ -213,7 +213,7 @@ def softmax(x, deriv=False):
     :type deriv: bool, optional
 
     :return: Output array passed in function.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     # Retrieve temperature from layers hyperparameters (temporary globals)
     T = 1 #layer_hPars['softmax_temperature']
@@ -248,7 +248,7 @@ def xavier(shape, rng=np.random):
     :type rng: :class:`numpy.random`
 
     :return: Initialized weight array.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     W = rng.standard_normal(shape)        # Normal distribution, zero-centered
     W *= np.sqrt(2 / sum(list(shape)))    # Scale
@@ -268,7 +268,7 @@ def orthogonal(shape, rng=np.random):
     :type rng: :class:`numpy.random`
 
     :return: Initialized weight array.
-    :rtype: class:`numpy.ndarray`
+    :rtype: :class:`numpy.ndarray`
     """
     W = rng.standard_normal(shape)
 
