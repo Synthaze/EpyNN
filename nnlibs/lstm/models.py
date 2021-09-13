@@ -1,16 +1,16 @@
-# EpyNN/nnnlibs/lstm/models.py
+# EpyNN/nnlibs/lstm/models.py
 # Local application/library specific imports
-from nnnlibs.commons.models import Layer
-from nnnlibs.commons.maths import (
+from nnlibs.commons.models import Layer
+from nnlibs.commons.maths import (
     tanh,
     sigmoid,
     orthogonal,
     clip_gradient,
     activation_tune,
 )
-from nnnlibs.lstm.forward import lstm_forward
-from nnnlibs.lstm.backward import lstm_backward
-from nnnlibs.lstm.parameters import (
+from nnlibs.lstm.forward import lstm_forward
+from nnlibs.lstm.backward import lstm_backward
+from nnlibs.lstm.parameters import (
     lstm_compute_shapes,
     lstm_initialize_parameters,
     lstm_compute_gradients,
