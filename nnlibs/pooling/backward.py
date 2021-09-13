@@ -38,24 +38,24 @@ def pooling_backward(layer, dX):
     dX = np.zeros_like(layer.fc['X'])      # (m, h, w, d)
 
     # Iterate over forward output height
-    for h in range(layer.d['oh']):
+    for oh in range(layer.d['oh']):
 
-        hs = h * layer.d['sh']
+        hs = oh * layer.d['sh']
         he = hs + layer.d['ph']
 
         # Iterate over forward output width
-        for w in range(layer.d['ow']):
+        for ow in range(layer.d['ow']):
 
-            ws = w * layer.d['sw']
+            ws = ow * layer.d['sw']
             we = ws + layer.d['pw']
 
             # (4hw) Retrieve input block
-            Xb = layer.fc['Xb'][:, h, w, :, :, :]
+            Xb = layer.fc['Xb'][:, oh, ow, :, :, :]
             # (m, oh, ow, ph, pw, d)  - Xb (array of blocks)
             # (m, ph, pw, d)          - Xb (single block)
 
             # (5hw) Retrieve pooled value and restore block shape
-            Zb = layer.fc['Z'][:, h:h+1, w:w+1, :]
+            Zb = layer.fc['Z'][:, oh:oh+1, ow:ow+1, :]
             Zb = np.repeat(Zb, layer.d['ph'], axis=1)
             Zb = np.repeat(Zb, layer.d['pw'], axis=2)
             # (m, oh, ow, d)    - Z
@@ -67,7 +67,7 @@ def pooling_backward(layer, dX):
             mask = (Zb == Xb)
 
             # (7hw) Retrieve gradient w.r.t Z and restore block shape
-            dZb = dZ[:, h, w, :]
+            dZb = dZ[:, oh, ow, :]
             dZb = np.repeat(dZb, layer.d['ph'], 1)
             dZb = np.repeat(dZb, layer.d['pw'], 2)
             # (m, oh, ow,  1,  1, d) - dZ
