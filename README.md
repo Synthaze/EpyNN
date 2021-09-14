@@ -61,6 +61,10 @@ bash
 # Clone git repository
 git clone https://github.com/Synthaze/EpyNN
 
+# Alternatively, not recommended
+# pip3 install EpyNN
+# epynn
+
 # Change directory to EpyNN
 cd EpyNN
 
@@ -97,6 +101,10 @@ source ~/.bash_profile
 ```bash
 # Clone git repository
 git clone https://github.com/Synthaze/EpyNN
+
+# Alternatively, not recommended
+# pip3 install EpyNN
+# epynn
 
 # Change directory to EpyNN
 chdir EpyNN
