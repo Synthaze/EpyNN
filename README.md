@@ -4,7 +4,7 @@
 
 If you use EpyNN in academia, please cite:
 
-Malard F., Danner L., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *Submitted*.
+Malard F., Danner L., Rouzies E., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *Submitted*.
 
 ## Documentation
 
@@ -14,7 +14,7 @@ Please visit https://epynn.net/ for extensive documentation.
 
 EpyNN is intended for **teachers**, **students**, **scientists**, or more generally anyone with minimal skills in Python programming **who wish to understand** and build from basic implementations of Neural Network architectures.
 
-Although EpyNN can be used for production, it is meant to be a library of **homogeneous architecture templates** and **practical examples** which is expected to save an important amount of time for people who wish to learn, teach or **develop from scratch**, by themselves.
+Although EpyNN can be used for production, it is meant to be a library of **homogeneous architecture templates** and **practical examples** which is expected to save an important amount of time for people who wish to learn, teach or **develop from scratch**.
 
 ### Content
 

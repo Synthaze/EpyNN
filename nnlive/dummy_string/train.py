@@ -134,8 +134,10 @@ model.plot(path=False)
 ### Write/read model
 
 model.write()
+# model.write(path=/your/custom/path)
 
 model = read_model()
+# model = read_model(path=/your/custom/path)
 
 
 ### Predict
