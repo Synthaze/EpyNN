@@ -52,12 +52,16 @@ model.train(epochs=100)
 model.plot(path=False)
 
 
-########################## PREDICTION #########################
+### Write/read model
+
 model.write()
 # model.write(path=/your/custom/path)
 
 model = read_model()
 # model = read_model(path=/your/custom/path)
+
+
+### Predict
 
 X_features, _ = prepare_dataset(N_SAMPLES=10)
 
