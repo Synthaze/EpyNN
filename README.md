@@ -1,5 +1,7 @@
 # EpyNN
 
+![](https://img.shields.io/github/languages/top/synthaze/epynn) | ![](https://img.shields.io/github/languages/top/synthaze/epynn)
+
 **EpyNN is written in pure Python/NumPy.**
 
 If you use EpyNN in academia, please cite:
