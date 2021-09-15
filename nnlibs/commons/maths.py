@@ -206,6 +206,12 @@ def tanh(x, deriv=False):
 def softmax(x, deriv=False):
     """Compute softmax activation or derivative.
 
+    For Dense layer only.
+
+    For other layers, you can change element-wise matrix multiplication
+    operator '*' by :func:`nnlibs.maths.hadamard` which handles 
+    the softmax derivative jacobian matrix.  
+
     :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
 
@@ -216,7 +222,7 @@ def softmax(x, deriv=False):
     :rtype: :class:`numpy.ndarray`
     """
     # Retrieve temperature from layers hyperparameters (temporary globals)
-    T = 1 #layer_hPars['softmax_temperature']
+    T = layer_hPars['softmax_temperature']
 
     if not deriv:
         # Numerically stable version of softmax function

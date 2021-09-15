@@ -18,6 +18,8 @@ def model_initialize(model, params=True, end='\n'):
 
     :param end: Wether to print every line for steps or overwrite, default to `\\n`.
     :type end: str in ['\\n', '\\r']
+
+    :raises Exception: If any layer other than Dense was provided with softmax activation. See :func:`nnlibs.maths.softmax`.
     """
     # Retrieve sample batch
     model.embedding.training_batches(init=True)
@@ -41,6 +43,10 @@ def model_initialize(model, params=True, end='\n'):
         model.network[id(layer)]['Layer'] = layer.name
         model.network[id(layer)]['Activation'] = layer.activation
         model.network[id(layer)]['Dimensions'] = layer.d
+
+        # Dense uses nnlibs.maths.hadamard to handle softmax derivative
+        if 'softmax' in layer.activation.values() and layer.name != 'Dense':
+            raise Exception('Softmax can not be used with %s, only with Dense' % layer.name)
 
         # Test layer.compute_shapes() method
         cprint('compute_shapes: ' + layer.name, 'green', attrs=['bold'], end=end)

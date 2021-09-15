@@ -51,20 +51,20 @@ def headers_logs(model, colors):
 
         i = (i+1) % len(colors)
 
-        # This goes from 2 active datasets
-        if len_dsets >= 2:
-            headers.append('\n' + colored('(0)', colors[i], attrs=['bold']))
-
-        # This will go regardless the number of active datasets
+        # There is at least one non-empty training set
         headers.append(
             colored('%s' % s, colors[i], attrs=['bold'])
             + '\n'
-            + colored('(1)', colors[i], attrs=['bold'])
+            + colored('dtrain', colors[i], attrs=['bold'])
         )
 
-        # This goes from 3 active datasets
+        # There may be one non-empty validation set
+        if len_dsets == 2:
+            headers.append('\n' + colored('dval', colors[i], attrs=['bold']))
+
+        # There may be one non-empty validation and testing set
         if len_dsets == 3:
-            headers.append('\n' + colored('(2)', colors[i], attrs=['bold']))
+            headers.append('\n' + colored('dtest', colors[i], attrs=['bold']))
 
     headers.append(colored('Experiment', 'white', attrs=[]) + '\n')
 
@@ -297,9 +297,9 @@ def dsets_samples_logs(dsets, se_dataset):
     """
     # List of dataset descriptors.
     headers = [
-        'dtrain\n(0)',
-        'dval\n(1)',
-        'dtest\n(2)',
+        'dtrain\n',
+        'dval\n',
+        'dtest\n',
         'batch\nsize',
     ]
 
@@ -340,9 +340,9 @@ def dsets_labels_logs(dsets):
     # List of dataset descriptors for Y dimension.
     headers = [
         'N_LABELS',
-        'dtrain\n(0)',
-        'dval\n(1)',
-        'dtest\n(2)',
+        'dtrain\n',
+        'dval\n',
+        'dtest\n',
     ]
 
     logs = Texttable()
