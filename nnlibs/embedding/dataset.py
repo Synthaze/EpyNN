@@ -143,7 +143,7 @@ def split_dataset(dataset, se_dataset):
     dval = dataset[dtrain_length + dtest_length:]
     dtest = dataset[dtrain_length:dtrain_length + dtest_length]
 
-    return dtrain, dtest, dval
+    return dtrain, dval, dtest
 
 
 def mini_batches(layer):

@@ -24,8 +24,8 @@ class Pooling(Layer):
     :param strides: Height and width to shift the pooling window by, defaults to `None` which equals `pool_size`.
     :type strides: int or tuple[int], optional
 
-    :param pool: Pooling activation of units, defaults to :func:`np.max`.
-    :type stride: function, optional
+    :param pool: Pooling activation of units, defaults to :func:`np.max`. Use one of min or max pooling.
+    :type pool: function, optional
     """
 
     def __init__(self,
