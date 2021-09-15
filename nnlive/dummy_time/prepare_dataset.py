@@ -68,11 +68,11 @@ def label_features(features, white_noise):
     n_label = 0
 
     # Test if features contains signal (+)
-    if np.sum(features) != np.sum(white_noise):
+    if any(features != white_noise):
         label = p_label
 
     # Test if features is equal to white noise (-)
-    elif np.sum(features) == np.sum(white_noise):
+    elif all(features == white_noise):
         label = n_label
 
     return label

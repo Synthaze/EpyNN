@@ -140,8 +140,8 @@ def split_dataset(dataset, se_dataset):
 
     # Slice full dataset
     dtrain = dataset[:dtrain_length]
-    dval = dataset[dtrain_length + dtest_length:]
-    dtest = dataset[dtrain_length:dtrain_length + dtest_length]
+    dval = dataset[dtrain_length:dtrain_length + dval_length]
+    dtest = dataset[dtrain_length + dval_length:]
 
     return dtrain, dval, dtest
 
