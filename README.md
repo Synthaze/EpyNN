@@ -4,7 +4,7 @@
 
 If you use EpyNN in academia, please cite:
 
-Malard F., Danner L., Rouzies E., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *Submitted*.
+Malard F., Danner L., Rouzies E., Meyer J. G., Lescop E., Olivier-Van Stichelen S. **EpyNN: Educational python for Neural Networks**, 2021, *Submitted*.
 
 ## Documentation
 
