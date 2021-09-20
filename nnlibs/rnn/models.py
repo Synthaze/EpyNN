@@ -30,7 +30,7 @@ class RNN(Layer):
     :param initialization: Weight initialization function for RNN layer, defaults to `xavier`.
     :type initialization: function, optional
 
-    :param clip_gradients: May prevent from exploding/vanishing gradients, defaults to `False`.
+    :param clip_gradients: May prevent exploding/vanishing gradients, defaults to `False`.
     :type clip_gradients: bool, optional
 
     :param sequences: Whether to return only the last hidden state or the full sequence, defaults to `False`.
