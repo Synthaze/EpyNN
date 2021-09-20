@@ -143,14 +143,14 @@ class Embedding(Layer):
         return dX
 
     def compute_gradients(self):
-        """Wrapper for :func:`nnlibs.embedding.parameters.embedding_compute_gradients()`. Dummy method, there is no gradients to compute in layer.
+        """Wrapper for :func:`nnlibs.embedding.parameters.embedding_compute_gradients()`. Dummy method, there are no gradients to compute in layer.
         """
         embedding_compute_gradients(self)
 
         return None
 
     def update_parameters(self):
-        """Wrapper for :func:`nnlibs.embedding.parameters.embedding_update_parameters()`. Dummy method, there is no parameters to update in layer.
+        """Wrapper for :func:`nnlibs.embedding.parameters.embedding_update_parameters()`. Dummy method, there are no parameters to update in layer.
         """
         if self.trainable:
             embedding_update_parameters(self)

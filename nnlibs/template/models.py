@@ -78,14 +78,14 @@ class Template(Layer):
         return dX
 
     def compute_gradients(self):
-        """Is a wrapper for :func:`nnlibs.template.parameters.template_compute_gradients()`. Dummy method, there is no gradients to compute in layer.
+        """Is a wrapper for :func:`nnlibs.template.parameters.template_compute_gradients()`. Dummy method, there are no gradients to compute in layer.
         """
         template_compute_gradients(self)
 
         return None
 
     def update_parameters(self):
-        """Is a wrapper for :func:`nnlibs.template.parameters.template_update_parameters()`. Dummy method, there is no parameters to update in layer.
+        """Is a wrapper for :func:`nnlibs.template.parameters.template_update_parameters()`. Dummy method, there are no parameters to update in layer.
         """
         if self.trainable:
             template_update_parameters(self)

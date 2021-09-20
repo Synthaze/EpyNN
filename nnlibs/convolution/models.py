@@ -38,7 +38,7 @@ class Convolution(Layer):
     :param initialization: Weight initialization function for convolution layer, defaults to `xavier`.
     :type initialization: function, optional
 
-    :param use_bias: Wether the layer uses bias, defaults to `True`.
+    :param use_bias: Whether the layer uses bias, defaults to `True`.
     :type use_bias: bool, optional
 
     :param se_hPars: Layer hyper-parameters, defaults to `None` and inherits from model.
