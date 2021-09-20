@@ -15,7 +15,7 @@ def initialize_forward(layer, A):
     :return: Input of forward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Previous cell state initialized with zeros.
+    :return: Previous hidden state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
 
     :return: Previous memory state initialized with zeros.
@@ -26,8 +26,8 @@ def initialize_forward(layer, A):
     cache_keys = ['h', 'hp', 'o_', 'o', 'i_', 'i', 'f_', 'f', 'g_', 'g', 'C_', 'Cp_', 'C']
     layer.fc.update({k: np.zeros(layer.fs['h']) for k in cache_keys})
 
-    h = layer.fc['h'][:, 0]    # Hidden cell state
-    C_ = layer.fc['C_'][:, 0]  # Memory cell state
+    h = layer.fc['h'][:, 0]    # Hidden state
+    C_ = layer.fc['C_'][:, 0]  # Memory state
 
     return X, h, C_
 
@@ -35,7 +35,7 @@ def initialize_forward(layer, A):
 def lstm_forward(layer, A):
     """Forward propagate signal to next layer.
     """
-    # (1) Initialize cache, hidden and memory cell states
+    # (1) Initialize cache, hidden and memory states
     X, h, C_ = initialize_forward(layer, A)
 
     # Iterate over sequence steps
@@ -44,7 +44,7 @@ def lstm_forward(layer, A):
         # (2s) Slice sequence (m, s, e) w.r.t to step
         X = layer.fc['X'][:, s]
 
-        # (3s) Retrieve previous cell states
+        # (3s) Retrieve previous states
         hp = layer.fc['hp'][:, s] = h       # (3.1s) Hidden
         Cp_ = layer.fc['Cp_'][:, s] = C_    # (3.2s) Memory
 
@@ -84,7 +84,7 @@ def lstm_forward(layer, A):
 
         o = layer.fc['o'][:, s] = layer.activate_output(o_)      # (7.2s)
 
-        # (8s) Compute current memory cell state
+        # (8s) Compute current memory state
         C_ = layer.fc['C_'][:, s] = (
             Cp_ * f
             + i * g
@@ -92,10 +92,10 @@ def lstm_forward(layer, A):
 
         C = layer.fc['C'][:, s] = layer.activate(C_)             # (8.2s)
 
-        # (9s) Compute current hidden cell state
+        # (9s) Compute current hidden state
         h = layer.fc['h'][:, s] = o * C
 
-    # Return the last hidden cell state or the full sequence
+    # Return the last hidden state or the full sequence
     A = layer.fc['h'] if layer.sequences else layer.fc['h'][:, -1]
 
     return A    # To next layer

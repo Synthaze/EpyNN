@@ -15,7 +15,7 @@ def initialize_backward(layer, dX):
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Next cell state initialized with zeros.
+    :return: Next hidden state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
 
     :return: Next memory state initialized with zeros.
@@ -47,7 +47,7 @@ def initialize_backward(layer, dX):
 def lstm_backward(layer, dX):
     """Backward propagate error gradients to previous layer.
     """
-    # (1) Initialize cache, hidden and memory cell state gradients
+    # (1) Initialize cache, hidden and memory state gradients
     dA, dh, dC = initialize_backward(layer, dX)
 
     # Reverse iteration over sequence steps
@@ -56,16 +56,16 @@ def lstm_backward(layer, dX):
         # (2s) Slice sequence (m, s, u) w.r.t step
         dA = layer.bc['dA'][:, s]          # dL/dA
 
-        # (3s) Gradient of the loss w.r.t. next cell states
+        # (3s) Gradient of the loss w.r.t. next states
         dhn = layer.bc['dhn'][:, s] = dh   # (3.1) dL/dhn
         dCn = layer.bc['dCn'][:, s] = dC   # (3.2) dL/dCn
 
-        # (4s) Gradient of the loss w.r.t hidden cell state h_
+        # (4s) Gradient of the loss w.r.t hidden state h_
         dh_ = layer.bc['dh_'][:, s] = (
             (dA + dhn)
         )   # dL/dh_
 
-        # (5s) Gradient of the loss w.r.t memory cell state C_
+        # (5s) Gradient of the loss w.r.t memory state C_
         dC_ = layer.bc['dC_'][:, s] = (
             dh_
             * layer.fc['o'][:, s]
@@ -101,13 +101,13 @@ def lstm_backward(layer, dX):
             * layer.activate_forget(layer.fc['f_'][:, s], deriv=True)
         )   # dL/df_
 
-        # (10s) Gradient of the loss w.r.t memory cell state C
+        # (10s) Gradient of the loss w.r.t memory state C
         dC = layer.bc['dC'][:, s] = (
             dC_
             * layer.fc['f'][:, s]
         )   # dL/dC
 
-        # (11s) Gradient of the loss w.r.t hidden cell state h
+        # (11s) Gradient of the loss w.r.t hidden state h
         dh = layer.bc['dh'][:, s] = (
             np.dot(do_, layer.p['Vo'].T)
             + np.dot(dg_, layer.p['Vg'].T)
@@ -115,7 +115,7 @@ def lstm_backward(layer, dX):
             + np.dot(df_, layer.p['Vf'].T)
         )   # dL/dh
 
-        # (12s) Gradient of the loss w.r.t hidden cell state X
+        # (12s) Gradient of the loss w.r.t hidden state X
         dX = layer.bc['dX'][:, s] = (
             np.dot(dg_, layer.p['Ug'].T)
             + np.dot(do_, layer.p['Uo'].T)

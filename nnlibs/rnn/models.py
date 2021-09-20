@@ -24,7 +24,7 @@ class RNN(Layer):
     :param units: Number of unit cells in RNN layer, defaults to 1.
     :type units: int, optional
 
-    :param activate: Non-linear activation of hidden cell state, defaults to `tanh`.
+    :param activate: Non-linear activation of hidden state, defaults to `tanh`.
     :type activate: function, optional
 
     :param initialization: Weight initialization function for RNN layer, defaults to `xavier`.

@@ -23,7 +23,7 @@ def lstm_compute_shapes(layer, A):
     layer.fs['Vf'] = layer.fs['Vi'] = layer.fs['Vg'] = layer.fs['Vo'] = uu
     layer.fs['bf'] = layer.fs['bi'] = layer.fs['bg'] = layer.fs['bo'] = u1
 
-    # Shape of hidden (h) and memory (C) cell state with respect to steps (s)
+    # Shape of hidden (h) and memory (C) state with respect to steps (s)
     layer.fs['h'] = layer.fs['C'] = (layer.d['m'], layer.d['s'], layer.d['u'])
 
     return None
@@ -67,7 +67,7 @@ def lstm_compute_gradients(layer):
     for s in reversed(range(layer.d['s'])):
 
         X = layer.fc['X'][:, s]      # Input for current step
-        hp = layer.fc['hp'][:, s]    # Previous hidden cell state
+        hp = layer.fc['hp'][:, s]    # Previous hidden state
 
         # (1) Gradients of the loss with respect to U, V, b
         do_ = layer.bc['do_'][:, s]            # Gradient w.r.t output gate o_

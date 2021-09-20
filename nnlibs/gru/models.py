@@ -25,7 +25,7 @@ class GRU(Layer):
     :param units: Number of unit cells in GRU layer, defaults to 1.
     :type units: int, optional
 
-    :param activate: Non-linear activation of hidden hat (hh) cell state, defaults to `tanh`.
+    :param activate: Non-linear activation of hidden hat (hh) state, defaults to `tanh`.
     :type activate: function, optional
 
     :param activate_output: Non-linear activation of update gate, defaults to `sigmoid`.
