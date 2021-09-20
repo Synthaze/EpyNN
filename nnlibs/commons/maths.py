@@ -55,7 +55,7 @@ def hadamard(dA, dLinear):
 def identity(x, deriv=False):
     """Compute identity activation or derivative.
 
-    Note this is for testing purpose, can not be used with backpropagation.
+    Note this is for testing purpose, cannot be used with backpropagation.
 
     :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`
@@ -209,8 +209,8 @@ def softmax(x, deriv=False):
     For Dense layer only.
 
     For other layers, you can change element-wise matrix multiplication
-    operator '*' by :func:`nnlibs.maths.hadamard` which handles 
-    the softmax derivative jacobian matrix.  
+    operator '*' by :func:`nnlibs.maths.hadamard` which handles
+    the softmax derivative jacobian matrix.
 
     :param x: Input array to pass in function.
     :type x: class:`numpy.ndarray`

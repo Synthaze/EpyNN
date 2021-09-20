@@ -5,7 +5,7 @@ import numpy as np
 
 class Layer:
     """
-    Definition of a parent **base layer** prototype. Any given **layer** prototype inherit from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution...). The **parent** base layer defines instance attributes common to any **child** layer prototype.
+    Definition of a parent **base layer** prototype. Any given **layer** prototype inherits from this class and is defined with respect to a specific architecture (Dense, RNN, Convolution...). The **parent** base layer defines instance attributes common to any **child** layer prototype.
     """
 
     def __init__(self, se_hPars=None):
