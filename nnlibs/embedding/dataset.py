@@ -58,10 +58,10 @@ def embedding_encode(layer, X_data, Y_data, X_encode, Y_encode):
     :param Y_encode: Set to True to one-hot encode labels.
     :type encode: bool
 
-    :return: Encoded set of samples features, if applicable.
+    :return: Encoded set of sample features, if applicable.
     :rtype : :class:`numpy.ndarray`
 
-    :return: Encoded set of samples label, if applicable.
+    :return: Encoded set of sample label, if applicable.
     :rtype : :class:`numpy.ndarray`
     """
     # Features one-hot encoding
@@ -117,7 +117,7 @@ def embedding_prepare(layer, X_data, Y_data):
 def split_dataset(dataset, se_dataset):
     """Split dataset in training, testing and validation sets.
 
-    :param dataset: Dataset containing samples features and label
+    :param dataset: Dataset containing sample features and label
     :type dataset: tuple[list or :class:`numpy.ndarray`]
 
     :param se_dataset: Settings for sets preparation

@@ -119,7 +119,7 @@ class EpyNN:
         :param params: Layer parameters initialization, defaults to `True`.
         :type params: bool, optional
 
-        :param end: Wether to print every line for initialization steps or overwrite, default to `\\n`.
+        :param end: Whether to print every line for initialization steps or overwrite, default to `\\n`.
         :type end: str in ['\\n', '\\r'], optional
         """
         # Initialize model summary
@@ -158,7 +158,7 @@ class EpyNN:
         return None
 
     def train(self, epochs, verbose=None, init_logs=True):
-        """Wrapper for :func:`nnlibs.network.training.model_training()`. Apart, it does compute learning rate along learning epochs.
+        """Wrapper for :func:`nnlibs.network.training.model_training()`. Apart, it computes learning rate along learning epochs.
 
         :param epochs: Number of training iterations.
         :type epochs: int

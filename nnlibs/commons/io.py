@@ -4,7 +4,7 @@ import numpy as np
 
 
 def index_elements_auto(X_data):
-    """Determine elements size and generate dictionnary for one-hot encoding or features or label.
+    """Determine elements size and generate dictionary for one-hot encoding or features or label.
 
     :param X_data: Dataset containing samples features or samples label.
     :type X_data: :class:`numpy.ndarray`
