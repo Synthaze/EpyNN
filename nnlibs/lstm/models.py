@@ -25,7 +25,7 @@ class LSTM(Layer):
     :param units: Number of unit cells in LSTM layer, defaults to 1.
     :type units: int, optional
 
-    :param activate: Non-linear activation of hidden and memory cell states, defaults to `tanh`.
+    :param activate: Non-linear activation of hidden and memory states, defaults to `tanh`.
     :type activate: function, optional
 
     :param activate_output: Non-linear activation of output gate, defaults to `sigmoid`.

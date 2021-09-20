@@ -23,7 +23,7 @@ def gru_compute_shapes(layer, A):
     layer.fs['Vz'] = layer.fs['Vr'] = layer.fs['Vhh'] = uu
     layer.fs['bz'] = layer.fs['br'] = layer.fs['bhh'] = u1
 
-    # Shape of hidden cell state (h) with respect to steps (s)
+    # Shape of hidden state (h) with respect to steps (s)
     layer.fs['h'] = (layer.d['m'], layer.d['s'], layer.d['u'])
 
     return None
@@ -62,7 +62,7 @@ def gru_compute_gradients(layer):
     for s in reversed(range(layer.d['s'])):
 
         X = layer.fc['X'][:, s]      # Input for current step
-        hp = layer.fc['hp'][:, s]    # Previous hidden cell state
+        hp = layer.fc['hp'][:, s]    # Previous hidden state
 
         # (1) Gradients of the loss with respect to U, V, b
         dhh_ = layer.bc['dhh_'][:, s]            # Gradient w.r.t hidden hat hh_

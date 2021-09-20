@@ -15,7 +15,7 @@ def initialize_backward(layer, dX):
     :return: Input of backward propagation for current layer.
     :rtype: :class:`numpy.ndarray`
 
-    :return: Next hidden cell state initialized with zeros.
+    :return: Next hidden state initialized with zeros.
     :rtype: :class:`numpy.ndarray`
     """
     if layer.sequences:
@@ -38,7 +38,7 @@ def initialize_backward(layer, dX):
 def rnn_backward(layer, dX):
     """Backward propagate error gradients to previous layer.
     """
-    # (1) Initialize cache and hidden cell state gradient
+    # (1) Initialize cache and hidden state gradient
     dA, dh = initialize_backward(layer, dX)
 
     # Reverse iteration over sequence steps
@@ -47,16 +47,16 @@ def rnn_backward(layer, dX):
         # (2s) Slice sequence (m, s, u) w.r.t step
         dA = layer.bc['dA'][:, s]          # dL/dA
 
-        # (3s) Gradient of the loss w.r.t. next hidden cell state
+        # (3s) Gradient of the loss w.r.t. next hidden state
         dhn = layer.bc['dhn'][:, s] = dh   # dL/dhn
 
-        # (4s) Gradient of the loss w.r.t hidden cell state h_
+        # (4s) Gradient of the loss w.r.t hidden state h_
         dh_ = layer.bc['dh_'][:, s] = (
             (dA + dhn)
             * layer.activate(layer.fc['h_'][:, s], deriv=True)
         )   # dL/dh_ - To parameters gradients
 
-        # (5s) Gradient of the loss w.r.t hidden cell state h
+        # (5s) Gradient of the loss w.r.t hidden state h
         dh = layer.bc['dh'][:, s] = (
             np.dot(dh_, layer.p['V'].T)
         )   # dL/dh - To previous step
