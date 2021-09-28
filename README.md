@@ -2,6 +2,7 @@
 
 ![](https://img.shields.io/github/languages/top/synthaze/epynn) ![](https://img.shields.io/github/license/synthaze/epynn) ![](https://img.shields.io/github/last-commit/synthaze/epynn)
 
+![](https://img.shields.io/github/stars/synthaze/epynn?style=social) ![](https://img.shields.io/twitter/follow/epynn_synthaze?label=Follow&style=social)
 
 **EpyNN is written in pure Python/NumPy.**
 
