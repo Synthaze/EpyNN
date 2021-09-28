@@ -3,7 +3,11 @@
 ![](https://img.shields.io/github/languages/top/synthaze/epynn) ![](https://img.shields.io/github/license/synthaze/epynn) ![](https://img.shields.io/github/last-commit/synthaze/epynn)
 
 ![](https://img.shields.io/github/stars/synthaze/epynn?style=social) ![](https://img.shields.io/twitter/follow/epynn_synthaze?label=Follow&style=social)
-
+<p align="center">
+    <a href="https://twitter.com/intent/follow?screen_name=epynn_synthaze" target="\_blank">
+        <img src="https://img.shields.io/twitter/follow/epynn_synthaze?label=Follow&style=social" alt="follow on Twitter">
+    </a>
+</p>
 **EpyNN is written in pure Python/NumPy.**
 
 If you use EpyNN in academia, please cite:
