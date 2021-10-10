@@ -8,7 +8,7 @@ import numpy as np
 # Local application/library specific imports
 import epynn.initialize
 from epynn.commons.maths import relu, softmax
-from epynn.commons.library import (
+from epynn.commons.library import ( 
     configure_directory,
     read_model,
     write_model,
