@@ -10,7 +10,7 @@ import wget
 import numpy as np
 
 # Local application/library specific imports
-from nnlibs.commons.logs import process_logs
+from epynn.commons.logs import process_logs
 
 
 def download_mnist():

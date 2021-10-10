@@ -6,19 +6,19 @@ import random
 import numpy as np
 
 # Local application/library specific imports
-import nnlibs.initialize
-from nnlibs.commons.maths import relu, softmax
-from nnlibs.commons.library import (
+import epynn.initialize
+from epynn.commons.maths import relu, softmax
+from epynn.commons.library import (
     configure_directory,
     read_model,
 )
-from nnlibs.network.models import EpyNN
-from nnlibs.embedding.models import Embedding
-from nnlibs.convolution.models import Convolution
-from nnlibs.pooling.models import Pooling
-from nnlibs.flatten.models import Flatten
-from nnlibs.dropout.models import Dropout
-from nnlibs.dense.models import Dense
+from epynn.network.models import EpyNN
+from epynn.embedding.models import Embedding
+from epynn.convolution.models import Convolution
+from epynn.pooling.models import Pooling
+from epynn.flatten.models import Flatten
+from epynn.dropout.models import Dropout
+from epynn.dense.models import Dense
 from prepare_dataset import prepare_dataset
 from settings import se_hPars
 

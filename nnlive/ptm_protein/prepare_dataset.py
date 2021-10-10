@@ -8,8 +8,8 @@ import os
 import wget
 
 # Local application/library specific imports
-from nnlibs.commons.library import read_file
-from nnlibs.commons.logs import process_logs
+from epynn.commons.library import read_file
+from epynn.commons.logs import process_logs
 
 
 def download_sequences():
