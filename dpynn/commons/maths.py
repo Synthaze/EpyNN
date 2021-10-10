@@ -2,7 +2,7 @@
 # Related third party imports
 import numpy as np
 
-
+ 
 # To prevent from divide floatting points errors
 E_SAFE = 1e-16
 
