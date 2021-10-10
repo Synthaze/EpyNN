@@ -131,14 +131,14 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 
 ## Current release
 
-### 1.0a - Initial release
+### 1.0 - Initial release
 
 * **epynn** contains core API sources and related to https://epynn.net/.
 * **dpynn** contains developmental API sources.
 * **nnlive** contains live examples in Python and Jupyter notebook formats.
 * https://epynn.net/ contains extensive documentation.
 
-**1.0a**
+**1.0.1**
 
 * Change **epynn** to **epynn**.
 * Implement **dpynn**.
