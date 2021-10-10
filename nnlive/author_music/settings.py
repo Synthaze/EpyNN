@@ -1,4 +1,4 @@
-# EpyNN/nnlibs/settings.py
+# EpyNN/epynn/settings.py
 
 
 # HYPERPARAMETERS SETTINGS

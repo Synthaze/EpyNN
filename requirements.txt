@@ -14,3 +14,4 @@ jupyter==1.0.0
 nbconvert==5.4.1
 scipy==1.6.3
 wget==3.2
+utilsovs-pkg
