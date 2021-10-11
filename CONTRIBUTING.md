@@ -2,7 +2,7 @@
 
 Anyone can contribute to EpyNN development.
 
-The **epynn** modules contains:
+The **epynn** module contains:
 
 * Layers and commons exhaustively described at [epynn.net](epynn.net).
 * Required sources for API base functioning.
