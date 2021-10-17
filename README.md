@@ -138,6 +138,10 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 * **nnlive** contains live examples in Python and Jupyter notebook formats.
 * https://epynn.net/ contains extensive documentation.
 
+**1.0.2**
+
+* Patch *KeyError* exception from ``epynn.network.hyperparameters.model_hyperparameters()`` that arised when assigning layer-specific hyperparameters.
+
 **1.0.1**
 
 * Change **epynn** to **epynn**.
