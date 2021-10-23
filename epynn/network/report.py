@@ -86,18 +86,18 @@ def single_batch_report(model, batch, A):
     """
     current = time.time()
 
+    # Total elapsed time
+    elapsed_time = round(current - model.ts, 2)
+
     # Time for one epoch based on current batch
     epoch_time = (current - model.cts) * len(model.embedding.batch_dtrain)
     model.cts = current
 
     # Epochs per second
-    rate = round((model.e + 1) / (epoch_time + 1e-16), 3)
+    rate = round((model.e + 1) / (elapsed_time + 1e-16), 3)
 
     # Time until completion
     ttc = round((model.epochs - model.e + 1) / (rate + 1e-16))
-
-    # Total elapsed time
-    elapsed_time = round(current - model.ts, 2)
 
     # Accuracy and cost
     accuracy, cost = batch_evaluate(model, batch.Y, A)

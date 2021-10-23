@@ -68,14 +68,14 @@ def label_features(features, mask_on_features):
     :rtype: int
     """
     # Single-digit positive and negative labels
-    p_label = 1
-    n_label = 0
+    p_label = 0
+    n_label = 1
 
-    # Test if image is not random (+)
+    # Test if image is not random (0)
     if np.sum(features) == np.sum(mask_on_features):
         label = p_label
 
-    # Test if image is random (-)
+    # Test if image is random (1)
     elif np.sum(features) != np.sum(mask_on_features):
         label = n_label
 

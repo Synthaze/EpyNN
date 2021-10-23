@@ -64,14 +64,14 @@ def label_features(features, white_noise):
     :rtype: int
     """
     # Single-digit positive and negative labels
-    p_label = 1
-    n_label = 0
+    p_label = 0
+    n_label = 1
 
-    # Test if features contains signal (+)
+    # Test if features contains signal (0)
     if any(features != white_noise):
         label = p_label
 
-    # Test if features is equal to white noise (-)
+    # Test if features is equal to white noise (1)
     elif all(features == white_noise):
         label = n_label
 

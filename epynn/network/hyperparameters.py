@@ -18,9 +18,8 @@ def model_hyperparameters(model):
         # If no se_hPars provided for layer, then assign se_hPars from model
         if not layer.se_hPars:
             layer.se_hPars = model.se_hPars
-            layer.se_hPars['Local'] = False
         else:
-            layer.se_hPars['Local'] = True
+            pass
 
     return None
 
