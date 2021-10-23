@@ -138,6 +138,14 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 * **nnlive** contains live examples in Python and Jupyter notebook formats.
 * https://epynn.net/ contains extensive documentation.
 
+**1.0.4**
+
+* Change positive and negative label assignment in ``nnlive`` examples.
+
+**1.0.3**
+
+* Regression in ``epynn.network.embedding.models.Embedding``, remove ``XY_encode`` argument.
+
 **1.0.2**
 
 * Patch *KeyError* exception from ``epynn.network.hyperparameters.model_hyperparameters()`` that arised when assigning layer-specific hyperparameters.
