@@ -144,7 +144,7 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 
 **1.0.1**
 
-* Change **epynn** to **epynn**.
+* Change **nnlibs** to **epynn**.
 * Implement **dpynn**.
 
 See [CHANGELOG.md](CHANGELOG.md) for past releases.

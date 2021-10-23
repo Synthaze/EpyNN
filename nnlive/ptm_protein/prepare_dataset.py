@@ -46,8 +46,8 @@ def prepare_dataset(N_SAMPLES=100):
     :rtype: tuple[int]
     """
     # Single-digit positive and negative labels
-    p_label = 1
-    n_label = 0
+    p_label = 0
+    n_label = 1
 
     # Positive data are Homo sapiens O-GlcNAcylated peptide sequences from oglcnac.mcw.edu
     path_positive = os.path.join('data', '21_positive.dat')

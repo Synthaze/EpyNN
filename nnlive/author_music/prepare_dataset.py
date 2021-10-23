@@ -55,7 +55,7 @@ def clips_music(wav_file, TIME=1, SAMPLING_RATE=10000):
 
     # Retrieve original sampling rate (Hz) and data
     wav_sampling_rate, wav_data = wavfile.read(wav_file)
-    
+
     # 16-bits wav files - Pass all positive and norm. [0, 1]
     # wav_data = (wav_data + 32768.0) / (32768.0 * 2)
     wav_data = wav_data.astype('int64')
@@ -114,8 +114,8 @@ def prepare_dataset(N_SAMPLES=100):
         # Iterate over clips
         for features in clips:
 
-            # Clip is positive if played by true author (+) else negative (-)
-            label = 1 if 'true' in wav_file else 0
+            # Clip is positive if played by true author (0) else negative (1)
+            label = 0 if 'true' in wav_file else 1
 
             # Append sample features to X_features
             X_features.append(features)

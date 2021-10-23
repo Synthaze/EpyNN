@@ -36,14 +36,14 @@ def label_features(features):
     :rtype: int
     """
     # Single-digit positive and negative labels
-    p_label = 1
-    n_label = 0
+    p_label = 0
+    n_label = 1
 
-    # Pattern associated with positive label (+)
+    # Pattern associated with positive label (0)
     if features[0] == features[-1]:
             label = p_label
 
-    # Other pattern associated with negative label (-)
+    # Other pattern associated with negative label (1)
     elif features[0] != features[-1]:
             label = n_label
 

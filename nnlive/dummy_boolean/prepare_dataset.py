@@ -33,14 +33,14 @@ def label_features(features):
     :rtype: int
     """
     # Single-digit positive and negative labels
-    p_label = 1
-    n_label = 0
+    p_label = 0
+    n_label = 1
 
-    # Test if features contains more True (+)
+    # Test if features contains more True (0)
     if features.count(True) > features.count(False):
         label = p_label
 
-    # Test if features contains more False (-)
+    # Test if features contains more False (1)
     elif features.count(True) < features.count(False):
         label = n_label
 
