@@ -53,13 +53,10 @@ class Embedding(Layer):
                  batch_size=None,
                  X_encode=False,
                  Y_encode=False,
-                 XY_encode=False,
                  X_scale=False):
         """Initialize instance variable attributes.
         """
         super().__init__()
-
-        X_encode = Y_encode = True if XY_encode else X_encode
 
         self.se_dataset = {
             'dtrain_relative': relative_size[0],
