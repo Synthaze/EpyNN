@@ -18,6 +18,7 @@ def metrics_functions(key=None):
         'precision': precision,
         'fscore': fscore,
         'specificity': specificity,
+        'NPV': NPV,
     }
     # If key provided, returns output of function
     if key:
@@ -102,8 +103,35 @@ def precision(Y, A):
     return precision
 
 
+def NPV(Y, A):
+    """Fraction of negative samples among excluded instances.
+
+    :param Y: True labels for a set of samples.
+    :type Y: :class:`numpy.ndarray`
+
+    :param A: Output of forward propagation.
+    :type A: :class:`numpy.ndarray`
+
+    :return: Negative Predictive Value.
+    :rtype: :class:`numpy.ndarray`
+    """
+    encoded = (Y.shape[1] > 1)    # Check if one-hot encoding of labels
+
+    P = np.argmax(A, axis=1) if encoded else np.around(A)
+    y = np.argmax(Y, axis=1) if encoded else Y
+
+    tp = np.sum(np.where((P==0) & (y==0), 1, 0))    # True positive
+    fp = np.sum(np.where((P==0) & (y==1), 1, 0))    # False positive
+    tn = np.sum(np.where((P==1) & (y==1), 1, 0))    # True negative
+    fn = np.sum(np.where((P==1) & (y==0), 1, 0))    # False negative
+
+    npv = (tn / (tn+fn))
+
+    return npv
+
+
 def fscore(Y, A):
-    """F-Score that is a composite of recall and precision.
+    """F-Score that is the harmonic mean of recall and precision.
 
     :param Y: True labels for a set of samples.
     :type Y: :class:`numpy.ndarray`

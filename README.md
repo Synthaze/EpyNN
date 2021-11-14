@@ -131,29 +131,10 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 
 ## Current release
 
-### 1.0 - Initial release
+### 1.1 - Initial release with improvements
 
-* **epynn** contains core API sources and related to https://epynn.net/.
-* **dpynn** contains developmental API sources.
-* **nnlive** contains live examples in Python and Jupyter notebook formats.
-* https://epynn.net/ contains extensive documentation.
-
-**1.0.4**
-
-* Change positive and negative label assignment in ``nnlive`` examples.
-
-**1.0.3**
-
-* Regression in ``epynn.network.embedding.models.Embedding``, remove ``XY_encode`` argument.
-
-**1.0.2**
-
-* Patch *KeyError* exception from ``epynn.network.hyperparameters.model_hyperparameters()`` that arised when assigning layer-specific hyperparameters.
-
-**1.0.1**
-
-* Change **nnlibs** to **epynn**.
-* Implement **dpynn**.
+* Change **nnlive** to **epynnlive**.
+* Implement new metrics: Negative Predictive Value (NPV), Specificity, F-Score.
 
 See [CHANGELOG.md](CHANGELOG.md) for past releases.
 
@@ -232,11 +213,11 @@ See [CHANGELOG.md](CHANGELOG.md) for past releases.
    * [plot.py](epynn/commons/plot.py)
    * [schedule.py](epynn/commons/schedule.py)
 
-**nnlive**
- * [author_music](nnlive/author_music)
- * [captcha_mnist](nnlive/captcha_mnist)
- * [dummy_boolean](nnlive/dummy_boolean)
- * [dummy_image](nnlive/dummy_image)
- * [dummy_string](nnlive/dummy_string)
- * [dummy_time](nnlive/dummy_time)
- * [ptm_protein](nnlive/ptm_protein)
+**epynnlive**
+ * [author_music](epynnlive/author_music)
+ * [captcha_mnist](epynnlive/captcha_mnist)
+ * [dummy_boolean](epynnlive/dummy_boolean)
+ * [dummy_image](epynnlive/dummy_image)
+ * [dummy_string](epynnlive/dummy_string)
+ * [dummy_time](epynnlive/dummy_time)
+ * [ptm_protein](epynnlive/ptm_protein)
