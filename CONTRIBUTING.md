@@ -14,4 +14,4 @@ The **dpynn** module contains:
 
 New layers should be implemented in **dpynn** module.
 
-Practical examples should be implemented in **nnlive** module.
+Practical examples should be implemented in **epynnlive** module.
