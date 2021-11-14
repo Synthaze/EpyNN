@@ -2,7 +2,7 @@
 # Related third party imports
 import numpy as np
 
-
+ 
 def index_elements_auto(X_data):
     """Determine elements size and generate dictionary for one-hot encoding or features or label.
 

@@ -5,7 +5,7 @@ import numpy as np
 
 # To prevent from divide floatting points errors
 E_SAFE = 1e-16
-
+ 
 
 def loss_functions(key=None, output_activation=None):
     """Callback function for loss.

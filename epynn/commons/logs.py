@@ -4,7 +4,7 @@ import traceback
 import json
 import time
 import sys
-
+ 
 # Related third party imports
 from pygments import highlight, lexers, formatters
 from pygments.formatters import TerminalTrueColorFormatter

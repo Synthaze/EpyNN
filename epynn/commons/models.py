@@ -1,7 +1,7 @@
 # EpyNN/epynn/commons/models.py
 # Related third party imports
 import numpy as np
-
+ 
 
 class Layer:
     """

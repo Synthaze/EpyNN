@@ -1,7 +1,7 @@
 # EpyNN/epynn/commons/schedule.py
 # Related third party imports
 import numpy as np
-
+ 
 
 def schedule_functions(schedule, hPars):
     """Roots hyperparameters to relevant scheduler.

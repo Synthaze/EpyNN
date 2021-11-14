@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 
 # Local application/library specific imports
 from epynn.commons.logs import process_logs
-
+ 
 
 def pyplot_metrics(model, path):
     """Plot metrics/costs from training with matplotlib.
