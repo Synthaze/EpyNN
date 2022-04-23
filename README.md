@@ -131,12 +131,12 @@ ANSI coloring schemes do work on native Windows10 and later. For prior Windows v
 
 ## Current release
 
-### 1.1 - Initial release with improvements
+### 1.2 Publication release
 
-* Change **nnlive** to **epynnlive**.
-* Implement new metrics: Negative Predictive Value (NPV), Specificity, F-Score.
+* Minor revisions for peer-review process.
 
 See [CHANGELOG.md](CHANGELOG.md) for past releases.
+
 
 
 ## Project tree

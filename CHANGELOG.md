@@ -2,6 +2,11 @@
 
 ## Past releases
 
+### 1.1 - Initial release with improvements
+
+* Change **nnlive** to **epynnlive**.
+* Implement new metrics: Negative Predictive Value (NPV), Specificity, F-Score.
+
 ### 1.0 - Initial release
 
 * **epynn** contains core API sources and related to https://epynn.net/.
