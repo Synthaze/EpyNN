@@ -63,11 +63,7 @@ Please see [Is EpyNN reliable?](https://epynn.net/index.html#is-epynn-reliable) 
 bash
 
 # Clone git repository
-git clone https://github.com/Synthaze/EpyNN
-
-# Alternatively, not recommended
-# pip3 install EpyNN
-# epynn
+git clone https://github.com/synthaze/EpyNN
 
 # Change directory to EpyNN
 cd EpyNN
@@ -78,6 +74,9 @@ pip3 install -r requirements.txt
 # Export EpyNN path in $PYTHONPATH for current session
 export PYTHONPATH=$PYTHONPATH:$PWD
 
+# Alternatively, not recommended
+# pip3 install EpyNN
+# epynn
 ```
 
 **Linux:** Permanent export of EpyNN directory path in ```$PYTHONPATH```.
@@ -104,11 +103,7 @@ source ~/.bash_profile
 
 ```bash
 # Clone git repository
-git clone https://github.com/Synthaze/EpyNN
-
-# Alternatively, not recommended
-# pip3 install EpyNN
-# epynn
+git clone https://github.com/synthaze/EpyNN
 
 # Change directory to EpyNN
 chdir EpyNN
@@ -118,6 +113,10 @@ pip3 install -r requirements.txt
 
 # Show full path of EpyNN directory
 echo %cd%
+
+# Alternatively, not recommended
+# pip3 install EpyNN
+# epynn
 ```
 
 Copy the full path of EpyNN directory, then go to:
