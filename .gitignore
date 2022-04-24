@@ -19,6 +19,7 @@ nnlibs/statistics.py
 nnlive/statistics.py
 *.ai
 dist/
+build/
 *.egg-info/
 *.egg
 __pycache__/
@@ -26,3 +27,4 @@ __init__.py
 */__init__.py
 statistics.py
 *statistics.py
+pypi.sh
