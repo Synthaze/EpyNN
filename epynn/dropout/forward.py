@@ -1,4 +1,6 @@
 # EpyNN/epynn/dropout/forward.py
+# Related third party imports
+import numpy as np
 
 
 def initialize_forward(layer, A):
@@ -17,7 +19,7 @@ def initialize_forward(layer, A):
 
     return X
 
-import numpy as np
+
 def dropout_forward(layer, A):
     """Forward propagate signal to next layer.
     """
